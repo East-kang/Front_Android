@@ -60,7 +60,7 @@
             android:paddingLeft="10dp"
             android:hint="아이디를 입력하세요"
             android:textColorHint="#C2C6CC"
-            android:textSize="20dp" />
+            android:textSize="18dp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -80,7 +80,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="50dp"
                 android:textColorHint="#C2C6CC"
-                android:textSize="20dp"
+                android:textSize="18dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -126,7 +126,10 @@
             android:layout_width="350dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:gravity="center" />
+            android:gravity="center"
+            android:text="계정이 없으신가요?  회원가입"
+            android:textSize="15dp"/>
+         <!--https://gun0912.tistory.com/66-->
     </LinearLayout>
 
 
