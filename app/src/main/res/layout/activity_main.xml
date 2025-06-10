@@ -38,12 +38,12 @@
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/login_input_window_id"
         android:drawableLeft="@drawable/login_id_icon_resize"
+        android:drawablePadding="10dp"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
         android:paddingLeft="10dp"
