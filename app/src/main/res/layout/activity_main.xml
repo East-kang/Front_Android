@@ -71,7 +71,6 @@
             android:gravity="center"
             android:layout_marginTop="40dp"
             android:text="로그인"
-            android:textStyle="bold"
             android:textColor="#FFFFFF"
             android:textSize="18dp"/>
 
@@ -79,13 +78,12 @@
             android:id="@+id/sign_up_Button"
             android:layout_width="350dp"
             android:layout_height="50dp"
-            android:background="@drawable/login_button"
+            android:background="@drawable/sign_up_button"
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_marginTop="10dp"
             android:text="회원가입"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
+            android:textColor="#50AAFA"
             android:textSize="18dp"/>
 
     </LinearLayout>
