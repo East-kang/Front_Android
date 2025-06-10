@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity" >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -12,7 +12,7 @@
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" >
 
         <ImageButton
             android:id="@+id/backButton"
@@ -22,7 +22,7 @@
             android:layout_marginLeft="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
@@ -45,30 +45,30 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" >
 
         <EditText
             android:id="@+id/id_editText"
             android:layout_width="350dp"
             android:layout_height="50dp"
             android:background="@drawable/login_input_window"
-            android:drawableLeft="@drawable/resize_login_id_icon"
+            android:drawableLeft="@drawable/resize_id_icon"
             android:layout_gravity="center"
             android:gravity="center_vertical"
             android:drawablePadding="10dp"
             android:paddingLeft="10dp"
             android:hint="아이디를 입력하세요"
             android:textColorHint="#C2C6CC"
-            android:textSize="18dp"/>
+            android:textSize="18dp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="20dp" >
 
             <EditText
-                android:id="@+id/id_passwordText"
+                android:id="@+id/password_editText"
                 android:layout_width="350dp"
                 android:layout_height="50dp"
                 android:background="@drawable/login_input_window"
@@ -83,7 +83,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
                 android:id="@+id/eyeButton"
@@ -93,8 +93,8 @@
                 android:src="@drawable/resize_eye_visibility_off"
                 android:layout_marginRight="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="@+id/id_passwordText"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintRight_toRightOf="@+id/password_editText"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
@@ -105,7 +105,7 @@
             android:layout_marginTop="5dp"
             android:text="* 입력한 비밀번호가 잘못되었습니다"
             android:textColor="#FF0000"
-            android:textSize="12dp"/>
+            android:textSize="12dp" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/login_Button"
@@ -118,11 +118,11 @@
             android:text="로그인"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
-            android:textSize="18dp"/>
+            android:textSize="18dp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content" >
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -131,7 +131,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintEnd_toEndOf="parent" >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -139,7 +139,7 @@
                     android:gravity="center"
                     android:text="계정이 없으신가요?"
                     android:textSize="15dp"
-                    android:textColor="#C2C6CC"/>
+                    android:textColor="#C2C6CC" />
 
                 <TextView
                     android:id="@+id/accountText"
@@ -149,7 +149,7 @@
                     android:layout_marginLeft="10dp"
                     android:text="회원가입"
                     android:textSize="15dp"
-                    android:textColor="#50AAFA"/>
+                    android:textColor="#50AAFA" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
