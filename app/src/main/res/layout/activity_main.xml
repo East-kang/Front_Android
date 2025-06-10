@@ -12,15 +12,14 @@
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        app:layout_constraintTop_toTopOf="parent" >
 
         <ImageButton
             android:id="@+id/backButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_height="match_parent"
             android:background="@drawable/resize_back_button"
+            android:layout_marginLeft="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -36,7 +35,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -53,13 +52,13 @@
             android:id="@+id/id_editText"
             android:layout_width="350dp"
             android:layout_height="50dp"
-            android:layout_gravity="center"
             android:background="@drawable/login_input_window"
             android:drawableLeft="@drawable/resize_login_id_icon"
-            android:drawablePadding="10dp"
+            android:layout_gravity="center"
             android:gravity="center_vertical"
-            android:hint="아이디를 입력하세요"
+            android:drawablePadding="10dp"
             android:paddingLeft="10dp"
+            android:hint="아이디를 입력하세요"
             android:textColorHint="#C2C6CC"
             android:textSize="20dp" />
 
@@ -91,9 +90,9 @@
                 android:id="@+id/eyeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="15dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/resize_eye_visibility_off"
+                android:layout_marginRight="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="@+id/id_passwordText"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -123,6 +122,11 @@
             android:textColor="#FFFFFF"
             android:textSize="18dp"/>
 
+        <TextView
+            android:layout_width="350dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center" />
     </LinearLayout>
 
 
