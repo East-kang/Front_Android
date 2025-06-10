@@ -67,7 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="20dp">
 
             <EditText
                 android:id="@+id/id_passwordText"
@@ -109,13 +109,17 @@
             android:textColor="#FF0000"
             android:textSize="12dp" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:layout_width="350dp"
             android:layout_height="50dp"
+            android:background="@drawable/login_button"
             android:layout_gravity="center"
             android:gravity="center"
-            android:layout_marginTop="30dp"
-            android:text="로그인" />
+            android:layout_marginTop="40dp"
+            android:text="로그인"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp"/>
 
     </LinearLayout>
 
