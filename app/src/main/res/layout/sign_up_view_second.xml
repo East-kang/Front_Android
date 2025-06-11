@@ -149,7 +149,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="20dp"
                         android:text="  남성"
-                        android:textSize="16dp" />
+                        android:textSize="17dp" />
 
                     <RadioButton
                         android:id="@+id/radioFemale"
@@ -157,7 +157,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="20dp"
                         android:text="  여성"
-                        android:textSize="16dp" />
+                        android:textSize="17dp" />
                 </RadioGroup>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -196,7 +196,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="20dp"
                         android:text="  미혼"
-                        android:textSize="16dp" />
+                        android:textSize="17dp" />
 
                     <RadioButton
                         android:id="@+id/radioMarried"
@@ -204,10 +204,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="20dp"
                         android:text="  기혼"
-                        android:textSize="16dp" />
+                        android:textSize="17dp" />
                 </RadioGroup>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </LinearLayout>
     </ScrollView>
 
