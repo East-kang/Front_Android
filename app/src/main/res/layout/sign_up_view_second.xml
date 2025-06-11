@@ -56,12 +56,24 @@
             android:layout_marginTop="35dp"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/subTitle_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:text="사용자 정보"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:textColor="#4285F4"
+                tools:ignore="MissingConstraints" />
+
             <EditText
                 android:id="@+id/name_editText"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="30dp"
                 android:background="@drawable/login_input_window"
                 android:drawableLeft="@drawable/resize_name_icon"
                 android:drawablePadding="10dp"
