@@ -182,7 +182,6 @@
                 android:textColor="#1F70CC"
                 android:textSize="11dp" />
         </LinearLayout>
-
     </ScrollView>
 
     <androidx.appcompat.widget.AppCompatButton
