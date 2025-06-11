@@ -77,7 +77,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginHorizontal="40dp"
+                    android:layout_marginHorizontal="30dp"
                     android:text="질병 여부"
                     android:textColor="#000000"
                     android:textSize="18dp"
@@ -113,6 +113,106 @@
                         android:textSize="17dp" />
                 </RadioGroup>
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="질병 종류"
+                    android:textColor="#000000"
+                    android:textSize="18dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp" >
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+
+                        <CheckBox
+                            android:id="@+id/disease1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:text="암 (위암, 폐암, 유방암 등)"
+                            android:textSize="12dp" />
+
+                        <CheckBox
+                            android:id="@+id/disease3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:text="뇌혈관 질환 (뇌졸증, 뇌출혈 등)"
+                            android:textSize="12dp" />
+
+                        <CheckBox
+                            android:id="@+id/disease5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:text="간질환 (간경화, B형간염 등)"
+                            android:textSize="12dp" />
+
+                        <CheckBox
+                            android:id="@+id/disease7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:text="근골격계/척추질환 (디스크, 관절염 등)"
+                            android:textSize="12dp" />
+
+                        <CheckBox
+                            android:id="@+id/disease9"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:text="기타 만성질환 (신장질환, 갑상선질환 등)"
+                            android:textSize="12dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+
+                        <CheckBox
+                            android:id="@+id/disease2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:text="심혈관계 질환 (고혈압, 협심증, 심근경색 등)"
+                            android:textSize="12dp" />
+
+                        <CheckBox
+                            android:id="@+id/disease4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:text="당뇨병"
+                            android:textSize="12dp" />
+
+                        <CheckBox
+                            android:id="@+id/disease6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:text="폐질환 (천식, 만성폐쇄성폐질환 등)"
+                            android:textSize="12dp" />
+
+                        <CheckBox
+                            android:id="@+id/disease8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:text="정신질활 (우울증, 불안장애 등)"
+                            android:textSize="12dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
 
 
 
