@@ -49,8 +49,9 @@
 
         <EditText
             android:id="@+id/id_editText"
-            android:layout_width="350dp"
-            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
             android:background="@drawable/login_input_window"
             android:drawableLeft="@drawable/resize_id_icon"
             android:layout_gravity="center"
@@ -69,8 +70,9 @@
 
             <EditText
                 android:id="@+id/password_editText"
-                android:layout_width="350dp"
-                android:layout_height="50dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
                 android:background="@drawable/login_input_window"
                 android:drawableLeft="@drawable/resize_login_password_icon"
                 android:drawablePadding="10dp"
@@ -99,18 +101,20 @@
 
         <TextView
             android:id="@+id/warning_textView"
-            android:layout_width="330dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
-            android:text="* 입력한 비밀번호가 잘못되었습니다"
+            android:text="로그인 정보가 올바르지 않습니다"
             android:textColor="#FF0000"
             android:textSize="12dp" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/login_Button"
-            android:layout_width="350dp"
-            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
             android:background="@drawable/login_button"
             android:layout_gravity="center"
             android:gravity="center"

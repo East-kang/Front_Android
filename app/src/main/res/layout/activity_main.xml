@@ -64,8 +64,9 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/login_Button"
-            android:layout_width="350dp"
-            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
             android:background="@drawable/login_button"
             android:layout_gravity="center"
             android:gravity="center"
@@ -76,8 +77,9 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/sign_up_Button"
-            android:layout_width="350dp"
-            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
             android:background="@drawable/sign_up_button"
             android:layout_gravity="center"
             android:gravity="center"
