@@ -227,7 +227,7 @@
                 <Spinner
                     android:id="@+id/job_spinner"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:background="@drawable/spinner_window"
                     android:layout_marginTop="5dp"
                     android:paddingLeft="5dp"
