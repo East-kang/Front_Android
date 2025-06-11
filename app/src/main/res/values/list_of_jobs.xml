@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="Job">
+    <string-array name="jbs">
         <item>사무직/행적직</item>
         <item>공무원</item>
         <item>전문직(의사/법조인 등)</item>
@@ -14,6 +14,6 @@
         <item>주부/가사</item>
         <item>무직/구직</item>
         <item>기타</item>
-    </string>
+    </string-array>
 
 </resources>
