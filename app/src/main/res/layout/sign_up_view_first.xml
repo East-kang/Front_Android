@@ -48,34 +48,18 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.0" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="35dp"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/name_editText"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="30dp"
-                android:background="@drawable/login_input_window"
-                android:drawableLeft="@drawable/resize_name_icon"
-                android:drawablePadding="10dp"
-                android:gravity="center_vertical"
-                android:hint="이름을 입력하세요"
-                android:paddingLeft="10dp"
-                android:textColorHint="#C2C6CC"
-                android:textSize="18dp" />
+            android:orientation="vertical" >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp">
+                android:layout_gravity="center" >
 
                 <EditText
                     android:id="@+id/id_editText"
@@ -146,6 +130,32 @@
                 android:textSize="11dp" />
 
             <EditText
+                android:id="@+id/check_editText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/login_input_window"
+                android:drawableLeft="@drawable/resize_login_password_icon"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:hint="비밀번호 재확인"
+                android:paddingLeft="10dp"
+                android:paddingRight="50dp"
+                android:textColorHint="#C2C6CC"
+                android:textSize="18dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="50dp"
+                android:text="동일한 암호를 입력하세요"
+                android:textColor="#1F70CC"
+                android:textSize="11dp" />
+
+            <EditText
                 android:id="@+id/email_editText"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -162,46 +172,13 @@
                 android:textColorHint="#C2C6CC"
                 android:textSize="18dp" />
 
-            <EditText
-                android:id="@+id/birth_editText"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/login_input_window"
-                android:drawableLeft="@drawable/resize_login_password_icon"
-                android:drawablePadding="10dp"
-                android:gravity="center_vertical"
-                android:hint="생년월일 (YYYYMMDD; '-' 제외)"
-                android:paddingLeft="10dp"
-                android:paddingRight="50dp"
-                android:textColorHint="#C2C6CC"
-                android:textSize="18dp" />
-
-            <EditText
-                android:id="@+id/phone_number_editText"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/login_input_window"
-                android:drawableLeft="@drawable/resize_login_password_icon"
-                android:drawablePadding="10dp"
-                android:gravity="center_vertical"
-                android:hint="전화번호를 입력하세요 ('-' 제외)"
-                android:paddingLeft="10dp"
-                android:paddingRight="50dp"
-                android:textColorHint="#C2C6CC"
-                android:textSize="18dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="50dp"
-                android:text="비밀번호가 일치합니다!"
+                android:text="이메일을 정확히 입력해주세요"
                 android:textColor="#1F70CC"
                 android:textSize="11dp" />
         </LinearLayout>
