@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="jbs">
+        <item>암 (위암, 폐암, 유방암 등)</item>
+        <item>심혈관계 질환 (고혈압, 협심증, 심근경색 등)</item>
+        <item>뇌혈관 질환 (뇌졸증, 뇌출혈 등)</item>
+        <item>당뇨병</item>
+        <item>간질환 (간경화, B형간염 등)</item>
+        <item>폐질환 (천식, 만성폐쇄성폐질환 등)</item>
+        <item>근골격계/척추질환 (디스크, 관절염 등)</item>
+        <item>정신질활 (우울증, 불안장애 등)</item>
+        <item>기타 만성질환 (신장질환, 갑상선질환 등)</item>
+    </string-array>
+
+</resources>
