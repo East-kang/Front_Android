@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="회원가입"
+            android:text="회원가입 (1/4)"
             android:textColor="@color/black"
             android:textSize="24dp"
             android:textStyle="bold"
@@ -43,23 +43,22 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="30dp"
         app:layout_constraintBottom_toTopOf="@id/next_Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title"
-        app:layout_constraintVertical_bias="0.0" >
+        app:layout_constraintTop_toBottomOf="@+id/title">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="35dp"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" >
+                android:layout_gravity="center">
 
                 <TextView
                     android:id="@+id/subTitle_textView"
@@ -67,9 +66,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="30dp"
                     android:text="로그인 정보"
-                    android:textStyle="bold"
-                    android:textSize="20dp"
                     android:textColor="#4285F4"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
                     tools:ignore="MissingConstraints" />
 
                 <EditText
