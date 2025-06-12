@@ -31,7 +31,7 @@
             android:gravity="center"
             android:text="회원가입 (2/4)"
             android:textColor="@color/black"
-            android:textSize="24dp"
+            android:textSize="18dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -84,7 +84,7 @@
                 android:hint="이름을 입력하세요"
                 android:paddingLeft="10dp"
                 android:textColorHint="#C2C6CC"
-                android:textSize="18dp" />
+                android:textSize="16dp" />
 
             <EditText
                 android:id="@+id/birth_editText"
@@ -101,7 +101,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="50dp"
                 android:textColorHint="#C2C6CC"
-                android:textSize="18dp" />
+                android:textSize="16dp" />
 
             <EditText
                 android:id="@+id/phone_number_editText"
@@ -118,7 +118,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="50dp"
                 android:textColorHint="#C2C6CC"
-                android:textSize="18dp" />
+                android:textSize="16dp" />
             
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
