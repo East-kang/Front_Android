@@ -233,34 +233,6 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <RadioGroup
-                    android:id="@+id/radioInsurance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginHorizontal="60dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <RadioButton
-                        android:id="@+id/insuranceYes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:text="  있음"
-                        android:textSize="17dp" />
-
-                    <RadioButton
-                        android:id="@+id/insuranceNo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:text="  없음"
-                        android:textSize="17dp" />
-                </RadioGroup>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>
