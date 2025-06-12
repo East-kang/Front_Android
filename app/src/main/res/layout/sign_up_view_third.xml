@@ -213,8 +213,10 @@
                 </LinearLayout>
             </LinearLayout>
 
-
-
+        <com.google.android.material.chip.Chip
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="하이"/>
 
         </LinearLayout>
     </ScrollView>
