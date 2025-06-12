@@ -39,269 +39,34 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <TextView
+        android:id="@+id/subTitle_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="20dp"
+        android:text="기존 보험 가입 내역"
+        android:textColor="#4285F4"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="15dp"
         app:layout_constraintBottom_toTopOf="@id/next_Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/subTitle_textView"
         app:layout_constraintVertical_bias="0.0">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="35dp"
-            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/subTitle_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
-                android:text="질병 정보"
-                android:textStyle="bold"
-                android:textSize="20dp"
-                android:textColor="#4285F4"
-                tools:ignore="MissingConstraints" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:id="@+id/diseases_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginHorizontal="30dp"
-                    android:text="질병 여부"
-                    android:textColor="#000000"
-                    android:textSize="18dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <RadioGroup
-                    android:id="@+id/radioDiseases"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginHorizontal="60dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <RadioButton
-                        android:id="@+id/diseaseYes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:text="  있음"
-                        android:textSize="17dp" />
-
-                    <RadioButton
-                        android:id="@+id/diseaseNo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:text="  없음"
-                        android:textSize="17dp" />
-                </RadioGroup>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="질병 종류"
-                    android:textColor="#000000"
-                    android:textSize="18dp"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp" >
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
-
-                        <CheckBox
-                            android:id="@+id/disease1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:text="암 (위암, 폐암, 유방암 등)"
-                            android:textSize="12dp" />
-
-                        <CheckBox
-                            android:id="@+id/disease3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:text="뇌혈관 질환 (뇌졸증, 뇌출혈 등)"
-                            android:textSize="12dp" />
-
-                        <CheckBox
-                            android:id="@+id/disease5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:text="간질환 (간경화, B형간염 등)"
-                            android:textSize="12dp" />
-
-                        <CheckBox
-                            android:id="@+id/disease7"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:text="근골격계/척추질환 (디스크, 관절염 등)"
-                            android:textSize="12dp" />
-
-                        <CheckBox
-                            android:id="@+id/disease9"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:text="기타 만성질환 (신장질환, 갑상선질환 등)"
-                            android:textSize="12dp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
-
-                        <CheckBox
-                            android:id="@+id/disease2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:text="심혈관계 질환 (고혈압, 협심증, 심근경색 등)"
-                            android:textSize="12dp" />
-
-                        <CheckBox
-                            android:id="@+id/disease4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:text="당뇨병"
-                            android:textSize="12dp" />
-
-                        <CheckBox
-                            android:id="@+id/disease6"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:text="폐질환 (천식, 만성폐쇄성폐질환 등)"
-                            android:textSize="12dp" />
-
-                        <CheckBox
-                            android:id="@+id/disease8"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:text="정신질활 (우울증, 불안장애 등)"
-                            android:textSize="12dp" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:id="@+id/insurance_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginHorizontal="30dp"
-                    android:text="보험 가입 여부"
-                    android:textColor="#000000"
-                    android:textSize="18dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <RadioGroup
-                    android:id="@+id/radioInsurance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginHorizontal="60dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <RadioButton
-                        android:id="@+id/insuranceYes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:text="  있음"
-                        android:textSize="17dp" />
-
-                    <RadioButton
-                        android:id="@+id/insuranceNo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:text="  없음"
-                        android:textSize="17dp" />
-                </RadioGroup>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_marginHorizontal="30dp" >
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/insurance_Layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-
-                    <EditText
-                        android:id="@+id/search_insurance"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintVertical_weight="5"
-                        android:hint="기존 가입 보혐명 입력"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/insurance_Layout"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/search_guideline"/>
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:text="검색"
-                        android:textColor="#FFFFFF"
-                        android:background="@drawable/login_button"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintVertical_weight="1"
-                        app:layout_constraintStart_toEndOf="@+id/search_guideline"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/search_guideline"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.75" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </LinearLayout>
 
 
 

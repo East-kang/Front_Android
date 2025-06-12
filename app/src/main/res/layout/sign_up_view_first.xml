@@ -39,16 +39,31 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <TextView
+        android:id="@+id/subTitle_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="20dp"
+        android:text="로그인 정보"
+        android:textColor="#4285F4"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         app:layout_constraintBottom_toTopOf="@id/next_Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title">
+        app:layout_constraintTop_toBottomOf="@+id/subTitle_textView">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -60,16 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center">
 
-                <TextView
-                    android:id="@+id/subTitle_textView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="30dp"
-                    android:text="로그인 정보"
-                    android:textColor="#4285F4"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-                    tools:ignore="MissingConstraints" />
+
 
                 <EditText
                     android:id="@+id/id_editText"
