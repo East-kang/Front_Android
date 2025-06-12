@@ -44,8 +44,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
-        android:layout_marginTop="20dp"
-        android:text="기존 보험 가입 내역"
+        android:layout_marginTop="30dp"
+        android:text="보험 가입 내역"
         android:textColor="#4285F4"
         android:textSize="20dp"
         android:textStyle="bold"
@@ -155,6 +155,22 @@
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent="0.75" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+            
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/insurance_item_list">
+
+                <TextView
+                    android:id="@+id/itemText"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="16dp"
+                    android:textColor="#000000" />
+            </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
     </ScrollView>
 
@@ -167,7 +183,7 @@
         android:layout_marginBottom="10dp"
         android:background="@drawable/login_button"
         android:gravity="center"
-        android:text="다음"
+        android:text="완 료"
         android:textColor="#FFFFFF"
         android:textSize="18dp"
         android:textStyle="bold"
