@@ -155,7 +155,15 @@
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent="0.75" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-            
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/tagChipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                app:singleSelection="false"
+                app:chipSpacing="8dp" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
