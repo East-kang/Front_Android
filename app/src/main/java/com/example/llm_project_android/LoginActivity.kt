@@ -41,14 +41,18 @@ class LoginActivity : AppCompatActivity() {
         val pw: String = "1234" // 임시 비밀번호
 
         btn_pw.setOnClickListener {
-            if (pw_visible == false) {
+            var cusor_location = pw_text.selectionStart     // pw_text 커서 위치 저장 (버튼을 누르면 cusor의 위치가 맨 앞으로 변경됨)
+
+            if (pw_visible == false) {      // 비시각화일 경우 (시각화)
                 pw_text.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
                 pw_visible = true
             }
-            else {
+            else {      // 시각화일 경우 (비시각화)
                 pw_text.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                 pw_visible = false
             }
+
+            pw_text.setSelection(cusor_location)    // 커서 위치 적용
         }
 
 
