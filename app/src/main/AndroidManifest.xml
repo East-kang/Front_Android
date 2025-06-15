@@ -9,6 +9,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LLM_Project_Android">
         <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".SignUpActivity4"
             android:exported="false" />
         <activity
@@ -24,7 +27,7 @@
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".InitActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
