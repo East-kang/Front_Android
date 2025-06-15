@@ -73,6 +73,7 @@
                 android:paddingRight="50dp"
                 android:textColorHint="#C2C6CC"
                 android:textSize="18dp"
+                android:inputType="textPassword"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -91,7 +92,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            android:id="@+id/warning_textView"
+            android:id="@+id/pw_warning_textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="50dp"
@@ -99,7 +100,8 @@
             android:layout_marginTop="5dp"
             android:text="로그인 정보가 올바르지 않습니다"
             android:textColor="#FF0000"
-            android:textSize="12dp" />
+            android:textSize="12dp"
+            android:visibility="invisible"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/login_Button"
