@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LLM_Project_Android">
         <activity
-            android:name=".MainActivity"
+            android:name=".MainViewActivity"
             android:exported="false" />
         <activity
             android:name=".SignUpActivity4"
