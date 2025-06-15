@@ -1,9 +1,12 @@
 package com.example.llm_project_android
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
 import android.os.Vibrator
 import android.text.InputType
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -50,14 +53,11 @@ class LoginActivity : AppCompatActivity() {
 
 
         btn_login.setOnClickListener {      // 로그인 버튼 클릭 메서드
-            if (id_text.text.toString() == id && pw_text.text.toString() == pw) {    // 로그인 정보 일치 시
+            if (id_text.text.toString() == id && pw_text.text.toString() == pw) {    // 로그인 정보 일치 시 (화면 전환)
                 val intent1 = Intent(this, MainViewActivity::class.java)
                 startActivity(intent1)
-            } else {                        // 로그인 정보 불일치 시
-                pw_warning_text.visibility
-            }
-
-
+            } else                          // 로그인 정보 불일치 시 (경고 메시지 띄우기)
+                pw_warning_text.visibility = View.VISIBLE
         }
 
         signUp_text.setOnClickListener {    // 회원가입 텍스트 클릭 메서드
@@ -65,9 +65,4 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent2)
         }
     }
-
-//    private fun showVibrator(){         // 진동 애니메이션 구현 함수
-//        val vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator
-//
-//    }
 }
