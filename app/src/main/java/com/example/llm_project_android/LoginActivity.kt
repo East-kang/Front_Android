@@ -60,7 +60,7 @@ class LoginActivity : AppCompatActivity() {
             if (id_text.text.toString() == id && pw_text.text.toString() == pw) {    // 로그인 정보 일치 시 (화면 전환)
                 val intent1 = Intent(this, MainViewActivity::class.java)
                 startActivity(intent1)
-            } else                          // 로그인 정보 불일치 시 (경고 메시지 띄우기)
+            } else                          // 로그인 정보 불일치 시 (경고 메시지 띄우기) (+ 진동 모드 탑재 예정)
                 pw_warning_text.visibility = View.VISIBLE
         }
 
