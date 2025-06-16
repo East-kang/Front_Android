@@ -22,14 +22,14 @@ class InitActivity : AppCompatActivity() {
         val btn_login = findViewById<Button>(R.id.login_Button)         // 로그인 버튼 선언
         val btn_sign_up = findViewById<Button>(R.id.sign_up_Button)     // 회원가입 버튼 선언
 
-        btn_login.setOnClickListener {                                      // 로그인 버튼 클릭 메서드
-            val intent1 = Intent(this, LoginActivity::class.java)
-            startActivity(intent1)
+        // 로그인 버튼 클릭 메서드
+        btn_login.setOnClickListener {
+            navigateTo(LoginActivity::class.java)
         }
 
-        btn_sign_up.setOnClickListener {                                      // 회원가입 버튼 클릭 메서드
-            val intent2 = Intent(this, SignUpActivity1::class.java)
-            startActivity(intent2)
+        // 회원가입 버튼 클릭 메서드
+        btn_sign_up.setOnClickListener {
+            navigateTo(SignUpActivity1::class.java)
         }
     }
 }

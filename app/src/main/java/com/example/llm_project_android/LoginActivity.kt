@@ -9,6 +9,7 @@ import android.text.InputType
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import com.example.llm_project_android.startShakeAnimation
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -17,6 +18,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import org.w3c.dom.Text
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,47 +45,45 @@ class LoginActivity : AppCompatActivity() {
         val id: String = "qwer" // 임시 아이디
         val pw: String = "1234" // 임시 비밀번호
 
+        // 비밀번호 시각화 버튼 클릭 메서드
         btn_pw.setOnClickListener {
-            pw_visible = togglePasswordVisibility(pw_text, pw_visible)      // 비밀번호 시각화
-            restoreCursorPosition(pw_text)  // 커서 위치 복원
+            var pos = pw_text.selectionStart            // 커서 위치 저장
+            pw_visible = togglePasswordVisibility(pw_text, pw_visible, btn_pw)      // 비밀번호 시각화
+            pw_text.post{ pw_text.setSelection(pos) }   // 커서 위치 복원
         }
 
-
-        btn_login.setOnClickListener {      // 로그인 버튼 클릭 메서드
-            if (id_text.text.toString() == id && pw_text.text.toString() == pw) {             // 로그인 정보 일치 시 (화면 전환)
-                val intent1 = Intent(this, MainViewActivity::class.java)
-                startActivity(intent1)
-            } else {                        // 로그인 정보 불일치 시 (경고 메시지 띄우기) (+ 진동 모드 탑재 예정)
-                pw_warning_text.visibility = View.VISIBLE                                     // 경고 메시지 띄우기
-                val shake = AnimationUtils.loadAnimation(this, R.anim.shake)    // 진동 애니메시션 리소스 불러오기
-                pw_warning_text.startAnimation(shake)                              // 애니메이션 적용
-            }
+        // 로그인 버튼 클릭 메서드
+        btn_login.setOnClickListener {
+            if (id_text.text.toString() == id && pw_text.text.toString() == pw)           // 로그인 정보 일치 시 (화면 전환)
+                navigateTo(MainViewActivity::class.java)
+            else
+                showLoginError(pw_warning_text)
         }
 
-        signUp_text.setOnClickListener {    // 회원가입 텍스트 클릭 메서드
-            val intent2 = Intent(this, SignUpActivity1::class.java)
-            startActivity(intent2)  // 회원가입 뷰로 이동
+        // 회원가입 텍스트 클릭 메서드
+        signUp_text.setOnClickListener {
+            navigateTo(SignUpActivity1::class.java)
         }
     }
 
+
+
     // 비밀번호 시각화 함수
-    fun togglePasswordVisibility(editText: EditText, isVisible: Boolean): Boolean {
+    fun togglePasswordVisibility(editText: EditText, isVisible: Boolean, imageButton: ImageButton): Boolean {
         return if (!isVisible) {
             editText.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD // 비밀번호 보기
+            imageButton.setImageResource(R.drawable.resize_eye_visibility_off)
             true
         } else {
             editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD  // 비밀번호 숨기기
+            imageButton.setImageResource(R.drawable.resize_eye_visibility)
             false
         }
     }
 
-    // 커서 위치 복원 함수
-    fun restoreCursorPosition(editText: EditText) {
-        val cursorLocation = editText.selectionStart
-        editText.setSelection(cursorLocation)
+    // 로그인 실패 동작 함수
+    fun showLoginError(text: TextView) {
+        text.visibility = View.VISIBLE          // 경고 메시지 띄우기
+        text.startShakeAnimation(this) // 애니메이션 적용
     }
-
-//        fun getSerialNumber(): String{  // Android 고유값 반환 함수
-//
-//        }
 }
