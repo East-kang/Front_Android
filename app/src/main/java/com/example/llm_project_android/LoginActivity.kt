@@ -37,7 +37,7 @@ class LoginActivity : AppCompatActivity() {
         val pw_text = findViewById<EditText>(R.id.password_editText)    // 비밀번호 입력창
         val btn_pw = findViewById<ImageButton>(R.id.eyeButton)          // 비밀번호 시각화 버튼
         val btn_login = findViewById<Button>(R.id.login_Button)         // 로그인 버튼
-        val pw_warning_text = findViewById<TextView>(R.id.pw_warning_textView)  // 비밀번호 불일치 안내 텍스트
+        val warning_text = findViewById<TextView>(R.id.pw_warning_textView)  // 비밀번호 불일치 안내 텍스트
         val signUp_text = findViewById<TextView>(R.id.signUpText)       // 회원가입 텍스트
         var pw_visible: Boolean = false                                      // 비밀번호 시각화 여부 (true: 시각화, false: 비시각화)
         var check_id: Boolean = false                                        // 아이디 존재 여부 (true: 유, false: 무)
@@ -47,38 +47,32 @@ class LoginActivity : AppCompatActivity() {
         val id: String = "qwer" // 임시 아이디
         val pw: String = "1234" // 임시 비밀번호
 
-        // 비밀번호 시각화 버튼 클릭 메서드
+        // 비밀번호 시각화 버튼 클릭 이벤트
         btn_pw.setOnClickListener {
             var pos = pw_text.selectionStart            // 커서 위치 저장
             pw_visible = togglePasswordVisibility(pw_text, pw_visible, btn_pw)      // 비밀번호 시각화
             pw_text.post{ pw_text.setSelection(pos) }   // 커서 위치 복원
         }
 
-        // 로그인 버튼 클릭 메서드
+        // 로그인 버튼 클릭 이벤트
         btn_login.setOnClickListener {
             if (id_text.text.toString() == id && pw_text.text.toString() == pw)           // 로그인 정보 일치 시 (화면 전환)
                 navigateTo(MainViewActivity::class.java)
             else
-                showLoginError(pw_warning_text)
+                showLoginError(warning_text)
         }
 
-        // 회원가입 텍스트 클릭 메서드
+        // 회원가입 텍스트 클릭 이벤트
         signUp_text.setOnClickListener {
             navigateTo(SignUpActivity1::class.java)
         }
 
-        pw_text.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                pw_warning_text.visibility = View.INVISIBLE
-            }
-
-            override fun afterTextChanged(s: Editable?) {}
-        })
+        // 경고 메시지 플로팅 메서드
+        id_text.addTextChangedListener(createFlexibleTextWatcher(targetTextView = warning_text, hideOnInput = true))
+        pw_text.addTextChangedListener(createFlexibleTextWatcher(targetTextView = warning_text, hideOnInput = true))
     }
 
-    // 로그인 실패 동작 함수
+    // 입력 시 경고 메시지 숨김 처리
     fun showLoginError(text: TextView) {
         text.visibility = View.VISIBLE          // 경고 메시지 띄우기
         text.startShakeAnimation(this) // 애니메이션 적용
