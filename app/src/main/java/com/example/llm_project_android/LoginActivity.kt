@@ -35,26 +35,17 @@ class LoginActivity : AppCompatActivity() {
         val btn_login = findViewById<Button>(R.id.login_Button)         // 로그인 버튼
         val pw_warning_text = findViewById<TextView>(R.id.pw_warning_textView)  // 비밀번호 불일치 안내 텍스트
         val signUp_text = findViewById<TextView>(R.id.signUpText)       // 회원가입 텍스트
-        var pw_visible: Boolean = false                                     // 비밀번호 시각화 여부 (true: 시각화, false: 비시각화)
-        var check_id: Boolean = false                                       // 아이디 존재 여부 (true: 유, false: 무)
-        var check_pw: Boolean = false                                       // 비밀번호 존재 여부 (true: 유, false: 무)
+        var pw_visible: Boolean = false                                      // 비밀번호 시각화 여부 (true: 시각화, false: 비시각화)
+        var check_id: Boolean = false                                        // 아이디 존재 여부 (true: 유, false: 무)
+        var check_pw: Boolean = false                                        // 비밀번호 존재 여부 (true: 유, false: 무)
 
 
         val id: String = "qwer" // 임시 아이디
         val pw: String = "1234" // 임시 비밀번호
 
         btn_pw.setOnClickListener {
-            var cusor_location = pw_text.selectionStart     // pw_text 커서 위치 저장 (버튼을 누르면 cusor의 위치가 맨 앞으로 변경됨)
-
-            if (pw_visible == false) {                      // 비시각화일 경우
-                pw_text.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD  // 시각화
-                pw_visible = true
-            } else {                                        // 시각화일 경우
-                pw_text.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD // 비시각화
-                pw_visible = false
-            }
-
-            pw_text.setSelection(cusor_location)            // 커서 위치 적용
+            pw_visible = togglePasswordVisibility(pw_text, pw_visible)      // 비밀번호 시각화
+            restoreCursorPosition(pw_text)  // 커서 위치 복원
         }
 
 
@@ -73,9 +64,26 @@ class LoginActivity : AppCompatActivity() {
             val intent2 = Intent(this, SignUpActivity1::class.java)
             startActivity(intent2)  // 회원가입 뷰로 이동
         }
+    }
 
-        fun getSerialNumber(): String{  // Android 고유값 반환 함수
-
+    // 비밀번호 시각화 함수
+    fun togglePasswordVisibility(editText: EditText, isVisible: Boolean): Boolean {
+        return if (!isVisible) {
+            editText.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD // 비밀번호 보기
+            true
+        } else {
+            editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD  // 비밀번호 숨기기
+            false
         }
     }
+
+    // 커서 위치 복원 함수
+    fun restoreCursorPosition(editText: EditText) {
+        val cursorLocation = editText.selectionStart
+        editText.setSelection(cursorLocation)
+    }
+
+//        fun getSerialNumber(): String{  // Android 고유값 반환 함수
+//
+//        }
 }
