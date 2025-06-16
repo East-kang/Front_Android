@@ -7,6 +7,8 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.text.InputType
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -43,30 +45,32 @@ class LoginActivity : AppCompatActivity() {
         btn_pw.setOnClickListener {
             var cusor_location = pw_text.selectionStart     // pw_text 커서 위치 저장 (버튼을 누르면 cusor의 위치가 맨 앞으로 변경됨)
 
-            if (pw_visible == false) {      // 비시각화일 경우 (시각화)
-                pw_text.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            if (pw_visible == false) {                      // 비시각화일 경우
+                pw_text.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD  // 시각화
                 pw_visible = true
-            }
-            else {      // 시각화일 경우 (비시각화)
-                pw_text.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            } else {                                        // 시각화일 경우
+                pw_text.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD // 비시각화
                 pw_visible = false
             }
 
-            pw_text.setSelection(cusor_location)    // 커서 위치 적용
+            pw_text.setSelection(cusor_location)            // 커서 위치 적용
         }
 
 
         btn_login.setOnClickListener {      // 로그인 버튼 클릭 메서드
-            if (id_text.text.toString() == id && pw_text.text.toString() == pw) {    // 로그인 정보 일치 시 (화면 전환)
+            if (id_text.text.toString() == id && pw_text.text.toString() == pw) {             // 로그인 정보 일치 시 (화면 전환)
                 val intent1 = Intent(this, MainViewActivity::class.java)
                 startActivity(intent1)
-            } else                          // 로그인 정보 불일치 시 (경고 메시지 띄우기) (+ 진동 모드 탑재 예정)
-                pw_warning_text.visibility = View.VISIBLE
+            } else {                        // 로그인 정보 불일치 시 (경고 메시지 띄우기) (+ 진동 모드 탑재 예정)
+                pw_warning_text.visibility = View.VISIBLE                                     // 경고 메시지 띄우기
+                val shake = AnimationUtils.loadAnimation(this, R.anim.shake)    // 진동 애니메시션 리소스 불러오기
+                pw_warning_text.startAnimation(shake)                              // 애니메이션 적용
+            }
         }
 
         signUp_text.setOnClickListener {    // 회원가입 텍스트 클릭 메서드
             val intent2 = Intent(this, SignUpActivity1::class.java)
-            startActivity(intent2)
+            startActivity(intent2)  // 회원가입 뷰로 이동
         }
     }
 }
