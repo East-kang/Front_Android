@@ -5,7 +5,9 @@ import android.os.Build
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.text.Editable
 import android.text.InputType
+import android.text.TextWatcher
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -64,21 +66,16 @@ class LoginActivity : AppCompatActivity() {
         signUp_text.setOnClickListener {
             navigateTo(SignUpActivity1::class.java)
         }
-    }
 
+        pw_text.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                pw_warning_text.visibility = View.INVISIBLE
+            }
 
-    // 비밀번호 시각화 함수
-    fun togglePasswordVisibility(editText: EditText, isVisible: Boolean, imageButton: ImageButton): Boolean {
-        return if (!isVisible) {
-            editText.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD // 비밀번호 보기
-            imageButton.setImageResource(R.drawable.resize_eye_visibility_off)
-            true
-        } else {
-            editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD  // 비밀번호 숨기기
-            imageButton.setImageResource(R.drawable.resize_eye_visibility)
-            false
-        }
+            override fun afterTextChanged(s: Editable?) {}
+        })
     }
 
     // 로그인 실패 동작 함수
