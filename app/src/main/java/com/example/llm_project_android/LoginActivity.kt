@@ -39,6 +39,7 @@ class LoginActivity : AppCompatActivity() {
         var check_id: Boolean = false                                       // 아이디 존재 여부 (true: 유, false: 무)
         var check_pw: Boolean = false                                       // 비밀번호 존재 여부 (true: 유, false: 무)
 
+
         val id: String = "qwer" // 임시 아이디
         val pw: String = "1234" // 임시 비밀번호
 
@@ -71,6 +72,10 @@ class LoginActivity : AppCompatActivity() {
         signUp_text.setOnClickListener {    // 회원가입 텍스트 클릭 메서드
             val intent2 = Intent(this, SignUpActivity1::class.java)
             startActivity(intent2)  // 회원가입 뷰로 이동
+        }
+
+        fun getSerialNumber(): String{  // Android 고유값 반환 함수
+
         }
     }
 }
