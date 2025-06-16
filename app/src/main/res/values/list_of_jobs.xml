@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="jbs">
+        <item>사무직/행적직</item>
+        <item>공무원</item>
+        <item>전문직(의사/법조인 등)</item>
+        <item>판매/서비스업</item>
+        <item>생산/기술/제조직</item>
+        <item>건설/운수직</item>
+        <item>자영업/프리랜서</item>
+        <item>농업/어업/임업</item>
+        <item>학생</item>
+        <item>주부/가사</item>
+        <item>무직/구직</item>
+        <item>기타</item>
+    </string-array>
+
+</resources>

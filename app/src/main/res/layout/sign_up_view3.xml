@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignUpActivity3">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/resize_back_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="회원가입 (3/4)"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/subTitle_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="30dp"
+        android:text="현재 앓고 있는 질병을 모두 선택해주세요"
+        android:textColor="#4285F4"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintBottom_toTopOf="@id/next_Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/subTitle_textView"
+        app:layout_constraintVertical_bias="0.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="30dp">
+
+                <CheckBox
+                    android:id="@+id/disease0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="질병 없음"
+                    android:textSize="13dp" />
+
+                <CheckBox
+                    android:id="@+id/disease1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="암 (위암, 폐암, 유방암 등)"
+                    android:textSize="13dp" />
+
+                <CheckBox
+                    android:id="@+id/disease2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="심혈관계 질환 (고혈압, 협심증, 심근경색 등)"
+                    android:textSize="13dp" />
+
+                <CheckBox
+                    android:id="@+id/disease3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="뇌혈관 질환 (뇌졸증, 뇌출혈 등)"
+                    android:textSize="13dp" />
+
+                <CheckBox
+                    android:id="@+id/disease4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="당뇨병"
+                    android:textSize="13dp" />
+
+                <CheckBox
+                    android:id="@+id/disease5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="간질환 (간경화, B형간염 등)"
+                    android:textSize="13dp" />
+
+                <CheckBox
+                    android:id="@+id/disease6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="폐질환 (천식, 만성폐쇄성폐질환 등)"
+                    android:textSize="13dp" />
+
+                <CheckBox
+                    android:id="@+id/disease7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="근골격계/척추질환 (디스크, 관절염 등)"
+                    android:textSize="13dp" />
+
+                <CheckBox
+                    android:id="@+id/disease8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="정신질활 (우울증, 불안장애 등)"
+                    android:textSize="13dp" />
+
+                <CheckBox
+                    android:id="@+id/disease9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="기타 만성질환 (신장질환, 갑상선질환 등)"
+                    android:textSize="13dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/next_Button"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/login_button"
+        android:gravity="center"
+        android:text="다 음"
+        android:textColor="#FFFFFF"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

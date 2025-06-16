@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.llm_project_android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--  기기 시리얼 넘버 얻기  -->
+<!--    <uses-permission android:name="android.permission.READ_PHONE_STATE" />-->
 
     <application
         android:allowBackup="true"
@@ -9,7 +11,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LLM_Project_Android">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SignUpActivity4"
+            android:exported="false" />
+        <activity
+            android:name=".SignUpActivity3"
+            android:exported="false" />
+        <activity
+            android:name=".SignUpActivity2"
+            android:exported="false" />
+        <activity
+            android:name=".SignUpActivity1"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".InitActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
