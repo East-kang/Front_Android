@@ -49,17 +49,8 @@ class SignUpActivity1 : AppCompatActivity() {
         create_pw()
 
         // 비밀번호 시각화 버튼 클릭 이벤트
-        btn_eye.setOnClickListener {
-            var pos = pw_text.selectionStart            // 커서 위치 저장
-            pw_visible = togglePasswordVisibility(pw_text, pw_visible, btn_eye)      // 비밀번호 시각화
-            pw_text.post{ pw_text.setSelection(pos) }   // 커서 위치 복원
-        }
-
-        btn_eye_check.setOnClickListener {
-            var pos = pw_text.selectionStart            // 커서 위치 저장
-            pw_check_visible = togglePasswordVisibility(pw_check, pw_check_visible, btn_eye_check)      // 비밀번호 시각화
-            pw_check.post{ pw_text.setSelection(pos) }   // 커서 위치 복원
-        }
+        pw_eye_visibility(btn_eye, pw_text, {pw_visible}, {pw_visible = it})
+        pw_eye_visibility(btn_eye_check, pw_check, {pw_check_visible}, {pw_check_visible = it})
     }
 
     // 아이디 생성 기능 함수
