@@ -33,12 +33,12 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
-        val id_text = findViewById<EditText>(R.id.id_editText)          // 아이디 입력창
-        val pw_text = findViewById<EditText>(R.id.password_editText)    // 비밀번호 입력창
-        val btn_pw = findViewById<ImageButton>(R.id.eyeButton)          // 비밀번호 시각화 버튼
-        val btn_login = findViewById<Button>(R.id.login_Button)         // 로그인 버튼
-        val warning_text = findViewById<TextView>(R.id.pw_warning_textView)  // 비밀번호 불일치 안내 텍스트
-        val signUp_text = findViewById<TextView>(R.id.signUpText)       // 회원가입 텍스트
+        val id_text = findViewById<EditText>(R.id.id_editText)
+        val pw_text = findViewById<EditText>(R.id.password_editText)
+        val btn_pw = findViewById<ImageButton>(R.id.eyeButton)
+        val btn_login = findViewById<Button>(R.id.login_Button)
+        val warning_text = findViewById<TextView>(R.id.pw_warning_textView)
+        val signUp_text = findViewById<TextView>(R.id.signUpText)
         var pw_visible: Boolean = false                                      // 비밀번호 시각화 여부 (true: 시각화, false: 비시각화)
         var check_id: Boolean = false                                        // 아이디 존재 여부 (true: 유, false: 무)
         var check_pw: Boolean = false                                        // 비밀번호 존재 여부 (true: 유, false: 무)
