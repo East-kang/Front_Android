@@ -41,7 +41,7 @@
         <EditText
             android:id="@+id/id_editText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginHorizontal="30dp"
             android:background="@drawable/login_input_window"
             android:drawableLeft="@drawable/resize_id_icon"
@@ -62,7 +62,7 @@
             <EditText
                 android:id="@+id/password_editText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginHorizontal="30dp"
                 android:background="@drawable/login_input_window"
                 android:drawableLeft="@drawable/resize_login_password_icon"

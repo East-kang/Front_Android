@@ -67,9 +67,11 @@ class SignUpActivity1 : AppCompatActivity() {
                 rule.setText("이미 존재하는 아이디입니다")
                 rule.setTextColor("#FF0000".toColorInt())
                 rule.startShakeAnimation(this)
+                input.setBackgroundResource(R.drawable.login_input_window_wrong)
             } else {
                 rule.setText("사용 가능한 아이디입니다")
-                rule.setTextColor("#1F70CC".toColorInt())
+                rule.setTextColor("#4B9F72".toColorInt())
+                input.setBackgroundResource(R.drawable.login_input_window_correct)
             }
         }
 
@@ -78,25 +80,30 @@ class SignUpActivity1 : AppCompatActivity() {
             createFlexibleTextWatcher(
                 targetTextView = rule,
                 updateText = {"6~12자의 영문, 숫자를 사용하세요"},
-                updateTextColor = {android.graphics.Color.parseColor("#1F70CC")},
+                updateTextColor = {"#1F70CC".toColorInt()},
                 validateInput = {input -> id_Pattern.matches(input)},
                 onValidStateChanged = {isValid -> idCheck.isEnabled = isValid
                     idCheck.setBackgroundResource(
                         if (isValid)    { R.drawable.login_button }     // 사용 가능 상태
                         else            { R.drawable.id_check_button }  // 비활성 상태
-                    )}))
+                    )
+                    input.setBackgroundResource(R.drawable.login_input_window)}))
     }
 
     // 비밀번호 생성 기능 함수
     fun create_pw(input: EditText, rule: TextView, test: String) {
-        val pw_Pattern = Regex("^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{6,12}$")    // 영문, 숫자 (8-20자리)
+        val pw_Pattern = Regex("^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{8,16}$")    // 영문, 숫자 (8-16자리)
 
-        // id_textView 실시간 감지 이벤트 (정규식에 대한 버튼 활성화 여부)
+        // id_textView 실시간 감지 이벤트
         input.addTextChangedListener(
             createFlexibleTextWatcher(
                 targetTextView = rule,
-                updateText = {"8~16자의 영문, 숫자를 사용하세요"},
-                updateTextColor = {android.graphics.Color.parseColor("#1F70CC")},
+                updateText = { input ->
+                    if (pw_Pattern.matches(input)) "사용 가능한 비밀번호입니다"
+                    else "8~16자의 영문, 숫자를 사용하세요"},
+                updateTextColor = { input ->
+                    if (pw_Pattern.matches(input)) "#4B9F72".toColorInt()
+                    else "#1F70CC".toColorInt()},
                 validateInput = {input -> pw_Pattern.matches(input)}))
     }
 
