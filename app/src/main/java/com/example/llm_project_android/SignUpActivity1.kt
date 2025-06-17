@@ -42,19 +42,19 @@ class SignUpActivity1 : AppCompatActivity() {
         val id_Pattern = Regex("^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{6,12}$")    // 영문, 숫자 (6-12자리)
         val pw_Pattern = Regex("^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{6,12}$")    // 영문, 숫자 (8-20자리)
 
-        // id_textView 실시간 감지 이벤트 (버튼 활성화 여부)
+        // id_textView 실시간 감지 이벤트 (정규식에 대한 버튼 활성화 여부)
         id_text.addTextChangedListener(
             createFlexibleTextWatcher(
                 targetTextView = id_rule,
                 updateText = {"6~12자의 영문, 숫자를 사용하세요"},
-                updateColor = {android.graphics.Color.parseColor("#1F70CC")},
+                updateTextColor = {android.graphics.Color.parseColor("#1F70CC")},
                 validateInput = {input -> id_Pattern.matches(input)},
                 onValidStateChanged = {isValid -> btn_idCheck.isEnabled = isValid
-                    btn_idCheck.setBackgroundColor(
+                    btn_idCheck.setBackgroundResource(
                         if (isValid)
-                            android.graphics.Color.parseColor("#50AAFA")  // 사용 가능 상태 색
+                            R.drawable.login_button // 사용 가능 상태 색
                         else
-                            android.graphics.Color.parseColor("#666666")  // 비활성 상태 색
+                            R.drawable.id_check_button  // 비활성 상태 색
                     )}))
 
         btn_idCheck.setOnClickListener {

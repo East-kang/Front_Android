@@ -7,13 +7,11 @@ import android.widget.TextView
 
 fun createFlexibleTextWatcher(
     targetTextView: TextView,
-    hideOnInput: Boolean = false,               // 입력 시 INVISIBLE 처리 여부
-    updateText: ((String) -> String)? = null,   // 텍스트 내용 변환 (null이면 무시)
-    updateTextColor: ((String) -> Int)? = null, // 색상 변경 (null이면 무시)
-    onValidStateChanged: ((Boolean) -> Unit)? = null,
-    validateInput: ((String) -> Boolean)? =null,
-    updateButtonBackground: ((String) -> Int)? = null
-
+    hideOnInput: Boolean = false,                       // 입력 시 INVISIBLE 처리 여부
+    updateText: ((String) -> String)? = null,           // 텍스트 내용 변환 (null이면 무시)
+    updateTextColor: ((String) -> Int)? = null,         // 색상 변경 (null이면 무시)
+    onValidStateChanged: ((Boolean) -> Unit)? = null,   // 규칙 만족 여부
+    validateInput: ((String) -> Boolean)? =null,        // 버튼 활성화 제어
 ): TextWatcher {
     return object : TextWatcher {
 
@@ -43,11 +41,6 @@ fun createFlexibleTextWatcher(
             validateInput?.let{
                 val isValid = it(input)
                 onValidStateChanged?.invoke(isValid)
-            }
-
-            // 버튼 '배경' 업데이트
-            updateButtonBackground?.let {
-                targetTextView.setBackgroundResource(R.drawable.id_check_button)
             }
         }
 
