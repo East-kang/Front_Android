@@ -39,11 +39,43 @@ class SignUpActivity1 : AppCompatActivity() {
         var check_id: Boolean = false
         var check_pw: Boolean = false
 
+        // 아이디 생성
+        create_id(id_text, id_rule, id_test, btn_idCheck)
+
+        // 비밀번호 생성
+        create_pw()
+
+        // 중복 확인 버튼 클릭 이벤트
+//        btn_idCheck.setOnClickListener {
+//            // 기존 아이디 존재
+//            if (id_text.text.toString() == id_test) {
+//                id_rule.setText("이미 존재하는 아이디입니다")
+//                id_rule.setTextColor(0xFF0000)
+//            } else {
+//                id_rule.setText("사용 가능한 아이디입니다")
+//                id_rule.setTextColor(0x1F70CC)
+//            }
+//        }
+    }
+
+    // 아이디 생성 기능 함수
+    fun create_id(input: EditText, id_rule: TextView, id_test: String, btn_idCheck: Button) {
         val id_Pattern = Regex("^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{6,12}$")    // 영문, 숫자 (6-12자리)
-        val pw_Pattern = Regex("^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{6,12}$")    // 영문, 숫자 (8-20자리)
+
+        // 중복 확인 버튼 클릭 이벤트
+        btn_idCheck.setOnClickListener {
+            // 기존 아이디 존재
+            if (input.text.toString() == id_test) {
+                id_rule.setText("이미 존재하는 아이디입니다")
+                id_rule.setTextColor(0xFF0000)
+            } else {
+                id_rule.setText("사용 가능한 아이디입니다")
+                id_rule.setTextColor(0x1F70CC)
+            }
+        }
 
         // id_textView 실시간 감지 이벤트 (정규식에 대한 버튼 활성화 여부)
-        id_text.addTextChangedListener(
+        input.addTextChangedListener(
             createFlexibleTextWatcher(
                 targetTextView = id_rule,
                 updateText = {"6~12자의 영문, 숫자를 사용하세요"},
@@ -57,9 +89,12 @@ class SignUpActivity1 : AppCompatActivity() {
                             R.drawable.id_check_button  // 비활성 상태 색
                     )}))
 
-        btn_idCheck.setOnClickListener {
-            id_rule.setText("ㅇㅋㅇㅋㅂ")
-        }
+
+    }
+
+    // 비밀번호 생성 기능 함수
+    fun create_pw() {
+        val pw_Pattern = Regex("^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{6,12}$")    // 영문, 숫자 (8-20자리)
 
     }
 }
