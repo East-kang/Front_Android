@@ -48,6 +48,7 @@ class LoginActivity : AppCompatActivity() {
         val pw: String = "1234" // 임시 비밀번호
 
         // 비밀번호 시각화 버튼 클릭 이벤트
+        btn_pw.
         btn_pw.setOnClickListener {
             var pos = pw_text.selectionStart            // 커서 위치 저장
             pw_visible = togglePasswordVisibility(pw_text, pw_visible, btn_pw)      // 비밀번호 시각화
