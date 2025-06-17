@@ -1,6 +1,7 @@
 package com.example.llm_project_android
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -46,7 +47,9 @@ class SignUpActivity1 : AppCompatActivity() {
         create_id(id_text, id_rule, id_test, btn_idCheck)
 
         // 비밀번호 생성
-        create_pw()
+        create_pw(pw_text, pw_rule, pw_test)
+
+
 
         // 비밀번호 시각화 버튼 클릭 이벤트
         pw_eye_visibility(btn_eye, pw_text, {pw_visible}, {pw_visible = it})
@@ -63,6 +66,7 @@ class SignUpActivity1 : AppCompatActivity() {
             if (input.text.toString() == test) {
                 rule.setText("이미 존재하는 아이디입니다")
                 rule.setTextColor("#FF0000".toColorInt())
+                rule.startShakeAnimation(this)
             } else {
                 rule.setText("사용 가능한 아이디입니다")
                 rule.setTextColor("#1F70CC".toColorInt())
@@ -84,7 +88,7 @@ class SignUpActivity1 : AppCompatActivity() {
     }
 
     // 비밀번호 생성 기능 함수
-    fun create_pw(input: EditText, rule: TextView, test: String, pwCheck: Button) {
+    fun create_pw(input: EditText, rule: TextView, test: String) {
         val pw_Pattern = Regex("^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{6,12}$")    // 영문, 숫자 (8-20자리)
 
     }
