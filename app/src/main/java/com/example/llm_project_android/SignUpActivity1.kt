@@ -1,6 +1,10 @@
 package com.example.llm_project_android
 
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.util.TypedValue
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -46,64 +50,86 @@ class SignUpActivity1 : AppCompatActivity() {
         create_id(id_text, id_rule, id_test, btn_idCheck)
 
         // 비밀번호 생성
-        create_pw()
+        create_pw(pw_text, pw_rule, pw_test)
+
+
 
         // 비밀번호 시각화 버튼 클릭 이벤트
-        btn_eye.setOnClickListener {
-            var pos = pw_text.selectionStart            // 커서 위치 저장
-            pw_visible = togglePasswordVisibility(pw_text, pw_visible, btn_eye)      // 비밀번호 시각화
-            pw_text.post{ pw_text.setSelection(pos) }   // 커서 위치 복원
-        }
-
-        btn_eye_check.setOnClickListener {
-            var pos = pw_text.selectionStart            // 커서 위치 저장
-            pw_check_visible = togglePasswordVisibility(pw_check, pw_check_visible, btn_eye_check)      // 비밀번호 시각화
-            pw_check.post{ pw_text.setSelection(pos) }   // 커서 위치 복원
-        }
+        pw_eye_visibility(btn_eye, pw_text, {pw_visible}, {pw_visible = it})
+        pw_eye_visibility(btn_eye_check, pw_check, {pw_check_visible}, {pw_check_visible = it})
     }
 
     // 아이디 생성 기능 함수
-    fun create_id(input: EditText, rule: TextView, test: String, idCheck: Button) {
+    fun create_id(input_text: EditText, rule: TextView, test: String, idCheck: Button) {
         val id_Pattern = Regex("^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{6,12}$")    // 영문, 숫자 (6-12자리)
+        var background = input_text.background as GradientDrawable   // 박스 테두리 변수
+        var strokeWidth = TypedValue.applyDimension(            // 테두리 두께 변수 (1f=1dp)
+            TypedValue.COMPLEX_UNIT_DIP, 1.5f, resources.displayMetrics
+        ).toInt()
 
         // 중복 확인 버튼 클릭 이벤트
         idCheck.setOnClickListener {
             // 기존 아이디 존재
-            if (input.text.toString() == test) {
+            if (input_text.text.toString() == test) {
                 rule.setText("이미 존재하는 아이디입니다")
                 rule.setTextColor("#FF0000".toColorInt())
-            } else {
+                rule.startShakeAnimation(this)
+                background.setStroke(strokeWidth, "#FF0000".toColorInt())
+            } else {    // 존재x
                 rule.setText("사용 가능한 아이디입니다")
-                rule.setTextColor("#1F70CC".toColorInt())
+                rule.setTextColor("#4B9F72".toColorInt())
+                background.setStroke(strokeWidth, "#4B9F72".toColorInt())
             }
         }
 
         // id_textView 실시간 감지 이벤트 (정규식에 대한 버튼 활성화 여부)
-        input.addTextChangedListener(
+        input_text.addTextChangedListener(
             createFlexibleTextWatcher(
                 targetTextView = rule,
-                updateText = {"6~12자의 영문, 숫자를 사용하세요"},
-                updateTextColor = {android.graphics.Color.parseColor("#1F70CC")},
-                validateInput = {input -> id_Pattern.matches(input)},
-                onValidStateChanged = {isValid -> idCheck.isEnabled = isValid
+                updateText = { "6~12자의 영문, 숫자를 사용하세요" },
+                updateTextColor = { "#1F70CC".toColorInt() },
+                validateInput = { input -> id_Pattern.matches(input_text.text.toString()) },
+                onValidStateChanged = { isValid -> idCheck.isEnabled = isValid
                     idCheck.setBackgroundResource(
                         if (isValid)    { R.drawable.login_button }     // 사용 가능 상태
                         else            { R.drawable.id_check_button }  // 비활성 상태
-                    )}))
+                    )
+                    background.setStroke(strokeWidth, "#666666".toColorInt()) }))
     }
 
     // 비밀번호 생성 기능 함수
-    fun create_pw(input: EditText, rule: TextView, test: String, pwCheck: Button) {
-        val pw_Pattern = Regex("^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{6,12}$")    // 영문, 숫자 (8-20자리)
+    fun create_pw(input_text: EditText, rule: TextView, test: String) {
+        val pw_Pattern = Regex("^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{8,16}$")    // 영문, 숫자 (8-16자리)
+        var background = input_text.background as GradientDrawable   // 박스 테두리 변수
+        var strokeWidth = TypedValue.applyDimension(            // 테두리 두께 변수 (1f=1dp)
+            TypedValue.COMPLEX_UNIT_DIP, 1.5f, resources.displayMetrics
+        ).toInt()
 
+        // id_textView 실시간 감지 이벤트
+        input_text.addTextChangedListener(
+            createFlexibleTextWatcher(
+                targetTextView = rule,
+                updateText = { input ->
+                    if (pw_Pattern.matches(input_text.text.toString())) "사용 가능한 비밀번호입니다"
+                    else "8~16자의 영문, 숫자를 사용하세요" },
+                updateTextColor = { input ->
+                    when {
+                        input_text.text.toString().isEmpty() -> "#666666".toColorInt()
+                        pw_Pattern.matches(input) -> "#4B9F72".toColorInt()
+                        else -> "#FF0000".toColorInt()
+                    }
+                    if (pw_Pattern.matches(input)) "#4B9F72".toColorInt()
+                    else "#FF0000".toColorInt()},
+                validateInput = { input -> pw_Pattern.matches(input) },
+                onValidStateChanged = { isChecked ->
+                    when {
+                        input_text.text.toString().isEmpty() -> background.setStroke(strokeWidth, "#666666".toColorInt())
+                        isChecked -> background.setStroke(strokeWidth, "#4B9F72".toColorInt())
+                        else -> background.setStroke(strokeWidth, "#FF0000".toColorInt())
+                    }
+                }
+            )
+        )
     }
 
-    fun pw_eye_visibility (btn: ImageButton, text: EditText, get_visible: () -> Boolean, set_visible: (Boolean) -> Unit) {
-        btn.setOnClickListener {
-            val pos = text.selectionStart           // 커서 위치 저장
-            val newVisible = (togglePasswordVisibility(text, get_visible(), btn))      // 비밀번호 시각화
-            set_visible(newVisible)                 // Boolean 값 업데이트
-            text.post{ text.setSelection(pos) }     // 커서 위치 복원
-        }
-    }
 }

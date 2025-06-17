@@ -5,6 +5,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.TextView
 
+// 입력 텍스트 실시간 반영 함수 정의 파일
 fun createFlexibleTextWatcher(
     targetTextView: TextView,
     hideOnInput: Boolean = false,                       // 입력 시 INVISIBLE 처리 여부
