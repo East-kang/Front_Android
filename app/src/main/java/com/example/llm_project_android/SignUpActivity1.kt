@@ -1,6 +1,9 @@
 package com.example.llm_project_android
 
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -59,6 +62,10 @@ class SignUpActivity1 : AppCompatActivity() {
     // 아이디 생성 기능 함수
     fun create_id(input: EditText, rule: TextView, test: String, idCheck: Button) {
         val id_Pattern = Regex("^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{6,12}$")    // 영문, 숫자 (6-12자리)
+        var background = input.background as GradientDrawable
+        var strokeWidth = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP, 1.5f, resources.displayMetrics
+        ).toInt()
 
         // 중복 확인 버튼 클릭 이벤트
         idCheck.setOnClickListener {
@@ -67,11 +74,11 @@ class SignUpActivity1 : AppCompatActivity() {
                 rule.setText("이미 존재하는 아이디입니다")
                 rule.setTextColor("#FF0000".toColorInt())
                 rule.startShakeAnimation(this)
-                input.setBackgroundResource(R.drawable.login_input_window_wrong)
+                background.setStroke(strokeWidth, "#FF0000".toColorInt())
             } else {
                 rule.setText("사용 가능한 아이디입니다")
                 rule.setTextColor("#4B9F72".toColorInt())
-                input.setBackgroundResource(R.drawable.login_input_window_correct)
+                background.setStroke(strokeWidth, "#4B9F72".toColorInt())
             }
         }
 
@@ -87,7 +94,7 @@ class SignUpActivity1 : AppCompatActivity() {
                         if (isValid)    { R.drawable.login_button }     // 사용 가능 상태
                         else            { R.drawable.id_check_button }  // 비활성 상태
                     )
-                    input.setBackgroundResource(R.drawable.login_input_window)}))
+                    background.setStroke(strokeWidth, "#666666".toColorInt())}))
     }
 
     // 비밀번호 생성 기능 함수
