@@ -91,14 +91,13 @@ class SignUpActivity1 : AppCompatActivity() {
     fun create_pw(input: EditText, rule: TextView, test: String) {
         val pw_Pattern = Regex("^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{6,12}$")    // 영문, 숫자 (8-20자리)
 
+        // id_textView 실시간 감지 이벤트 (정규식에 대한 버튼 활성화 여부)
+        input.addTextChangedListener(
+            createFlexibleTextWatcher(
+                targetTextView = rule,
+                updateText = {"8~16자의 영문, 숫자를 사용하세요"},
+                updateTextColor = {android.graphics.Color.parseColor("#1F70CC")},
+                validateInput = {input -> pw_Pattern.matches(input)}))
     }
 
-    fun pw_eye_visibility (btn: ImageButton, text: EditText, get_visible: () -> Boolean, set_visible: (Boolean) -> Unit) {
-        btn.setOnClickListener {
-            val pos = text.selectionStart           // 커서 위치 저장
-            val newVisible = (togglePasswordVisibility(text, get_visible(), btn))      // 비밀번호 시각화
-            set_visible(newVisible)                 // Boolean 값 업데이트
-            text.post{ text.setSelection(pos) }     // 커서 위치 복원
-        }
-    }
 }
