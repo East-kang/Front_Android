@@ -52,13 +52,13 @@ class SignUpActivity1 : AppCompatActivity() {
         var is_Email_Confirmed: Boolean = false     // 이메일 생성 완료 여부
 
         // 아이디 생성 (입력 text, 입력 상태, 존재하는 아이디, 중복 확인 버튼)
-        create_id(id_text, id_rule, id_test, btn_idCheck)
+        create_id(id_text, id_rule, id_test, btn_idCheck, { is_Id_Confirmed }, {is_Id_Confirmed = it})
 
         // 비밀번호 생성 (입력 text, 입력 상태)
-        create_pw(pw_text, pw_rule, pw_check)
+        create_pw(pw_text, pw_rule, pw_check, { is_Pw_Confirmed }, { is_Pw_Confirmed = it })
 
         // 비밀번호 확인 (입력된 비밀번호 동적 text, 비밀번호 입력란, 입력 text, 입력 상태)
-        check_pw({ pw_text.text.toString() }, pw_text, pw_check, pw_check_text)
+        check_pw({ pw_text.text.toString() }, pw_text, pw_check, pw_check_text, { is_Pw_Check_Confirmed }, { is_Pw_Check_Confirmed = it })
 
 
 
@@ -68,7 +68,7 @@ class SignUpActivity1 : AppCompatActivity() {
     }
 
     // 아이디 생성 기능 함수
-    fun create_id(input_text: EditText, rule: TextView, test: String, idCheck: Button) {
+    fun create_id(input_text: EditText, rule: TextView, test: String, idCheck: Button, getIdConfirmed: () -> Boolean, setIsIdConfirmed: (Boolean) -> Unit) {
         val id_Pattern = Regex("^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{6,12}$")    // 영문, 숫자 (6-12자리)
         var background = input_text.background as GradientDrawable   // 박스 테두리 변수
         var strokeWidth = TypedValue.applyDimension(            // 테두리 두께 변수 (1f=1dp)
@@ -77,16 +77,17 @@ class SignUpActivity1 : AppCompatActivity() {
 
         // 중복 확인 버튼 클릭 이벤트
         idCheck.setOnClickListener {
-            // 기존 아이디 존재
-            if (input_text.text.toString() == test) {
+            if (input_text.text.toString() == test) {   // 기존 아이디 존재
                 rule.setText("이미 존재하는 아이디입니다")
                 rule.setTextColor("#FF0000".toColorInt())
                 rule.startShakeAnimation(this)
                 background.setStroke(strokeWidth, "#FF0000".toColorInt())
-            } else {    // 존재x
+                setIsIdConfirmed(false)
+            } else {                                    // 존재x (사용 가능)
                 rule.setText("사용 가능한 아이디입니다")
                 rule.setTextColor("#4B9F72".toColorInt())
                 background.setStroke(strokeWidth, "#4B9F72".toColorInt())
+                setIsIdConfirmed(true)
             }
         }
 
@@ -98,6 +99,7 @@ class SignUpActivity1 : AppCompatActivity() {
                 updateTextColor = { "#1F70CC".toColorInt() },
                 validateInput = { input -> id_Pattern.matches(input_text.text.toString()) },
                 onValidStateChanged = { isValid -> idCheck.isEnabled = isValid
+                    setIsIdConfirmed(false)
                     idCheck.setBackgroundResource(
                         if (isValid)    { R.drawable.login_button }     // 사용 가능 상태
                         else            { R.drawable.id_check_button }  // 비활성 상태
@@ -106,7 +108,7 @@ class SignUpActivity1 : AppCompatActivity() {
     }
 
     // 비밀번호 생성 기능 함수
-    fun create_pw(input_text: EditText, rule: TextView, check_text: EditText) {
+    fun create_pw(input_text: EditText, rule: TextView, check_text: EditText, getPwConfirmed: () -> Boolean, setPwIdConfirmed: (Boolean) -> Unit) {
         val pw_Pattern = Regex("^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{8,16}$")    // 영문, 숫자 (8-16자리)
         var background = input_text.background as GradientDrawable   // 박스 테두리 변수
         var strokeWidth = TypedValue.applyDimension(
@@ -129,15 +131,18 @@ class SignUpActivity1 : AppCompatActivity() {
                 validateInput = { input -> pw_Pattern.matches(input_text.text.toString()) },
                 onValidStateChanged = { isChecked ->
                     when {
-                        input_text.text.toString().isEmpty() -> {
+                        input_text.text.toString().isEmpty() -> {                           // 공란
                             background.setStroke(strokeWidth, "#666666".toColorInt())
-                            check_text.isEnabled = false }
-                        isChecked -> {
+                            check_text.isEnabled = false                                       // 비밀번호 확인란 비활성화
+                            setPwIdConfirmed(false) }                                          // 다음 버튼 조건 미충족
+                        isChecked -> {                                                      // 비밀번호 사용 가능
                             background.setStroke(strokeWidth, "#4B9F72".toColorInt())
-                            check_text.isEnabled = true }
-                        else -> {
+                            check_text.isEnabled = true                                        // 비밀번호 확인란 활성화
+                            setPwIdConfirmed(true) }                                           // 다음 버튼 조건 충족
+                        else -> {                                                           // 비밀번호 사용 불가
                             background.setStroke(strokeWidth, "#FF0000".toColorInt())
-                            check_text.isEnabled = false}
+                            check_text.isEnabled = false                                       // 비밀번호 확인란 비활성화
+                            setPwIdConfirmed(false) }                                          // 다음 버튼 조건 미충족
                     }
                 }
             )
@@ -145,7 +150,7 @@ class SignUpActivity1 : AppCompatActivity() {
     }
 
     // 비밀번호 확인 함수
-    fun check_pw(pw_text: () -> String, pw_window: EditText, input_text: EditText, check_text: TextView) {
+    fun check_pw(pw_text: () -> String, pw_window: EditText, input_text: EditText, check_text: TextView, getPwCheckConfirmed: () -> Boolean, setPwCheckConfirmed: (Boolean) -> Unit) {
         var background = input_text.background as GradientDrawable   // 박스 테두리 변수
         var strokeWidth = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP, 1.5f, resources.displayMetrics
@@ -157,28 +162,31 @@ class SignUpActivity1 : AppCompatActivity() {
                 targetTextView = check_text,
                 updateText = { input ->
                     when {
-                        input_text.text.toString().isEmpty() -> "동일한 암호를 입력하세요"    // 공란
+                        input_text.text.toString().isEmpty() -> "동일한 암호를 입력하세요"       // 공란
                         pw_text() == input_text.text.toString() -> "비밀번호가 일치합니다"      // 비밀번호 일치
-                        else -> "비밀번호가 일치하지 않습니다"                                 // 비밀번호 불일치
+                        else -> "비밀번호가 일치하지 않습니다"                                   // 비밀번호 불일치
                     }},
                 updateTextColor = { input ->
                     when {
-                        input_text.text.toString().isEmpty() -> "#1F70CC".toColorInt()    // 공란
+                        input_text.text.toString().isEmpty() -> "#1F70CC".toColorInt()      // 공란
                         pw_text() == input_text.text.toString() -> "#4B9F72".toColorInt()   // 비밀번호 일치
-                        else -> "#FF0000".toColorInt()                                    // 비밀번호 불일치
+                        else -> "#FF0000".toColorInt()                                      // 비밀번호 불일치
                     }},
                 validateInput = { input -> pw_text() == input_text.text.toString() },
                 onValidStateChanged = { isChecked ->
                     when {
-                        input_text.text.toString(). isEmpty() -> {
+                        input_text.text.toString(). isEmpty() -> {                             // 공란
                             background.setStroke(strokeWidth, "#666666".toColorInt())
-                            pw_window.isEnabled = true}
-                        isChecked -> {
+                            pw_window.isEnabled = true                                           // 비밀번호 입력창 활성화
+                            setPwCheckConfirmed(false) }                                         // 다음 버튼 클릭 조건 미충족
+                        isChecked -> {                                                         // 비밀번호 일치
                             background.setStroke(strokeWidth, "#4B9F72".toColorInt())
-                            pw_window.isEnabled = false }
-                        else -> {
+                            pw_window.isEnabled = false                                          // 비밀번호 입력창 비활성화
+                            setPwCheckConfirmed(true) }                                          // 다음 버튼 클릭 조건 충족
+                        else -> {                                                              // 비밀번호 불일치
                             background.setStroke(strokeWidth, "#FF0000".toColorInt())
-                            pw_window.isEnabled = false }
+                            pw_window.isEnabled = false                                          // 비밀번호 입력창 비활성화
+                            setPwCheckConfirmed(false) }                                         // 다음 버튼 클릭 조건 미충족
                     }
                 }
             )
