@@ -27,6 +27,7 @@ class SignUpActivity1 : AppCompatActivity() {
         }
 
         val btn_back = findViewById<ImageButton>(R.id.backButton)       // 뒤로 가기 버튼
+        val btn_next = findViewById<Button>(R.id.next_Button)           // 다음 버튼
         val btn_eye = findViewById<ImageButton>(R.id.eyeButton1)        // 비밀번호 시각화 버튼
         val btn_eye_check = findViewById<ImageButton>(R.id.eyeButton2)  // 비밀번호 확인 시각화 버튼
         val btn_idCheck = findViewById<Button>(R.id.checkButton)        // 아이디 중복 확인 버튼
@@ -39,12 +40,16 @@ class SignUpActivity1 : AppCompatActivity() {
         val pw_check_text = findViewById<TextView>(R.id.pw_check_text)  // 비밀번호 확인 여부 텍스트
         val email_check = findViewById<TextView>(R.id.email_check)      // 이메일 확인 여부 텍스트
 
-        val id_test: String = "qwer1234"        // 테스트 아이디
-        val pw_test: String = "qwer1234"        // 테스트 비밀번호
-        var check_id: Boolean = false           // 아이디 중복 여부 (true: 존재, false: 비존재)
-        var check_pw: Boolean = false           // 비밀번호 일치 여부 (true: 존재, false: 비존재)
-        var pw_visible: Boolean = false         // 비밀번호 시각화 여부 (true: 시각화, false: 비시각화)
-        var pw_check_visible: Boolean = false   // 비밀번호 확인 시각화 여부 (true: 시각화, false: 비시각화)
+        val id_test: String = "qwer1234"            // 테스트 아이디
+        val pw_test: String = "qwer1234"            // 테스트 비밀번호
+        var check_id: Boolean = false               // 아이디 중복 여부 (true: 존재, false: 비존재)
+        var check_pw: Boolean = false               // 비밀번호 일치 여부 (true: 존재, false: 비존재)
+        var pw_visible: Boolean = false             // 비밀번호 시각화 여부 (true: 시각화, false: 비시각화)
+        var pw_check_visible: Boolean = false       // 비밀번호 확인 시각화 여부 (true: 시각화, false: 비시각화)
+        var is_Id_Confirmed: Boolean = false        // 아이디 생성 완료 여부
+        var is_Pw_Confirmed: Boolean = false        // 비밀번호 생성 완료 여부
+        var is_Pw_Check_Confirmed: Boolean = false  // 비밀번호 확인 완료 여부
+        var is_Email_Confirmed: Boolean = false     // 이메일 생성 완료 여부
 
         // 아이디 생성 (입력 text, 입력 상태, 존재하는 아이디, 중복 확인 버튼)
         create_id(id_text, id_rule, id_test, btn_idCheck)
@@ -117,7 +122,7 @@ class SignUpActivity1 : AppCompatActivity() {
                     else "8~16자의 영문, 숫자를 사용하세요" },
                 updateTextColor = { input ->
                     when {
-                        input_text.text.toString().isEmpty() -> "#666666".toColorInt()
+                        input_text.text.toString().isEmpty() -> "#1F70CC".toColorInt()
                         pw_Pattern.matches(input) -> "#4B9F72".toColorInt()
                         else -> "#FF0000".toColorInt()
                     }},
@@ -158,7 +163,7 @@ class SignUpActivity1 : AppCompatActivity() {
                     }},
                 updateTextColor = { input ->
                     when {
-                        input_text.text.toString().isEmpty() -> "#666666".toColorInt()    // 공란
+                        input_text.text.toString().isEmpty() -> "#1F70CC".toColorInt()    // 공란
                         pw_text() == input_text.text.toString() -> "#4B9F72".toColorInt()   // 비밀번호 일치
                         else -> "#FF0000".toColorInt()                                    // 비밀번호 불일치
                     }},
@@ -176,9 +181,12 @@ class SignUpActivity1 : AppCompatActivity() {
                             pw_window.isEnabled = false }
                     }
                 }
-
             )
         )
     }
 
+    // 다음 버튼 클릭 조건 함수
+    fun isAllConfirmed(is_Id_Confirmed: Boolean, is_Pw_Confirmed: Boolean, is_Pw_Check_Confirmed: Boolean, is_Email_Confirmed: Boolean): Boolean {
+        return is_Id_Confirmed && is_Pw_Confirmed && is_Pw_Check_Confirmed && is_Email_Confirmed
+    }
 }
