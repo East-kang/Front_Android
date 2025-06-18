@@ -51,16 +51,17 @@ class SignUpActivity1 : AppCompatActivity() {
         var is_Pw_Check_Confirmed: Boolean = false  // 비밀번호 확인 완료 여부
         var is_Email_Confirmed: Boolean = false     // 이메일 생성 완료 여부
 
-        // 아이디 생성 (입력 text, 입력 상태, 존재하는 아이디, 중복 확인 버튼)
+        // 아이디 생성 (입력 text, 입력 상태, 존재하는 아이디, 중복 확인 버튼, 완료 상태)
         create_id(id_text, id_rule, id_test, btn_idCheck, { is_Id_Confirmed }, {is_Id_Confirmed = it})
 
-        // 비밀번호 생성 (입력 text, 입력 상태)
+        // 비밀번호 생성 (입력 text, 입력 상태, 완료 상태)
         create_pw(pw_text, pw_rule, pw_check, { is_Pw_Confirmed }, { is_Pw_Confirmed = it })
 
-        // 비밀번호 확인 (입력된 비밀번호 동적 text, 비밀번호 입력란, 입력 text, 입력 상태)
+        // 비밀번호 확인 (입력된 비밀번호 동적 text, 비밀번호 입력란, 입력 text, 입력 상태 text, 완료 상태)
         check_pw({ pw_text.text.toString() }, pw_text, pw_check, pw_check_text, { is_Pw_Check_Confirmed }, { is_Pw_Check_Confirmed = it })
 
-
+        // 이메일 생성 (입력 text, 생성 여부 text, 완료 상태)
+        create_email(email_text, email_check, { is_Email_Confirmed }, { is_Email_Confirmed = it })
 
         // 비밀번호 & 비밀번호 확인란 시각화 버튼 클릭 이벤트
         pw_eye_visibility(btn_eye, pw_text, {pw_visible}, {pw_visible = it})
@@ -191,6 +192,11 @@ class SignUpActivity1 : AppCompatActivity() {
                 }
             )
         )
+    }
+
+    // 이메일 생성 기능 함수
+    fun create_email(input_text: EditText, check: TextView, getEmailConfirmed: () -> Boolean, setEmailIsIdConfirmed: (Boolean) -> Unit) {
+
     }
 
     // 다음 버튼 클릭 조건 함수
