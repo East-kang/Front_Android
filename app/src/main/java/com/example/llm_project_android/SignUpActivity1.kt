@@ -110,16 +110,14 @@ class SignUpActivity1 : AppCompatActivity() {
             createFlexibleTextWatcher(
                 targetTextView = rule,
                 updateText = { input ->
-                    if (pw_Pattern.matches(input_text.text.toString())) "사용 가능한 비밀번호입니다"
+                    if (pw_Pattern.matches(input_text.text.toString())) "사용 가능한 비밀번호입니다"    // 비밀번호 정규식 만족
                     else "8~16자의 영문, 숫자를 사용하세요" },
                 updateTextColor = { input ->
                     when {
                         input_text.text.toString().isEmpty() -> "#666666".toColorInt()
                         pw_Pattern.matches(input) -> "#4B9F72".toColorInt()
                         else -> "#FF0000".toColorInt()
-                    }
-                    if (pw_Pattern.matches(input)) "#4B9F72".toColorInt()
-                    else "#FF0000".toColorInt()},
+                    }},
                 validateInput = { input -> pw_Pattern.matches(input) },
                 onValidStateChanged = { isChecked ->
                     when {
