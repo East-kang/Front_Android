@@ -61,14 +61,12 @@ class SignUpActivity1 : AppCompatActivity() {
 
         val source = getPassedStringOrDefault("source") // 이전 화면 소스
 
-
         // 초기 설정 (버튼 비활성화, 입력 값 초기화)
         updateNextButton()
         getPassedStringOrDefault("id")?.let { id_text.setText(it) }
         getPassedStringOrDefault("pw")?.let { pw_text.setText(it) }
         getPassedStringOrDefault("pw")?.let { pw_check.setText(it) }
         getPassedStringOrDefault("email")?.let { email_text.setText(it) }
-
 
 
         // 아이디 생성 (입력 text, 입력 상태, 존재하는 아이디, 중복 확인 버튼, 완료 상태)
@@ -89,6 +87,13 @@ class SignUpActivity1 : AppCompatActivity() {
 
         // 뒤로가기 버튼 클릭 이벤트 (to InitActivity or LoginActivity)
         btn_back.setOnClickListener {
+            // Box 테두리 색상 초기화
+            setBoxField(id_text, "#666666".toColorInt())
+            setBoxField(pw_text, "#666666".toColorInt())
+            setBoxField(pw_check, "#666666".toColorInt())
+            setBoxField(email_text, "#666666".toColorInt())
+
+            // 이전 화면으로 전환
             when (source) {
                 "InitActivity" -> navigateTo(InitActivity::class.java)   // 초기화된 화면
                 "LoginActivity" -> navigateTo(LoginActivity::class.java) // 값 유지된 화면
@@ -108,10 +113,6 @@ class SignUpActivity1 : AppCompatActivity() {
     // 아이디 생성 기능 함수
     fun create_id(input_text: EditText, rule: TextView, test: String, idCheck: Button, getIdConfirmed: () -> Boolean, setIsIdConfirmed: (Boolean) -> Unit) {
         val id_Pattern = Regex("^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{6,12}$")    // 영문, 숫자 (6-12자리)
-        var background = input_text.background as GradientDrawable   // 박스 테두리 변수
-        var strokeWidth = TypedValue.applyDimension(            // 테두리 두께 변수 (1f=1dp)
-            TypedValue.COMPLEX_UNIT_DIP, 1.5f, resources.displayMetrics
-        ).toInt()
 
         // 중복 확인 버튼 클릭 이벤트
         idCheck.setOnClickListener {
@@ -119,12 +120,12 @@ class SignUpActivity1 : AppCompatActivity() {
                 rule.setText("이미 존재하는 아이디입니다")
                 rule.setTextColor("#FF0000".toColorInt())
                 rule.startShakeAnimation(this)
-                background.setStroke(strokeWidth, "#FF0000".toColorInt())
+                setBoxField(input_text, "#FF0000".toColorInt())
                 setIsIdConfirmed(false)
             } else {                                    // 존재x (사용 가능)
                 rule.setText("사용 가능한 아이디입니다")
                 rule.setTextColor("#4B9F72".toColorInt())
-                background.setStroke(strokeWidth, "#4B9F72".toColorInt())
+                setBoxField(input_text, "#4B9F72".toColorInt())
                 setIsIdConfirmed(true)
             }
         }
@@ -142,16 +143,12 @@ class SignUpActivity1 : AppCompatActivity() {
                         if (isValid)    { R.drawable.enabled_button }     // 사용 가능 상태
                         else            { R.drawable.disabled_button }   // 비활성 상태
                     )
-                    background.setStroke(strokeWidth, "#666666".toColorInt()) }))
+                    setBoxField(input_text, "#666666".toColorInt()) }))
     }
 
     // 비밀번호 생성 기능 함수
     fun create_pw(input_text: EditText, rule: TextView, check_text: EditText, getPwConfirmed: () -> Boolean, setPwIdConfirmed: (Boolean) -> Unit) {
         val pw_Pattern = Regex("^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{8,16}$")    // 영문, 숫자 (8-16자리)
-        var background = input_text.background as GradientDrawable   // 박스 테두리 변수
-        var strokeWidth = TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP, 1.5f, resources.displayMetrics
-        ).toInt()   // 테두리 두께 변수 (1f=1dp)
 
         // 비밀번호 입력란 실시간 감지 이벤트
         input_text.addTextChangedListener(
@@ -170,15 +167,15 @@ class SignUpActivity1 : AppCompatActivity() {
                 onValidStateChanged = { isValid ->
                     when {
                         input_text.text.toString().isEmpty() -> {                           // 공란
-                            background.setStroke(strokeWidth, "#666666".toColorInt())
+                            setBoxField(input_text, "#666666".toColorInt())
                             check_text.isEnabled = false                                       // 비밀번호 확인란 비활성화
                             setPwIdConfirmed(false) }                                          // 다음 버튼 조건 미충족
                         isValid -> {                                                        // 비밀번호 사용 가능
-                            background.setStroke(strokeWidth, "#4B9F72".toColorInt())
+                            setBoxField(input_text, "#4B9F72".toColorInt())
                             check_text.isEnabled = true                                        // 비밀번호 확인란 활성화
                             setPwIdConfirmed(true) }                                           // 다음 버튼 조건 충족
                         else -> {                                                           // 비밀번호 사용 불가
-                            background.setStroke(strokeWidth, "#FF0000".toColorInt())
+                            setBoxField(input_text, "#FF0000".toColorInt())
                             check_text.isEnabled = false                                       // 비밀번호 확인란 비활성화
                             setPwIdConfirmed(false) }                                          // 다음 버튼 조건 미충족
                     }
@@ -189,11 +186,6 @@ class SignUpActivity1 : AppCompatActivity() {
 
     // 비밀번호 확인 함수
     fun check_pw(pw_text: () -> String, pw_window: EditText, input_text: EditText, check_text: TextView, getPwCheckConfirmed: () -> Boolean, setPwCheckConfirmed: (Boolean) -> Unit) {
-        var background = input_text.background as GradientDrawable   // 박스 테두리 변수
-        var strokeWidth = TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP, 1.5f, resources.displayMetrics
-        ).toInt()   // 테두리 두께 변수 (1f=1dp)
-
         // 비밀번호 확인 입력란 실시간 감지 이벤트
         input_text.addTextChangedListener(
             createFlexibleTextWatcher(
@@ -214,15 +206,15 @@ class SignUpActivity1 : AppCompatActivity() {
                 onValidStateChanged = { isValid ->
                     when {
                         input_text.text.toString(). isEmpty() -> {                             // 공란
-                            background.setStroke(strokeWidth, "#666666".toColorInt())
+                            setBoxField(input_text, "#666666".toColorInt())
                             pw_window.isEnabled = true                                           // 비밀번호 입력창 활성화
                             setPwCheckConfirmed(false) }                                         // 다음 버튼 클릭 조건 미충족
                         isValid -> {                                                         // 비밀번호 일치
-                            background.setStroke(strokeWidth, "#4B9F72".toColorInt())
+                            setBoxField(input_text, "#4B9F72".toColorInt())
                             pw_window.isEnabled = false                                          // 비밀번호 입력창 비활성화
                             setPwCheckConfirmed(true) }                                          // 다음 버튼 클릭 조건 충족
                         else -> {                                                              // 비밀번호 불일치
-                            background.setStroke(strokeWidth, "#FF0000".toColorInt())
+                            setBoxField(input_text, "#FF0000".toColorInt())
                             pw_window.isEnabled = false                                          // 비밀번호 입력창 비활성화
                             setPwCheckConfirmed(false) }                                         // 다음 버튼 클릭 조건 미충족
                     }
@@ -234,10 +226,6 @@ class SignUpActivity1 : AppCompatActivity() {
     // 이메일 생성 기능 함수
     fun create_email(input_text: EditText, check: TextView, getEmailConfirmed: () -> Boolean, setEmailIsIdConfirmed: (Boolean) -> Unit) {
         val email_Pattern = Regex("^[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,}\$")    // '계정@도메인.최상위도메인'
-        var background = input_text.background as GradientDrawable   // 박스 테두리 변수
-        var strokeWidth = TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP, 1.5f, resources.displayMetrics
-        ).toInt()   // 테두리 두께 변수 (1f=1dp)
 
         input_text.addTextChangedListener(
             createFlexibleTextWatcher(
@@ -260,13 +248,13 @@ class SignUpActivity1 : AppCompatActivity() {
                 onValidStateChanged = { isValid ->
                     when {
                         input_text.text.toString().isEmpty() -> {                              // 공란
-                            background.setStroke(strokeWidth, "#666666".toColorInt())
+                            setBoxField(input_text, "#666666".toColorInt())
                             setEmailIsIdConfirmed(false) }
                         !isValid -> {         // 이메일 형식 불일치
-                            background.setStroke(strokeWidth, "#FF0000".toColorInt())
+                            setBoxField(input_text, "#FF0000".toColorInt())
                             setEmailIsIdConfirmed(false) }
                         else -> {                                                              // 사용 가능한 이메일 형식 일치
-                            background.setStroke(strokeWidth, "#4B9F72".toColorInt())
+                            setBoxField(input_text, "#4B9F72".toColorInt())
                             setEmailIsIdConfirmed(true) }
                     }
                 }
