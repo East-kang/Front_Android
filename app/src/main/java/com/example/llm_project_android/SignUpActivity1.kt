@@ -87,13 +87,6 @@ class SignUpActivity1 : AppCompatActivity() {
 
         // 뒤로가기 버튼 클릭 이벤트 (to InitActivity or LoginActivity)
         btn_back.setOnClickListener {
-            // Box 테두리 색상 초기화
-            setBoxField(id_text, "#666666".toColorInt())
-            setBoxField(pw_text, "#666666".toColorInt())
-            setBoxField(pw_check, "#666666".toColorInt())
-            setBoxField(email_text, "#666666".toColorInt())
-
-            // 이전 화면으로 전환
             when (source) {
                 "InitActivity" -> navigateTo(InitActivity::class.java)   // 초기화된 화면
                 "LoginActivity" -> navigateTo(LoginActivity::class.java) // 값 유지된 화면
