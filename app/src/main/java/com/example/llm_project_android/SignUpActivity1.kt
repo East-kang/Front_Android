@@ -66,6 +66,12 @@ class SignUpActivity1 : AppCompatActivity() {
         // 비밀번호 & 비밀번호 확인란 시각화 버튼 클릭 이벤트
         pw_eye_visibility(btn_eye, pw_text, {pw_visible}, {pw_visible = it})
         pw_eye_visibility(btn_eye_check, pw_check, {pw_check_visible}, {pw_check_visible = it})
+
+        // 뒤로가기 버튼 클릭 이벤트
+
+
+        // 다음 버튼 클릭 이벤트
+
     }
 
     // 아이디 생성 기능 함수
@@ -196,7 +202,45 @@ class SignUpActivity1 : AppCompatActivity() {
 
     // 이메일 생성 기능 함수
     fun create_email(input_text: EditText, check: TextView, getEmailConfirmed: () -> Boolean, setEmailIsIdConfirmed: (Boolean) -> Unit) {
+        val email_Pattern = Regex("^[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,}\$")    // '계정@도메인.최상위도메인'
+        var background = input_text.background as GradientDrawable   // 박스 테두리 변수
+        var strokeWidth = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP, 1.5f, resources.displayMetrics
+        ).toInt()   // 테두리 두께 변수 (1f=1dp)
 
+        input_text.addTextChangedListener(
+            createFlexibleTextWatcher(
+                targetTextView = check,
+                updateText = { input ->
+                    when {
+                        input_text.text.toString().isEmpty() -> "이메일을 정확히 입력해주세요"
+                        !email_Pattern.matches(input_text.text.toString()) -> "사용 불가능한 이메일 형식입니다"
+                        else -> "사용 가능한 이메일입니다"
+                    }
+                },
+                updateTextColor = { input ->
+                    when {
+                        input_text.text.toString().isEmpty() -> "#1F70CC".toColorInt()                         // 공란
+                        !email_Pattern.matches(input_text.text.toString()) -> "#FF0000".toColorInt()    // 이메일 형식 불일치
+                        else -> "#4B9F72".toColorInt()                                                         // 사용 가능한 이메일 형식 일치
+                    }
+                },
+                validateInput = { isChecked -> email_Pattern.matches(input_text.text.toString()) },
+                onValidStateChanged = { isChecked ->
+                    when {
+                        input_text.text.toString().isEmpty() -> {                              // 공란
+                            background.setStroke(strokeWidth, "#666666".toColorInt())
+                            setEmailIsIdConfirmed(false) }
+                        !email_Pattern.matches(input_text.text.toString()) -> {         // 이메일 형식 불일치
+                            background.setStroke(strokeWidth, "#FF0000".toColorInt())
+                            setEmailIsIdConfirmed(false) }
+                        else -> {                                                              // 사용 가능한 이메일 형식 일치
+                            background.setStroke(strokeWidth, "#4B9F72".toColorInt())
+                            setEmailIsIdConfirmed(true) }
+                    }
+                }
+            )
+        )
     }
 
     // 다음 버튼 클릭 조건 함수
