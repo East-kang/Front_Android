@@ -9,6 +9,6 @@ fun setBoxField(editText: EditText, defaultStrokeColor: Int) {
     val background = editText.background as GradientDrawable
     val strokeWidth = TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_DIP, 1.5f, editText.resources.displayMetrics
-    ).toInt()
+    ).toInt()   // 테두리 두께 변수 (1f=1dp)
     background.setStroke(strokeWidth, defaultStrokeColor)
 }
