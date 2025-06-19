@@ -59,15 +59,13 @@ class SignUpActivity1 : AppCompatActivity() {
         var pw_visible: Boolean = false             // 비밀번호 시각화 여부 (true: 시각화, false: 비시각화)
         var pw_check_visible: Boolean = false       // 비밀번호 확인 시각화 여부 (true: 시각화, false: 비시각화)
 
-        val source = getPassedStringOrDefault("source") // 이전 화면 소스
+        val source = getPassedStrings("source")["source"] ?: "" // 이전 화면 소스
 
         // 초기 설정 (버튼 비활성화, 입력 값 초기화)
         updateNextButton()
-        getPassedStringOrDefault("id")?.let { id_text.setText(it) }
-        getPassedStringOrDefault("pw")?.let { pw_text.setText(it) }
-        getPassedStringOrDefault("pw")?.let { pw_check.setText(it) }
-        getPassedStringOrDefault("email")?.let { email_text.setText(it) }
 
+        // 화면 전환으로 인한 데이터 수신
+        received_data()
 
         // 아이디 생성 (입력 text, 입력 상태, 존재하는 아이디, 중복 확인 버튼, 완료 상태)
         create_id(id_text, id_rule, id_test, btn_idCheck, { is_Id_Confirmed }, {is_Id_Confirmed = it})
@@ -101,6 +99,15 @@ class SignUpActivity1 : AppCompatActivity() {
                 "pw" to pw_text.text.toString(),
                 "email" to email_text.text.toString())
         }
+    }
+
+    // 화면 전환간 데이터 수신 및 적용
+    fun received_data() {
+        val data = getPassedStrings("id", "pw", "email")
+        id_text.setText(data["id"] ?: "")
+        pw_text.setText(data["pw"] ?: "")
+        pw_check.setText(data["pw"] ?: "")
+        email_text.setText(data["email"] ?: "")
     }
 
     // '아이디' 생성 기능 함수
