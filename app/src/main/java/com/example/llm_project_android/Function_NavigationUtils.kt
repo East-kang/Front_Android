@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 // 화면 전환 함수
 fun Context.navigateTo(target: Class<out AppCompatActivity>, vararg extras: Pair<String, String>, reverseAnimation: Boolean = false) {
     val intent = Intent(this, target)
-    for ((key, value) in extras) {
+    for ((key, value) in extras) {          // 다중 데이터 전달
         intent.putExtra(key, value)
     }
     startActivity(intent)
@@ -20,7 +20,7 @@ fun Context.navigateTo(target: Class<out AppCompatActivity>, vararg extras: Pair
     }
 }
 
-// 전달받은 String 값 (기본값 포함)
-fun AppCompatActivity.getPassedStringOrDefault(key: String, default: String = ""): String {
-    return intent.getStringExtra(key) ?: default
+// 다중 키에 대한 String 값 가져오기 (기본값 포함)
+fun AppCompatActivity.getPassedStrings(vararg keys: String, default: String = ""): Map<String, String> {
+    return keys.associateWith { intent.getStringExtra(it) ?: default }
 }
