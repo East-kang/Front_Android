@@ -60,7 +60,7 @@ class LoginActivity : AppCompatActivity() {
 
         // 회원가입 텍스트 클릭 이벤트
         signUp_text.setOnClickListener {
-            navigateTo(SignUpActivity1::class.java)
+            navigateTo(SignUpActivity1::class.java, "source" to "LoginActivity")
         }
 
         // 경고 메시지 플로팅 메서드

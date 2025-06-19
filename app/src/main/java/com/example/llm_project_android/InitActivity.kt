@@ -29,7 +29,7 @@ class InitActivity : AppCompatActivity() {
 
         // 회원가입 버튼 클릭 메서드
         btn_sign_up.setOnClickListener {
-            navigateTo(SignUpActivity1::class.java)
+            navigateTo(SignUpActivity1::class.java, "source" to "InitActivity")
         }
     }
 }
