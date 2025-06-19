@@ -103,7 +103,7 @@ class SignUpActivity1 : AppCompatActivity() {
         }
     }
 
-    // 아이디 생성 기능 함수
+    // '아이디' 생성 기능 함수
     fun create_id(input_text: EditText, rule: TextView, test: String, idCheck: Button, getIdConfirmed: () -> Boolean, setIsIdConfirmed: (Boolean) -> Unit) {
         val id_Pattern = Regex("^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{6,12}$")    // 영문, 숫자 (6-12자리)
 
@@ -139,7 +139,7 @@ class SignUpActivity1 : AppCompatActivity() {
                     setBoxField(input_text, "#666666".toColorInt()) }))
     }
 
-    // 비밀번호 생성 기능 함수
+    // '비밀번호' 생성 기능 함수
     fun create_pw(input_text: EditText, rule: TextView, check_text: EditText, getPwConfirmed: () -> Boolean, setPwIdConfirmed: (Boolean) -> Unit) {
         val pw_Pattern = Regex("^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{8,16}$")    // 영문, 숫자 (8-16자리)
 
@@ -177,7 +177,7 @@ class SignUpActivity1 : AppCompatActivity() {
         )
     }
 
-    // 비밀번호 확인 함수
+    // '비밀번호' 확인 함수
     fun check_pw(pw_text: () -> String, pw_window: EditText, input_text: EditText, check_text: TextView, getPwCheckConfirmed: () -> Boolean, setPwCheckConfirmed: (Boolean) -> Unit) {
         // 비밀번호 확인 입력란 실시간 감지 이벤트
         input_text.addTextChangedListener(
@@ -216,7 +216,7 @@ class SignUpActivity1 : AppCompatActivity() {
         )
     }
 
-    // 이메일 생성 기능 함수
+    // '이메일' 생성 기능 함수
     fun create_email(input_text: EditText, check: TextView, getEmailConfirmed: () -> Boolean, setEmailIsIdConfirmed: (Boolean) -> Unit) {
         val email_Pattern = Regex("^[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,}\$")    // '계정@도메인.최상위도메인'
 
@@ -255,12 +255,12 @@ class SignUpActivity1 : AppCompatActivity() {
         )
     }
 
-    // 다음 버튼 클릭 조건 함수
+    // '다음' 버튼 클릭 조건 함수
     fun isAllConfirmed(is_Id_Confirmed: Boolean, is_Pw_Confirmed: Boolean, is_Pw_Check_Confirmed: Boolean, is_Email_Confirmed: Boolean): Boolean {
         return is_Id_Confirmed && is_Pw_Confirmed && is_Pw_Check_Confirmed && is_Email_Confirmed
     }
 
-    // 다음 버튼 활성화 함수
+    // '다음' 버튼 활성화 함수
     fun updateNextButton() {
         if (isAllConfirmed(is_Id_Confirmed, is_Pw_Confirmed, is_Pw_Check_Confirmed, is_Email_Confirmed)) {
             btn_next.isEnabled = true
