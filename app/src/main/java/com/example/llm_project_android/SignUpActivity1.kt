@@ -1,10 +1,8 @@
 package com.example.llm_project_android
 
-import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.TypedValue
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -77,7 +75,7 @@ class SignUpActivity1 : AppCompatActivity() {
             }
         } else {
             btn_next.isEnabled = false
-            btn_next.setBackgroundResource(R.drawable.enabled_button)
+            btn_next.setBackgroundResource(R.drawable.disabled_button)
         }
     }
 
@@ -115,8 +113,8 @@ class SignUpActivity1 : AppCompatActivity() {
                 onValidStateChanged = { isValid -> idCheck.isEnabled = isValid
                     setIsIdConfirmed(false)
                     idCheck.setBackgroundResource(
-                        if (isValid)    { R.drawable.login_button }     // 사용 가능 상태
-                        else            { R.drawable.id_check_button }  // 비활성 상태
+                        if (isValid)    { R.drawable.enabled_button }     // 사용 가능 상태
+                        else            { R.drawable.disabled_button }   // 비활성 상태
                     )
                     background.setStroke(strokeWidth, "#666666".toColorInt()) }))
     }
@@ -143,13 +141,13 @@ class SignUpActivity1 : AppCompatActivity() {
                         else -> "#FF0000".toColorInt()
                     }},
                 validateInput = { input -> pw_Pattern.matches(input_text.text.toString()) },
-                onValidStateChanged = { isChecked ->
+                onValidStateChanged = { isValid ->
                     when {
                         input_text.text.toString().isEmpty() -> {                           // 공란
                             background.setStroke(strokeWidth, "#666666".toColorInt())
                             check_text.isEnabled = false                                       // 비밀번호 확인란 비활성화
                             setPwIdConfirmed(false) }                                          // 다음 버튼 조건 미충족
-                        isChecked -> {                                                      // 비밀번호 사용 가능
+                        isValid -> {                                                        // 비밀번호 사용 가능
                             background.setStroke(strokeWidth, "#4B9F72".toColorInt())
                             check_text.isEnabled = true                                        // 비밀번호 확인란 활성화
                             setPwIdConfirmed(true) }                                           // 다음 버튼 조건 충족
@@ -187,13 +185,13 @@ class SignUpActivity1 : AppCompatActivity() {
                         else -> "#FF0000".toColorInt()                                      // 비밀번호 불일치
                     }},
                 validateInput = { input -> pw_text() == input_text.text.toString() },
-                onValidStateChanged = { isChecked ->
+                onValidStateChanged = { isValid ->
                     when {
                         input_text.text.toString(). isEmpty() -> {                             // 공란
                             background.setStroke(strokeWidth, "#666666".toColorInt())
                             pw_window.isEnabled = true                                           // 비밀번호 입력창 활성화
                             setPwCheckConfirmed(false) }                                         // 다음 버튼 클릭 조건 미충족
-                        isChecked -> {                                                         // 비밀번호 일치
+                        isValid -> {                                                         // 비밀번호 일치
                             background.setStroke(strokeWidth, "#4B9F72".toColorInt())
                             pw_window.isEnabled = false                                          // 비밀번호 입력창 비활성화
                             setPwCheckConfirmed(true) }                                          // 다음 버튼 클릭 조건 충족
@@ -232,13 +230,13 @@ class SignUpActivity1 : AppCompatActivity() {
                         else -> "#4B9F72".toColorInt()                                                         // 사용 가능한 이메일 형식 일치
                     }
                 },
-                validateInput = { isChecked -> email_Pattern.matches(input_text.text.toString()) },
-                onValidStateChanged = { isChecked ->
+                validateInput = { input -> email_Pattern.matches(input_text.text.toString()) },
+                onValidStateChanged = { isValid ->
                     when {
                         input_text.text.toString().isEmpty() -> {                              // 공란
                             background.setStroke(strokeWidth, "#666666".toColorInt())
                             setEmailIsIdConfirmed(false) }
-                        !email_Pattern.matches(input_text.text.toString()) -> {         // 이메일 형식 불일치
+                        !isValid -> {         // 이메일 형식 불일치
                             background.setStroke(strokeWidth, "#FF0000".toColorInt())
                             setEmailIsIdConfirmed(false) }
                         else -> {                                                              // 사용 가능한 이메일 형식 일치
