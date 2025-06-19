@@ -2,6 +2,7 @@ package com.example.llm_project_android
 
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.TypedValue
 import android.widget.Button
 import android.widget.EditText
@@ -17,6 +18,10 @@ import kotlin.properties.Delegates
 class SignUpActivity1 : AppCompatActivity() {
 
     private lateinit var btn_next: Button
+    private lateinit var id_text: EditText
+    private lateinit var pw_text: EditText
+    private lateinit var pw_check: EditText
+    private lateinit var email_text: EditText
     var is_Id_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }        // 아이디 생성 완료 여부
     var is_Pw_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }        // 비밀번호 생성 완료 여부
     var is_Pw_Check_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }  // 비밀번호 확인 완료 여부
@@ -37,10 +42,12 @@ class SignUpActivity1 : AppCompatActivity() {
         val btn_eye = findViewById<ImageButton>(R.id.eyeButton1)        // 비밀번호 시각화 버튼
         val btn_eye_check = findViewById<ImageButton>(R.id.eyeButton2)  // 비밀번호 확인 시각화 버튼
         val btn_idCheck = findViewById<Button>(R.id.checkButton)        // 아이디 중복 확인 버튼
-        val id_text = findViewById<EditText>(R.id.id_editText)          // 아이디 입력란
-        val pw_text = findViewById<EditText>(R.id.password_editText)    // 비밀번호 입력란
-        val pw_check = findViewById<EditText>(R.id.check_editText)      // 비밀번호 확인 입력란
-        val email_text = findViewById<EditText>(R.id.email_editText)    // 이메일 입력란
+
+        id_text = findViewById<EditText>(R.id.id_editText)              // 아이디 입력란
+        pw_text = findViewById<EditText>(R.id.password_editText)        // 비밀번호 입력란
+        pw_check = findViewById<EditText>(R.id.check_editText)          // 비밀번호 확인 입력란
+        email_text = findViewById<EditText>(R.id.email_editText)        // 이메일 입력란
+
         val id_rule = findViewById<TextView>(R.id.id_rule)              // 아이디 규칙 텍스트
         val pw_rule = findViewById<TextView>(R.id.pw_rule)              // 비밀번호 규칙 텍스트
         val pw_check_text = findViewById<TextView>(R.id.pw_check_text)  // 비밀번호 확인 여부 텍스트
@@ -51,6 +58,8 @@ class SignUpActivity1 : AppCompatActivity() {
         var check_pw: Boolean = false               // 비밀번호 일치 여부 (true: 존재, false: 비존재)
         var pw_visible: Boolean = false             // 비밀번호 시각화 여부 (true: 시각화, false: 비시각화)
         var pw_check_visible: Boolean = false       // 비밀번호 확인 시각화 여부 (true: 시각화, false: 비시각화)
+
+
 
         // 초기 버튼 비활성화
         updateNextButton()
@@ -72,13 +81,18 @@ class SignUpActivity1 : AppCompatActivity() {
         pw_eye_visibility(btn_eye_check, pw_check, {pw_check_visible}, {pw_check_visible = it})
 
         // 뒤로가기 버튼 클릭 이벤트
-        btn_back.setOnClickListener { navigateTo(InitActivity::class.java) }
+        btn_back.setOnClickListener {
+            navigateTo(InitActivity::class.java)
+        }
 
         // 다음 버튼 클릭 이벤트
         btn_next.setOnClickListener {
-            navigateTo()
+            navigateTo(
+                SignUpActivity2::class.java,
+                "id" to id_text.text.toString(),
+                "pw" to pw_text.text.toString(),
+                "email" to email_text.text.toString())
         }
-
     }
 
     // 아이디 생성 기능 함수
@@ -255,7 +269,7 @@ class SignUpActivity1 : AppCompatActivity() {
         return is_Id_Confirmed && is_Pw_Confirmed && is_Pw_Check_Confirmed && is_Email_Confirmed
     }
 
-    // 다음 버튼 클릭 함수
+    // 다음 버튼 활성화 함수
     fun updateNextButton() {
         if (isAllConfirmed(is_Id_Confirmed, is_Pw_Confirmed, is_Pw_Check_Confirmed, is_Email_Confirmed)) {
             btn_next.isEnabled = true
