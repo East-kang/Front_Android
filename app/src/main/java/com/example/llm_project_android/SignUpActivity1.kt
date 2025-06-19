@@ -61,14 +61,12 @@ class SignUpActivity1 : AppCompatActivity() {
 
         val source = getPassedStringOrDefault("source") // 이전 화면 소스
 
-
         // 초기 설정 (버튼 비활성화, 입력 값 초기화)
         updateNextButton()
         getPassedStringOrDefault("id")?.let { id_text.setText(it) }
         getPassedStringOrDefault("pw")?.let { pw_text.setText(it) }
         getPassedStringOrDefault("pw")?.let { pw_check.setText(it) }
         getPassedStringOrDefault("email")?.let { email_text.setText(it) }
-
 
 
         // 아이디 생성 (입력 text, 입력 상태, 존재하는 아이디, 중복 확인 버튼, 완료 상태)
@@ -289,4 +287,6 @@ class SignUpActivity1 : AppCompatActivity() {
             btn_next.setBackgroundResource(R.drawable.disabled_button)
         }
     }
+
+
 }
