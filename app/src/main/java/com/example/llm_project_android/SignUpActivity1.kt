@@ -88,8 +88,8 @@ class SignUpActivity1 : AppCompatActivity() {
         // 뒤로가기 버튼 클릭 이벤트 (to InitActivity or LoginActivity)
         btn_back.setOnClickListener {
             when (source) {
-                "InitActivity" -> navigateTo(InitActivity::class.java)   // 초기화된 화면
-                "LoginActivity" -> navigateTo(LoginActivity::class.java) // 값 유지된 화면
+                "InitActivity" -> navigateTo(InitActivity::class.java, reverseAnimation = true)   // 초기화된 화면
+                "LoginActivity" -> navigateTo(LoginActivity::class.java, reverseAnimation = true) // 값 유지된 화면
             }
         }
 
