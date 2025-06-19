@@ -76,7 +76,7 @@ class SignUpActivity1 : AppCompatActivity() {
 
         // 다음 버튼 클릭 이벤트
         btn_next.setOnClickListener {
-
+            navigateTo()
         }
 
     }
