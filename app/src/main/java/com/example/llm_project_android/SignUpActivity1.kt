@@ -68,10 +68,17 @@ class SignUpActivity1 : AppCompatActivity() {
         pw_eye_visibility(btn_eye_check, pw_check, {pw_check_visible}, {pw_check_visible = it})
 
         // 뒤로가기 버튼 클릭 이벤트
+        btn_back.setOnClickListener { navigateTo(InitActivity::class.java) }
 
+        if ( isAllConfirmed(is_Id_Confirmed, is_Pw_Confirmed, is_Pw_Check_Confirmed, is_Email_Confirmed) ) {
+            // 다음 버튼 클릭 이벤트
+            btn_next.setOnClickListener {
 
-        // 다음 버튼 클릭 이벤트
-
+            }
+        } else {
+            btn_next.isEnabled = false
+            btn_next.setBackgroundResource(R.drawable.enabled_button)
+        }
     }
 
     // 아이디 생성 기능 함수
