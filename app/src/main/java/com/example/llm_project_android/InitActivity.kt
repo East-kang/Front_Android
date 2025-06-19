@@ -23,14 +23,17 @@ class InitActivity : AppCompatActivity() {
         val btn_login = findViewById<Button>(R.id.login_Button)         // 로그인 버튼 선언
         val btn_sign_up = findViewById<Button>(R.id.sign_up_Button)     // 회원가입 버튼 선언
 
-        // 로그인 버튼 클릭 메서드
+        // 로그인 버튼 클릭 이벤트
         btn_login.setOnClickListener {
             navigateTo(LoginActivity::class.java)
         }
 
-        // 회원가입 버튼 클릭 메서드
+        // 회원가입 버튼 클릭 이벤트
         btn_sign_up.setOnClickListener {
             navigateTo(SignUpActivity1::class.java, "source" to "InitActivity")
         }
+
+        // 뒤로가기 버튼 클릭 이벤트
+        registerExitDialogOnBackPressed()
     }
 }
