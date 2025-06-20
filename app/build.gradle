@@ -30,6 +30,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
     namespace 'com.example.llm_project_android'
 }
 
