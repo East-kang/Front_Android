@@ -57,39 +57,31 @@ fun createFlexibleTextWatcher(
         }
 
         // 입력 후 호출 (사용x)
-        override fun afterTextChanged(s: Editable?) {if (isFormatting) return
+        override fun afterTextChanged(s: Editable?) {
             if (isFormatting) return
             isFormatting = true
 
             val editText = targetTextView as? EditText
             val raw = s?.toString() ?: ""
-            var formatted = raw
-            var newCursorPosition = cursorPosition
+            val maxRawLength = formatPositions.maxOrNull() ?: 8
+            val clean = raw.replace(formatChar, "").take(maxRawLength)
+            val sb = StringBuilder()
 
-            if (enableFormatting) {
-                val clean = raw.replace(formatChar, "")
-                val sb = StringBuilder()
-
-                // 삭제 시 포맷 문자 제거 고려
-                if (previousText.length > raw.length &&
-                    previousText.getOrNull(cursorPosition) == formatChar.firstOrNull()
-                ) {
-                    newCursorPosition = (cursorPosition - 1).coerceAtLeast(0)
+            for (i in clean.indices) {
+                sb.append(clean[i])
+                if ((i + 1) in formatPositions) {
+                    sb.append(formatChar)
                 }
+            }
 
-                for (i in clean.indices) {
-                    sb.append(clean[i])
-                    if ((i + 1) in formatPositions && i != clean.lastIndex) {
-                        sb.append(formatChar)
-                    }
-                }
+            val formatted = sb.toString()
 
-                formatted = sb.toString()
+            val numSeparatorsBefore = formatPositions.count { it <= clean.length && it <= cursorPosition }
+            var newCursorPosition = (cursorPosition + numSeparatorsBefore).coerceAtMost(formatted.length)
 
-                if (formatted != raw) {
-                    editText?.setText(formatted)
-                    editText?.setSelection(newCursorPosition.coerceAtMost(formatted.length))
-                }
+            if (formatted != raw) {
+                editText?.setText(formatted)
+                editText?.setSelection(newCursorPosition)
             }
 
             validateInput?.let {
