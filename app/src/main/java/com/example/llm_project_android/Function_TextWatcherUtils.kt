@@ -14,21 +14,12 @@ fun createFlexibleTextWatcher(
     updateTextColor: ((String) -> Int)? = null,         // 색상 변경 (null이면 무시)
     onValidStateChanged: ((Boolean) -> Unit)? = null,   // 규칙 만족 여부
     validateInput: ((String) -> Boolean)? =null,        // 버튼 활성화 제어
-    enableFormatting: Boolean = false,                  // 문자 포맷팅 기능 사용 여부
-    formatChar: String = "/",                           // 삽입할 문자
-    formatPositions: List<Int> = listOf(4, 6),          // 삽입 위치
+
 ): TextWatcher {
     return object : TextWatcher {
 
-        private var isFormatting = false
-        private var previousText: String = ""
-        private var cursorPosition: Int = 0
-
         // 입력이 변경되기 전 호출 (사용하지 않음)
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            previousText = s?.toString() ?: ""
-            cursorPosition = start
-        }
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
         // 입력 도중 호출됨: 실시간으로 변화 감지
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -57,39 +48,6 @@ fun createFlexibleTextWatcher(
         }
 
         // 입력 후 호출 (사용x)
-        override fun afterTextChanged(s: Editable?) {
-            if (isFormatting) return
-            isFormatting = true
-
-            val editText = targetTextView as? EditText
-            val raw = s?.toString() ?: ""
-            val maxRawLength = formatPositions.maxOrNull() ?: 8
-            val clean = raw.replace(formatChar, "").take(maxRawLength)
-            val sb = StringBuilder()
-
-            for (i in clean.indices) {
-                sb.append(clean[i])
-                if ((i + 1) in formatPositions) {
-                    sb.append(formatChar)
-                }
-            }
-
-            val formatted = sb.toString()
-
-            val numSeparatorsBefore = formatPositions.count { it <= clean.length && it <= cursorPosition }
-            var newCursorPosition = (cursorPosition + numSeparatorsBefore).coerceAtMost(formatted.length)
-
-            if (formatted != raw) {
-                editText?.setText(formatted)
-                editText?.setSelection(newCursorPosition)
-            }
-
-            validateInput?.let {
-                val isValid = it(formatted)
-                onValidStateChanged?.invoke(isValid)
-            }
-
-            isFormatting = false
-        }
+        override fun afterTextChanged(s: Editable?) {}
     }
 }
