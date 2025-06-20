@@ -98,12 +98,13 @@
                 android:drawableLeft="@drawable/resize_birth_icon"
                 android:drawablePadding="10dp"
                 android:gravity="center_vertical"
-                android:hint="생년월일 (YYYYMMDD; '-' 제외)"
+                android:hint="생년월일 (YYYYMMDD)"
                 android:paddingLeft="10dp"
                 android:paddingRight="50dp"
                 android:textColorHint="#666666"
                 android:textSize="16dp"
-                android:inputType="number" />
+                android:inputType="number"
+                android:maxLength="8"/>
 
             <EditText
                 android:id="@+id/phone_number_editText"
@@ -121,7 +122,8 @@
                 android:paddingRight="50dp"
                 android:textColorHint="#666666"
                 android:textSize="16dp"
-                android:inputType="number" />
+                android:inputType="phone"
+                android:maxLength="13"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -238,7 +240,7 @@
 
                 <Spinner
                     android:id="@+id/job_spinner"
-                    android:layout_width="260dp"
+                    android:layout_width="250dp"
                     android:layout_height="40dp"
                     android:layout_gravity="end|center_vertical"
                     android:layout_marginHorizontal="30dp"
@@ -246,6 +248,7 @@
                     android:paddingLeft="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/job_textView"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
@@ -258,12 +261,13 @@
         android:layout_gravity="center"
         android:layout_marginTop="40dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/enabled_button"
+        android:background="@drawable/disabled_button"
         android:gravity="center"
         android:text="다 음"
         android:textColor="#FFFFFF"
         android:textSize="18dp"
         android:textStyle="bold"
+        android:enabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
