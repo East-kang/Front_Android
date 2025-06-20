@@ -178,8 +178,10 @@ class SignUpActivity2 : AppCompatActivity() {
     }
 
     // '결혼여부' 체크 여부 확인 함수
-    fun isChecked_married() {
-
+    fun isChecked_married(group: RadioGroup, setMarriedConfirmed: (Boolean) -> Unit) {
+        group.setOnCheckedChangeListener { _, isChecked ->
+            setMarriedConfirmed(isChecked != -1)
+        }
     }
 
 
