@@ -7,7 +7,7 @@ import android.widget.TextView
 
 // 입력 텍스트 실시간 반영 함수 정의 파일
 fun createFlexibleTextWatcher(
-    targetTextView: TextView,
+    targetTextView: TextView? = null,                   // 변경하려는 target
     hideOnInput: Boolean = false,                       // 입력 시 INVISIBLE 처리 여부
     updateText: ((String) -> String)? = null,           // 텍스트 내용 변환 (null이면 무시)
     updateTextColor: ((String) -> Int)? = null,         // 색상 변경 (null이면 무시)
@@ -25,17 +25,17 @@ fun createFlexibleTextWatcher(
 
             // 입력 시 TextView '숨김' 처리
             if(hideOnInput) {
-                targetTextView.visibility = View.INVISIBLE
+                targetTextView?.visibility = View.INVISIBLE
             }
             
             // 텍스트뷰 '내용' 업데이트
             updateText?.let {
-                targetTextView.text = it(input)
+                targetTextView?.text = it(input)
             }
 
             // TextView '색상' 업데이트
             updateTextColor?.let {
-                targetTextView.setTextColor(it(input))
+                targetTextView?.setTextColor(it(input))
             }
 
             // 버튼 활성화 제어 처리
