@@ -114,10 +114,6 @@ class SignUpActivity2 : AppCompatActivity() {
         // 생년월일 입력란 실시간 감지 이벤트 (자동 슬래시 삽입용 TextWatcher)
         input_text.addTextChangedListener(
             createFlexibleTextWatcher(
-                targetTextView = input_text,
-                enableFormatting = true,
-                formatChar = "/",
-                formatPositions = listOf(4, 6),
                 validateInput = { input -> birth_Pattern.matches(input) },
                 onValidStateChanged = { isValid ->
                     when {
@@ -139,8 +135,6 @@ class SignUpActivity2 : AppCompatActivity() {
         )
     }
 
-
-
     // '전화번호' 생성 기능 함수
     fun create_phone(input_text: EditText, getPhoneConfirmed: () -> Boolean, setPhoneConfirmed: (Boolean) -> Unit) {
         val phone_Pattern = Regex("^(19[0-9]{2}|20[0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])$") // 생년월일 정규식 (YYYYMMDD)
@@ -148,5 +142,6 @@ class SignUpActivity2 : AppCompatActivity() {
 
     }
 
+    //
     fun updateNextButton(){}
 }
