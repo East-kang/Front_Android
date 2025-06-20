@@ -98,7 +98,7 @@
                 android:drawableLeft="@drawable/resize_birth_icon"
                 android:drawablePadding="10dp"
                 android:gravity="center_vertical"
-                android:hint="생년월일 (YYYYMMDD; '-' 제외)"
+                android:hint="생년월일 (YYYYMMDD)"
                 android:paddingLeft="10dp"
                 android:paddingRight="50dp"
                 android:textColorHint="#666666"
