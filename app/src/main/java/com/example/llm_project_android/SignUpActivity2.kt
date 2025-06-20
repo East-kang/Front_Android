@@ -135,9 +135,29 @@ class SignUpActivity2 : AppCompatActivity() {
 
     // '전화번호' 생성 기능 함수
     fun create_phone(input_text: EditText, getPhoneConfirmed: () -> Boolean, setPhoneConfirmed: (Boolean) -> Unit) {
-        val phone_Pattern = Regex("^(19[0-9]{2}|20[0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])$") // 생년월일 정규식 (YYYYMMDD)
+        val phone_Pattern = Regex("^(010+-[0-9]{4}+-[0-9]{4})$") // 전화번호 정규식 (010-xxxx-xxxx)
 
-
+        input_text.addTextChangedListener(
+            createFlexibleTextWatcher(
+                validateInput = { input -> phone_Pattern.matches(input) },
+                onValidStateChanged = { isValid ->
+                    when {
+                        input_text.text.toString().isEmpty() -> {
+                            setBoxField(input_text, "#666666".toColorInt())
+                            setPhoneConfirmed(false)
+                        }
+                        isValid -> {
+                            setBoxField(input_text, "#4B9F72".toColorInt())
+                            setPhoneConfirmed(true)
+                        }
+                        else -> {
+                            setBoxField(input_text, "#FF0000".toColorInt())
+                            setPhoneConfirmed(false)
+                        }
+                    }
+                }
+            )
+        )
     }
 
     //
