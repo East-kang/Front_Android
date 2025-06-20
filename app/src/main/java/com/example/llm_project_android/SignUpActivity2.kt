@@ -152,114 +152,37 @@ class SignUpActivity2 : AppCompatActivity() {
         input_text.addTextChangedListener(
             createFlexibleTextWatcher(
                 targetTextView = input_text,
-                validateInput = { input -> birth_Pattern.matches(input_text.text.toString())},
+                enableFormatting = true,
+                formatChar = "/",
+                formatPositions = listOf(4, 6),
+                validateInput = { input -> birth_Pattern.matches(input) },
                 onValidStateChanged = { isValid ->
                     when {
-                        input_text.text.toString().isEmpty() -> {       // 공란
+                        input_text.text.isNullOrEmpty() -> {
                             setBoxField(input_text, "#666666".toColorInt())
                             setBirthConfirmed(false)
                         }
-
-                        isValid -> {                                    // 이름 형식 충족
+                        isValid -> {
                             setBoxField(input_text, "#4B9F72".toColorInt())
                             setBirthConfirmed(true)
                         }
-
-                        else -> {                                       // 이름 형식 미충족
+                        else -> {
                             setBoxField(input_text, "#FF0000".toColorInt())
                             setBirthConfirmed(false)
                         }
-
                     }
                 }
             )
         )
     }
 
-//    fun create_birth(input_text: EditText, getBirthConfirmed: () -> Boolean, setBirthConfirmed: (Boolean) -> Unit) {
-//        val birth_Pattern = Regex("^(19[0-9]{2}|20[0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])$")
-//
-//        input_text.addTextChangedListener(object : TextWatcher {
-//            private var isFormatting = false
-//            private var previousText: String = ""
-//            private var cursorPosition: Int = 0
-//
-//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-//                if (isFormatting) return
-//                previousText = s?.toString() ?: ""
-//                cursorPosition = input_text.selectionStart
-//            }
-//
-//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-//
-//            override fun afterTextChanged(s: Editable?) {
-//                if (isFormatting) return
-//                val rawInput = s?.toString() ?: return
-//
-//                // 숫자만 필터링
-//                val clean = rawInput.replace("/", "").filter { it.isDigit() }.take(8)
-//                if (clean == previousText.replace("/", "")) return
-//
-//                isFormatting = true
-//
-//                // 포맷 적용
-//                val formatted = buildString {
-//                    for (i in clean.indices) {
-//                        append(clean[i])
-//                        if (i == 3 || i == 5) append("/")
-//                    }
-//                }.trimEnd('/')
-//
-//                // 커서 위치 보정
-//                var newCursor = cursorPosition
-//                val addedSlashCount = formatted.count { it == '/' }
-//                val oldSlashCount = previousText.count { it == '/' }
-//                newCursor += (addedSlashCount - oldSlashCount)
-//                if (newCursor > formatted.length) newCursor = formatted.length
-//
-//                input_text.setText(formatted)
-//                input_text.setSelection(newCursor)
-//
-//                isFormatting = false
-//            }
-//        })
-//
-//        // 유효성 검사 Watcher
-//        input_text.addTextChangedListener(
-//            createFlexibleTextWatcher(
-//                validateInput = {
-//                    birth_Pattern.matches(input_text.text.toString().replace("/", ""))
-//                },
-//                onValidStateChanged = { isValid ->
-//                    when {
-//                        input_text.text.toString().isEmpty() -> {
-//                            setBoxField(input_text, "#666666".toColorInt())
-//                            setBirthConfirmed(false)
-//                        }
-//                        isValid -> {
-//                            setBoxField(input_text, "#4B9F72".toColorInt())
-//                            setBirthConfirmed(true)
-//                        }
-//                        else -> {
-//                            setBoxField(input_text, "#FF0000".toColorInt())
-//                            setBirthConfirmed(false)
-//                        }
-//                    }
-//                }
-//            )
-//        )
-//    }
 
 
     // '전화번호' 생성 기능 함수
     fun create_phone(input_text: EditText, getPhoneConfirmed: () -> Boolean, setPhoneConfirmed: (Boolean) -> Unit) {
         val phone_Pattern = Regex("^(19[0-9]{2}|20[0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])$") // 생년월일 정규식 (YYYYMMDD)
 
-        // 생년월일 입력란 실시간 감지 이벤트
-        input_text.addTextChangedListener(
-            createFlexibleTextWatcher(
-            )
-        )
+
     }
 
     fun updateNextButton(){}
