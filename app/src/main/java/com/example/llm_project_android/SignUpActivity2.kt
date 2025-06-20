@@ -1,8 +1,7 @@
 package com.example.llm_project_android
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.telephony.PhoneNumberFormattingTextWatcher
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -15,6 +14,7 @@ import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import kotlin.properties.Delegates
+
 
 class SignUpActivity2 : AppCompatActivity() {
 
@@ -55,8 +55,12 @@ class SignUpActivity2 : AppCompatActivity() {
         create_name(name, { is_Name_Confirmed }, { is_Name_Confirmed = it })
 
         // 생년월일 생성
-        create_birth(birth, { is_Birth_Confirmed }, { is_Birth_Confirmed = it })
+        //create_birth(birth, { is_Birth_Confirmed }, { is_Birth_Confirmed = it })
 
+        val formatWatcher = MaskFormatWatcher(Format("+7 ([000]) [000]-[00]-[00]"))
+        formatWatcher.installOn(editText)
+
+        phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
         // 전화번호 생성
         create_phone(phone, { is_Phone_Confirmed }, { is_Phone_Confirmed = it })
     }

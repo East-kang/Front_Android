@@ -103,7 +103,7 @@
                 android:paddingRight="50dp"
                 android:textColorHint="#666666"
                 android:textSize="16dp"
-                android:inputType="number" />
+                android:inputType="datetime"/>
 
             <EditText
                 android:id="@+id/phone_number_editText"
@@ -121,7 +121,8 @@
                 android:paddingRight="50dp"
                 android:textColorHint="#666666"
                 android:textSize="16dp"
-                android:inputType="number" />
+                android:inputType="phone"
+                android:maxLength="13"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
