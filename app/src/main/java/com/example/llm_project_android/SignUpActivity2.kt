@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -17,7 +18,6 @@ import kotlin.properties.Delegates
 
 class SignUpActivity2 : AppCompatActivity() {
 
-    private lateinit var birth: EditText
     var is_Name_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }        // 아이디 생성 완료 여부
     var is_Birth_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }        // 비밀번호 생성 완료 여부
     var is_Phone_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }  // 비밀번호 확인 완료 여부
@@ -38,10 +38,12 @@ class SignUpActivity2 : AppCompatActivity() {
         val btn_back = findViewById<ImageButton>(R.id.backButton)       // 뒤로가기 버튼
         val btn_next = findViewById<Button>(R.id.next_Button)           // 다음 버튼
         val name = findViewById<EditText>(R.id.name_editText)           // 이름 입력란
-        birth = findViewById<EditText>(R.id.birth_editText)         // 생년월일 입력란
+        val birth = findViewById<EditText>(R.id.birth_editText)         // 생년월일 입력란
         val phone = findViewById<EditText>(R.id.phone_number_editText)  // 전화번호 입력란
+        val gender = findViewById<RadioGroup>(R.id.radioGender)         // 성별 체크 그룹
         val gender_M = findViewById<RadioButton>(R.id.radioMale)        // 성별 (남)
         val gender_F = findViewById<RadioButton>(R.id.radioFemale)      // 성별 (여)
+        val married = findViewById<RadioGroup>(R.id.radioMaritalStatus) // 결혼 여부 체크 그룹
         val married_N = findViewById<RadioButton>(R.id.radioSingle)     // 결혼여부 (미혼)
         val married_Y = findViewById<RadioButton>(R.id.radioMarried)    // 결혼여부 (기혼)
         val job = findViewById<Spinner>(R.id.job_spinner)               // 직업 드롭다운
@@ -57,9 +59,17 @@ class SignUpActivity2 : AppCompatActivity() {
         // 생년월일 생성
         create_birth(birth, { is_Birth_Confirmed }, { is_Birth_Confirmed = it })
 
-        phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
         // 전화번호 생성
         create_phone(phone, { is_Phone_Confirmed }, { is_Phone_Confirmed = it })
+
+        // 성별 체크
+
+
+        // 결혼 여부 체크
+
+
+        // 직업 선택
+
     }
 
     // 화면 전환간 데이터 수신 및 적용
@@ -159,6 +169,19 @@ class SignUpActivity2 : AppCompatActivity() {
             )
         )
     }
+
+    // '성별' 체크 여부 확인 함수
+    fun isChecked_gender(group: RadioGroup, setGenderConfirmed: (Boolean) -> Unit) {
+        group.setOnCheckedChangeListener { _, isChecked ->
+            setGenderConfirmed(isChecked != -1)
+        }
+    }
+
+    // '결혼여부' 체크 여부 확인 함수
+    fun isChecked_married() {
+
+    }
+
 
     //
     fun updateNextButton(){}
