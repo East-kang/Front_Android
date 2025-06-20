@@ -14,6 +14,7 @@ import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import kotlin.properties.Delegates
+import com.redmadrobot.inputmask.MaskedTextChangedListener
 
 
 class SignUpActivity2 : AppCompatActivity() {
@@ -108,8 +109,9 @@ class SignUpActivity2 : AppCompatActivity() {
 
     // '생년월일' 생성 기능 함수
     fun create_birth(input_text: EditText, getBirthConfirmed: () -> Boolean, setBirthConfirmed: (Boolean) -> Unit) {
+        val birthListner = MaskedTextChangedListener.
+
         val birth_Pattern = Regex("^(19[0-9]{2}|20[0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])$") // 생년월일 정규식 (YYYYMMDD)
-        var cursor_offset: Int = 0
 
         // 생년월일 입력란 실시간 감지 이벤트 (자동 슬래시 삽입용 TextWatcher)
         input_text.addTextChangedListener(
@@ -117,7 +119,7 @@ class SignUpActivity2 : AppCompatActivity() {
                 validateInput = { input -> birth_Pattern.matches(input) },
                 onValidStateChanged = { isValid ->
                     when {
-                        input_text.text.isNullOrEmpty() -> {
+                        input_text.text.toString().isEmpty() -> {
                             setBoxField(input_text, "#666666".toColorInt())
                             setBirthConfirmed(false)
                         }
