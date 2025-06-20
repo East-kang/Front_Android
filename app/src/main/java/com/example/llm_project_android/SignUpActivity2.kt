@@ -51,6 +51,12 @@ class SignUpActivity2 : AppCompatActivity() {
 
         // 이름 생성
         create_name(name, { is_Name_Confirmed }, { is_Name_Confirmed = it })
+
+        // 생년월일 생성
+        create_birth()
+
+        // 전화번호 생성
+
     }
 
     // 화면 전환간 데이터 수신 및 적용
@@ -132,6 +138,18 @@ class SignUpActivity2 : AppCompatActivity() {
                         }
                     }
                 }
+            )
+        )
+    }
+
+    // '생년월일' 생성 기능 함수
+    fun create_birth(input_text: EditText, getBirthConfirmed: () -> Boolean, setBirthConfirmed: (Boolean) -> Unit) {
+        val birth_Pattern = Regex("^(19[0-9]{2}|20[0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])$") // 생년월일 정규식 (YYYYMMDD)
+
+        // 생년월일 입력란 실시간 감지 이벤트
+        input_text.addTextChangedListener(
+            createFlexibleTextWatcher(
+                targetTextView = input_text
             )
         )
     }
