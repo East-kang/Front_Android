@@ -19,6 +19,7 @@ import com.redmadrobot.inputmask.MaskedTextChangedListener
 
 class SignUpActivity2 : AppCompatActivity() {
 
+    private lateinit var birth: EditText
     var is_Name_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }        // 아이디 생성 완료 여부
     var is_Birth_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }        // 비밀번호 생성 완료 여부
     var is_Phone_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }  // 비밀번호 확인 완료 여부
@@ -39,7 +40,7 @@ class SignUpActivity2 : AppCompatActivity() {
         val btn_back = findViewById<ImageButton>(R.id.backButton)       // 뒤로가기 버튼
         val btn_next = findViewById<Button>(R.id.next_Button)           // 다음 버튼
         val name = findViewById<EditText>(R.id.name_editText)           // 이름 입력란
-        val birth = findViewById<EditText>(R.id.birth_editText)         // 생년월일 입력란
+        birth = findViewById<EditText>(R.id.birth_editText)         // 생년월일 입력란
         val phone = findViewById<EditText>(R.id.phone_number_editText)  // 전화번호 입력란
         val gender_M = findViewById<RadioButton>(R.id.radioMale)        // 성별 (남)
         val gender_F = findViewById<RadioButton>(R.id.radioFemale)      // 성별 (여)
@@ -109,15 +110,18 @@ class SignUpActivity2 : AppCompatActivity() {
 
     // '생년월일' 생성 기능 함수
     fun create_birth(input_text: EditText, getBirthConfirmed: () -> Boolean, setBirthConfirmed: (Boolean) -> Unit) {
-        val birthListner = MaskedTextChangedListener.
+        val birthListner = MaskedTextChangedListener.installOn(
+            birth,
+            "[0000]/[00]/[00]",
+            object : MaskedTextChangedListener.ValueListener {
+                override fun onTextChanged(
+                    maskFilled: Boolean,
+                    extractedValue: String,
+                    formattedValue: String
+                ) {
+                    val birth_Pattern = Regex("^(19[0-9]{2}|20[0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])$") // 생년월일 정규식 (YYYYMMDD)
+                    val isValid = birth_Pattern.matches(extractedValue)
 
-        val birth_Pattern = Regex("^(19[0-9]{2}|20[0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])$") // 생년월일 정규식 (YYYYMMDD)
-
-        // 생년월일 입력란 실시간 감지 이벤트 (자동 슬래시 삽입용 TextWatcher)
-        input_text.addTextChangedListener(
-            createFlexibleTextWatcher(
-                validateInput = { input -> birth_Pattern.matches(input) },
-                onValidStateChanged = { isValid ->
                     when {
                         input_text.text.toString().isEmpty() -> {
                             setBoxField(input_text, "#666666".toColorInt())
@@ -133,8 +137,31 @@ class SignUpActivity2 : AppCompatActivity() {
                         }
                     }
                 }
-            )
+            }
         )
+
+        // 생년월일 입력란 실시간 감지 이벤트 (자동 슬래시 삽입용 TextWatcher)
+//        input_text.addTextChangedListener(
+//            createFlexibleTextWatcher(
+//                validateInput = { input -> birth_Pattern.matches(input) },
+//                onValidStateChanged = { isValid ->
+//                    when {
+//                        input_text.text.toString().isEmpty() -> {
+//                            setBoxField(input_text, "#666666".toColorInt())
+//                            setBirthConfirmed(false)
+//                        }
+//                        isValid -> {
+//                            setBoxField(input_text, "#4B9F72".toColorInt())
+//                            setBirthConfirmed(true)
+//                        }
+//                        else -> {
+//                            setBoxField(input_text, "#FF0000".toColorInt())
+//                            setBirthConfirmed(false)
+//                        }
+//                    }
+//                }
+//            )
+//        )
     }
 
     // '전화번호' 생성 기능 함수
