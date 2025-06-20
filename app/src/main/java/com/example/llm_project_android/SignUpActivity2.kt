@@ -57,9 +57,6 @@ class SignUpActivity2 : AppCompatActivity() {
         // 생년월일 생성
         //create_birth(birth, { is_Birth_Confirmed }, { is_Birth_Confirmed = it })
 
-        val formatWatcher = MaskFormatWatcher(Format("+7 ([000]) [000]-[00]-[00]"))
-        formatWatcher.installOn(editText)
-
         phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
         // 전화번호 생성
         create_phone(phone, { is_Phone_Confirmed }, { is_Phone_Confirmed = it })
@@ -79,44 +76,6 @@ class SignUpActivity2 : AppCompatActivity() {
 //
 //        if (data["job"] == '') {}
 //        else {}
-    }
-
-    // '비밀번호' 생성 기능 함수
-    fun create_pw(input_text: EditText, rule: TextView, check_text: EditText, getPwConfirmed: () -> Boolean, setPwIdConfirmed: (Boolean) -> Unit) {
-        val pw_Pattern = Regex("^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{8,16}$")    // 영문, 숫자 (8-16자리)
-
-        // 비밀번호 입력란 실시간 감지 이벤트
-        input_text.addTextChangedListener(
-            createFlexibleTextWatcher(
-                targetTextView = rule,
-                updateText = { input ->
-                    if (pw_Pattern.matches(input_text.text.toString())) "사용 가능한 비밀번호입니다"    // 비밀번호 정규식 만족
-                    else "8~16자의 영문, 숫자를 사용하세요" },
-                updateTextColor = { input ->
-                    when {
-                        input_text.text.toString().isEmpty() -> "#1F70CC".toColorInt()
-                        pw_Pattern.matches(input) -> "#4B9F72".toColorInt()
-                        else -> "#FF0000".toColorInt()
-                    }},
-                validateInput = { input -> pw_Pattern.matches(input_text.text.toString()) },
-                onValidStateChanged = { isValid ->
-                    when {
-                        input_text.text.toString().isEmpty() -> {                           // 공란
-                            setBoxField(input_text, "#666666".toColorInt())
-                            check_text.isEnabled = false                                       // 비밀번호 확인란 비활성화
-                            setPwIdConfirmed(false) }                                          // 다음 버튼 조건 미충족
-                        isValid -> {                                                        // 비밀번호 사용 가능
-                            setBoxField(input_text, "#4B9F72".toColorInt())
-                            check_text.isEnabled = true                                        // 비밀번호 확인란 활성화
-                            setPwIdConfirmed(true) }                                           // 다음 버튼 조건 충족
-                        else -> {                                                           // 비밀번호 사용 불가
-                            setBoxField(input_text, "#FF0000".toColorInt())
-                            check_text.isEnabled = false                                       // 비밀번호 확인란 비활성화
-                            setPwIdConfirmed(false) }                                          // 다음 버튼 조건 미충족
-                    }
-                }
-            )
-        )
     }
 
     // '이름' 생성 기능 함수
