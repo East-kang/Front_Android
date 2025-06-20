@@ -55,7 +55,7 @@ class SignUpActivity2 : AppCompatActivity() {
         create_name(name, { is_Name_Confirmed }, { is_Name_Confirmed = it })
 
         // 생년월일 생성
-        //create_birth(birth, { is_Birth_Confirmed }, { is_Birth_Confirmed = it })
+        create_birth(birth, { is_Birth_Confirmed }, { is_Birth_Confirmed = it })
 
         phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
         // 전화번호 생성
