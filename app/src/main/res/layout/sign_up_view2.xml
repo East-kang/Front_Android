@@ -238,7 +238,7 @@
 
                 <Spinner
                     android:id="@+id/job_spinner"
-                    android:layout_width="260dp"
+                    android:layout_width="250dp"
                     android:layout_height="40dp"
                     android:layout_gravity="end|center_vertical"
                     android:layout_marginHorizontal="30dp"
@@ -246,6 +246,7 @@
                     android:paddingLeft="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/job_textView"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
