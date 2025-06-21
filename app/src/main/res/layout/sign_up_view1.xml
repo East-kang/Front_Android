@@ -233,7 +233,8 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="50dp"
                 android:textColorHint="#666666"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:inputType="textEmailAddress"/>
 
 
             <TextView

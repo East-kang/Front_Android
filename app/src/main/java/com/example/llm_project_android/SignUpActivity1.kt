@@ -103,17 +103,64 @@ class SignUpActivity1 : AppCompatActivity() {
                 SignUpActivity2::class.java,
                 "id" to id_text.text.toString(),
                 "pw" to pw_text.text.toString(),
-                "email" to email_text.text.toString())
+                "email" to email_text.text.toString()
+                )
         }
     }
 
     // 화면 전환간 데이터 수신 및 적용
     fun restorePassedData() {
         val data = getPassedStrings("id", "pw", "email")
+        val allNull = listOf("id", "pw", "email").all {key -> data[key].isNullOrEmpty() }
+
         id_text.setText(data["id"] ?: "")
         pw_text.setText(data["pw"] ?: "")
         pw_check.setText(data["pw"] ?: "")
         email_text.setText(data["email"] ?: "")
+
+        if (!allNull) {
+            // 유효성 확인 상태 업데이트
+            is_Id_Confirmed = true
+            is_Pw_Confirmed = true
+            is_Pw_Check_Confirmed = true
+            is_Email_Confirmed = true
+
+            // 테두리 색상 (성공: 초록색)
+            setBoxField(id_text, "#4B9F72".toColorInt())
+            setBoxField(pw_text, "#4B9F72".toColorInt())
+            setBoxField(pw_check, "#4B9F72".toColorInt())
+            setBoxField(email_text, "#4B9F72".toColorInt())
+
+            // 텍스트뷰 안내 문구 갱신
+            findViewById<TextView>(R.id.id_rule).apply {
+                text = "사용 가능한 아이디입니다"
+                setTextColor("#4B9F72".toColorInt())
+            }
+            findViewById<TextView>(R.id.pw_rule).apply {
+                text = "사용 가능한 비밀번호입니다"
+                setTextColor("#4B9F72".toColorInt())
+            }
+            findViewById<TextView>(R.id.pw_check_text).apply {
+                text = "비밀번호가 일치합니다"
+                setTextColor("#4B9F72".toColorInt())
+            }
+            findViewById<TextView>(R.id.email_check).apply {
+                text = "사용 가능한 이메일입니다"
+                setTextColor("#4B9F72".toColorInt())
+            }
+
+            // ID 중복 확인 버튼 활성화 (색상 포함)
+            findViewById<Button>(R.id.checkButton).apply {
+                isEnabled = true
+                setBackgroundResource(R.drawable.enabled_button)
+            }
+
+            // 비밀번호 창 활성/비활성화
+            findViewById<EditText>(R.id.password_editText).isEnabled = false
+            findViewById<EditText>(R.id.check_editText).isEnabled = true
+        }
+
+
     }
 
     // '아이디' 생성 기능 함수
