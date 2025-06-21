@@ -82,7 +82,7 @@ class SignUpActivity2 : AppCompatActivity() {
 
         // 전화번호 생성
         create_phone(phone, { is_Phone_Confirmed }, { is_Phone_Confirmed = it })
-
+        phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
         // 성별 체크
         isChecked_gender(gender, { is_Gender_Confirmed = it})
 
@@ -122,25 +122,6 @@ class SignUpActivity2 : AppCompatActivity() {
                 "married" to married,
                 "job" to job )
             }
-    }
-    // '직업' 선택 기능 함수
-    fun select_job(spinner: Spinner, onJobSelected: (String) -> Unit, setJobConfirmed: (Boolean) -> Unit) {
-        var job_list = resources.getStringArray(R.array.jobs)           // 직업 목록
-        var adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, job_list)
-        spinner.adapter = adapter
-
-        spinner.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                val item = job_list[position]
-                onJobSelected(item)
-                if (position == 0) setJobConfirmed(false)
-                else setJobConfirmed(true)
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                setJobConfirmed(false)
-            }
-        }
     }
 
     // 화면 전환간 데이터 수신 및 적용
@@ -227,7 +208,7 @@ class SignUpActivity2 : AppCompatActivity() {
 
     // '전화번호' 생성 기능 함수
     fun create_phone(input_text: EditText, getPhoneConfirmed: () -> Boolean, setPhoneConfirmed: (Boolean) -> Unit) {
-        val phone_Pattern = Regex("^(010+-[0-9]{4}+-[0-9]{4})$") // 전화번호 정규식 (010-xxxx-xxxx)
+        val phone_Pattern = Regex("^(010[0-9]{8})$") // 전화번호 정규식 (010-xxxx-xxxx)
 
         input_text.addTextChangedListener(
             createFlexibleTextWatcher(
@@ -266,7 +247,25 @@ class SignUpActivity2 : AppCompatActivity() {
         }
     }
 
+    // '직업' 선택 기능 함수
+    fun select_job(spinner: Spinner, onJobSelected: (String) -> Unit, setJobConfirmed: (Boolean) -> Unit) {
+        var job_list = resources.getStringArray(R.array.jobs)           // 직업 목록
+        var adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, job_list)
+        spinner.adapter = adapter
 
+        spinner.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                val item = job_list[position]
+                onJobSelected(item)
+                if (position == 0) setJobConfirmed(false)
+                else setJobConfirmed(true)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                setJobConfirmed(false)
+            }
+        }
+    }
 
     // '다음' 버튼 클릭 조건 함수
     fun isAllConfirmed(Confirmed1: Boolean, Confirmed2: Boolean, Confirmed3: Boolean, Confirmed4: Boolean, Confirmed5: Boolean, Confirmed6: Boolean): Boolean {
