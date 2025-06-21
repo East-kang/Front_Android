@@ -83,6 +83,7 @@ class SignUpActivity2 : AppCompatActivity() {
         // 전화번호 생성
         create_phone(phone, { is_Phone_Confirmed }, { is_Phone_Confirmed = it })
         phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+
         // 성별 체크
         isChecked_gender(gender, { is_Gender_Confirmed = it})
 
@@ -208,7 +209,7 @@ class SignUpActivity2 : AppCompatActivity() {
 
     // '전화번호' 생성 기능 함수
     fun create_phone(input_text: EditText, getPhoneConfirmed: () -> Boolean, setPhoneConfirmed: (Boolean) -> Unit) {
-        val phone_Pattern = Regex("^(010[0-9]{8})$") // 전화번호 정규식 (010-xxxx-xxxx)
+        val phone_Pattern = Regex("^(010+-[0-9]{4}+-[0-9]{4})$") // 전화번호 정규식 (010-xxxx-xxxx)
 
         input_text.addTextChangedListener(
             createFlexibleTextWatcher(
