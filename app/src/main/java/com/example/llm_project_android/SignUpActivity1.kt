@@ -269,8 +269,8 @@ class SignUpActivity1 : AppCompatActivity() {
     }
 
     // '다음' 버튼 클릭 조건 함수
-    fun isAllConfirmed(is_Id_Confirmed: Boolean, is_Pw_Confirmed: Boolean, is_Pw_Check_Confirmed: Boolean, is_Email_Confirmed: Boolean): Boolean {
-        return is_Id_Confirmed && is_Pw_Confirmed && is_Pw_Check_Confirmed && is_Email_Confirmed
+    fun isAllConfirmed(Confirmed1: Boolean, Confirmed2: Boolean, Confirmed3: Boolean, Confirmed4: Boolean): Boolean {
+        return Confirmed1 && Confirmed2 && Confirmed3 && Confirmed4
     }
 
     // '다음' 버튼 활성화 함수
