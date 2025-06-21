@@ -59,6 +59,8 @@ class SignUpActivity2 : AppCompatActivity() {
         val married = findViewById<RadioGroup>(R.id.radioMaritalStatus) // 결혼 여부 체크 그룹
         val gender = findViewById<RadioGroup>(R.id.radioGender)         // 성별 체크 그룹
 
+        var job_list = resources.getStringArray(R.array.jbs)            // 직업 목록
+
 
         // 초기 설정 (버튼 비활성화, 입력 값 초기화)
         updateNextButton()
