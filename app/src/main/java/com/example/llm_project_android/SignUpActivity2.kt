@@ -66,8 +66,6 @@ class SignUpActivity2 : AppCompatActivity() {
 
         // 초기 설정 (버튼 비활성화, 입력 값 초기화)
         updateNextButton()
-        gender_M.isChecked = false;  gender_F.isChecked = false
-        married_N.isChecked = false; married_Y.isChecked = false
 
         // 이전 화면에서 받아온 데이터
         val id = intent.getStringExtra("id") ?: ""
@@ -77,6 +75,10 @@ class SignUpActivity2 : AppCompatActivity() {
 
         // 화면 전환 간 데이터 유지 (SignUpAcitivity3.kt -> SignUpAcitivity2.kt)
         restorePassedData()
+
+        // 체크 박스 체크 취소
+        gender.clearCheck()
+        married.clearCheck()
 
         // 이름 생성
         create_name(name, { is_Name_Confirmed }, { is_Name_Confirmed = it })
@@ -138,17 +140,13 @@ class SignUpActivity2 : AppCompatActivity() {
 
         if (data["gender"] == "남자") {
             gender_M.isChecked = true
-            gender_F.isChecked = false
         } else {
-            gender_M.isChecked = false
             gender_F.isChecked = true
         }
 
         if (data["married"] == "기혼") {
             married_N.isChecked = true
-            married_Y.isChecked = false
         } else {
-            married_N.isChecked = false
             married_Y.isChecked = true
         }
 
