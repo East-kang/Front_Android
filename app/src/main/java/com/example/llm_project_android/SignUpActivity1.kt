@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -26,6 +27,7 @@ class SignUpActivity1 : AppCompatActivity() {
     var is_Pw_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }        // 비밀번호 생성 완료 여부
     var is_Pw_Check_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }  // 비밀번호 확인 완료 여부
     var is_Email_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }     // 이메일 생성 완료 여부
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,30 +66,30 @@ class SignUpActivity1 : AppCompatActivity() {
         // 초기 설정 (버튼 비활성화, 입력 값 초기화)
         updateNextButton()
 
-        id_text.setText("qwer12345")
-        pw_text.setText("qwer1234")
-        pw_check.setText("qwer1234")
-        email_text.setText("aa12@naver.com")
-        btn_next.isEnabled = true
+//        id_text.setText("qwer12345")
+//        pw_text.setText("qwer1234")
+//        pw_check.setText("qwer1234")
+//        email_text.setText("aa12@naver.com")
+//        btn_next.isEnabled = true
 
-//        // 화면 전환으로 인한 데이터 수신
-//        restorePassedData()
-//
-//        // 아이디 생성 (입력 text, 입력 상태, 존재하는 아이디, 중복 확인 버튼, 완료 상태)
-//        create_id(id_text, id_rule, id_test, btn_idCheck, { is_Id_Confirmed }, {is_Id_Confirmed = it})
-//
-//        // 비밀번호 생성 (입력 text, 입력 상태, 완료 상태)
-//        create_pw(pw_text, pw_rule, pw_check, { is_Pw_Confirmed }, { is_Pw_Confirmed = it })
-//
-//        // 비밀번호 확인 (입력된 비밀번호 동적 text, 비밀번호 입력란, 입력 text, 입력 상태 text, 완료 상태)
-//        check_pw({ pw_text.text.toString() }, pw_text, pw_check, pw_check_text, { is_Pw_Check_Confirmed }, { is_Pw_Check_Confirmed = it })
-//
-//        // 이메일 생성 (입력 text, 생성 여부 text, 완료 상태)
-//        create_email(email_text, email_check, { is_Email_Confirmed }, { is_Email_Confirmed = it })
-//
-//        // 비밀번호 & 비밀번호 확인란 시각화 버튼 클릭 이벤트
-//        pw_eye_visibility(btn_eye, pw_text, {pw_visible}, {pw_visible = it})
-//        pw_eye_visibility(btn_eye_check, pw_check, {pw_check_visible}, {pw_check_visible = it})
+        // 화면 전환으로 인한 데이터 수신
+        restorePassedData()
+
+        // 아이디 생성 (입력 text, 입력 상태, 존재하는 아이디, 중복 확인 버튼, 완료 상태)
+        create_id(id_text, id_rule, id_test, btn_idCheck, { is_Id_Confirmed }, {is_Id_Confirmed = it})
+
+        // 비밀번호 생성 (입력 text, 입력 상태, 완료 상태)
+        create_pw(pw_text, pw_rule, pw_check, { is_Pw_Confirmed }, { is_Pw_Confirmed = it })
+
+        // 비밀번호 확인 (입력된 비밀번호 동적 text, 비밀번호 입력란, 입력 text, 입력 상태 text, 완료 상태)
+        check_pw({ pw_text.text.toString() }, pw_text, pw_check, pw_check_text, { is_Pw_Check_Confirmed }, { is_Pw_Check_Confirmed = it })
+
+        // 이메일 생성 (입력 text, 생성 여부 text, 완료 상태)
+        create_email(email_text, email_check, { is_Email_Confirmed }, { is_Email_Confirmed = it })
+
+        // 비밀번호 & 비밀번호 확인란 시각화 버튼 클릭 이벤트
+        pw_eye_visibility(btn_eye, pw_text, {pw_visible}, {pw_visible = it})
+        pw_eye_visibility(btn_eye_check, pw_check, {pw_check_visible}, {pw_check_visible = it})
 
         // 뒤로가기 버튼 클릭 이벤트 (to InitActivity or LoginActivity)
         btn_back.setOnClickListener {
@@ -103,17 +105,73 @@ class SignUpActivity1 : AppCompatActivity() {
                 SignUpActivity2::class.java,
                 "id" to id_text.text.toString(),
                 "pw" to pw_text.text.toString(),
-                "email" to email_text.text.toString())
+                "email" to email_text.text.toString(),
+                "source" to source
+                )
         }
+
+        onBackPressedDispatcher.addCallback(this) {
+            when (source) {
+                "InitActivity" -> navigateTo(InitActivity::class.java, reverseAnimation = true)   // 초기화된 화면
+                "LoginActivity" -> navigateTo(LoginActivity::class.java, reverseAnimation = true) // 값 유지된 화면
+            }
+        }
+
     }
 
     // 화면 전환간 데이터 수신 및 적용
     fun restorePassedData() {
         val data = getPassedStrings("id", "pw", "email")
+        val allNull = listOf("id", "pw", "email").all {key -> data[key].isNullOrEmpty() }
+
         id_text.setText(data["id"] ?: "")
         pw_text.setText(data["pw"] ?: "")
         pw_check.setText(data["pw"] ?: "")
         email_text.setText(data["email"] ?: "")
+
+        if (!allNull) {
+            // 유효성 확인 상태 업데이트
+            is_Id_Confirmed = true
+            is_Pw_Confirmed = true
+            is_Pw_Check_Confirmed = true
+            is_Email_Confirmed = true
+
+            // 테두리 색상 (성공: 초록색)
+            setBoxField(id_text, "#4B9F72".toColorInt())
+            setBoxField(pw_text, "#4B9F72".toColorInt())
+            setBoxField(pw_check, "#4B9F72".toColorInt())
+            setBoxField(email_text, "#4B9F72".toColorInt())
+
+            // 텍스트뷰 안내 문구 갱신
+            findViewById<TextView>(R.id.id_rule).apply {
+                text = "사용 가능한 아이디입니다"
+                setTextColor("#4B9F72".toColorInt())
+            }
+            findViewById<TextView>(R.id.pw_rule).apply {
+                text = "사용 가능한 비밀번호입니다"
+                setTextColor("#4B9F72".toColorInt())
+            }
+            findViewById<TextView>(R.id.pw_check_text).apply {
+                text = "비밀번호가 일치합니다"
+                setTextColor("#4B9F72".toColorInt())
+            }
+            findViewById<TextView>(R.id.email_check).apply {
+                text = "사용 가능한 이메일입니다"
+                setTextColor("#4B9F72".toColorInt())
+            }
+
+            // ID 중복 확인 버튼 활성화 (색상 포함)
+            findViewById<Button>(R.id.checkButton).apply {
+                isEnabled = true
+                setBackgroundResource(R.drawable.enabled_button)
+            }
+
+            // 비밀번호 창 활성/비활성화
+            findViewById<EditText>(R.id.password_editText).isEnabled = false
+            findViewById<EditText>(R.id.check_editText).isEnabled = true
+        }
+
+
     }
 
     // '아이디' 생성 기능 함수
@@ -269,8 +327,8 @@ class SignUpActivity1 : AppCompatActivity() {
     }
 
     // '다음' 버튼 클릭 조건 함수
-    fun isAllConfirmed(is_Id_Confirmed: Boolean, is_Pw_Confirmed: Boolean, is_Pw_Check_Confirmed: Boolean, is_Email_Confirmed: Boolean): Boolean {
-        return is_Id_Confirmed && is_Pw_Confirmed && is_Pw_Check_Confirmed && is_Email_Confirmed
+    fun isAllConfirmed(Confirmed1: Boolean, Confirmed2: Boolean, Confirmed3: Boolean, Confirmed4: Boolean): Boolean {
+        return Confirmed1 && Confirmed2 && Confirmed3 && Confirmed4
     }
 
     // '다음' 버튼 활성화 함수
