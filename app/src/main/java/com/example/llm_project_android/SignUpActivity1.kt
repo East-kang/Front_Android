@@ -64,30 +64,30 @@ class SignUpActivity1 : AppCompatActivity() {
         // 초기 설정 (버튼 비활성화, 입력 값 초기화)
         updateNextButton()
 
-        id_text.setText("qwer12345")
-        pw_text.setText("qwer1234")
-        pw_check.setText("qwer1234")
-        email_text.setText("aa12@naver.com")
-        btn_next.isEnabled = true
+//        id_text.setText("qwer12345")
+//        pw_text.setText("qwer1234")
+//        pw_check.setText("qwer1234")
+//        email_text.setText("aa12@naver.com")
+//        btn_next.isEnabled = true
 
-//        // 화면 전환으로 인한 데이터 수신
-//        restorePassedData()
-//
-//        // 아이디 생성 (입력 text, 입력 상태, 존재하는 아이디, 중복 확인 버튼, 완료 상태)
-//        create_id(id_text, id_rule, id_test, btn_idCheck, { is_Id_Confirmed }, {is_Id_Confirmed = it})
-//
-//        // 비밀번호 생성 (입력 text, 입력 상태, 완료 상태)
-//        create_pw(pw_text, pw_rule, pw_check, { is_Pw_Confirmed }, { is_Pw_Confirmed = it })
-//
-//        // 비밀번호 확인 (입력된 비밀번호 동적 text, 비밀번호 입력란, 입력 text, 입력 상태 text, 완료 상태)
-//        check_pw({ pw_text.text.toString() }, pw_text, pw_check, pw_check_text, { is_Pw_Check_Confirmed }, { is_Pw_Check_Confirmed = it })
-//
-//        // 이메일 생성 (입력 text, 생성 여부 text, 완료 상태)
-//        create_email(email_text, email_check, { is_Email_Confirmed }, { is_Email_Confirmed = it })
-//
-//        // 비밀번호 & 비밀번호 확인란 시각화 버튼 클릭 이벤트
-//        pw_eye_visibility(btn_eye, pw_text, {pw_visible}, {pw_visible = it})
-//        pw_eye_visibility(btn_eye_check, pw_check, {pw_check_visible}, {pw_check_visible = it})
+        // 화면 전환으로 인한 데이터 수신
+        restorePassedData()
+
+        // 아이디 생성 (입력 text, 입력 상태, 존재하는 아이디, 중복 확인 버튼, 완료 상태)
+        create_id(id_text, id_rule, id_test, btn_idCheck, { is_Id_Confirmed }, {is_Id_Confirmed = it})
+
+        // 비밀번호 생성 (입력 text, 입력 상태, 완료 상태)
+        create_pw(pw_text, pw_rule, pw_check, { is_Pw_Confirmed }, { is_Pw_Confirmed = it })
+
+        // 비밀번호 확인 (입력된 비밀번호 동적 text, 비밀번호 입력란, 입력 text, 입력 상태 text, 완료 상태)
+        check_pw({ pw_text.text.toString() }, pw_text, pw_check, pw_check_text, { is_Pw_Check_Confirmed }, { is_Pw_Check_Confirmed = it })
+
+        // 이메일 생성 (입력 text, 생성 여부 text, 완료 상태)
+        create_email(email_text, email_check, { is_Email_Confirmed }, { is_Email_Confirmed = it })
+
+        // 비밀번호 & 비밀번호 확인란 시각화 버튼 클릭 이벤트
+        pw_eye_visibility(btn_eye, pw_text, {pw_visible}, {pw_visible = it})
+        pw_eye_visibility(btn_eye_check, pw_check, {pw_check_visible}, {pw_check_visible = it})
 
         // 뒤로가기 버튼 클릭 이벤트 (to InitActivity or LoginActivity)
         btn_back.setOnClickListener {

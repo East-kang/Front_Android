@@ -31,6 +31,7 @@ class SignUpActivity2 : AppCompatActivity() {
     private lateinit var married_N: RadioButton
     private lateinit var married_Y: RadioButton
     private lateinit var job_spinner: Spinner
+    private var selectedJob: String = ""
 
     var is_Name_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }        // 아이디 생성 완료 여부
     var is_Birth_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }        // 비밀번호 생성 완료 여부
@@ -65,6 +66,8 @@ class SignUpActivity2 : AppCompatActivity() {
 
         // 초기 설정 (버튼 비활성화, 입력 값 초기화)
         updateNextButton()
+        gender_M.isChecked = false;  gender_F.isChecked = false
+        married_N.isChecked = false; married_Y.isChecked = false
 
         // 이전 화면에서 받아온 데이터
         val id = intent.getStringExtra("id") ?: ""
@@ -91,9 +94,7 @@ class SignUpActivity2 : AppCompatActivity() {
         isChecked_married(married, { is_Married_Confirmed = it})
 
         // 직업 선택
-        var selectedJob: String? = null
-        select_job(job_spinner, { job -> selectedJob }, { is_Job_Confirmed = it })
-
+        select_job(job_spinner, { job -> selectedJob = job }, { is_Job_Confirmed = it })
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity1)
         btn_back.setOnClickListener {
@@ -101,7 +102,8 @@ class SignUpActivity2 : AppCompatActivity() {
                 SignUpActivity1::class.java,
                 "id" to id,
                 "pw" to pw,
-                "email" to email
+                "email" to email,
+                reverseAnimation = true
             )
         }
 
@@ -109,7 +111,7 @@ class SignUpActivity2 : AppCompatActivity() {
         btn_next.setOnClickListener {
             val gender = if (gender_M.isChecked) "남자"  else "여자"
             val married = if (married_N.isChecked) "미혼"  else "기혼"
-            val job: String = ""
+            val job: String = selectedJob
 
             navigateTo(
                 SignUpActivity3::class.java,
@@ -118,7 +120,7 @@ class SignUpActivity2 : AppCompatActivity() {
                 "email" to email,
                 "name" to name.text.toString(),
                 "birth" to birth.text.toString(),
-                "phone" to phone.text.toString(),
+                "phone" to phone.text.toString().replace("-",""),
                 "gender" to gender,
                 "married" to married,
                 "job" to job )
@@ -209,7 +211,7 @@ class SignUpActivity2 : AppCompatActivity() {
 
     // '전화번호' 생성 기능 함수
     fun create_phone(input_text: EditText, getPhoneConfirmed: () -> Boolean, setPhoneConfirmed: (Boolean) -> Unit) {
-        val phone_Pattern = Regex("^(010+-[0-9]{4}+-[0-9]{4})$") // 전화번호 정규식 (010-xxxx-xxxx)
+        val phone_Pattern = Regex("^(010-[0-9]{4}-[0-9]{4})$") // 전화번호 정규식 (010-xxxx-xxxx)
 
         input_text.addTextChangedListener(
             createFlexibleTextWatcher(
