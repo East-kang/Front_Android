@@ -1,7 +1,11 @@
 package com.example.llm_project_android
 
+import android.content.res.Resources
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -26,7 +30,7 @@ class SignUpActivity2 : AppCompatActivity() {
     private lateinit var gender_F: RadioButton
     private lateinit var married_N: RadioButton
     private lateinit var married_Y: RadioButton
-    private lateinit var job: Spinner
+    private lateinit var job_spinner: Spinner
 
     var is_Name_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }        // 아이디 생성 완료 여부
     var is_Birth_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }        // 비밀번호 생성 완료 여부
@@ -53,14 +57,11 @@ class SignUpActivity2 : AppCompatActivity() {
         gender_F = findViewById<RadioButton>(R.id.radioFemale)          // 성별 (여)
         married_N = findViewById<RadioButton>(R.id.radioSingle)         // 결혼여부 (미혼)
         married_Y = findViewById<RadioButton>(R.id.radioMarried)        // 결혼여부 (기혼)
-        job = findViewById<Spinner>(R.id.job_spinner)                   // 직업 드롭다운
+        job_spinner = findViewById<Spinner>(R.id.job_spinner)           // 직업 드롭다운
 
         val btn_back = findViewById<ImageButton>(R.id.backButton)       // 뒤로가기 버튼
         val married = findViewById<RadioGroup>(R.id.radioMaritalStatus) // 결혼 여부 체크 그룹
         val gender = findViewById<RadioGroup>(R.id.radioGender)         // 성별 체크 그룹
-
-        var job_list = resources.getStringArray(R.array.jbs)            // 직업 목록
-
 
         // 초기 설정 (버튼 비활성화, 입력 값 초기화)
         updateNextButton()
@@ -89,6 +90,8 @@ class SignUpActivity2 : AppCompatActivity() {
         isChecked_married(married, { is_Married_Confirmed = it})
 
         // 직업 선택
+        var selectedJob: String? = null
+        select_job(job_spinner, { job -> selectedJob }, { is_Job_Confirmed = it })
 
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity1)
@@ -119,6 +122,25 @@ class SignUpActivity2 : AppCompatActivity() {
                 "married" to married,
                 "job" to job )
             }
+    }
+    // '직업' 선택 기능 함수
+    fun select_job(spinner: Spinner, onJobSelected: (String) -> Unit, setJobConfirmed: (Boolean) -> Unit) {
+        var job_list = resources.getStringArray(R.array.jobs)           // 직업 목록
+        var adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, job_list)
+        spinner.adapter = adapter
+
+        spinner.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                val item = job_list[position]
+                onJobSelected(item)
+                if (position == 0) setJobConfirmed(false)
+                else setJobConfirmed(true)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                setJobConfirmed(false)
+            }
+        }
     }
 
     // 화면 전환간 데이터 수신 및 적용
@@ -243,6 +265,8 @@ class SignUpActivity2 : AppCompatActivity() {
             setMarriedConfirmed(isChecked != -1)
         }
     }
+
+
 
     // '다음' 버튼 클릭 조건 함수
     fun isAllConfirmed(Confirmed1: Boolean, Confirmed2: Boolean, Confirmed3: Boolean, Confirmed4: Boolean, Confirmed5: Boolean, Confirmed6: Boolean): Boolean {

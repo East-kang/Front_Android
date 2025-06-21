@@ -219,7 +219,7 @@
                 </RadioGroup>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="15dp"
@@ -230,7 +230,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center_vertical"
-                    android:layout_marginHorizontal="40dp"
+                    android:layout_marginStart="40dp"
                     android:text="직업"
                     android:textColor="#000000"
                     android:textSize="18dp"
@@ -238,19 +238,20 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+                
                 <Spinner
                     android:id="@+id/job_spinner"
-                    android:layout_width="250dp"
+                    android:layout_width="220dp"
                     android:layout_height="40dp"
-                    android:layout_gravity="end|center_vertical"
-                    android:layout_marginHorizontal="30dp"
+                    android:layout_marginEnd="30dp"
                     android:background="@drawable/spinner_window"
-                    android:paddingLeft="5dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/job_textView"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:paddingStart="10dp"
+                    android:autofillHints=""/>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
