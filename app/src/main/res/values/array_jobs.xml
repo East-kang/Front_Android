@@ -2,6 +2,7 @@
 <resources>
 
     <string-array name="jobs">
+        <item>---직업을 선택하세요---</item>
         <item>사무직/행적직</item>
         <item>공무원</item>
         <item>전문직(의사/법조인 등)</item>
