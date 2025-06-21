@@ -73,6 +73,7 @@ class SignUpActivity2 : AppCompatActivity() {
         val id = intent.getStringExtra("id") ?: ""
         val pw = intent.getStringExtra("pw") ?: ""
         val email = intent.getStringExtra("email") ?: ""
+        val source = intent.getStringExtra("source") ?: ""
 
         // 화면 전환 간 데이터 유지 (SignUpAcitivity3.kt -> SignUpAcitivity2.kt)
         restorePassedData()
@@ -103,6 +104,7 @@ class SignUpActivity2 : AppCompatActivity() {
                 "id" to id,
                 "pw" to pw,
                 "email" to email,
+                "source" to source,
                 reverseAnimation = true
             )
         }

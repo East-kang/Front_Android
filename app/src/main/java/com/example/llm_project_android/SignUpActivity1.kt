@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -26,6 +27,7 @@ class SignUpActivity1 : AppCompatActivity() {
     var is_Pw_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }        // 비밀번호 생성 완료 여부
     var is_Pw_Check_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }  // 비밀번호 확인 완료 여부
     var is_Email_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }     // 이메일 생성 완료 여부
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,9 +105,18 @@ class SignUpActivity1 : AppCompatActivity() {
                 SignUpActivity2::class.java,
                 "id" to id_text.text.toString(),
                 "pw" to pw_text.text.toString(),
-                "email" to email_text.text.toString()
+                "email" to email_text.text.toString(),
+                "source" to source
                 )
         }
+
+        onBackPressedDispatcher.addCallback(this) {
+            when (source) {
+                "InitActivity" -> navigateTo(InitActivity::class.java, reverseAnimation = true)   // 초기화된 화면
+                "LoginActivity" -> navigateTo(LoginActivity::class.java, reverseAnimation = true) // 값 유지된 화면
+            }
+        }
+
     }
 
     // 화면 전환간 데이터 수신 및 적용
