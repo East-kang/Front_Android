@@ -121,11 +121,13 @@ class SignUpActivity2 : AppCompatActivity() {
             val gender = if (gender_M.isChecked) "남자"  else "여자"
             val married = if (married_N.isChecked) "미혼"  else "기혼"
             val job = if (selectedJob == "기타") job_etc.text.toString() else selectedJob
+
             navigateTo(
                 SignUpActivity3::class.java,
                 "id" to id,
                 "pw" to pw,
                 "email" to email,
+                "source" to source,
                 "name" to name.text.toString(),
                 "birth" to birth.text.toString(),
                 "phone" to phone.text.toString().replace("-",""),
