@@ -81,6 +81,7 @@ class SignUpActivity2 : AppCompatActivity() {
         // 체크 박스 체크 취소
         gender.clearCheck()
         married.clearCheck()
+        job_etc.visibility = View.INVISIBLE
 
         // 이름 생성
         create_name(name, { is_Name_Confirmed }, { is_Name_Confirmed = it })
@@ -139,20 +140,25 @@ class SignUpActivity2 : AppCompatActivity() {
         birth.setText(data["birth"] ?: "")
         phone.setText(data["phone"] ?: "")
 
-        if (data["gender"] == "남자") {
-            gender_M.isChecked = true
-        } else {
-            gender_F.isChecked = true
-        }
+        if (data["gender"] == "남자") gender_M.isChecked = true
+        else gender_F.isChecked = true
 
-        if (data["married"] == "기혼") {
-            married_N.isChecked = true
-        } else {
-            married_Y.isChecked = true
-        }
+        if (data["married"] == "기혼") married_N.isChecked = true
+        else married_Y.isChecked = true
 
-//        if (data["job"] == '') {}
-//        else {}
+        val job = data["job"] ?: ""
+        val job_list = resources.getStringArray(R.array.jobs)
+        val job_index = job_list.indexOf(job)
+
+        if (job in job_list) {
+            job_spinner.setSelection(job_index - 1)
+            job_etc.setText("")
+            job_etc.visibility = View.INVISIBLE
+        } else {
+            job_spinner.setSelection(job_list.lastIndex)
+            job_etc.visibility = View.VISIBLE
+            job_etc.setText(job)
+        }
     }
 
     // '이름' 생성 기능 함수
