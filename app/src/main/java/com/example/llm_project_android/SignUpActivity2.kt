@@ -1,6 +1,7 @@
 package com.example.llm_project_android
 
 import android.content.res.Resources
+import android.graphics.Rect
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.View
@@ -11,6 +12,7 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.ScrollView
 import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
