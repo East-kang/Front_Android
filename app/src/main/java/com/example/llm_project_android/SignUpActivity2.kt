@@ -1,6 +1,7 @@
 package com.example.llm_project_android
 
 import android.content.res.Resources
+import android.graphics.Rect
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.View
@@ -11,6 +12,7 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.ScrollView
 import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +28,7 @@ class SignUpActivity2 : AppCompatActivity() {
     private lateinit var name: EditText
     private lateinit var birth: EditText
     private lateinit var phone: EditText
+    private lateinit var job_etc: EditText
     private lateinit var gender_M: RadioButton
     private lateinit var gender_F: RadioButton
     private lateinit var married_N: RadioButton
@@ -59,6 +62,7 @@ class SignUpActivity2 : AppCompatActivity() {
         married_N = findViewById<RadioButton>(R.id.radioSingle)         // 결혼여부 (미혼)
         married_Y = findViewById<RadioButton>(R.id.radioMarried)        // 결혼여부 (기혼)
         job_spinner = findViewById<Spinner>(R.id.job_spinner)           // 직업 드롭다운
+        job_etc = findViewById<EditText>(R.id.job_etc)                  // 기타 직업 입력란
 
         val btn_back = findViewById<ImageButton>(R.id.backButton)       // 뒤로가기 버튼
         val married = findViewById<RadioGroup>(R.id.radioMaritalStatus) // 결혼 여부 체크 그룹
@@ -79,6 +83,7 @@ class SignUpActivity2 : AppCompatActivity() {
         // 체크 박스 체크 취소
         gender.clearCheck()
         married.clearCheck()
+        job_etc.visibility = View.INVISIBLE
 
         // 이름 생성
         create_name(name, { is_Name_Confirmed }, { is_Name_Confirmed = it })
@@ -115,8 +120,7 @@ class SignUpActivity2 : AppCompatActivity() {
         btn_next.setOnClickListener {
             val gender = if (gender_M.isChecked) "남자"  else "여자"
             val married = if (married_N.isChecked) "미혼"  else "기혼"
-            val job: String = selectedJob
-
+            val job = if (selectedJob == "기타") job_etc.text.toString() else selectedJob
             navigateTo(
                 SignUpActivity3::class.java,
                 "id" to id,
@@ -138,20 +142,25 @@ class SignUpActivity2 : AppCompatActivity() {
         birth.setText(data["birth"] ?: "")
         phone.setText(data["phone"] ?: "")
 
-        if (data["gender"] == "남자") {
-            gender_M.isChecked = true
-        } else {
-            gender_F.isChecked = true
-        }
+        if (data["gender"] == "남자") gender_M.isChecked = true
+        else gender_F.isChecked = true
 
-        if (data["married"] == "기혼") {
-            married_N.isChecked = true
-        } else {
-            married_Y.isChecked = true
-        }
+        if (data["married"] == "기혼") married_N.isChecked = true
+        else married_Y.isChecked = true
 
-//        if (data["job"] == '') {}
-//        else {}
+        val job = data["job"] ?: ""
+        val job_list = resources.getStringArray(R.array.jobs)
+        val job_index = job_list.indexOf(job)
+
+        if (job in job_list) {
+            job_spinner.setSelection(job_index - 1)
+            job_etc.setText("")
+            job_etc.visibility = View.INVISIBLE
+        } else {
+            job_spinner.setSelection(job_list.lastIndex)
+            job_etc.visibility = View.VISIBLE
+            job_etc.setText(job)
+        }
     }
 
     // '이름' 생성 기능 함수
@@ -252,22 +261,42 @@ class SignUpActivity2 : AppCompatActivity() {
 
     // '직업' 선택 기능 함수
     fun select_job(spinner: Spinner, onJobSelected: (String) -> Unit, setJobConfirmed: (Boolean) -> Unit) {
+        val job_Pattern = Regex("^[\\\\s가-힣]{2,20}\$")             // 직업명 정규식 (한글 2-20자)
         var job_list = resources.getStringArray(R.array.jobs)           // 직업 목록
         var adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, job_list)
         spinner.adapter = adapter
 
         spinner.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                val item = job_list[position]
-                onJobSelected(item)
-                if (position == 0) setJobConfirmed(false)
-                else setJobConfirmed(true)
+                val item = job_list[position]                           // item에 선택한 직업 할당
+                onJobSelected(item)                                     // selectedJob 변수에 선택한 항목 저장
+                if (position == 0) setJobConfirmed(false)               // '---직업을 선택해주세요---' 클릭 시, 선택 안된 것으로 간주
+                else {                                                  // item을 선택한 경우
+                    if (position == spinner.adapter.count - 1){
+                        job_etc.visibility = View.VISIBLE
+                        setJobConfirmed(false)
+                    } else {
+                        job_etc.visibility = View.INVISIBLE
+                        job_etc.setText("")
+                        setJobConfirmed(true)
+                    }
+                }
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
+            override fun onNothingSelected(parent: AdapterView<*>?) {   // 선택하지 않은 경우
                 setJobConfirmed(false)
             }
         }
+
+        job_etc.addTextChangedListener(
+            createFlexibleTextWatcher(
+                validateInput = { input -> job_Pattern.matches(job_etc.text.toString())},
+                onValidStateChanged = { isValid ->
+                    if (!isValid)   setJobConfirmed(false)
+                    else            setJobConfirmed(true)
+                }
+            )
+        )
     }
 
     // '다음' 버튼 클릭 조건 함수
