@@ -48,5 +48,18 @@ class SignUpActivity3 : AppCompatActivity() {
 
         btn_back = findViewById<Button>(R.id.backButton)    // 뒤로가기 버튼
         btn_next = findViewById<Button>(R.id.next_Button)   // 다음 버튼
+
+        // 이전 화면에서 받아온 데이터
+        val id = intent.getStringExtra("id") ?: ""
+        val pw = intent.getStringExtra("pw") ?: ""
+        val email = intent.getStringExtra("email") ?: ""
+        val source = intent.getStringExtra("source") ?: ""
+        val name = intent.getStringExtra("name") ?: ""
+        val birth = intent.getStringExtra("birth") ?: ""
+        val phone = intent.getStringExtra("phone") ?: ""
+        val gender = intent.getStringExtra("gender") ?: ""
+        val married = intent.getStringExtra("married") ?: ""
+        val job = intent.getStringExtra("job") ?: ""
+        
     }
 }
