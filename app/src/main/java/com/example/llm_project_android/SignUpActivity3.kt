@@ -56,6 +56,14 @@ class SignUpActivity3 : AppCompatActivity() {
         // 화면 전환 간 데이터 유지 (SignUpAcitivity4.kt -> SignUpAcitivity3.kt)
         restorePassedData()
 
+        // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity1)
+        btn_back.setOnClickListener {
+            navigateTo(
+                SignUpActivity1::class.java,
+                *data.mapValues { it.value ?: "" }.toList().toTypedArray(),     // SignUp1에서 전달받은 데이터 그대로 전달
+                reverseAnimation = true
+            )
+        }
 
     }
 

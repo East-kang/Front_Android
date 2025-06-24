@@ -102,33 +102,11 @@ class SignUpActivity2 : AppCompatActivity() {
         select_job(job_spinner, { job -> selectedJob = job }, { is_Job_Confirmed = it })
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity1)
-        btn_back.setOnClickListener {
-            navigateTo(
-                SignUpActivity1::class.java,
-                "id" to data["id"]!!,
-                "pw" to data["pw"]!!,
-                "email" to data["email"]!!,
-                "source" to data["source"]!!,
-                reverseAnimation = true
-            )
-        }
+        clickBackButton(btn_back, SignUpActivity1::class.java, data)
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity3)
-        btn_next.setOnClickListener {
-            val gender = if (gender_M.isChecked) "남자"  else "여자"
-            val married = if (married_N.isChecked) "미혼"  else "기혼"
-            val job = if (selectedJob == "기타") job_etc.text.toString() else selectedJob
-
-            navigateTo(
-                SignUpActivity3::class.java,
-                *data.toList().toTypedArray(), // 이전 뷰 데이터 한 번에 전달 (id, pw, email, source)
-                "name" to name.text.toString(),
-                "birth" to birth.text.toString(),
-                "phone" to phone.text.toString().replace("-",""),
-                "gender" to gender,
-                "married" to married,
-                "job" to job )
-            }
+        clickNextButton(btn_next, data, name, birth, phone,
+            gender_M, married_N, selectedJob, job_etc)
     }
 
     // 화면 전환간 데이터 수신 및 적용
@@ -295,6 +273,17 @@ class SignUpActivity2 : AppCompatActivity() {
         )
     }
 
+    // '뒤로가기' 버튼 클릭 이벤트 정의 함수
+    fun AppCompatActivity.clickBackButton(backButton: View, targetActivity: Class<out AppCompatActivity>, data: Map<String, String> ) {
+        backButton.setOnClickListener {
+            navigateTo(
+                targetActivity,
+                *data.mapValues { it.value ?: "" }.toList().toTypedArray(),
+                reverseAnimation = true
+            )
+        }
+    }
+
     // '다음' 버튼 클릭 조건 함수
     fun isAllConfirmed(Confirmed1: Boolean, Confirmed2: Boolean, Confirmed3: Boolean, Confirmed4: Boolean, Confirmed5: Boolean, Confirmed6: Boolean): Boolean {
         return Confirmed1 && Confirmed2 && Confirmed3 && Confirmed4 && Confirmed5 && Confirmed6
@@ -308,6 +297,27 @@ class SignUpActivity2 : AppCompatActivity() {
         } else {
             btn_next.isEnabled = false
             btn_next.setBackgroundResource(R.drawable.disabled_button)
+        }
+    }
+
+    // '다음' 버튼 클릭 이벤트 정의 함수
+    fun AppCompatActivity.clickNextButton(nextButton: View, data: Map<String, String>, nameField: EditText, birthField: EditText, phoneField: EditText,
+                                          genderMale: RadioButton, marriedSingle: RadioButton, selectedJob: String, jobEtcField: EditText) {
+        nextButton.setOnClickListener {
+            val gender = if (genderMale.isChecked) "남자" else "여자"
+            val married = if (marriedSingle.isChecked) "미혼" else "기혼"
+            val job = if (selectedJob == "기타") jobEtcField.text.toString() else selectedJob
+
+            navigateTo(
+                SignUpActivity3::class.java,
+                *data.mapValues { it.value ?: "" }.toList().toTypedArray(),
+                "name" to nameField.text.toString(),
+                "birth" to birthField.text.toString(),
+                "phone" to phoneField.text.toString().replace("-", ""),
+                "gender" to gender,
+                "married" to married,
+                "job" to job
+            )
         }
     }
 }

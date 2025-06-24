@@ -4,6 +4,7 @@ import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.TypedValue
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -92,31 +93,10 @@ class SignUpActivity1 : AppCompatActivity() {
 //        pw_eye_visibility(btn_eye_check, pw_check, {pw_check_visible}, {pw_check_visible = it})
 
         // 뒤로가기 버튼 클릭 이벤트 (to InitActivity or LoginActivity)
-        btn_back.setOnClickListener {
-            when (source) {
-                "InitActivity" -> navigateTo(InitActivity::class.java, reverseAnimation = true)   // 초기화된 화면
-                "LoginActivity" -> navigateTo(LoginActivity::class.java, reverseAnimation = true) // 값 유지된 화면
-            }
-        }
+        clickBackButton(btn_back, source, InitActivity::class.java, LoginActivity::class.java)
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity2)
-        btn_next.setOnClickListener {
-            navigateTo(
-                SignUpActivity2::class.java,
-                "id" to id_text.text.toString(),
-                "pw" to pw_text.text.toString(),
-                "email" to email_text.text.toString(),
-                "source" to source
-                )
-        }
-
-        onBackPressedDispatcher.addCallback(this) {
-            when (source) {
-                "InitActivity" -> navigateTo(InitActivity::class.java, reverseAnimation = true)   // 초기화된 화면
-                "LoginActivity" -> navigateTo(LoginActivity::class.java, reverseAnimation = true) // 값 유지된 화면
-            }
-        }
-
+        clickNextButton(btn_next,id_text,pw_text,email_text, source, SignUpActivity2::class.java)
     }
 
     // 화면 전환간 데이터 수신 및 적용
@@ -326,6 +306,17 @@ class SignUpActivity1 : AppCompatActivity() {
         )
     }
 
+    // '뒤로가기' 버튼 클릭 이벤트 정의 함수
+    fun AppCompatActivity.clickBackButton(backButton: View, source: String, targetActivity1: Class<out AppCompatActivity>, targetActivity2: Class<out AppCompatActivity>) {
+        backButton.setOnClickListener {
+            when (source) {
+                "InitActivity" -> navigateTo(targetActivity1, reverseAnimation = true)   // 초기화된 화면
+                "LoginActivity" -> navigateTo(targetActivity2, reverseAnimation = true) // 값 유지된 화면
+                else -> finish()
+            }
+        }
+    }
+
     // '다음' 버튼 클릭 조건 함수
     fun isAllConfirmed(Confirmed1: Boolean, Confirmed2: Boolean, Confirmed3: Boolean, Confirmed4: Boolean): Boolean {
         return Confirmed1 && Confirmed2 && Confirmed3 && Confirmed4
@@ -339,6 +330,19 @@ class SignUpActivity1 : AppCompatActivity() {
         } else {
             btn_next.isEnabled = false
             btn_next.setBackgroundResource(R.drawable.disabled_button)
+        }
+    }
+
+    // '다음' 버튼 클릭 이벤트 정의 함수
+    fun AppCompatActivity.clickNextButton(nextButton: View, idField: EditText, pwField: EditText, emailField: EditText, source: String, targetActivity: Class<out AppCompatActivity>) {
+        nextButton.setOnClickListener {
+            navigateTo(
+                targetActivity,
+                "id" to idField.text.toString(),
+                "pw" to pwField.text.toString(),
+                "email" to emailField.text.toString(),
+                "source" to source
+            )
         }
     }
 }

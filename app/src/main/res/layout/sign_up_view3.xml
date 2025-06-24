@@ -83,70 +83,80 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:text="질병 없음"
-                    android:textSize="13dp" />
+                    android:textSize="13dp"
+                    android:checked="false" />
 
                 <CheckBox
                     android:id="@+id/disease1"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:text="암 (위암, 폐암, 유방암 등)"
-                    android:textSize="13dp" />
+                    android:textSize="13dp"
+                    android:checked="false" />
 
                 <CheckBox
                     android:id="@+id/disease2"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:text="심혈관계 질환 (고혈압, 협심증, 심근경색 등)"
-                    android:textSize="13dp" />
+                    android:textSize="13dp"
+                    android:checked="false" />
 
                 <CheckBox
                     android:id="@+id/disease3"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:text="뇌혈관 질환 (뇌졸증, 뇌출혈 등)"
-                    android:textSize="13dp" />
+                    android:textSize="13dp"
+                    android:checked="false" />
 
                 <CheckBox
                     android:id="@+id/disease4"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:text="당뇨병"
-                    android:textSize="13dp" />
+                    android:textSize="13dp"
+                    android:checked="false" />
 
                 <CheckBox
                     android:id="@+id/disease5"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:text="간질환 (간경화, B형간염 등)"
-                    android:textSize="13dp" />
+                    android:textSize="13dp"
+                    android:checked="false" />
 
                 <CheckBox
                     android:id="@+id/disease6"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:text="폐질환 (천식, 만성폐쇄성폐질환 등)"
-                    android:textSize="13dp" />
+                    android:textSize="13dp"
+                    android:checked="false" />
 
                 <CheckBox
                     android:id="@+id/disease7"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:text="근골격계/척추질환 (디스크, 관절염 등)"
-                    android:textSize="13dp" />
+                    android:textSize="13dp"
+                    android:checked="false" />
 
                 <CheckBox
                     android:id="@+id/disease8"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:text="정신질활 (우울증, 불안장애 등)"
-                    android:textSize="13dp" />
+                    android:textSize="13dp"
+                    android:checked="false" />
 
                 <CheckBox
                     android:id="@+id/disease9"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:text="기타 만성질환 (신장질환, 갑상선질환 등)"
-                    android:textSize="13dp" />
+                    android:textSize="13dp"
+                    android:checked="false" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
