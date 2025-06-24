@@ -13,21 +13,27 @@
         android:theme="@style/Theme.LLM_Project_Android">
         <activity
             android:name=".MainViewActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".SignUpActivity4"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".SignUpActivity3"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".SignUpActivity2"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".SignUpActivity1"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".InitActivity"
