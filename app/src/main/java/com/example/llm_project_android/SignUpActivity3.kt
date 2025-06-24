@@ -1,6 +1,7 @@
 package com.example.llm_project_android
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
 import androidx.activity.enableEdgeToEdge
@@ -50,16 +51,41 @@ class SignUpActivity3 : AppCompatActivity() {
         btn_next = findViewById<Button>(R.id.next_Button)   // 다음 버튼
 
         // 이전 화면에서 받아온 데이터
-        val id = intent.getStringExtra("id") ?: ""
-        val pw = intent.getStringExtra("pw") ?: ""
-        val email = intent.getStringExtra("email") ?: ""
-        val source = intent.getStringExtra("source") ?: ""
-        val name = intent.getStringExtra("name") ?: ""
-        val birth = intent.getStringExtra("birth") ?: ""
-        val phone = intent.getStringExtra("phone") ?: ""
-        val gender = intent.getStringExtra("gender") ?: ""
-        val married = intent.getStringExtra("married") ?: ""
-        val job = intent.getStringExtra("job") ?: ""
-        
+        val data = getPassedStrings("id", "pw", "email", "source", "name", "birth", "phone", "gender", "married", "job")
+
+        // 화면 전환 간 데이터 유지 (SignUpAcitivity4.kt -> SignUpAcitivity3.kt)
+        restorePassedData()
+
+
     }
+
+    // 화면 전환간 데이터 수신 및 적용
+    fun restorePassedData() {
+        val data = getPassedBooleans(
+            "disease0", "disease1", "disease2", "disease3", "disease4",
+            "disease5", "disease6", "disease7", "disease8", "disease9"
+        )
+
+        val checkBoxList = listOf(
+            item0, item1, item2, item3, item4,
+            item5, item6, item7, item8, item9
+        )
+
+        if (data["disease0"] == true)                                   // item0만 체크, 나머지는 해제
+            for (i in checkBoxList.indices)
+                checkBoxList[i].isChecked = (i == 0)
+        else {
+            for (i in 1 until checkBoxList.size)
+                checkBoxList[i].isChecked = (data["disease$i"] == true) // item1 ~ item9 중 true인 항목만 체크
+            checkBoxList[0].isChecked = false                           // item0은 해제
+        }
+    }
+
+    // Boolean으로 받은 Intent 값 받는 함수
+    fun AppCompatActivity.getPassedBooleans(vararg keys: String): Map<String, Boolean> {
+        return keys.associateWith { intent.getBooleanExtra(it, false) }
+    }
+
+    // item 체크
+
 }

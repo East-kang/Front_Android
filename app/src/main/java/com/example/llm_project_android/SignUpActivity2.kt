@@ -72,10 +72,7 @@ class SignUpActivity2 : AppCompatActivity() {
         updateNextButton()
 
         // 이전 화면에서 받아온 데이터
-        val id = intent.getStringExtra("id") ?: ""
-        val pw = intent.getStringExtra("pw") ?: ""
-        val email = intent.getStringExtra("email") ?: ""
-        val source = intent.getStringExtra("source") ?: ""
+        val data = getPassedStrings("id", "pw", "email", "source")
 
         // 화면 전환 간 데이터 유지 (SignUpAcitivity3.kt -> SignUpAcitivity2.kt)
         restorePassedData()
@@ -108,10 +105,10 @@ class SignUpActivity2 : AppCompatActivity() {
         btn_back.setOnClickListener {
             navigateTo(
                 SignUpActivity1::class.java,
-                "id" to id,
-                "pw" to pw,
-                "email" to email,
-                "source" to source,
+                "id" to data["id"]!!,
+                "pw" to data["pw"]!!,
+                "email" to data["email"]!!,
+                "source" to data["source"]!!,
                 reverseAnimation = true
             )
         }
@@ -124,10 +121,7 @@ class SignUpActivity2 : AppCompatActivity() {
 
             navigateTo(
                 SignUpActivity3::class.java,
-                "id" to id,
-                "pw" to pw,
-                "email" to email,
-                "source" to source,
+                *data.toList().toTypedArray(), // 이전 뷰 데이터 한 번에 전달 (id, pw, email, source)
                 "name" to name.text.toString(),
                 "birth" to birth.text.toString(),
                 "phone" to phone.text.toString().replace("-",""),
