@@ -302,7 +302,7 @@ class SignUpActivity2 : AppCompatActivity() {
 
     // '다음' 버튼 클릭 이벤트 정의 함수
     fun AppCompatActivity.clickNextButton(nextButton: View, data: Map<String, String>, nameField: EditText, birthField: EditText, phoneField: EditText,
-                                          genderMale: RadioButton, marriedSingle: RadioButton, selectedJob: String, jobEtcField: EditText, , targetActivity: Class<out AppCompatActivity>) {
+                                          genderMale: RadioButton, marriedSingle: RadioButton, selectedJob: String, jobEtcField: EditText, targetActivity: Class<out AppCompatActivity>) {
         nextButton.setOnClickListener {
             val gender = if (genderMale.isChecked) "남자" else "여자"
             val married = if (marriedSingle.isChecked) "미혼" else "기혼"

@@ -99,7 +99,7 @@ class SignUpActivity3 : AppCompatActivity() {
         backButton.setOnClickListener {
             navigateTo(
                 targetActivity,
-                *data.mapValues { it.value ?: "" }.toList().toTypedArray(),
+                *data.mapValues { it.value }.toList().toTypedArray(),
                 reverseAnimation = true
             )
         }
@@ -108,15 +108,11 @@ class SignUpActivity3 : AppCompatActivity() {
 
     // '다음' 버튼 클릭 이벤트 정의 함수
     fun AppCompatActivity.clickNextButton(nextButton: View, data: Map<String, String>, nameField: EditText, birthField: EditText, phoneField: EditText,
-                                          genderMale: RadioButton, marriedSingle: RadioButton, selectedJob: String, jobEtcField: EditText, , targetActivity: Class<out AppCompatActivity>) {
+                                          genderMale: RadioButton, marriedSingle: RadioButton, selectedJob: String, jobEtcField: EditText, targetActivity: Class<out AppCompatActivity>) {
         nextButton.setOnClickListener {
-            val gender = if (genderMale.isChecked) "남자" else "여자"
-            val married = if (marriedSingle.isChecked) "미혼" else "기혼"
-            val job = if (selectedJob == "기타") jobEtcField.text.toString() else selectedJob
-
             navigateTo(
                 targetActivity,
-                *data.mapValues { it.value ?: "" }.toList().toTypedArray(),
+                *data.mapValues { it.value }.toList().toTypedArray(),
                 "disease0" to item0.isChecked,
                 "disease1" to item1.isChecked,
                 "disease2" to item2.isChecked,
