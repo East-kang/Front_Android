@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.RadioButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -50,20 +52,16 @@ class SignUpActivity3 : AppCompatActivity() {
         btn_back = findViewById<Button>(R.id.backButton)    // 뒤로가기 버튼
         btn_next = findViewById<Button>(R.id.next_Button)   // 다음 버튼
 
-        // 이전 화면에서 받아온 데이터
+        // 이전 화면에서 데이터 받아오기
         val data = getPassedStrings("id", "pw", "email", "source", "name", "birth", "phone", "gender", "married", "job")
 
         // 화면 전환 간 데이터 유지 (SignUpAcitivity4.kt -> SignUpAcitivity3.kt)
         restorePassedData()
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity1)
-        btn_back.setOnClickListener {
-            navigateTo(
-                SignUpActivity1::class.java,
-                *data.mapValues { it.value ?: "" }.toList().toTypedArray(),     // SignUp1에서 전달받은 데이터 그대로 전달
-                reverseAnimation = true
-            )
-        }
+        clickBackButton(btn_back, SignUpActivity2::class.java, data)
+
+        // 다음 버튼 클릭 이벤트 (to SignUpActivity4)
 
     }
 
@@ -96,4 +94,40 @@ class SignUpActivity3 : AppCompatActivity() {
 
     // item 체크
 
+    // '뒤로가기' 버튼 클릭 이벤트 정의 함수
+    fun AppCompatActivity.clickBackButton(backButton: View, targetActivity: Class<out AppCompatActivity>, data: Map<String, String> ) {
+        backButton.setOnClickListener {
+            navigateTo(
+                targetActivity,
+                *data.mapValues { it.value ?: "" }.toList().toTypedArray(),
+                reverseAnimation = true
+            )
+        }
+    }
+
+
+    // '다음' 버튼 클릭 이벤트 정의 함수
+    fun AppCompatActivity.clickNextButton(nextButton: View, data: Map<String, String>, nameField: EditText, birthField: EditText, phoneField: EditText,
+                                          genderMale: RadioButton, marriedSingle: RadioButton, selectedJob: String, jobEtcField: EditText, , targetActivity: Class<out AppCompatActivity>) {
+        nextButton.setOnClickListener {
+            val gender = if (genderMale.isChecked) "남자" else "여자"
+            val married = if (marriedSingle.isChecked) "미혼" else "기혼"
+            val job = if (selectedJob == "기타") jobEtcField.text.toString() else selectedJob
+
+            navigateTo(
+                targetActivity,
+                *data.mapValues { it.value ?: "" }.toList().toTypedArray(),
+                "disease0" to item0.isChecked,
+                "disease1" to item1.isChecked,
+                "disease2" to item2.isChecked,
+                "disease3" to item3.isChecked,
+                "disease4" to item4.isChecked,
+                "disease5" to item5.isChecked,
+                "disease6" to item6.isChecked,
+                "disease7" to item7.isChecked,
+                "disease8" to item8.isChecked,
+                "disease9" to item9.isChecked
+            )
+        }
+    }
 }

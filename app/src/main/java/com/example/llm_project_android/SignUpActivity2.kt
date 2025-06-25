@@ -106,7 +106,7 @@ class SignUpActivity2 : AppCompatActivity() {
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity3)
         clickNextButton(btn_next, data, name, birth, phone,
-            gender_M, married_N, selectedJob, job_etc)
+            gender_M, married_N, selectedJob, job_etc, SignUpActivity3::class.java)
     }
 
     // 화면 전환간 데이터 수신 및 적용
@@ -302,14 +302,14 @@ class SignUpActivity2 : AppCompatActivity() {
 
     // '다음' 버튼 클릭 이벤트 정의 함수
     fun AppCompatActivity.clickNextButton(nextButton: View, data: Map<String, String>, nameField: EditText, birthField: EditText, phoneField: EditText,
-                                          genderMale: RadioButton, marriedSingle: RadioButton, selectedJob: String, jobEtcField: EditText) {
+                                          genderMale: RadioButton, marriedSingle: RadioButton, selectedJob: String, jobEtcField: EditText, , targetActivity: Class<out AppCompatActivity>) {
         nextButton.setOnClickListener {
             val gender = if (genderMale.isChecked) "남자" else "여자"
             val married = if (marriedSingle.isChecked) "미혼" else "기혼"
             val job = if (selectedJob == "기타") jobEtcField.text.toString() else selectedJob
 
             navigateTo(
-                SignUpActivity3::class.java,
+                targetActivity,
                 *data.mapValues { it.value ?: "" }.toList().toTypedArray(),
                 "name" to nameField.text.toString(),
                 "birth" to birthField.text.toString(),
