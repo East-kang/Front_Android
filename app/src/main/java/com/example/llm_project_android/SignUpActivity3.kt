@@ -65,9 +65,6 @@ class SignUpActivity3 : AppCompatActivity() {
         // 초기 설정 (버튼 비활성화)
         updateNextButton()
 
-        // 화면 전환 간 데이터 유지 (SignUpActivity4.kt -> SignUpActivity3.kt)
-        restorePassedData()
-
         // item 체크
         items_check()
 
@@ -76,6 +73,9 @@ class SignUpActivity3 : AppCompatActivity() {
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity4)
         clickNextButton(btn_next, data, SignUpActivity4::class.java)
+
+        // 화면 전환 간 데이터 유지 (SignUpActivity4.kt -> SignUpActivity3.kt)
+        restorePassedData()
     }
 
 
@@ -97,16 +97,19 @@ class SignUpActivity3 : AppCompatActivity() {
 
     // item 체크
     fun items_check() {
-        if (item0.isChecked) {
-            for (i in 1 until checkBoxList.size) {
-                checkBoxList[i].isChecked = false
-                checkBoxList[i].isEnabled = false
-            }
-        } else {
-            for (i in 1 until checkBoxList.size) {
-                checkBoxList[i].isEnabled = true
-            }
+        item0.setOnCheckedChangeListener { checkBox, isChecked ->
+            if (isChecked)
+                for (i in 1 until checkBoxList.size) {
+                    checkBoxList[i].isChecked = false
+                    checkBoxList[i].isEnabled = false
+                }
+            else
+                for (i in 1 until checkBoxList.size) {
+                    checkBoxList[i].isEnabled = true
+                }
         }
+
+
     }
 
     // '다음' 버튼 활성화 함수
