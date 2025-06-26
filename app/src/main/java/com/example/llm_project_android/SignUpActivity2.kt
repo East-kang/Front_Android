@@ -80,7 +80,7 @@ class SignUpActivity2 : AppCompatActivity() {
         // 체크 박스 체크 취소
         gender.clearCheck()
         married.clearCheck()
-        job_etc.visibility = View.INVISIBLE
+//        job_etc.visibility = View.GONE
 
         // 이름 생성
         create_name(name, { is_Name_Confirmed }, { is_Name_Confirmed = it })
@@ -147,11 +147,13 @@ class SignUpActivity2 : AppCompatActivity() {
 
             if (job in job_list) {
                 job_spinner.setSelection(job_index)
+                job_spinner.layoutParams.width = (200 * resources.displayMetrics.density).toInt()    // Spinner 너비 변환
                 job_etc.setText("")
-                job_etc.visibility = View.INVISIBLE
+                job_etc.visibility = View.GONE
                 is_Job_Confirmed = true
             } else {
                 job_spinner.setSelection(job_list.lastIndex)
+                job_spinner.layoutParams.width = (70 * resources.displayMetrics.density).toInt()    // Spinner 너비 변환
                 job_etc.visibility = View.VISIBLE
                 job_etc.setText(job)
                 is_Job_Confirmed = false
@@ -273,10 +275,12 @@ class SignUpActivity2 : AppCompatActivity() {
                     if (position == spinner.adapter.count - 1){
                         job_etc.visibility = View.VISIBLE
                         setJobConfirmed(false)
+                        job_spinner.layoutParams.width = (70 * resources.displayMetrics.density).toInt()    // Spinner 너비 변환
                     } else {
-                        job_etc.visibility = View.INVISIBLE
+                        job_etc.visibility = View.GONE
                         job_etc.setText("")
                         setJobConfirmed(true)
+                        job_spinner.layoutParams.width = (200 * resources.displayMetrics.density).toInt()    // Spinner 너비 변환
                     }
                 }
             }
