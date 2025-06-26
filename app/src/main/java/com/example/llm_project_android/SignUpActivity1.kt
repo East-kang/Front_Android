@@ -73,9 +73,6 @@ class SignUpActivity1 : AppCompatActivity() {
         email_text.setText("aa12@naver.com")
         btn_next.isEnabled = true
 
-//        // 화면 전환으로 인한 데이터 수신
-//        restorePassedData()
-//
 //        // 아이디 생성 (입력 text, 입력 상태, 존재하는 아이디, 중복 확인 버튼, 완료 상태)
 //        create_id(id_text, id_rule, id_test, btn_idCheck, { is_Id_Confirmed }, {is_Id_Confirmed = it})
 //
@@ -97,6 +94,9 @@ class SignUpActivity1 : AppCompatActivity() {
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity2)
         clickNextButton(btn_next,id_text,pw_text,email_text, source, SignUpActivity2::class.java)
+
+        // 화면 전환으로 인한 데이터 수신
+//        restorePassedData()
     }
 
     // 화면 전환간 데이터 수신 및 적용
@@ -141,10 +141,7 @@ class SignUpActivity1 : AppCompatActivity() {
             }
 
             // ID 중복 확인 버튼 활성화 (색상 포함)
-            findViewById<Button>(R.id.checkButton).apply {
-                isEnabled = true
-                setBackgroundResource(R.drawable.enabled_button)
-            }
+            updateNextButton()
 
             // 비밀번호 창 활성/비활성화
             findViewById<EditText>(R.id.password_editText).isEnabled = false

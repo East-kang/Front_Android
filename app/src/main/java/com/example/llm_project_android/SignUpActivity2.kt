@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.graphics.Rect
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -20,6 +21,7 @@ import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import kotlin.properties.Delegates
+import kotlin.text.isNullOrEmpty
 
 
 class SignUpActivity2 : AppCompatActivity() {
@@ -36,12 +38,13 @@ class SignUpActivity2 : AppCompatActivity() {
     private lateinit var job_spinner: Spinner
     private var selectedJob: String = ""
 
-    var is_Name_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }        // 아이디 생성 완료 여부
-    var is_Birth_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }        // 비밀번호 생성 완료 여부
-    var is_Phone_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }  // 비밀번호 확인 완료 여부
-    var is_Gender_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }     // 이메일 생성 완료 여부
-    var is_Married_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }     // 이메일 생성 완료 여부
-    var is_Job_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }     // 이메일 생성 완료 여부
+    var is_Name_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }     // 이름 생성 완료 여부
+    var is_Birth_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }    // 생년월일 생성 완료 여부
+    var is_Phone_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }    // 전화번호 생성 완료 여부
+    var is_Gender_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }   // 성별 체크 완료 여부
+    var is_Married_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }  // 결혼 체크 완료 여부
+    var is_Job_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }      // 직업 선택 완료 여부
+    var is_Etc_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }      // 기타 입력 완료 여부
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,14 +71,11 @@ class SignUpActivity2 : AppCompatActivity() {
         val married = findViewById<RadioGroup>(R.id.radioMaritalStatus) // 결혼 여부 체크 그룹
         val gender = findViewById<RadioGroup>(R.id.radioGender)         // 성별 체크 그룹
 
-        // 초기 설정 (버튼 비활성화, 입력 값 초기화)
+        // 초기 설정 (버튼 비활성화)
         updateNextButton()
 
         // 이전 화면에서 받아온 데이터
         val data = getPassedStrings("id", "pw", "email", "source")
-
-        // 화면 전환 간 데이터 유지 (SignUpAcitivity3.kt -> SignUpAcitivity2.kt)
-        restorePassedData()
 
         // 체크 박스 체크 취소
         gender.clearCheck()
@@ -99,41 +99,65 @@ class SignUpActivity2 : AppCompatActivity() {
         isChecked_married(married, { is_Married_Confirmed = it})
 
         // 직업 선택
-        select_job(job_spinner, { job -> selectedJob = job }, { is_Job_Confirmed = it })
+        select_job(job_spinner, { job -> selectedJob = job }, { is_Job_Confirmed }, { is_Job_Confirmed = it }, { is_Etc_Confirmed }, { is_Etc_Confirmed = it })
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity1)
         clickBackButton(btn_back, SignUpActivity1::class.java, data)
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity3)
         clickNextButton(btn_next, data, name, birth, phone,
-            gender_M, married_N, selectedJob, job_etc, SignUpActivity3::class.java)
+            gender_M, married_N, job_etc, SignUpActivity3::class.java)
+
+        // 화면 전환 간 데이터 유지 (SignUpActivity3.kt -> SignUpActivity2.kt)
+        restorePassedData()
     }
 
     // 화면 전환간 데이터 수신 및 적용
     fun restorePassedData() {
         val data = getPassedStrings("name", "birth", "phone", "gender", "married", "job")
-        name.setText(data["name"] ?: "")
-        birth.setText(data["birth"] ?: "")
-        phone.setText(data["phone"] ?: "")
+        val allNull = listOf("name", "birth", "phone", "gender", "married", "job").all {key -> data[key].isNullOrEmpty() }
+        val job_Pattern = Regex("^[\\s가-힣]{2,20}$")
 
-        if (data["gender"] == "남자") gender_M.isChecked = true
-        else gender_F.isChecked = true
+        if (!allNull) {
+            name.setText(data["name"] ?: "")
+            birth.setText(data["birth"] ?: "")
+            phone.setText(data["phone"] ?: "")
+            phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
-        if (data["married"] == "기혼") married_N.isChecked = true
-        else married_Y.isChecked = true
+            is_Name_Confirmed = true
+            is_Birth_Confirmed = true
+            is_Phone_Confirmed = true
 
-        val job = data["job"] ?: ""
-        val job_list = resources.getStringArray(R.array.jobs)
-        val job_index = job_list.indexOf(job)
+            // 테두리 색상 (성공: 초록색)
+            setBoxField(name, "#4B9F72".toColorInt())
+            setBoxField(birth, "#4B9F72".toColorInt())
+            setBoxField(phone, "#4B9F72".toColorInt())
 
-        if (job in job_list) {
-            job_spinner.setSelection(job_index - 1)
-            job_etc.setText("")
-            job_etc.visibility = View.INVISIBLE
-        } else {
-            job_spinner.setSelection(job_list.lastIndex)
-            job_etc.visibility = View.VISIBLE
-            job_etc.setText(job)
+            if (data["gender"] == "남자") gender_M.isChecked = true
+            else gender_F.isChecked = true
+            is_Gender_Confirmed = true
+
+            if (data["married"] == "미혼") married_N.isChecked = true
+            else married_Y.isChecked = true
+            is_Married_Confirmed = true
+
+            val job = data["job"] ?: ""
+            val job_list = resources.getStringArray(R.array.jobs)
+            val job_index = job_list.indexOf(job)
+
+            if (job in job_list) {
+                job_spinner.setSelection(job_index)
+                job_etc.setText("")
+                job_etc.visibility = View.INVISIBLE
+                is_Job_Confirmed = true
+            } else {
+                job_spinner.setSelection(job_list.lastIndex)
+                job_etc.visibility = View.VISIBLE
+                job_etc.setText(job)
+                is_Job_Confirmed = false
+                is_Etc_Confirmed = job_Pattern.matches(job) // 직접 정규식 검증
+            }
+            updateNextButton()
         }
     }
 
@@ -234,8 +258,8 @@ class SignUpActivity2 : AppCompatActivity() {
     }
 
     // '직업' 선택 기능 함수
-    fun select_job(spinner: Spinner, onJobSelected: (String) -> Unit, setJobConfirmed: (Boolean) -> Unit) {
-        val job_Pattern = Regex("^[\\\\s가-힣]{2,20}\$")             // 직업명 정규식 (한글 2-20자)
+    fun select_job(spinner: Spinner, onJobSelected: (String) -> Unit, getJobSelected: () -> (Boolean), setJobConfirmed: (Boolean) -> Unit, getEtcSelected: () -> (Boolean), setEtcConfirmed: (Boolean) -> Unit) {
+        val job_Pattern = Regex("^[\\s가-힣]{2,20}$")             // 직업명 정규식 (한글 2-20자)
         var job_list = resources.getStringArray(R.array.jobs)           // 직업 목록
         var adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, job_list)
         spinner.adapter = adapter
@@ -256,18 +280,18 @@ class SignUpActivity2 : AppCompatActivity() {
                     }
                 }
             }
-
             override fun onNothingSelected(parent: AdapterView<*>?) {   // 선택하지 않은 경우
                 setJobConfirmed(false)
             }
+
         }
 
         job_etc.addTextChangedListener(
             createFlexibleTextWatcher(
-                validateInput = { input -> job_Pattern.matches(job_etc.text.toString())},
+                validateInput = { input -> job_Pattern.matches(input) },
                 onValidStateChanged = { isValid ->
-                    if (!isValid)   setJobConfirmed(false)
-                    else            setJobConfirmed(true)
+                    if (!isValid)   setEtcConfirmed(false)
+                    else            setEtcConfirmed(true)
                 }
             )
         )
@@ -284,14 +308,9 @@ class SignUpActivity2 : AppCompatActivity() {
         }
     }
 
-    // '다음' 버튼 클릭 조건 함수
-    fun isAllConfirmed(Confirmed1: Boolean, Confirmed2: Boolean, Confirmed3: Boolean, Confirmed4: Boolean, Confirmed5: Boolean, Confirmed6: Boolean): Boolean {
-        return Confirmed1 && Confirmed2 && Confirmed3 && Confirmed4 && Confirmed5 && Confirmed6
-    }
-
     // '다음' 버튼 활성화 함수
     fun updateNextButton() {
-        if (isAllConfirmed(is_Name_Confirmed, is_Birth_Confirmed, is_Phone_Confirmed, is_Gender_Confirmed, is_Married_Confirmed, is_Job_Confirmed)) {
+        if (is_Name_Confirmed && is_Birth_Confirmed && is_Phone_Confirmed && is_Gender_Confirmed && is_Married_Confirmed && (is_Job_Confirmed || is_Etc_Confirmed)) {
             btn_next.isEnabled = true
             btn_next.setBackgroundResource(R.drawable.enabled_button)
         } else {
@@ -302,7 +321,7 @@ class SignUpActivity2 : AppCompatActivity() {
 
     // '다음' 버튼 클릭 이벤트 정의 함수
     fun AppCompatActivity.clickNextButton(nextButton: View, data: Map<String, String>, nameField: EditText, birthField: EditText, phoneField: EditText,
-                                          genderMale: RadioButton, marriedSingle: RadioButton, selectedJob: String, jobEtcField: EditText, targetActivity: Class<out AppCompatActivity>) {
+                                          genderMale: RadioButton, marriedSingle: RadioButton, jobEtcField: EditText, targetActivity: Class<out AppCompatActivity>) {
         nextButton.setOnClickListener {
             val gender = if (genderMale.isChecked) "남자" else "여자"
             val married = if (marriedSingle.isChecked) "미혼" else "기혼"

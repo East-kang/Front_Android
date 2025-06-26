@@ -263,20 +263,18 @@
                 android:layout_marginEnd="30dp"
                 android:hint="본인의 직업을 입력해주세요"
                 android:textSize="17dp"
-                android:paddingStart="10dp"
+                android:gravity="center"
                 android:visibility="invisible" />
         </LinearLayout>
     </ScrollView>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/next_Button"
-        android:layout_width="350dp"
+        android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/disabled_button"
-        android:gravity="center"
         android:text="다 음"
         android:textColor="#FFFFFF"
         android:textSize="18dp"
