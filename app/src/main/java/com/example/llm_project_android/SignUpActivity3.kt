@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.RadioButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -24,9 +25,10 @@ class SignUpActivity3 : AppCompatActivity() {
     private lateinit var item7: CheckBox
     private lateinit var item8: CheckBox
     private lateinit var item9: CheckBox
-    private lateinit var btn_back: Button
+    private lateinit var btn_back: ImageButton
     private lateinit var btn_next: Button
-    //var is_Name_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }        // 체크 완료 여부
+    private lateinit var checkBoxList: List<CheckBox>
+    var is_Checked_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }        // 체크 완료 여부
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,53 +51,93 @@ class SignUpActivity3 : AppCompatActivity() {
         item8 = findViewById<CheckBox>(R.id.disease8)       // 정신질환 체크 박스
         item9 = findViewById<CheckBox>(R.id.disease9)       // 기타 만성질환 체크 박스
 
-        btn_back = findViewById<Button>(R.id.backButton)    // 뒤로가기 버튼
+        btn_back = findViewById<ImageButton>(R.id.backButton)    // 뒤로가기 버튼
         btn_next = findViewById<Button>(R.id.next_Button)   // 다음 버튼
+
+        checkBoxList = listOf(
+            item0, item1, item2, item3, item4,
+            item5, item6, item7, item8, item9
+        )
 
         // 이전 화면에서 데이터 받아오기
         val data = getPassedStrings("id", "pw", "email", "source", "name", "birth", "phone", "gender", "married", "job")
 
-        // 화면 전환 간 데이터 유지 (SignUpAcitivity4.kt -> SignUpAcitivity3.kt)
-        restorePassedData()
+        // 초기 설정 (버튼 비활성화)
+        updateNextButton()
+
+        // item 체크
+        items_check({ is_Checked_Confirmed }, { is_Checked_Confirmed = it })
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity1)
-        clickBackButton(btn_back, SignUpActivity2::class.java, data)
+        clickBackButton(btn_back, data, SignUpActivity2::class.java)
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity4)
+        clickNextButton(btn_next, data, SignUpActivity4::class.java)
 
+        // 화면 전환 간 데이터 유지 (SignUpActivity4.kt -> SignUpActivity3.kt)
+        restorePassedData()
     }
 
-    // 화면 전환간 데이터 수신 및 적용
+
     fun restorePassedData() {
         val data = getPassedBooleans(
             "disease0", "disease1", "disease2", "disease3", "disease4",
             "disease5", "disease6", "disease7", "disease8", "disease9"
         )
 
-        val checkBoxList = listOf(
-            item0, item1, item2, item3, item4,
-            item5, item6, item7, item8, item9
-        )
-
-        if (data["disease0"] == true)                                   // item0만 체크, 나머지는 해제
-            for (i in checkBoxList.indices)
+        if (data["disease0"] == true)                                   // item0만 체크, 나머지는 해제, 비활성화
+            for (i in checkBoxList.indices) {
                 checkBoxList[i].isChecked = (i == 0)
+                checkBoxList[i].isEnabled = (i == 0)
+            }
         else {
-            for (i in 1 until checkBoxList.size)
+            for (i in 0 until checkBoxList.size)
                 checkBoxList[i].isChecked = (data["disease$i"] == true) // item1 ~ item9 중 true인 항목만 체크
-            checkBoxList[0].isChecked = false                           // item0은 해제
         }
     }
 
-    // Boolean으로 받은 Intent 값 받는 함수
-    fun AppCompatActivity.getPassedBooleans(vararg keys: String): Map<String, Boolean> {
-        return keys.associateWith { intent.getBooleanExtra(it, false) }
+    // item 체크
+    fun items_check(getCheckConfirmed: () -> Boolean, setCheckedConfirmed: (Boolean) -> Unit) {
+
+        // '질병 없음' 항목 클릭 이벤트
+        item0.setOnCheckedChangeListener { checkBox, isChecked ->
+            if (isChecked) {                                // 클릭o -> 다른 항목 전부 비활성화 및 체크 해제 (+ 다음 버튼 활성화)
+                for (i in 1 until checkBoxList.size) {
+                    checkBoxList[i].isChecked = false
+                    checkBoxList[i].isEnabled = false
+                }
+                setCheckedConfirmed(true)
+            }
+            else {                                          // 클릭x -> 다른 항목 전부 활성화 (+ 다음 버튼 비활성화)
+                for (i in 1 until checkBoxList.size)
+                    checkBoxList[i].isEnabled = true
+                setCheckedConfirmed(false)
+            }
+        }
+
+        for (box in checkBoxList.filter { it != item0 }) {  // 첫 항목 제외 클릭 시, 다음 버튼 활성화
+            box.setOnCheckedChangeListener { checkBox, isChecked ->
+                if (box.isChecked)  setCheckedConfirmed(true)
+                else                setCheckedConfirmed(false)
+            }
+            if (is_Checked_Confirmed)
+                break
+        }
     }
 
-    // item 체크
+    // '다음' 버튼 활성화 함수
+    fun updateNextButton() {
+        if (is_Checked_Confirmed) {
+            btn_next.isEnabled = true
+            btn_next.setBackgroundResource(R.drawable.enabled_button)
+        } else {
+            btn_next.isEnabled = false
+            btn_next.setBackgroundResource(R.drawable.disabled_button)
+        }
+    }
 
     // '뒤로가기' 버튼 클릭 이벤트 정의 함수
-    fun AppCompatActivity.clickBackButton(backButton: View, targetActivity: Class<out AppCompatActivity>, data: Map<String, String> ) {
+    fun AppCompatActivity.clickBackButton(backButton: View, data: Map<String, Any>, targetActivity: Class<out AppCompatActivity>) {
         backButton.setOnClickListener {
             navigateTo(
                 targetActivity,
@@ -105,10 +147,8 @@ class SignUpActivity3 : AppCompatActivity() {
         }
     }
 
-
     // '다음' 버튼 클릭 이벤트 정의 함수
-    fun AppCompatActivity.clickNextButton(nextButton: View, data: Map<String, String>, nameField: EditText, birthField: EditText, phoneField: EditText,
-                                          genderMale: RadioButton, marriedSingle: RadioButton, selectedJob: String, jobEtcField: EditText, targetActivity: Class<out AppCompatActivity>) {
+    fun AppCompatActivity.clickNextButton(nextButton: View, data: Map<String, Any>, targetActivity: Class<out AppCompatActivity>) {
         nextButton.setOnClickListener {
             navigateTo(
                 targetActivity,

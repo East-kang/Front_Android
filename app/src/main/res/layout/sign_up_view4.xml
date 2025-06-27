@@ -166,20 +166,20 @@
                 app:singleSelection="false"
                 app:chipSpacing="8dp" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="10dp">
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="200dp"-->
+<!--                android:layout_marginHorizontal="30dp"-->
+<!--                android:layout_marginTop="10dp">-->
 
-                <TextView
-                    android:id="@+id/itemText"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:gravity="center_vertical"
-                    android:paddingHorizontal="16dp"
-                    android:textColor="#000000" />
-            </androidx.recyclerview.widget.RecyclerView>
+<!--                <TextView-->
+<!--                    android:id="@+id/itemText"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:paddingHorizontal="16dp"-->
+<!--                    android:textColor="#000000" />-->
+<!--            </androidx.recyclerview.widget.RecyclerView>-->
         </LinearLayout>
     </ScrollView>
 
