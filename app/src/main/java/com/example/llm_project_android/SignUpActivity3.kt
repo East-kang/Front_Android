@@ -60,7 +60,9 @@ class SignUpActivity3 : AppCompatActivity() {
         )
 
         // 이전 화면에서 데이터 받아오기
-        val data = getPassedStrings("id", "pw", "email", "source", "name", "birth", "phone", "gender", "married", "job")
+        val data = getPassedStrings(
+            "id", "pw", "email", "source",
+            "name", "birth", "phone", "gender", "married", "job")
 
         // 초기 설정 (버튼 비활성화)
         updateNextButton()
@@ -68,7 +70,7 @@ class SignUpActivity3 : AppCompatActivity() {
         // item 체크
         items_check({ is_Checked_Confirmed }, { is_Checked_Confirmed = it })
 
-        // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity1)
+        // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity2)
         clickBackButton(btn_back, data, SignUpActivity2::class.java)
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity4)
