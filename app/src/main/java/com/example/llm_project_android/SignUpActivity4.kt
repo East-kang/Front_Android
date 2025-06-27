@@ -29,8 +29,7 @@ class SignUpActivity4 : AppCompatActivity() {
     private lateinit var search_insurance: SearchView
     private lateinit var tag_chip: ChipGroup
     private lateinit var recyclerView: RecyclerView
-
-    var ArrayList<SingleItem>
+    private lateinit var adapter: PostContentAdapter
 
     var is_Check_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateCompletionButton() }        // 체크 완료 여부
     var is_Search_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateCompletionButton() }       // 체크 완료 여부
@@ -55,6 +54,7 @@ class SignUpActivity4 : AppCompatActivity() {
         search_insurance = findViewById<SearchView>(R.id.search_insurance)
         tag_chip = findViewById<ChipGroup>(R.id.tagChipGroup)
         recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+
 
         // 이전 화면에서 데이터 받아오기
         val data = getPassedStrings(

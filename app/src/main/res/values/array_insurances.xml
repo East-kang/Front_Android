@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="jobs">
+        <item>---직업을 선택하세요---</item>
+        <item>AIA 암 입원비 보</item>
+        <item>삼성생명 종신보</item>
+        <item>한화생명 실손의료비보</item>
+        <item>교보생명 변액유니버셜보</item>
+        <item>DB손해보험 자동차보</item>
+        <item>현대해상 어린이보</item>
+        <item>메리츠화재 실손보</item>
+        <item>흥국화재 운전자보</item>
+        <item>롯데손해보험 건강보</item>
+        <item>KB손해보험 암보</item>
+        <item>NH농협생명 연금보</item>
+        <item>신한생명 종신보</item>
+        <item>동양생명 치아보</item>
+        <item>푸르덴셜생명 종신보</item>
+        <item>오렌지라이프 건강보</item>
+        <item>ABL생명 암보</item>
+    </string-array>
+
+</resources>
