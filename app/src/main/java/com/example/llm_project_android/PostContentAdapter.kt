@@ -14,7 +14,7 @@ class PostContentAdapter (private var postList: List<Post>)
     : RecyclerView.Adapter<PostContentAdapter.PostViewHolder>(), Filterable {
 
     // 필터링 결과 리스트 (초기에는 전체 리스트와 동일)
-    private var filteredList: List<Post> = postList
+    private var filteredList: List<Post> = emptyList()
 
     // ViewHolder 정의: 아이템 레이아웃의 View들을 바인딩
     class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -44,9 +44,9 @@ class PostContentAdapter (private var postList: List<Post>)
                 val result = FilterResults()
                 val queryStr = query?.toString() ?: ""  // 검색어 문자열로 변환
 
-                // 검색어가 비어있으면 전체 리스트 반환
-                val filtered = if (queryStr.isEmpty()){
-                    postList
+                // 검색어가 비어있으면 전체 리스트 반환 (공백일 경우)
+                val filtered = if (queryStr.isBlank()){
+                    emptyList<Post>()
                 } else {    // 검색어가 포함된 상품 필터링
                     postList.filter { post ->
                         post.title.contains(queryStr, ignoreCase = true)

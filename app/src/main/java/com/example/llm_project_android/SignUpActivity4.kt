@@ -3,26 +3,26 @@ package com.example.llm_project_android
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.ChipGroup
+import java.time.temporal.TemporalQuery
 import kotlin.properties.Delegates
 
 class SignUpActivity4 : AppCompatActivity() {
 
     private lateinit var btn_back: ImageButton
-    private lateinit var btn_clear: ImageButton
     private lateinit var btn_completion: Button
-    private lateinit var insurance_layout: ConstraintLayout
     private lateinit var insurance: RadioGroup
     private lateinit var insurance_Y: RadioButton
     private lateinit var insurance_N: RadioButton
@@ -45,9 +45,7 @@ class SignUpActivity4 : AppCompatActivity() {
         }
 
         btn_back = findViewById<ImageButton>(R.id.backButton)
-        btn_clear = findViewById<ImageButton>(R.id.text_clear)
         btn_completion = findViewById<Button>(R.id.completion_Button)
-        insurance_layout = findViewById<ConstraintLayout>(R.id.insurance_layout)
         insurance = findViewById<RadioGroup>(R.id.radioInsurance)
         insurance_Y = findViewById<RadioButton>(R.id.insuranceYes)
         insurance_N = findViewById<RadioButton>(R.id.insuranceNo)
@@ -55,6 +53,7 @@ class SignUpActivity4 : AppCompatActivity() {
         tag_chip = findViewById<ChipGroup>(R.id.tagChipGroup)
         recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
 
+        val insuranceList = resources.getStringArray(R.array.insurances).map { Post(it) }   // 문자열 배열 -> Post 객체 리스트로 변환
 
         // 이전 화면에서 데이터 받아오기
         val data = getPassedStrings(
@@ -65,43 +64,30 @@ class SignUpActivity4 : AppCompatActivity() {
         // 초기 설정 (버튼 비활성화)
         updateCompletionButton()
 
-        var searchViewTextListner : SearchView.OnQueryTextListener =
-            object :SearchView.OnQueryTextListener {
-                //검색버튼 입력시 호출하는데, 지금은 검색버튼이 없으므로 사용x
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    return false
-                }
-
-                //텍스트 입력/수정 시 호출
-                override fun onQueryTextChange(s: String?): Boolean {
-                    recyclerView!!.filter.filter(s)
-                    return false
-                }
-
-            }
+        search_items(search_insurance, insuranceList)
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity3)
         clickBackButton(btn_back, data, SignUpActivity3::class.java)
-
-
-    }
-
-    fun temp() : ArrayList<Post> {
-        var t = ArrayList<Post>()
-        t.add(Post(1, "wpqkf@gmail.com"))
-        t.add(Post(2, "ehofk@gmail.com"))
-        t.add(Post(3, "gngk@gmail.com"))
-        t.add(Post(4, "gmgl@gmail.com"))
-
-        return t
     }
 
     // 검색어 입력 함수
-    fun search_items(searchView: SearchView) {
-        var searchViewTextListener: SearchView.OnQueryTextListener =
-            object : SearchView.OnQueryTextListener {
+    fun search_items(searchView: SearchView, insuranceList: List<Post>) {
+        // 어댑터 설정 및 RecyclerView 연결
+        adapter = PostContentAdapter(insuranceList)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
 
+        val dividerItemDecoration = DividerItemDecoration(this, LinearLayoutManager.VERTICAL)
+        recyclerView.addItemDecoration(dividerItemDecoration)
+
+        // 실시간 검색어 변경 감지 -> 필터 실행
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean = false
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter?.filter(newText)
+                return true
             }
+        })
     }
 
     // '완료' 버튼 활성화 함수
