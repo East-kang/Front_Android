@@ -85,13 +85,14 @@ class SignUpActivity3 : AppCompatActivity() {
             "disease5", "disease6", "disease7", "disease8", "disease9"
         )
 
-        if (data["disease0"] == true)                                   // item0만 체크, 나머지는 해제
-            for (i in checkBoxList.indices)
+        if (data["disease0"] == true)                                   // item0만 체크, 나머지는 해제, 비활성화
+            for (i in checkBoxList.indices) {
                 checkBoxList[i].isChecked = (i == 0)
+                checkBoxList[i].isEnabled = (i == 0)
+            }
         else {
-            for (i in 1 until checkBoxList.size)
+            for (i in 0 until checkBoxList.size)
                 checkBoxList[i].isChecked = (data["disease$i"] == true) // item1 ~ item9 중 true인 항목만 체크
-            checkBoxList[0].isChecked = false                           // item0은 해제
         }
     }
 
