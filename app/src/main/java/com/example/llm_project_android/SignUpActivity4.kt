@@ -65,10 +65,35 @@ class SignUpActivity4 : AppCompatActivity() {
         // 초기 설정 (버튼 비활성화)
         updateCompletionButton()
 
+        var searchViewTextListner : SearchView.OnQueryTextListener =
+            object :SearchView.OnQueryTextListener {
+                //검색버튼 입력시 호출하는데, 지금은 검색버튼이 없으므로 사용x
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
+
+                //텍스트 입력/수정 시 호출
+                override fun onQueryTextChange(s: String?): Boolean {
+                    recyclerView!!.filter.filter(s)
+                    return false
+                }
+
+            }
+
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity3)
         clickBackButton(btn_back, data, SignUpActivity3::class.java)
 
 
+    }
+
+    fun temp() : ArrayList<Post> {
+        var t = ArrayList<Post>()
+        t.add(Post(1, "wpqkf@gmail.com"))
+        t.add(Post(2, "ehofk@gmail.com"))
+        t.add(Post(3, "gngk@gmail.com"))
+        t.add(Post(4, "gmgl@gmail.com"))
+
+        return t
     }
 
     // 검색어 입력 함수
