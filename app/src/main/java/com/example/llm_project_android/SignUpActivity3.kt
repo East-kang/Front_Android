@@ -66,7 +66,7 @@ class SignUpActivity3 : AppCompatActivity() {
         updateNextButton()
 
         // item 체크
-        items_check()
+        items_check({ is_Checked_Confirmed }, { is_Checked_Confirmed = it })
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity1)
         clickBackButton(btn_back, data, SignUpActivity2::class.java)
@@ -96,20 +96,32 @@ class SignUpActivity3 : AppCompatActivity() {
     }
 
     // item 체크
-    fun items_check() {
+    fun items_check(getCheckConfirmed: () -> Boolean, setCheckedConfirmed: (Boolean) -> Unit) {
+
+        // '질병 없음' 항목 클릭 이벤트
         item0.setOnCheckedChangeListener { checkBox, isChecked ->
-            if (isChecked)
+            if (isChecked) {                                // 클릭o -> 다른 항목 전부 비활성화 및 체크 해제 (+ 다음 버튼 활성화)
                 for (i in 1 until checkBoxList.size) {
                     checkBoxList[i].isChecked = false
                     checkBoxList[i].isEnabled = false
                 }
-            else
-                for (i in 1 until checkBoxList.size) {
+                setCheckedConfirmed(true)
+            }
+            else {                                          // 클릭x -> 다른 항목 전부 활성화 (+ 다음 버튼 비활성화)
+                for (i in 1 until checkBoxList.size)
                     checkBoxList[i].isEnabled = true
-                }
+                setCheckedConfirmed(false)
+            }
         }
 
-
+        for (box in checkBoxList.filter { it != item0 }) {  // 첫 항목 제외 클릭 시, 다음 버튼 활성화
+            box.setOnCheckedChangeListener { checkBox, isChecked ->
+                if (box.isChecked)  setCheckedConfirmed(true)
+                else                setCheckedConfirmed(false)
+            }
+            if (is_Checked_Confirmed)
+                break
+        }
     }
 
     // '다음' 버튼 활성화 함수
@@ -124,7 +136,7 @@ class SignUpActivity3 : AppCompatActivity() {
     }
 
     // '뒤로가기' 버튼 클릭 이벤트 정의 함수
-    fun AppCompatActivity.clickBackButton(backButton: View, data: Map<String, String>, targetActivity: Class<out AppCompatActivity>) {
+    fun AppCompatActivity.clickBackButton(backButton: View, data: Map<String, Any>, targetActivity: Class<out AppCompatActivity>) {
         backButton.setOnClickListener {
             navigateTo(
                 targetActivity,
@@ -135,7 +147,7 @@ class SignUpActivity3 : AppCompatActivity() {
     }
 
     // '다음' 버튼 클릭 이벤트 정의 함수
-    fun AppCompatActivity.clickNextButton(nextButton: View, data: Map<String, String>, targetActivity: Class<out AppCompatActivity>) {
+    fun AppCompatActivity.clickNextButton(nextButton: View, data: Map<String, Any>, targetActivity: Class<out AppCompatActivity>) {
         nextButton.setOnClickListener {
             navigateTo(
                 targetActivity,

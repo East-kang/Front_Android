@@ -302,7 +302,7 @@ class SignUpActivity2 : AppCompatActivity() {
     }
 
     // '뒤로가기' 버튼 클릭 이벤트 정의 함수
-    fun AppCompatActivity.clickBackButton(backButton: View, targetActivity: Class<out AppCompatActivity>, data: Map<String, String> ) {
+    fun AppCompatActivity.clickBackButton(backButton: View, targetActivity: Class<out AppCompatActivity>, data: Map<String, Any> ) {
         backButton.setOnClickListener {
             navigateTo(
                 targetActivity,
@@ -324,7 +324,7 @@ class SignUpActivity2 : AppCompatActivity() {
     }
 
     // '다음' 버튼 클릭 이벤트 정의 함수
-    fun AppCompatActivity.clickNextButton(nextButton: View, data: Map<String, String>, nameField: EditText, birthField: EditText, phoneField: EditText,
+    fun AppCompatActivity.clickNextButton(nextButton: View, data: Map<String, Any>, nameField: EditText, birthField: EditText, phoneField: EditText,
                                           genderMale: RadioButton, marriedSingle: RadioButton, jobEtcField: EditText, targetActivity: Class<out AppCompatActivity>) {
         nextButton.setOnClickListener {
             val gender = if (genderMale.isChecked) "남자" else "여자"
@@ -333,7 +333,7 @@ class SignUpActivity2 : AppCompatActivity() {
 
             navigateTo(
                 targetActivity,
-                *data.mapValues { it.value ?: "" }.toList().toTypedArray(),
+                *data.mapValues { it.value }.toList().toTypedArray(),
                 "name" to nameField.text.toString(),
                 "birth" to birthField.text.toString(),
                 "phone" to phoneField.text.toString().replace("-", ""),
