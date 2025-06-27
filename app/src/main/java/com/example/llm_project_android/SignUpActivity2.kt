@@ -27,10 +27,13 @@ import kotlin.text.isNullOrEmpty
 class SignUpActivity2 : AppCompatActivity() {
 
     private lateinit var btn_next: Button
+    private lateinit var btn_back: ImageButton
     private lateinit var name: EditText
     private lateinit var birth: EditText
     private lateinit var phone: EditText
     private lateinit var job_etc: EditText
+    private lateinit var married: RadioGroup
+    private lateinit var gender:RadioGroup
     private lateinit var gender_M: RadioButton
     private lateinit var gender_F: RadioButton
     private lateinit var married_N: RadioButton
@@ -57,19 +60,18 @@ class SignUpActivity2 : AppCompatActivity() {
         }
 
         btn_next = findViewById<Button>(R.id.next_Button)               // 다음 버튼
+        btn_back = findViewById<ImageButton>(R.id.backButton)           // 뒤로가기 버튼
         name = findViewById<EditText>(R.id.name_editText)               // 이름 입력란
         birth = findViewById<EditText>(R.id.birth_editText)             // 생년월일 입력란
         phone = findViewById<EditText>(R.id.phone_number_editText)      // 전화번호 입력란
+        married = findViewById<RadioGroup>(R.id.radioMaritalStatus)     // 결혼 여부 체크 그룹
+        gender = findViewById<RadioGroup>(R.id.radioGender)             // 성별 체크 그룹
         gender_M = findViewById<RadioButton>(R.id.radioMale)            // 성별 (남)
         gender_F = findViewById<RadioButton>(R.id.radioFemale)          // 성별 (여)
         married_N = findViewById<RadioButton>(R.id.radioSingle)         // 결혼여부 (미혼)
         married_Y = findViewById<RadioButton>(R.id.radioMarried)        // 결혼여부 (기혼)
         job_spinner = findViewById<Spinner>(R.id.job_spinner)           // 직업 드롭다운
         job_etc = findViewById<EditText>(R.id.job_etc)                  // 기타 직업 입력란
-
-        val btn_back = findViewById<ImageButton>(R.id.backButton)       // 뒤로가기 버튼
-        val married = findViewById<RadioGroup>(R.id.radioMaritalStatus) // 결혼 여부 체크 그룹
-        val gender = findViewById<RadioGroup>(R.id.radioGender)         // 성별 체크 그룹
 
         // 초기 설정 (버튼 비활성화)
         updateNextButton()

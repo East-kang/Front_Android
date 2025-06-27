@@ -20,10 +20,20 @@ import kotlin.properties.Delegates
 class SignUpActivity1 : AppCompatActivity() {
 
     private lateinit var btn_next: Button
+    private lateinit var btn_idCheck: Button
+    private lateinit var btn_back: ImageButton
+    private lateinit var btn_eye:ImageButton
+    private lateinit var btn_eye_check: ImageButton
     private lateinit var id_text: EditText
     private lateinit var pw_text: EditText
     private lateinit var pw_check: EditText
     private lateinit var email_text: EditText
+    private lateinit var id_rule: TextView
+    private lateinit var pw_rule: TextView
+    private lateinit var pw_check_text: TextView
+    private lateinit var email_check: TextView
+
+
     var is_Id_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }        // 아이디 생성 완료 여부
     var is_Pw_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }        // 비밀번호 생성 완료 여부
     var is_Pw_Check_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }  // 비밀번호 확인 완료 여부
@@ -41,20 +51,20 @@ class SignUpActivity1 : AppCompatActivity() {
         }
 
         btn_next = findViewById<Button>(R.id.next_Button)               // 다음 버튼
-        val btn_back = findViewById<ImageButton>(R.id.backButton)       // 뒤로 가기 버튼
-        val btn_eye = findViewById<ImageButton>(R.id.eyeButton1)        // 비밀번호 시각화 버튼
-        val btn_eye_check = findViewById<ImageButton>(R.id.eyeButton2)  // 비밀번호 확인 시각화 버튼
-        val btn_idCheck = findViewById<Button>(R.id.checkButton)        // 아이디 중복 확인 버튼
+        btn_idCheck = findViewById<Button>(R.id.checkButton)            // 아이디 중복 확인 버튼
+        btn_back = findViewById<ImageButton>(R.id.backButton)           // 뒤로 가기 버튼
+        btn_eye = findViewById<ImageButton>(R.id.eyeButton1)            // 비밀번호 시각화 버튼
+        btn_eye_check = findViewById<ImageButton>(R.id.eyeButton2)      // 비밀번호 확인 시각화 버튼
 
         id_text = findViewById<EditText>(R.id.id_editText)              // 아이디 입력란
         pw_text = findViewById<EditText>(R.id.password_editText)        // 비밀번호 입력란
         pw_check = findViewById<EditText>(R.id.check_editText)          // 비밀번호 확인 입력란
         email_text = findViewById<EditText>(R.id.email_editText)        // 이메일 입력란
 
-        val id_rule = findViewById<TextView>(R.id.id_rule)              // 아이디 규칙 텍스트
-        val pw_rule = findViewById<TextView>(R.id.pw_rule)              // 비밀번호 규칙 텍스트
-        val pw_check_text = findViewById<TextView>(R.id.pw_check_text)  // 비밀번호 확인 여부 텍스트
-        val email_check = findViewById<TextView>(R.id.email_check)      // 이메일 확인 여부 텍스트
+        id_rule = findViewById<TextView>(R.id.id_rule)                  // 아이디 규칙 텍스트
+        pw_rule = findViewById<TextView>(R.id.pw_rule)                  // 비밀번호 규칙 텍스트
+        pw_check_text = findViewById<TextView>(R.id.pw_check_text)      // 비밀번호 확인 여부 텍스트
+        email_check = findViewById<TextView>(R.id.email_check)          // 이메일 확인 여부 텍스트
 
         val id_test: String = "qwer1234"            // 테스트 아이디
         var check_id: Boolean = false               // 아이디 중복 여부 (true: 존재, false: 비존재)
