@@ -1,6 +1,7 @@
 package com.example.llm_project_android
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
@@ -86,7 +87,8 @@ class SignUpActivity3 : AppCompatActivity() {
             "disease0", "disease1", "disease2", "disease3", "disease4",
             "disease5", "disease6", "disease7", "disease8", "disease9"
         )
-
+        for (i in 0 until 10)
+            Log.d("restore","data$i: "+data["disease$i"])
         if (data["disease0"] == true)                                   // item0만 체크, 나머지는 해제, 비활성화
             for (i in checkBoxList.indices) {
                 checkBoxList[i].isChecked = (i == 0)
@@ -115,16 +117,21 @@ class SignUpActivity3 : AppCompatActivity() {
                     checkBoxList[i].isEnabled = true
                 setCheckedConfirmed(false)
             }
+
+            for (i in 0 until 10)
+                Log.d("check","data$i: "+checkBoxList[i].isChecked)
         }
 
         for (box in checkBoxList.filter { it != item0 }) {  // 첫 항목 제외 클릭 시, 다음 버튼 활성화
             box.setOnCheckedChangeListener { checkBox, isChecked ->
                 if (box.isChecked)  setCheckedConfirmed(true)
                 else                setCheckedConfirmed(false)
+
             }
             if (is_Checked_Confirmed)
                 break
         }
+
     }
 
     // '다음' 버튼 활성화 함수
@@ -151,20 +158,15 @@ class SignUpActivity3 : AppCompatActivity() {
 
     // '다음' 버튼 클릭 이벤트 정의 함수
     fun AppCompatActivity.clickNextButton(nextButton: View, data: Map<String, Any>, targetActivity: Class<out AppCompatActivity>) {
+        val diseaseData = (0 until 10).map { i ->
+            "disease$i" to checkBoxList[i].isChecked
+        }
+
         nextButton.setOnClickListener {
             navigateTo(
                 targetActivity,
                 *data.mapValues { it.value }.toList().toTypedArray(),
-                "disease0" to item0.isChecked,
-                "disease1" to item1.isChecked,
-                "disease2" to item2.isChecked,
-                "disease3" to item3.isChecked,
-                "disease4" to item4.isChecked,
-                "disease5" to item5.isChecked,
-                "disease6" to item6.isChecked,
-                "disease7" to item7.isChecked,
-                "disease8" to item8.isChecked,
-                "disease9" to item9.isChecked
+                *diseaseData.toTypedArray()
             )
         }
     }
