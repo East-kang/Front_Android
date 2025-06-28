@@ -99,8 +99,6 @@ class SignUpActivity3 : AppCompatActivity() {
                 "disease8" to Boolean::class.java, "disease9" to Boolean::class.java
             )
         )
-        for (i in 0 until 10)
-            Log.d("restore","data$i: "+data["disease$i"])
         if (data["disease0"] == true)                                   // item0만 체크, 나머지는 해제, 비활성화
             for (i in checkBoxList.indices) {
                 checkBoxList[i].isChecked = (i == 0)
@@ -129,9 +127,6 @@ class SignUpActivity3 : AppCompatActivity() {
                     checkBoxList[i].isEnabled = true
                 setCheckedConfirmed(false)
             }
-
-            for (i in 0 until 10)
-                Log.d("check","data$i: "+checkBoxList[i].isChecked)
         }
 
         for (box in checkBoxList.filter { it != item0 }) {  // 첫 항목 제외 클릭 시, 다음 버튼 활성화
@@ -143,7 +138,6 @@ class SignUpActivity3 : AppCompatActivity() {
             if (is_Checked_Confirmed)
                 break
         }
-
     }
 
     // '다음' 버튼 활성화 함수
@@ -170,11 +164,14 @@ class SignUpActivity3 : AppCompatActivity() {
 
     // '다음' 버튼 클릭 이벤트 정의 함수
     fun AppCompatActivity.clickNextButton(nextButton: View, data: Map<String, Any>, targetActivity: Class<out AppCompatActivity>) {
-        val diseaseData = (0 until 10).map { i ->
-            "disease$i" to checkBoxList[i].isChecked
-        }
-
         nextButton.setOnClickListener {
+            val diseaseData = (0 until 10).map { i ->
+            "disease$i" to checkBoxList[i].isChecked
+            }
+
+            for ((key, value) in diseaseData) {
+                Log.d("navigateTo", "$key: $value")
+            }
             navigateTo(
                 targetActivity,
                 *data.mapValues { it.value }.toList().toTypedArray(),

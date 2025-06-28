@@ -1,6 +1,7 @@
 package com.example.llm_project_android
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
@@ -70,7 +71,11 @@ class SignUpActivity4 : AppCompatActivity() {
                 "disease4" to Boolean::class.java, "disease5" to Boolean::class.java,
                 "disease6" to Boolean::class.java, "disease7" to Boolean::class.java,
                 "disease8" to Boolean::class.java, "disease9" to Boolean::class.java    // SignUp3
-            ))
+            )
+        )
+
+        for (i in 0..9)
+            Log.d("view4", "item$i: "+data["disease$i"])
 
         // 초기 설정 (버튼 비활성화)
         updateCompletionButton()
