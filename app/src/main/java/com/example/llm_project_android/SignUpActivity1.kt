@@ -33,12 +33,10 @@ class SignUpActivity1 : AppCompatActivity() {
     private lateinit var pw_check_text: TextView
     private lateinit var email_check: TextView
 
-
     var is_Id_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }        // 아이디 생성 완료 여부
     var is_Pw_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }        // 비밀번호 생성 완료 여부
     var is_Pw_Check_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }  // 비밀번호 확인 완료 여부
     var is_Email_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }     // 이메일 생성 완료 여부
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +70,7 @@ class SignUpActivity1 : AppCompatActivity() {
         var pw_visible: Boolean = false             // 비밀번호 시각화 여부 (true: 시각화, false: 비시각화)
         var pw_check_visible: Boolean = false       // 비밀번호 확인 시각화 여부 (true: 시각화, false: 비시각화)
 
-        val source = getPassedExtras("source")["source"] as? String ?: "" // 이전 화면 소스
+        val source = getPassedExtras("source", String::class.java)["source"] as? String ?: "" // 이전 화면 소스
 
         // 초기 설정 (버튼 비활성화, 입력 값 초기화)
         updateNextButton()
@@ -111,13 +109,13 @@ class SignUpActivity1 : AppCompatActivity() {
 
     // 화면 전환간 데이터 수신 및 적용
     fun restorePassedData() {
-        val data = getPassedExtras("id", "pw", "email")
-        val allNull = listOf("id", "pw", "email").all {key -> data[key].isNullOrEmpty() }
+        val data = getPassedExtras(listOf("id" to String::class.java, "pw" to String::class.java, "email" to String::class.java))
+        val allNull = listOf("id", "pw", "email").all {key -> (data[key] as? String).isNullOrEmpty() }
 
-        id_text.setText(data["id"] ?: "")
-        pw_text.setText(data["pw"] ?: "")
-        pw_check.setText(data["pw"] ?: "")
-        email_text.setText(data["email"] ?: "")
+        id_text.setText(data["id"] as? String?: "")
+        pw_text.setText(data["pw"] as? String?: "")
+        pw_check.setText(data["pw"]  as? String?: "")
+        email_text.setText(data["email"]  as? String?: "")
 
         if (!allNull) {
             // 유효성 확인 상태 업데이트
