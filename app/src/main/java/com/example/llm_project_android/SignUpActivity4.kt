@@ -56,10 +56,21 @@ class SignUpActivity4 : AppCompatActivity() {
         val insuranceList = resources.getStringArray(R.array.insurances).map { Post(it) }   // 문자열 배열 -> Post 객체 리스트로 변환
 
         // 이전 화면에서 데이터 받아오기
-        val data = getPassedStrings(
-            "id", "pw", "email", "source",
-            "name", "birth", "phone", "gender", "married", "job",
-            "disease0", "disease1", "disease2", "disease3", "disease4", "disease5", "disease6", "disease7", "disease8", "disease9")
+        val data = getPassedExtras(
+            listOf(
+                "id" to String::class.java, "pw" to String::class.java,
+                "email" to String::class.java, "source" to String::class.java,          // SignUp1
+
+                "name" to String::class.java, "birth" to String::class.java,
+                "phone" to String::class.java, "gender" to String::class.java,
+                "married" to String::class.java, "job" to String::class.java,           // SignUp2
+
+                "disease0" to Boolean::class.java, "disease1" to Boolean::class.java,
+                "disease2" to Boolean::class.java, "disease3" to Boolean::class.java,
+                "disease4" to Boolean::class.java, "disease5" to Boolean::class.java,
+                "disease6" to Boolean::class.java, "disease7" to Boolean::class.java,
+                "disease8" to Boolean::class.java, "disease9" to Boolean::class.java    // SignUp3
+            ))
 
         // 초기 설정 (버튼 비활성화)
         updateCompletionButton()
@@ -67,7 +78,7 @@ class SignUpActivity4 : AppCompatActivity() {
         search_items(search_insurance, insuranceList)
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity3)
-        clickBackButton(btn_back, data, SignUpActivity3::class.java)
+        clickBackButton(btn_back, data.filter { it != null } as Map<String, Any>, SignUpActivity3::class.java)
     }
 
     // 검색어 입력 함수

@@ -63,16 +63,12 @@ class SignUpActivity3 : AppCompatActivity() {
         // 이전 화면에서 데이터 받아오기
         val data = getPassedExtras(
             listOf(
-                "id" to String::class.java,
-                "pw" to String::class.java,
-                "email" to String::class.java,
-                "source" to String::class.java,
-                "name" to String::class.java,
-                "birth" to String::class.java,
-                "phone" to String::class.java,
-                "gender" to String::class.java,
-                "married" to String::class.java,
-                "job" to String::class.java
+                "id" to String::class.java, "pw" to String::class.java,
+                "email" to String::class.java, "source" to String::class.java,          // SignUp1
+
+                "name" to String::class.java, "birth" to String::class.java,
+                "phone" to String::class.java, "gender" to String::class.java,
+                "married" to String::class.java, "job" to String::class.java,           // SignUp2
             )
         )
 
@@ -96,16 +92,11 @@ class SignUpActivity3 : AppCompatActivity() {
     fun restorePassedData() {
         val data = getPassedExtras(
             listOf(
-                "disease0" to Boolean::class.java,
-                "disease1" to Boolean::class.java,
-                "disease2" to Boolean::class.java,
-                "disease3" to Boolean::class.java,
-                "disease4" to Boolean::class.java,
-                "disease5" to Boolean::class.java,
-                "disease6" to Boolean::class.java,
-                "disease7" to Boolean::class.java,
-                "disease8" to Boolean::class.java,
-                "disease9" to Boolean::class.java,
+                "disease0" to Boolean::class.java, "disease1" to Boolean::class.java,
+                "disease2" to Boolean::class.java, "disease3" to Boolean::class.java,
+                "disease4" to Boolean::class.java, "disease5" to Boolean::class.java,
+                "disease6" to Boolean::class.java, "disease7" to Boolean::class.java,
+                "disease8" to Boolean::class.java, "disease9" to Boolean::class.java
             )
         )
         for (i in 0 until 10)

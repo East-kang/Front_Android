@@ -79,10 +79,8 @@ class SignUpActivity2 : AppCompatActivity() {
         // 이전 화면에서 받아온 데이터
         val data = getPassedExtras(
             listOf(
-                "id" to String::class.java,
-                "pw" to String::class.java,
-                "email" to String::class.java,
-                "source" to String::class.java
+                "id" to String::class.java, "pw" to String::class.java,
+                "email" to String::class.java, "source" to String::class.java   // SignUp1
             )
         )
 
@@ -126,12 +124,9 @@ class SignUpActivity2 : AppCompatActivity() {
     fun restorePassedData() {
         val data = getPassedExtras(
             listOf(
-                "name" to String::class.java,
-                "birth" to String::class.java,
-                "phone" to String::class.java,
-                "gender" to String::class.java,
-                "married" to String::class.java,
-                "job" to String::class.java
+                "name" to String::class.java, "birth" to String::class.java,
+                "phone" to String::class.java, "gender" to String::class.java,
+                "married" to String::class.java, "job" to String::class.java
             )
         )
         val allNull = listOf("name", "birth", "phone", "gender", "married", "job").all {key -> (data[key] as? String).isNullOrEmpty() }
