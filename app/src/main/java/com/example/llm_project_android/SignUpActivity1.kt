@@ -72,7 +72,7 @@ class SignUpActivity1 : AppCompatActivity() {
         var pw_visible: Boolean = false             // 비밀번호 시각화 여부 (true: 시각화, false: 비시각화)
         var pw_check_visible: Boolean = false       // 비밀번호 확인 시각화 여부 (true: 시각화, false: 비시각화)
 
-        val source = getPassedStrings("source")["source"] ?: "" // 이전 화면 소스
+        val source = getPassedExtras("source")["source"] as? String ?: "" // 이전 화면 소스
 
         // 초기 설정 (버튼 비활성화, 입력 값 초기화)
         updateNextButton()
@@ -83,21 +83,21 @@ class SignUpActivity1 : AppCompatActivity() {
         email_text.setText("aa12@naver.com")
         btn_next.isEnabled = true
 
-//        // 아이디 생성 (입력 text, 입력 상태, 존재하는 아이디, 중복 확인 버튼, 완료 상태)
-//        create_id(id_text, id_rule, id_test, btn_idCheck, { is_Id_Confirmed }, {is_Id_Confirmed = it})
-//
-//        // 비밀번호 생성 (입력 text, 입력 상태, 완료 상태)
-//        create_pw(pw_text, pw_rule, pw_check, { is_Pw_Confirmed }, { is_Pw_Confirmed = it })
-//
-//        // 비밀번호 확인 (입력된 비밀번호 동적 text, 비밀번호 입력란, 입력 text, 입력 상태 text, 완료 상태)
-//        check_pw({ pw_text.text.toString() }, pw_text, pw_check, pw_check_text, { is_Pw_Check_Confirmed }, { is_Pw_Check_Confirmed = it })
-//
-//        // 이메일 생성 (입력 text, 생성 여부 text, 완료 상태)
-//        create_email(email_text, email_check, { is_Email_Confirmed }, { is_Email_Confirmed = it })
-//
-//        // 비밀번호 & 비밀번호 확인란 시각화 버튼 클릭 이벤트
-//        pw_eye_visibility(btn_eye, pw_text, {pw_visible}, {pw_visible = it})
-//        pw_eye_visibility(btn_eye_check, pw_check, {pw_check_visible}, {pw_check_visible = it})
+        // 아이디 생성 (입력 text, 입력 상태, 존재하는 아이디, 중복 확인 버튼, 완료 상태)
+        create_id(id_text, id_rule, id_test, btn_idCheck, { is_Id_Confirmed }, {is_Id_Confirmed = it})
+
+        // 비밀번호 생성 (입력 text, 입력 상태, 완료 상태)
+        create_pw(pw_text, pw_rule, pw_check, { is_Pw_Confirmed }, { is_Pw_Confirmed = it })
+
+        // 비밀번호 확인 (입력된 비밀번호 동적 text, 비밀번호 입력란, 입력 text, 입력 상태 text, 완료 상태)
+        check_pw({ pw_text.text.toString() }, pw_text, pw_check, pw_check_text, { is_Pw_Check_Confirmed }, { is_Pw_Check_Confirmed = it })
+
+        // 이메일 생성 (입력 text, 생성 여부 text, 완료 상태)
+        create_email(email_text, email_check, { is_Email_Confirmed }, { is_Email_Confirmed = it })
+
+        // 비밀번호 & 비밀번호 확인란 시각화 버튼 클릭 이벤트
+        pw_eye_visibility(btn_eye, pw_text, {pw_visible}, {pw_visible = it})
+        pw_eye_visibility(btn_eye_check, pw_check, {pw_check_visible}, {pw_check_visible = it})
 
         // 뒤로가기 버튼 클릭 이벤트 (to InitActivity or LoginActivity)
         clickBackButton(btn_back, source, InitActivity::class.java, LoginActivity::class.java)
@@ -111,7 +111,7 @@ class SignUpActivity1 : AppCompatActivity() {
 
     // 화면 전환간 데이터 수신 및 적용
     fun restorePassedData() {
-        val data = getPassedStrings("id", "pw", "email")
+        val data = getPassedExtras("id", "pw", "email")
         val allNull = listOf("id", "pw", "email").all {key -> data[key].isNullOrEmpty() }
 
         id_text.setText(data["id"] ?: "")
