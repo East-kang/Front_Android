@@ -61,9 +61,20 @@ class SignUpActivity3 : AppCompatActivity() {
         )
 
         // 이전 화면에서 데이터 받아오기
-        val data = getPassedStrings(
-            "id", "pw", "email", "source",
-            "name", "birth", "phone", "gender", "married", "job")
+        val data = getPassedExtras(
+            listOf(
+                "id" to String::class.java,
+                "pw" to String::class.java,
+                "email" to String::class.java,
+                "source" to String::class.java,
+                "name" to String::class.java,
+                "birth" to String::class.java,
+                "phone" to String::class.java,
+                "gender" to String::class.java,
+                "married" to String::class.java,
+                "job" to String::class.java
+            )
+        )
 
         // 초기 설정 (버튼 비활성화)
         updateNextButton()
@@ -72,10 +83,10 @@ class SignUpActivity3 : AppCompatActivity() {
         items_check({ is_Checked_Confirmed }, { is_Checked_Confirmed = it })
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity2)
-        clickBackButton(btn_back, data, SignUpActivity2::class.java)
+        clickBackButton(btn_back, data.filterValues { it != null } as Map<String, Any>, SignUpActivity2::class.java)
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity4)
-        clickNextButton(btn_next, data, SignUpActivity4::class.java)
+        clickNextButton(btn_next, data.filterValues { it != null } as Map<String, Any>, SignUpActivity4::class.java)
 
         // 화면 전환 간 데이터 유지 (SignUpActivity4.kt -> SignUpActivity3.kt)
         restorePassedData()
@@ -83,9 +94,19 @@ class SignUpActivity3 : AppCompatActivity() {
 
 
     fun restorePassedData() {
-        val data = getPassedBooleans(
-            "disease0", "disease1", "disease2", "disease3", "disease4",
-            "disease5", "disease6", "disease7", "disease8", "disease9"
+        val data = getPassedExtras(
+            listOf(
+                "disease0" to Boolean::class.java,
+                "disease1" to Boolean::class.java,
+                "disease2" to Boolean::class.java,
+                "disease3" to Boolean::class.java,
+                "disease4" to Boolean::class.java,
+                "disease5" to Boolean::class.java,
+                "disease6" to Boolean::class.java,
+                "disease7" to Boolean::class.java,
+                "disease8" to Boolean::class.java,
+                "disease9" to Boolean::class.java,
+            )
         )
         for (i in 0 until 10)
             Log.d("restore","data$i: "+data["disease$i"])

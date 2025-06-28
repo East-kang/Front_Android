@@ -109,7 +109,13 @@ class SignUpActivity1 : AppCompatActivity() {
 
     // 화면 전환간 데이터 수신 및 적용
     fun restorePassedData() {
-        val data = getPassedExtras(listOf("id" to String::class.java, "pw" to String::class.java, "email" to String::class.java))
+        val data = getPassedExtras(
+            listOf(
+                "id" to String::class.java,
+                "pw" to String::class.java,
+                "email" to String::class.java
+            )
+        )
         val allNull = listOf("id", "pw", "email").all {key -> (data[key] as? String).isNullOrEmpty() }
 
         id_text.setText(data["id"] as? String?: "")

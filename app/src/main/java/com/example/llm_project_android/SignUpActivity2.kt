@@ -77,7 +77,14 @@ class SignUpActivity2 : AppCompatActivity() {
         updateNextButton()
 
         // 이전 화면에서 받아온 데이터
-        val data = getPassedStrings("id", "pw", "email", "source")
+        val data = getPassedExtras(
+            listOf(
+                "id" to String::class.java,
+                "pw" to String::class.java,
+                "email" to String::class.java,
+                "source" to String::class.java
+            )
+        )
 
         btn_next.isEnabled = true
 
@@ -105,10 +112,10 @@ class SignUpActivity2 : AppCompatActivity() {
 //        select_job(job_spinner, { job -> selectedJob = job }, { is_Job_Confirmed }, { is_Job_Confirmed = it }, { is_Etc_Confirmed }, { is_Etc_Confirmed = it })
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity1)
-        clickBackButton(btn_back, SignUpActivity1::class.java, data)
+        clickBackButton(btn_back, SignUpActivity1::class.java, data.filterValues { it != null } as Map<String, Any>)
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity3)
-        clickNextButton(btn_next, data, name, birth, phone,
+        clickNextButton(btn_next, data.filterValues { it != null } as Map<String, Any>, name, birth, phone,
             gender_M, married_N, job_etc, SignUpActivity3::class.java)
 
         // 화면 전환 간 데이터 유지 (SignUpActivity3.kt -> SignUpActivity2.kt)
@@ -117,14 +124,23 @@ class SignUpActivity2 : AppCompatActivity() {
 
     // 화면 전환간 데이터 수신 및 적용
     fun restorePassedData() {
-        val data = getPassedStrings("name", "birth", "phone", "gender", "married", "job")
-        val allNull = listOf("name", "birth", "phone", "gender", "married", "job").all {key -> data[key].isNullOrEmpty() }
+        val data = getPassedExtras(
+            listOf(
+                "name" to String::class.java,
+                "birth" to String::class.java,
+                "phone" to String::class.java,
+                "gender" to String::class.java,
+                "married" to String::class.java,
+                "job" to String::class.java
+            )
+        )
+        val allNull = listOf("name", "birth", "phone", "gender", "married", "job").all {key -> (data[key] as? String).isNullOrEmpty() }
         val job_Pattern = Regex("^[\\s가-힣]{2,20}$")
 
         if (!allNull) {
-            name.setText(data["name"] ?: "")
-            birth.setText(data["birth"] ?: "")
-            phone.setText(data["phone"] ?: "")
+            name.setText(data["name"] as? String?: "")
+            birth.setText(data["birth"] as? String?: "")
+            phone.setText(data["phone"] as? String?: "")
             phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
             is_Name_Confirmed = true
@@ -144,7 +160,7 @@ class SignUpActivity2 : AppCompatActivity() {
             else married_Y.isChecked = true
             is_Married_Confirmed = true
 
-            val job = data["job"] ?: ""
+            val job = data["job"] as? String?: ""
             val job_list = resources.getStringArray(R.array.jobs)
             val job_index = job_list.indexOf(job)
 
