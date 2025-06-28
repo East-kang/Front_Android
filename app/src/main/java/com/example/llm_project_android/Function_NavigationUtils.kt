@@ -29,12 +29,15 @@ fun Context.navigateTo(target: Class<out AppCompatActivity>, vararg extras: Pair
     }
 }
 
-// 다중 키에 대한 String 값 가져오기 (기본값 포함)
-fun AppCompatActivity.getPassedStrings(vararg keys: String, default: String = ""): Map<String, String> {
-    return keys.associateWith { intent.getStringExtra(it) ?: default }
-}
 
-// 다중 키에 대한 Boolean 값 가져오기 (기본값 포함)
-fun AppCompatActivity.getPassedBooleans(vararg keys: String, default: Boolean = false): Map<String, Boolean> {
-    return keys.associateWith { intent.getBooleanExtra(it, default) }
+// 다중 데이터 타입 키값 가져오기 (기본값 포함)
+fun AppCompatActivity.getPassedExtras(keys: List<Pair<String, Class<*>>>): Map<String, Any?> {
+    return keys.associate { (key, type) ->
+        val value = when (type) {
+            String::class.java -> intent.getStringExtra(key)
+            Boolean::class.java -> intent.getBooleanExtra(key, false)
+            else -> throw IllegalArgumentException("Unsupported type: $key → $type")
+        }
+        key to value
+    }
 }
