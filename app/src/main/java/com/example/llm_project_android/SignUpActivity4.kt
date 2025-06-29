@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import kotlin.properties.Delegates
 
@@ -29,9 +30,12 @@ class SignUpActivity4 : AppCompatActivity() {
     private lateinit var tag_chip: ChipGroup
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: PostContentAdapter
+    private var insuranceList: List<Post> = emptyList() // 문자열 배열 -> Post 객체 리스트로 변환
+    private val selectedPosts = mutableListOf<Post>()
 
     var is_Check_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateCompletionButton() }        // 체크 완료 여부
     var is_Search_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateCompletionButton() }       // 체크 완료 여부
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +56,7 @@ class SignUpActivity4 : AppCompatActivity() {
         tag_chip = findViewById<ChipGroup>(R.id.tagChipGroup)
         recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
 
-        val insuranceList = resources.getStringArray(R.array.insurances).map { Post(it) }   // 문자열 배열 -> Post 객체 리스트로 변환
+        insuranceList = resources.getStringArray(R.array.insurances).map { Post(it) }
 
         // 이전 화면에서 데이터 받아오기
         val data = getPassedExtras(
@@ -60,69 +64,126 @@ class SignUpActivity4 : AppCompatActivity() {
                 "id" to String::class.java, "pw" to String::class.java,
                 "email" to String::class.java, "source" to String::class.java,          // SignUp1
 
-                "name" to String::class.java, "birth" to String::class.java,
-                "phone" to String::class.java, "gender" to String::class.java,
-                "married" to String::class.java, "job" to String::class.java,           // SignUp2
-
-                "disease0" to Boolean::class.java, "disease1" to Boolean::class.java,
-                "disease2" to Boolean::class.java, "disease3" to Boolean::class.java,
-                "disease4" to Boolean::class.java, "disease5" to Boolean::class.java,
-                "disease6" to Boolean::class.java, "disease7" to Boolean::class.java,
-                "disease8" to Boolean::class.java, "disease9" to Boolean::class.java    // SignUp3
+//                "name" to String::class.java, "birth" to String::class.java,
+//                "phone" to String::class.java, "gender" to String::class.java,
+//                "married" to String::class.java, "job" to String::class.java,           // SignUp2
+//
+//                "disease0" to Boolean::class.java, "disease1" to Boolean::class.java,
+//                "disease2" to Boolean::class.java, "disease3" to Boolean::class.java,
+//                "disease4" to Boolean::class.java, "disease5" to Boolean::class.java,
+//                "disease6" to Boolean::class.java, "disease7" to Boolean::class.java,
+//                "disease8" to Boolean::class.java, "disease9" to Boolean::class.java    // SignUp3
             )
         )
 
         // 초기 설정 (버튼 비활성화)
         updateCompletionButton()
 
-        // 보험 여부 체크 박스 클릭 이벤트 함수
+        // 보험 여부 체크 박스 체크 여부
         isChecked_insurance({ is_Check_Confirmed = it })
 
-        search_items(search_insurance, insuranceList)
+        active_searchBar()
+
+        // 상품 검색
+//        search_items(search_insurance, insuranceList, { is_Check_Confirmed = it })
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity3)
         clickBackButton(btn_back, data.filter { it != null } as Map<String, Any>, SignUpActivity3::class.java)
     }
 
+    // ChipView / RecyclerView 활성화 처리 함수
+    fun isActived(chip: Int, recycler: Int) {
+        tag_chip.visibility = chip
+        recyclerView.visibility = recycler
+    }
+
     // '보험여부' 체크 박스 클릭 이벤트 함수 정의
     fun isChecked_insurance(setInsuranceConfirmed: (Boolean) -> Unit) {
         insurance.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                R.id.insuranceYes -> {
+            when (checkedId) {                          // 보험여부
+                R.id.insuranceYes -> {                  // Yes
                     search_insurance.visibility = View.VISIBLE
-                    recyclerView.visibility = View.VISIBLE
+                    setInsuranceConfirmed(false)
                 }
-                R.id.insuranceNo -> {
+                R.id.insuranceNo -> {                   // No
                     search_insurance.visibility = View.GONE
-                    recyclerView.visibility = View.GONE
-                    tag_chip.visibility = View.GONE
+                    setInsuranceConfirmed(true)
                 }
-            }}
+            }
+            isActived(View.GONE, View.GONE)
+        }
     }
 
-    // 검색어 입력 함수
-    fun search_items(searchView: SearchView, insuranceList: List<Post>) {
-        // 어댑터 설정 및 RecyclerView 연결
-        adapter = PostContentAdapter(insuranceList)
+    // 검색창 클릭 함수
+    fun active_searchBar() {
+        search_insurance.setOnQueryTextFocusChangeListener { viewModelStore, hasFocus ->    // 검색창 터치 포커스 여부 함수
+            if (hasFocus) {     // 검색창 터치 시
+                isActived(View.VISIBLE, View.GONE)
+                search_items(search_insurance, insuranceList, { is_Check_Confirmed = it })
+            }
+        }
+    }
+
+    // 상품 검색 함수
+    fun search_items(searchView: SearchView, insuranceList: List<Post>, setInsuranceConfirmed: (Boolean) -> Unit) {
+
+        val availableList = insuranceList.filterNot { selectedPosts.contains(it) }
+        adapter = PostContentAdapter(insuranceList)                 // 어댑터 설정 및 RecyclerView 연결
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
+        recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
 
-        val dividerItemDecoration = DividerItemDecoration(this, LinearLayoutManager.VERTICAL)
-        recyclerView.addItemDecoration(dividerItemDecoration)
+        // 아이템 클릭 이벤트
+        adapter.setOnItemClickListener { post ->
+            selectedPosts.add(post)
+            add_Chip(post.title)
+            isActived(View.VISIBLE, View.GONE)
+            search_insurance.setQuery("", false)
+            search_insurance.clearFocus()
+            setInsuranceConfirmed(true)
+
+            val currentQuery = search_insurance.query.toString()
+            val filtered = insuranceList
+                .filterNot { selectedPosts.contains(it) }
+                .filter { it.title.contains(currentQuery, ignoreCase = true)}
+        }
+
+        adapter.setOnEmptyResultCallback {
+            isActived(View.VISIBLE, View.GONE)
+        }
 
         // 실시간 검색어 변경 감지 -> 필터 실행
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean = false
+
             override fun onQueryTextChange(newText: String?): Boolean {
-                adapter.filter?.filter(newText)
+                if (newText.isNullOrBlank())
+                    isActived(View.VISIBLE, View.GONE)
+                else
+                    isActived(View.GONE, View.VISIBLE)
+                val filtered = insuranceList.filterNot { selectedPosts.contains(it) }
+                    .filter { it.title.contains(newText ?: "", ignoreCase = true)}
+                adapter.filter.filter(newText)
                 return true
             }
         })
     }
 
-    // 아이템 클릭 이벤트 함수
-    fun select_items(){
-
+    // 아이템 태그 추가 이벤트 함수
+    fun add_Chip(text: String){
+        val chip = Chip(this).apply { 
+            this.text = text
+            isCloseIconEnabled = true
+            setOnCloseIconClickListener { 
+                tag_chip.removeView(this)
+                selectedPosts.remove(Post(text.toString()))
+                val currentQuery = search_insurance.query.toString()
+                val filtered = insuranceList.filterNot { selectedPosts.contains(it) }
+                    .filter { it.title.contains(currentQuery, ignoreCase = true) }
+                adapter.updateList(filtered)
+            }
+        }
+        tag_chip.addView(chip)
     }
 
     // '완료' 버튼 활성화 함수

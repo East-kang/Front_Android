@@ -101,7 +101,7 @@ class SignUpActivity1 : AppCompatActivity() {
         clickBackButton(btn_back, source, InitActivity::class.java, LoginActivity::class.java)
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity2)
-        clickNextButton(btn_next,id_text,pw_text,email_text, source, SignUpActivity2::class.java)
+        clickNextButton(btn_next,id_text,pw_text,email_text, source, SignUpActivity4::class.java)
 
         // 화면 전환으로 인한 데이터 수신
 //        restorePassedData()

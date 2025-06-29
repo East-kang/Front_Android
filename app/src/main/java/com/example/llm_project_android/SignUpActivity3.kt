@@ -1,13 +1,10 @@
 package com.example.llm_project_android
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
-import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.RadioButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -171,9 +168,6 @@ class SignUpActivity3 : AppCompatActivity() {
             "disease$i" to checkBoxList[i].isChecked
             }
 
-            for ((key, value) in diseaseData) {
-                Log.d("navigateTo", "$key: $value")
-            }
             navigateTo(
                 targetActivity,
                 *data.mapValues { it.value }.toList().toTypedArray(),
