@@ -75,10 +75,29 @@ class SignUpActivity4 : AppCompatActivity() {
         // 초기 설정 (버튼 비활성화)
         updateCompletionButton()
 
+        // 보험 여부 체크 박스 클릭 이벤트 함수
+        isChecked_insurance({ is_Check_Confirmed = it })
+
         search_items(search_insurance, insuranceList)
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity3)
         clickBackButton(btn_back, data.filter { it != null } as Map<String, Any>, SignUpActivity3::class.java)
+    }
+
+    // '보험여부' 체크 박스 클릭 이벤트 함수 정의
+    fun isChecked_insurance(setInsuranceConfirmed: (Boolean) -> Unit) {
+        insurance.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.insuranceYes -> {
+                    search_insurance.visibility = View.VISIBLE
+                    recyclerView.visibility = View.VISIBLE
+                }
+                R.id.insuranceNo -> {
+                    search_insurance.visibility = View.GONE
+                    recyclerView.visibility = View.GONE
+                    tag_chip.visibility = View.GONE
+                }
+            }}
     }
 
     // 검색어 입력 함수

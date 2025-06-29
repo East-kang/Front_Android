@@ -32,7 +32,6 @@ class PostContentAdapter (private var postList: List<Post>)
         return PostViewHolder(view)
     }
 
-
     // 각 아이템에 데이터 바인딩
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val post = filteredList[position]
