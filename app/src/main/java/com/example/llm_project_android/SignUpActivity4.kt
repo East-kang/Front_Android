@@ -10,14 +10,12 @@ import android.widget.RadioGroup
 import androidx.appcompat.widget.SearchView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.ChipGroup
-import java.time.temporal.TemporalQuery
 import kotlin.properties.Delegates
 
 class SignUpActivity4 : AppCompatActivity() {
@@ -74,9 +72,6 @@ class SignUpActivity4 : AppCompatActivity() {
             )
         )
 
-        for (i in 0..9)
-            Log.d("view4", "item$i: "+data["disease$i"])
-
         // 초기 설정 (버튼 비활성화)
         updateCompletionButton()
 
@@ -104,6 +99,11 @@ class SignUpActivity4 : AppCompatActivity() {
                 return true
             }
         })
+    }
+
+    // 아이템 클릭 이벤트 함수
+    fun select_items(){
+
     }
 
     // '완료' 버튼 활성화 함수
