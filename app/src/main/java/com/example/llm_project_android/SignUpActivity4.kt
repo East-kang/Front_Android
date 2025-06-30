@@ -1,8 +1,6 @@
 package com.example.llm_project_android
 
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
@@ -126,7 +124,7 @@ class SignUpActivity4 : AppCompatActivity() {
 
     // 검색창 클릭 함수
     fun active_searchBar() {
-        search_insurance.setOnQueryTextFocusChangeListener { viewModelStore, hasFocus ->    // 검색창 터치 포커스 여부 함수
+        search_insurance.setOnQueryTextFocusChangeListener { _, hasFocus ->    // 검색창 터치 포커스 여부 함수
             if (hasFocus) {     // 검색창 터치 시
                 isActived(View.VISIBLE, View.GONE)
                 search_items(search_insurance, insuranceList, { is_Check_Confirmed = it })
@@ -138,7 +136,6 @@ class SignUpActivity4 : AppCompatActivity() {
     // 상품 검색 함수
     fun search_items(searchView: SearchView, insuranceList: List<Post>, setInsuranceConfirmed: (Boolean) -> Unit) {
 
-        val initialList = insuranceList.filterNot { selectedPosts.contains(it) }
         adapter = PostContentAdapter(insuranceList)                 // 어댑터 설정 및 RecyclerView 연결
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
@@ -219,7 +216,6 @@ class SignUpActivity4 : AppCompatActivity() {
             val hasChip = tag_chip.isNotEmpty()
             setInsuranceConfirmed(hasChip)
         }
-
     }
 
     // '완료' 버튼 활성화 함수
