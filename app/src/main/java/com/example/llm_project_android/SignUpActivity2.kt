@@ -87,27 +87,27 @@ class SignUpActivity2 : AppCompatActivity() {
         btn_next.isEnabled = true
 
         // 체크 박스 체크 취소
-//        gender.clearCheck()
-//        married.clearCheck()
-//
-//        // 이름 생성
-//        create_name(name, { is_Name_Confirmed }, { is_Name_Confirmed = it })
-//
-//        // 생년월일 생성
-//        create_birth(birth, { is_Birth_Confirmed }, { is_Birth_Confirmed = it })
-//
-//        // 전화번호 생성
-//        create_phone(phone, { is_Phone_Confirmed }, { is_Phone_Confirmed = it })
-//        phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
-//
-//        // 성별 체크
-//        isChecked_gender(gender, { is_Gender_Confirmed = it})
-//
-//        // 결혼 여부 체크
-//        isChecked_married(married, { is_Married_Confirmed = it})
-//
-//        // 직업 선택
-//        select_job(job_spinner, { job -> selectedJob = job }, { is_Job_Confirmed }, { is_Job_Confirmed = it }, { is_Etc_Confirmed }, { is_Etc_Confirmed = it })
+        gender.clearCheck()
+        married.clearCheck()
+
+        // 이름 생성
+        create_name(name, { is_Name_Confirmed }, { is_Name_Confirmed = it })
+
+        // 생년월일 생성
+        create_birth(birth, { is_Birth_Confirmed }, { is_Birth_Confirmed = it })
+
+        // 전화번호 생성
+        create_phone(phone, { is_Phone_Confirmed }, { is_Phone_Confirmed = it })
+        phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+
+        // 성별 체크
+        isChecked_gender(gender, { is_Gender_Confirmed = it})
+
+        // 결혼 여부 체크
+        isChecked_married(married, { is_Married_Confirmed = it})
+
+        // 직업 선택
+        select_job(job_spinner, { job -> selectedJob = job }, { is_Job_Confirmed }, { is_Job_Confirmed = it }, { is_Etc_Confirmed }, { is_Etc_Confirmed = it })
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity1)
         clickBackButton(btn_back, SignUpActivity1::class.java, data.filterValues { it != null } as Map<String, Any>)

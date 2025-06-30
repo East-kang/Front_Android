@@ -72,10 +72,10 @@ class SignUpActivity3 : AppCompatActivity() {
         btn_next.isEnabled = true
 
         // 초기 설정 (버튼 비활성화)
-//        updateNextButton()
-//
-//        // item 체크
-//        items_check({ is_Checked_Confirmed }, { is_Checked_Confirmed = it })
+        updateNextButton()
+
+        // item 체크
+        items_check({ is_Checked_Confirmed }, { is_Checked_Confirmed = it })
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity2)
         clickBackButton(btn_back, data.filterValues { it != null } as Map<String, Any>, SignUpActivity2::class.java)
