@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
-import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.RadioButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -60,9 +58,18 @@ class SignUpActivity3 : AppCompatActivity() {
         )
 
         // 이전 화면에서 데이터 받아오기
-        val data = getPassedStrings(
-            "id", "pw", "email", "source",
-            "name", "birth", "phone", "gender", "married", "job")
+        val data = getPassedExtras(
+            listOf(
+                "id" to String::class.java, "pw" to String::class.java,
+                "email" to String::class.java, "source" to String::class.java,          // SignUp1
+
+                "name" to String::class.java, "birth" to String::class.java,
+                "phone" to String::class.java, "gender" to String::class.java,
+                "married" to String::class.java, "job" to String::class.java,           // SignUp2
+            )
+        )
+
+        btn_next.isEnabled = true
 
         // 초기 설정 (버튼 비활성화)
         updateNextButton()
@@ -71,10 +78,10 @@ class SignUpActivity3 : AppCompatActivity() {
         items_check({ is_Checked_Confirmed }, { is_Checked_Confirmed = it })
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity2)
-        clickBackButton(btn_back, data, SignUpActivity2::class.java)
+        clickBackButton(btn_back, data.filterValues { it != null } as Map<String, Any>, SignUpActivity2::class.java)
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity4)
-        clickNextButton(btn_next, data, SignUpActivity4::class.java)
+        clickNextButton(btn_next, data.filterValues { it != null } as Map<String, Any>, SignUpActivity4::class.java)
 
         // 화면 전환 간 데이터 유지 (SignUpActivity4.kt -> SignUpActivity3.kt)
         restorePassedData()
@@ -82,11 +89,15 @@ class SignUpActivity3 : AppCompatActivity() {
 
 
     fun restorePassedData() {
-        val data = getPassedBooleans(
-            "disease0", "disease1", "disease2", "disease3", "disease4",
-            "disease5", "disease6", "disease7", "disease8", "disease9"
+        val data = getPassedExtras(
+            listOf(
+                "disease0" to Boolean::class.java, "disease1" to Boolean::class.java,
+                "disease2" to Boolean::class.java, "disease3" to Boolean::class.java,
+                "disease4" to Boolean::class.java, "disease5" to Boolean::class.java,
+                "disease6" to Boolean::class.java, "disease7" to Boolean::class.java,
+                "disease8" to Boolean::class.java, "disease9" to Boolean::class.java
+            )
         )
-
         if (data["disease0"] == true)                                   // item0만 체크, 나머지는 해제, 비활성화
             for (i in checkBoxList.indices) {
                 checkBoxList[i].isChecked = (i == 0)
@@ -121,6 +132,7 @@ class SignUpActivity3 : AppCompatActivity() {
             box.setOnCheckedChangeListener { checkBox, isChecked ->
                 if (box.isChecked)  setCheckedConfirmed(true)
                 else                setCheckedConfirmed(false)
+
             }
             if (is_Checked_Confirmed)
                 break
@@ -152,19 +164,14 @@ class SignUpActivity3 : AppCompatActivity() {
     // '다음' 버튼 클릭 이벤트 정의 함수
     fun AppCompatActivity.clickNextButton(nextButton: View, data: Map<String, Any>, targetActivity: Class<out AppCompatActivity>) {
         nextButton.setOnClickListener {
+            val diseaseData = (0 until 10).map { i ->
+            "disease$i" to checkBoxList[i].isChecked
+            }
+
             navigateTo(
                 targetActivity,
                 *data.mapValues { it.value }.toList().toTypedArray(),
-                "disease0" to item0.isChecked,
-                "disease1" to item1.isChecked,
-                "disease2" to item2.isChecked,
-                "disease3" to item3.isChecked,
-                "disease4" to item4.isChecked,
-                "disease5" to item5.isChecked,
-                "disease6" to item6.isChecked,
-                "disease7" to item7.isChecked,
-                "disease8" to item8.isChecked,
-                "disease9" to item9.isChecked
+                *diseaseData.toTypedArray()
             )
         }
     }

@@ -112,11 +112,14 @@
         android:id="@+id/search_insurance"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginRight="30dp"
         android:focusable="true"
         app:iconifiedByDefault="false"
         android:textColorHint="#666666"
         android:textSize="18dp"
         app:queryHint="기존에 가입한 보혐명을 입력하세요"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/constraintLayout" />
@@ -126,11 +129,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
+        android:orientation="vertical"
+        app:chipSpacingVertical="0dp"
+        android:visibility="gone"
         app:singleSelection="false"
-        app:chipSpacing="8dp"
+        android:descendantFocusability="afterDescendants"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:clickable="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_insurance" />
+
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -148,23 +158,24 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="50dp" />
+            android:layout_marginHorizontal="50dp"
+            android:visibility="gone" />
     </ScrollView>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/completion_Button"
-        android:layout_width="350dp"
+        android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_marginTop="40dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/disabled_button"
+        android:layout_marginBottom="20dp"
+        android:layout_marginHorizontal="30dp"
+        android:background="@drawable/enabled_button"
         android:gravity="center"
         android:text="완 료"
         android:textColor="#FFFFFF"
         android:textSize="18dp"
         android:textStyle="bold"
-        android:enabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
