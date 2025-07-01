@@ -21,8 +21,9 @@ class ViewPageAdapter(private val images : List<Int>) :
     }
 
     override fun onBindViewHolder(holder: BannerViewHolder, position: Int) {
-        holder.bind(images[position])
+        val realPosition = position % images.size
+        holder.bind(images[realPosition])
     }
 
-    override fun getItemCount(): Int = images.size
+    override fun getItemCount(): Int = Int.MAX_VALUE
 }
