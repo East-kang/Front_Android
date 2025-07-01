@@ -8,14 +8,17 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.llm_project_android.databinding.MainViewBinding
 import android.view.View
+import android.widget.ImageButton
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
-import androidx.viewpager2.widget.ViewPager2
 
 class MainViewActivity : AppCompatActivity() {
     private lateinit var binding: MainViewBinding
     private val sliderHandler = android.os.Handler(android.os.Looper.getMainLooper())
     private lateinit var sliderRunnable: Runnable
+
+    private lateinit var btn_search: ImageButton
+    private lateinit var btn_menu: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,15 +33,16 @@ class MainViewActivity : AppCompatActivity() {
             insets
         }
 
+        btn_search = findViewById<ImageButton>(R.id.search_icon)
+        btn_menu = findViewById<ImageButton>(R.id.menu_icon)
+
         val bannerList = listOf(
             R.drawable.image_birth_icon,
             R.drawable.sample_image,
             R.drawable.image_name_icon
         )
 
-
-
-        // 배너 슬라이딩 구현
+        // 배너 슬라이딩
         setupViewPager(bannerList)
         startAutoScroll(bannerList)
 
