@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.llm_project_android.databinding.ItemBannerBinding
 
-class BannerAdapter(private val images : List<Int>) :
-    RecyclerView.Adapter<BannerAdapter.BannerViewHolder>() {
+class ViewPageAdapter(private val images : List<Int>) :
+    RecyclerView.Adapter<ViewPageAdapter.BannerViewHolder>() {
 
     inner class BannerViewHolder(private val binding : ItemBannerBinding) :
         RecyclerView.ViewHolder(binding.root){

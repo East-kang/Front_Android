@@ -7,7 +7,7 @@
         android:id="@+id/ivBanner"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="center"
+        android:scaleType="centerCrop"
         android:contentDescription="배너 이미지" />
     
 </FrameLayout>

@@ -9,10 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LLM_Project_Android">
         <activity
-            android:name=".HomeFragment"
-            android:exported="false" />
-        <activity
-            android:name=".InitActivity"
+            android:name=".MainViewActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -36,7 +33,7 @@
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".MainViewActivity"
+            android:name=".InitActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
