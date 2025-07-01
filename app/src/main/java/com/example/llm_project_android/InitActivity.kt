@@ -25,7 +25,8 @@ class InitActivity : AppCompatActivity() {
 
         // 로그인 버튼 클릭 이벤트
         btn_login.setOnClickListener {
-            navigateTo(LoginActivity::class.java)
+            // navigateTo(LoginActivity::class.java)
+            navigateTo(MainViewActivity::class.java)
         }
 
         // 회원가입 버튼 클릭 이벤트
