@@ -62,6 +62,9 @@ class MainViewActivity : AppCompatActivity() {
 
         // 메뉴 클릭 이벤트
         menu_control()
+
+        // 뒤로가기 버튼 클릭 이벤트
+        registerExitDialogOnBackPressed()
     }
 
     // 배너 양 옆 이미지 노출 함수
