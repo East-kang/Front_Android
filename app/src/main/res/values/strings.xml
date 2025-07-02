@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">LLM_Project_Android</string>
+    <string name="underlined_text"><u>로그아웃</u></string>
 </resources>

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.llm_project_android.databinding.MainViewBinding
 import android.view.View
 import android.widget.ImageButton
+import androidx.annotation.GravityInt
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.viewpager2.widget.CompositePageTransformer
@@ -24,6 +25,7 @@ class MainViewActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var btn_search: ImageButton
     private lateinit var btn_menu_black: ImageButton
+    private lateinit var btn_menu_white: ImageButton
     private lateinit var menuView: NavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +45,9 @@ class MainViewActivity : AppCompatActivity() {
         btn_search = findViewById<ImageButton>(R.id.search_icon)
         btn_menu_black = findViewById<ImageButton>(R.id.menu_icon_black)
         menuView = findViewById<NavigationView>(R.id.navigationView)
+
+        val headerView = menuView.getHeaderView(0)
+        btn_menu_white = headerView.findViewById<ImageButton>(R.id.menu_icon_white)
 
         // 배너 아이템 리스트
         val bannerList = listOf(
@@ -114,11 +119,16 @@ class MainViewActivity : AppCompatActivity() {
 
     // 메뉴 기능
     private fun menu_control() {
+        // 메뉴 열기
         btn_menu_black.setOnClickListener {
+            if (!drawerLayout.isDrawerOpen(GravityCompat.END))
+                drawerLayout.openDrawer(GravityCompat.END)
+        }
+        
+        // 메뉴 닫기
+        btn_menu_white.setOnClickListener {
             if (drawerLayout.isDrawerOpen(GravityCompat.END))
                 drawerLayout.closeDrawer(GravityCompat.END)
-            else
-                drawerLayout.openDrawer(GravityCompat.END)
         }
     }
 
