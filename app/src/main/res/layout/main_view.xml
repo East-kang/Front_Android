@@ -241,6 +241,7 @@
         android:layout_gravity="end"
         app:menu="@menu/navigation_menu"
         app:headerLayout="@layout/menu_header"
-        android:background="#FFFFFF" />
+        android:background="#FFFFFF"
+        app:itemIconTint="@null"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>
