@@ -236,18 +236,20 @@
         android:id="@+id/insurance_scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#EEF2FD"
-        app:layout_constraintTop_toBottomOf="@id/menu_scrollView"
-        app:layout_constraintStart_toStartOf="parent"
+        android:background="#E4E9FB"
+        android:layout_marginTop="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/menu_scrollView">
 
         <LinearLayout
             android:id="@+id/insurance_linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical" >
 
+<!--design_insurance_item.xml-->
         </LinearLayout>
 
 
