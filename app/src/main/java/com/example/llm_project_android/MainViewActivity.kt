@@ -1,7 +1,6 @@
 package com.example.llm_project_android
 
 import android.os.Bundle
-import android.view.Gravity
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -11,7 +10,6 @@ import com.example.llm_project_android.databinding.MainViewBinding
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
-import androidx.annotation.GravityInt
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.viewpager2.widget.CompositePageTransformer
@@ -61,7 +59,7 @@ class MainViewActivity : AppCompatActivity() {
         )
         val bannerList = listOf(                    // 배너 아이템 리스트
             R.drawable.image_birth_icon,            // 배너 아이템 0 (bannerList[0])
-            R.drawable.sample_image,                // 배너 아이템 1 (bannerList[1])
+            R.drawable.image_sample,                // 배너 아이템 1 (bannerList[1])
             R.drawable.image_name_icon              // 배너 아이템 2 (bannerList[2])
         )
 

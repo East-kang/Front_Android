@@ -229,20 +229,28 @@
                     android:layout_marginHorizontal="14dp"
                     android:background="@color/white" />
             </LinearLayout>
+        </LinearLayout>
+    </HorizontalScrollView>
 
+    <ScrollView
+        android:id="@+id/insurance_scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#EEF2FD"
+        app:layout_constraintTop_toBottomOf="@id/menu_scrollView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-
-
-
-
-
-
-
-
+        <LinearLayout
+            android:id="@+id/insurance_linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
 
         </LinearLayout>
 
 
-    </HorizontalScrollView>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

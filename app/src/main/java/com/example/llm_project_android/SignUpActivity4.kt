@@ -222,10 +222,10 @@ class SignUpActivity4 : AppCompatActivity() {
     fun updateCompletionButton() {
         if (is_Check_Confirmed) {
             btn_completion.isEnabled = true
-            btn_completion.setBackgroundResource(R.drawable.enabled_button)
+            btn_completion.setBackgroundResource(R.drawable.design_enabled_button)
         } else {
             btn_completion.isEnabled = false
-            btn_completion.setBackgroundResource(R.drawable.disabled_button)
+            btn_completion.setBackgroundResource(R.drawable.design_disabled_button)
         }
     }
 

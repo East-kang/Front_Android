@@ -1,10 +1,7 @@
 package com.example.llm_project_android
 
-import android.content.res.Resources
-import android.graphics.Rect
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -13,7 +10,6 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import android.widget.ScrollView
 import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -329,10 +325,10 @@ class SignUpActivity2 : AppCompatActivity() {
     fun updateNextButton() {
         if (is_Name_Confirmed && is_Birth_Confirmed && is_Phone_Confirmed && is_Gender_Confirmed && is_Married_Confirmed && (is_Job_Confirmed || is_Etc_Confirmed)) {
             btn_next.isEnabled = true
-            btn_next.setBackgroundResource(R.drawable.enabled_button)
+            btn_next.setBackgroundResource(R.drawable.design_enabled_button)
         } else {
             btn_next.isEnabled = false
-            btn_next.setBackgroundResource(R.drawable.disabled_button)
+            btn_next.setBackgroundResource(R.drawable.design_disabled_button)
         }
     }
 

@@ -143,10 +143,10 @@ class SignUpActivity3 : AppCompatActivity() {
     fun updateNextButton() {
         if (is_Checked_Confirmed) {
             btn_next.isEnabled = true
-            btn_next.setBackgroundResource(R.drawable.enabled_button)
+            btn_next.setBackgroundResource(R.drawable.design_enabled_button)
         } else {
             btn_next.isEnabled = false
-            btn_next.setBackgroundResource(R.drawable.disabled_button)
+            btn_next.setBackgroundResource(R.drawable.design_disabled_button)
         }
     }
 
