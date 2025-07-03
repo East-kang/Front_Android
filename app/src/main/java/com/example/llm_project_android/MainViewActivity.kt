@@ -9,6 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.llm_project_android.databinding.MainViewBinding
 import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
 import androidx.annotation.GravityInt
 import androidx.core.view.GravityCompat
@@ -24,9 +25,10 @@ class MainViewActivity : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var btn_search: ImageButton
-    private lateinit var btn_menu_black: ImageButton
-    private lateinit var btn_menu_white: ImageButton
     private lateinit var menuView: NavigationView
+    private lateinit var menus: List<ImageButton>
+    private lateinit var categories: List<Button>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,29 +43,51 @@ class MainViewActivity : AppCompatActivity() {
             insets
         }
 
-        drawerLayout = findViewById<DrawerLayout>(R.id.drawerLayout)
-        btn_search = findViewById<ImageButton>(R.id.search_icon)
-        btn_menu_black = findViewById<ImageButton>(R.id.menu_icon_black)
-        menuView = findViewById<NavigationView>(R.id.navigationView)
+        drawerLayout = findViewById<DrawerLayout>(R.id.drawerLayout)    // 루트 Drawer 레이아웃 (네비게이션 메뉴용)
+        btn_search = findViewById<ImageButton>(R.id.search_icon)        // 검색 버튼
+        menuView = findViewById<NavigationView>(R.id.navigationView)    // 사이드 메뉴
 
-        val headerView = menuView.getHeaderView(0)
-        btn_menu_white = headerView.findViewById<ImageButton>(R.id.menu_icon_white)
-
-        // 배너 아이템 리스트
-        val bannerList = listOf(
-            R.drawable.image_birth_icon,
-            R.drawable.sample_image,
-            R.drawable.image_name_icon
+        menus = listOf(                              // 메뉴 버튼 리스트 (0: 열기 버튼 / 1: 닫힘 버튼
+            findViewById(R.id.menu_icon_black), // 메뉴 열기 버튼 (menus[0])
+            findViewById(R.id.menu_icon_white)  // 메뉴 닫기 버튼 (menus[1])
+        )
+        categories= listOf(                          // 카테고리 버튼 리스트
+            findViewById(R.id.category0),       // categories[0]
+            findViewById(R.id.category1),       // categories[1]
+            findViewById(R.id.category2),       // categories[2]
+            findViewById(R.id.category3),       // categories[3]
+            findViewById(R.id.category4),       // categories[4]
+            findViewById(R.id.category5)        // categories[5]
+        )
+        val bannerList = listOf(                    // 배너 아이템 리스트
+            R.drawable.image_birth_icon,            // 배너 아이템 0 (bannerList[0])
+            R.drawable.sample_image,                // 배너 아이템 1 (bannerList[1])
+            R.drawable.image_name_icon              // 배너 아이템 2 (bannerList[2])
         )
 
-        // 배너 슬라이딩
+        // 배너 슬라이딩 기능
         setupViewPager(bannerList)
         startAutoScroll(bannerList)
 
-        // 메뉴 클릭 이벤트
+        // 사이드 메뉴 클릭 이벤트
         menu_control()
 
-        // 뒤로가기 버튼 클릭 이벤트
+        // 상품 검색
+        search_Insurance()
+
+        // 프로필 뷰 이동
+        goTo_Profile_View()
+
+        // 찜목록 뷰 이동
+        goTo_WishList_View()
+
+        // 가입한 보험 뷰 이동
+        goTo_JoinedInsurance_View()
+
+        // 채팅 뷰 이동
+        goTo_Chat_View()
+
+        // 기기 내장 뒤로가기 버튼 클릭 이벤트
         registerExitDialogOnBackPressed()
     }
 
@@ -123,16 +147,30 @@ class MainViewActivity : AppCompatActivity() {
     // 메뉴 기능
     private fun menu_control() {
         // 메뉴 열기
-        btn_menu_black.setOnClickListener {
+        menus[0].setOnClickListener {
             if (!drawerLayout.isDrawerOpen(GravityCompat.END))
                 drawerLayout.openDrawer(GravityCompat.END)
         }
         
         // 메뉴 닫기
-        btn_menu_white.setOnClickListener {
+        menus[1].setOnClickListener {
             if (drawerLayout.isDrawerOpen(GravityCompat.END))
                 drawerLayout.closeDrawer(GravityCompat.END)
         }
     }
 
+    // 검색 기능
+    fun search_Insurance() {}
+
+    // 프로필 페이지 전환
+    fun goTo_Profile_View() {}
+
+    // 찜목록 페이지 전환
+    fun goTo_WishList_View() {}
+
+    // 가입한 보험 페이지 전환
+    fun goTo_JoinedInsurance_View() {}
+
+    // 채팅 페이지 전환
+    fun goTo_Chat_View() {}
 }
