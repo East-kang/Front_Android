@@ -9,6 +9,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LLM_Project_Android">
         <activity
+            android:name=".CategoryView"
+            android:exported="false" />
+        <activity
             android:name=".MainViewActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
