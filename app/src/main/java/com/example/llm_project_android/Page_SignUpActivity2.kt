@@ -20,7 +20,7 @@ import kotlin.properties.Delegates
 import kotlin.text.isNullOrEmpty
 
 
-class SignUpActivity2 : AppCompatActivity() {
+class Page_SignUpActivity2 : AppCompatActivity() {
 
     private lateinit var btn_next: Button
     private lateinit var btn_back: ImageButton
@@ -106,11 +106,11 @@ class SignUpActivity2 : AppCompatActivity() {
         select_job(job_spinner, { job -> selectedJob = job }, { is_Job_Confirmed }, { is_Job_Confirmed = it }, { is_Etc_Confirmed }, { is_Etc_Confirmed = it })
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity1)
-        clickBackButton(btn_back, SignUpActivity1::class.java, data.filterValues { it != null } as Map<String, Any>)
+        clickBackButton(btn_back, Page_SignUpActivity1::class.java, data.filterValues { it != null } as Map<String, Any>)
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity3)
         clickNextButton(btn_next, data.filterValues { it != null } as Map<String, Any>, name, birth, phone,
-            gender_M, married_N, job_etc, SignUpActivity3::class.java)
+            gender_M, married_N, job_etc, Page_SignUpActivity3::class.java)
 
         // 화면 전환 간 데이터 유지 (SignUpActivity3.kt -> SignUpActivity2.kt)
         restorePassedData()

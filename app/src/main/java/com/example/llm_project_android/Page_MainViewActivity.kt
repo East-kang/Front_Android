@@ -16,7 +16,7 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import com.google.android.material.navigation.NavigationView
 
-class MainViewActivity : AppCompatActivity() {
+class Page_MainViewActivity : AppCompatActivity() {
     private lateinit var binding: MainViewBinding
     private val sliderHandler = android.os.Handler(android.os.Looper.getMainLooper())
     private lateinit var sliderRunnable: Runnable

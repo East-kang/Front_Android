@@ -1,25 +1,22 @@
 package com.example.llm_project_android
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
-import androidx.activity.OnBackPressedCallback
 import androidx.recyclerview.widget.RecyclerView
 
-class PostContentAdapter (private var postList: List<Post>)
-    : RecyclerView.Adapter<PostContentAdapter.PostViewHolder>(), Filterable {
+class InsuranceContentAdapter (private var postList: List<Insurance>)
+    : RecyclerView.Adapter<InsuranceContentAdapter.PostViewHolder>(), Filterable {
 
-    private var filteredList: List<Post> = emptyList()      // 필터링 결과 리스트 (초기에는 전체 리스트와 동일)
-    private var itemClickListener: ((Post) -> Unit)? = null // 외부에서 클릭 이벤트를 설정할 수 있도록 콜백 정의
+    private var filteredList: List<Product> = emptyList()      // 필터링 결과 리스트 (초기에는 전체 리스트와 동일)
+    private var itemClickListener: ((Product) -> Unit)? = null // 외부에서 클릭 이벤트를 설정할 수 있도록 콜백 정의
     private var emptyResultCallBack: (() -> Unit)? = null   //
 
     // 콜백 외부 설정 함수
-    fun setOnItemClickListener(listener: (Post) -> Unit) {
+    fun setOnItemClickListener(listener: (Product) -> Unit) {
         itemClickListener = listener
     }
 
@@ -50,7 +47,7 @@ class PostContentAdapter (private var postList: List<Post>)
         }
     }
 
-    fun updateList(newList: List<Post>) {
+    fun updateList(newList: List<Product>) {
         postList = newList
         filteredList = newList
         notifyDataSetChanged()
@@ -81,7 +78,7 @@ class PostContentAdapter (private var postList: List<Post>)
 
             // 필터링 결과를 어댑터에 반영하고 새로고침
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                filteredList = results?.values as List<Post>
+                filteredList = results?.values as List<Product>
                 notifyDataSetChanged()
 
                 // 검색 결과 없을 경우 콜백 실행

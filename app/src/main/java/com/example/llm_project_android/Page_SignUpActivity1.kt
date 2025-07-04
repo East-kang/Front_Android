@@ -13,7 +13,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.graphics.toColorInt
 import kotlin.properties.Delegates
 
-class SignUpActivity1 : AppCompatActivity() {
+class Page_SignUpActivity1 : AppCompatActivity() {
 
     private lateinit var btn_next: Button
     private lateinit var btn_idCheck: Button
@@ -94,10 +94,10 @@ class SignUpActivity1 : AppCompatActivity() {
         pw_eye_visibility(btn_eye_check, pw_check, {pw_check_visible}, {pw_check_visible = it})
 
         // 뒤로가기 버튼 클릭 이벤트 (to InitActivity or LoginActivity)
-        clickBackButton(btn_back, source, InitActivity::class.java, LoginActivity::class.java)
+        clickBackButton(btn_back, source, Page_InitActivity::class.java, Page_LoginActivity::class.java)
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity2)
-        clickNextButton(btn_next,id_text,pw_text,email_text, source, SignUpActivity2::class.java)
+        clickNextButton(btn_next,id_text,pw_text,email_text, source, Page_SignUpActivity2::class.java)
 
         // 화면 전환으로 인한 데이터 수신
         restorePassedData()
