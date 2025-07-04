@@ -293,7 +293,6 @@
             android:gravity="center"
             android:overlapAnchor = "false" />
     </LinearLayout>
-        
 
     <LinearLayout
         android:id="@+id/insurance_linearLayout"
@@ -313,6 +312,4 @@
             android:layout_marginHorizontal="40dp"
             android:layout_marginTop="25dp" />
     </LinearLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
