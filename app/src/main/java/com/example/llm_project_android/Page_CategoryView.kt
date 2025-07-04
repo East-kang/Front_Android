@@ -22,7 +22,8 @@ class Page_CategoryView : AppCompatActivity() {
     private lateinit var companyList: List<Button>
     private lateinit var filter: Spinner
     private lateinit var itemView: RecyclerView
-    private var category_num: Int = 0
+    private var category_num: Int = 0       // 현재 선택된 상품 카테고리 인덱스
+    private var company_num: Int = -1       // 현재 선택된 회사 카테고리 인덱스 (-1: 미선택)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,35 +65,68 @@ class Page_CategoryView : AppCompatActivity() {
         // 상품 카테고리 버튼 클릭 이벤트
         select_product_category()
 
+        // 회사 카테고리 버튼 클릭 이벤트
+        select_product_category()
+
         // 뒤로가기 버튼 클릭 이벤트 (to MainViewActivity)
         clickBackButton(btn_back, Page_MainViewActivity::class.java)
 
     }
 
-    // 상품 카테고리 선택 함수
+    // 상품 카테고리 속성 변경 함수 (비활성화 할 버튼, 뷰 / 활성화할 버튼, 뷰)
+    fun change_types_product(toInactive_button: Button, toInactive_view: View, toActive_button: Button, toActive_view: View) {
+        // 활성화 버튼 (TextStyle: 굵게, TextColor: 검정)
+        toActive_button.setTypeface(null, Typeface.BOLD); toActive_button.setTextColor(Color.BLACK)
+
+        // 활성화 뷰 (Background: 검정색)
+        toActive_view.setBackgroundColor(Color.BLACK)
+
+        // 비활성화 버튼 (TextStyle: 일반, TextColor: 회색)
+        toInactive_button.setTypeface(null, Typeface.NORMAL); toInactive_button.setTextColor("#8D8D92".toColorInt())
+
+        // 비활성화 뷰 (Background: 흰색)
+        toInactive_view.setBackgroundColor(Color.WHITE)
+    }
+
+    // 상품 카테고리 선택 함수 (현재 버튼 활성화 이벤트만 구현) (+ 아이템 뷰 전환 이벤트도 구현해야함)
     fun select_product_category() {
         for (i in 0 until categoryList.size) {
             categoryList[i].setOnClickListener {
-                change_types(categoryList[i], underline[i], categoryList[category_num], underline[category_num])
+                change_types_product(categoryList[category_num], underline[category_num], categoryList[i], underline[i])
                 category_num = i
             }
         }
     }
 
-    // 카테고리 속성 변경 함수
-    fun change_types(active_button: Button, active_view: View, inactive_button: Button, inactive_view: View) {
-        // 활성화 버튼 (TextStyle: 굵게, TextColor: 검정)
-        active_button.setTypeface(null, Typeface.BOLD); active_button.setTextColor(Color.BLACK)
+    // 회사 카테고리 속성 변경 함수 (비활성화 할 버튼 / 활성화할 버튼)
+    fun change_types_company(toInactive_button: Button, toActive_button: Button) {
+        if (toInactive_button != toActive_button) {
+            // 활성화할 버튼 활성화
+            toActive_button.setBackgroundColor("#507CE8".toColorInt())
+            toActive_button.setTextColor(Color.WHITE)
+        }
 
-        // 활성화 뷰 (Background: 검정색)
-        active_view.setBackgroundColor(Color.BLACK)
+        // 비활성화할 버튼 비활성화
+        toInactive_button.setBackgroundColor(Color.WHITE)
+        toInactive_button.setTextColor("666666".toColorInt())
 
-        // 비활성화 버튼 (TextStyle: 일반, TextColor: 회색)
-        inactive_button.setTypeface(null, Typeface.NORMAL); inactive_button.setTextColor("#8D8D92".toColorInt())
-
-        // 비활성화 뷰 (Background: 흰색)
-        inactive_view.setBackgroundColor(Color.WHITE)
     }
+
+    // 회사 카테고리 필터링 함수
+    fun filtering_company() {
+        for (i in 0 until companyList.size) {
+            companyList[i].setOnClickListener {
+                if (i == company_num) {
+                    change_types_company(companyList[company_num], companyList[i])
+                    company_num = -1
+                } else {
+                    change_types_company(companyList[company_num], companyList[i])
+                    company_num = i
+                }
+            }
+        }
+    }
+
 
     // '뒤로가기' 버튼 클릭 이벤트 정의 함수
     fun AppCompatActivity.clickBackButton(backButton: View, targetActivity: Class<out AppCompatActivity>) {
