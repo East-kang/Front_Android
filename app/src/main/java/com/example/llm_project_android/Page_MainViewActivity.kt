@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.llm_project_android.databinding.MainViewBinding
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
@@ -14,10 +13,11 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
+import com.example.llm_project_android.databinding.PageMainViewBinding
 import com.google.android.material.navigation.NavigationView
 
 class Page_MainViewActivity : AppCompatActivity() {
-    private lateinit var binding: MainViewBinding
+    private lateinit var binding: PageMainViewBinding
     private val sliderHandler = android.os.Handler(android.os.Looper.getMainLooper())
     private lateinit var sliderRunnable: Runnable
 
@@ -33,7 +33,7 @@ class Page_MainViewActivity : AppCompatActivity() {
         enableEdgeToEdge()
 
         // 바인딩 초기화
-        binding = MainViewBinding.inflate(layoutInflater)
+        binding = PageMainViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.drawerLayout)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
