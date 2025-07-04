@@ -4,6 +4,8 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Spinner
@@ -25,6 +27,7 @@ class Page_CategoryView : AppCompatActivity() {
     private var category_num: Int = 0               // 현재 선택된 상품 카테고리 인덱스
     private var company_num: Int = -1               // 현재 선택된 회사 카테고리 인덱스 (-1: 미선택)
     private var company_isChecked: Boolean = false  // 회사 카테고리 선택 여부 (true: 이미 선택됨, false: 선택된 버튼 없음)
+    private var selectedSortType: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +71,9 @@ class Page_CategoryView : AppCompatActivity() {
 
         // 회사 카테고리 버튼 클릭 이벤트
         filtering_company()
+
+        // 상품 정렬 이벤트
+        sorting_insurances({ type -> selectedSortType = type})
 
         // 뒤로가기 버튼 클릭 이벤트 (to MainViewActivity)
         clickBackButton(btn_back, Page_MainViewActivity::class.java)
@@ -131,6 +137,21 @@ class Page_CategoryView : AppCompatActivity() {
             companyList[i].setOnClickListener {
                 change_types_company(i, if (company_isChecked) companyList[company_num] else null, companyList[i])
             }
+        }
+    }
+
+    // 상품 정렬 함수 (상품 정렬 기능 추가해야함)
+    fun sorting_insurances(onSortedSelected: (String) -> Unit) {
+        var filterList = resources.getStringArray(R.array.list_filter)
+        var adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, filterList)
+        filter.adapter = adapter
+
+        filter.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                val item = filterList[position]     // item에 선택한 정렬 기준 할당
+                onSortedSelected(item)              // 선택 항목 저장
+            }
+            override fun onNothingSelected(p0: AdapterView<*>?) { }
         }
     }
 
