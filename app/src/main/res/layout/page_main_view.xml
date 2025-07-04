@@ -264,7 +264,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="end"
         app:menu="@menu/navigation_menu"
-        app:headerLayout="@layout/menu_header"
+        app:headerLayout="@layout/design_menu_header"
         android:background="#FFFFFF"
         app:itemIconTint="@null"/>
 
