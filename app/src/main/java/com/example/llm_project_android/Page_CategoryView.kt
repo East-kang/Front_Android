@@ -22,8 +22,9 @@ class Page_CategoryView : AppCompatActivity() {
     private lateinit var companyList: List<Button>
     private lateinit var filter: Spinner
     private lateinit var itemView: RecyclerView
-    private var category_num: Int = 0       // 현재 선택된 상품 카테고리 인덱스
-    private var company_num: Int = -1       // 현재 선택된 회사 카테고리 인덱스 (-1: 미선택)
+    private var category_num: Int = 0               // 현재 선택된 상품 카테고리 인덱스
+    private var company_num: Int = -1               // 현재 선택된 회사 카테고리 인덱스 (-1: 미선택)
+    private var company_isChecked: Boolean = false  // 회사 카테고리 선택 여부 (true: 이미 선택됨, false: 선택된 버튼 없음)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +67,7 @@ class Page_CategoryView : AppCompatActivity() {
         select_product_category()
 
         // 회사 카테고리 버튼 클릭 이벤트
-        select_product_category()
+        filtering_company()
 
         // 뒤로가기 버튼 클릭 이벤트 (to MainViewActivity)
         clickBackButton(btn_back, Page_MainViewActivity::class.java)
@@ -74,55 +75,61 @@ class Page_CategoryView : AppCompatActivity() {
     }
 
     // 상품 카테고리 속성 변경 함수 (비활성화 할 버튼, 뷰 / 활성화할 버튼, 뷰)
-    fun change_types_product(toInactive_button: Button, toInactive_view: View, toActive_button: Button, toActive_view: View) {
+    fun change_types_product(index: Int, toInactive_button: Button, toInactive_view: View, toActive_button: Button, toActive_view: View) {
+        // 선택 카테고리 인덱스 변경
+        category_num = index
+
         // 활성화 버튼 (TextStyle: 굵게, TextColor: 검정)
         toActive_button.setTypeface(null, Typeface.BOLD); toActive_button.setTextColor(Color.BLACK)
 
         // 활성화 뷰 (Background: 검정색)
-        toActive_view.setBackgroundColor(Color.BLACK)
+        toActive_view.background.setTint(Color.BLACK)
 
         // 비활성화 버튼 (TextStyle: 일반, TextColor: 회색)
         toInactive_button.setTypeface(null, Typeface.NORMAL); toInactive_button.setTextColor("#8D8D92".toColorInt())
 
         // 비활성화 뷰 (Background: 흰색)
-        toInactive_view.setBackgroundColor(Color.WHITE)
+        toInactive_view.background.setTint(Color.WHITE)
     }
 
     // 상품 카테고리 선택 함수 (현재 버튼 활성화 이벤트만 구현) (+ 아이템 뷰 전환 이벤트도 구현해야함)
     fun select_product_category() {
         for (i in 0 until categoryList.size) {
             categoryList[i].setOnClickListener {
-                change_types_product(categoryList[category_num], underline[category_num], categoryList[i], underline[i])
-                category_num = i
+                change_types_product(i, categoryList[category_num], underline[category_num], categoryList[i], underline[i])
             }
         }
     }
 
     // 회사 카테고리 속성 변경 함수 (비활성화 할 버튼 / 활성화할 버튼)
-    fun change_types_company(toInactive_button: Button, toActive_button: Button) {
-        if (toInactive_button != toActive_button) {
-            // 활성화할 버튼 활성화
-            toActive_button.setBackgroundColor("#507CE8".toColorInt())
-            toActive_button.setTextColor(Color.WHITE)
+    fun change_types_company(index: Int, toInactive_button: Button?, toActive_button: Button) {
+        if (company_isChecked) {        // 기존 카테고리 필터링 활성화 상태
+            if (company_num != index) {                 // 누른 버튼이 기존에 활성화된 버튼이 아닐 경우
+                company_num = index
+                company_isChecked = true
+                toActive_button.background.setTint("#507CE8".toColorInt())
+                toActive_button.setTextColor(Color.WHITE)               // 활성화할 버튼 활성화
+                toInactive_button?.background?.setTint(Color.WHITE)
+                toInactive_button?.setTextColor("#666666".toColorInt())  // 비활성화할 버튼 비활성화
+            } else {                                                    // 활성화된 버튼 누를 경우
+                company_isChecked = false
+                company_num = -1
+                toInactive_button?.background?.setTint(Color.WHITE)
+                toInactive_button?.setTextColor("#666666".toColorInt())  // 비활성화할 버튼 비활성화
+            }
+        } else {                        // 기존 카테고리 필터링 비활성화 상태
+            company_isChecked = true
+            company_num = index
+            toActive_button.background.setTint("#507CE8".toColorInt())
+            toActive_button.setTextColor(Color.WHITE)                   // 활성화할 버튼 활성화
         }
-
-        // 비활성화할 버튼 비활성화
-        toInactive_button.setBackgroundColor(Color.WHITE)
-        toInactive_button.setTextColor("666666".toColorInt())
-
     }
 
     // 회사 카테고리 필터링 함수
     fun filtering_company() {
         for (i in 0 until companyList.size) {
             companyList[i].setOnClickListener {
-                if (i == company_num) {
-                    change_types_company(companyList[company_num], companyList[i])
-                    company_num = -1
-                } else {
-                    change_types_company(companyList[company_num], companyList[i])
-                    company_num = i
-                }
+                change_types_company(i, if (company_isChecked) companyList[company_num] else null, companyList[i])
             }
         }
     }
