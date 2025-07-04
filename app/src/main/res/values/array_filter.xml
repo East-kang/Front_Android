@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="insurances">
+    <string-array name="list_filter">
         <item>이름순</item>
         <item>추천순</item>
     </string-array>
