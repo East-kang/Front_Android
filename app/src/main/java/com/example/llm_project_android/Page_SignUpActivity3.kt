@@ -11,7 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import kotlin.properties.Delegates
 
-class SignUpActivity3 : AppCompatActivity() {
+class Page_SignUpActivity3 : AppCompatActivity() {
 
     private lateinit var item0: CheckBox
     private lateinit var item1: CheckBox
@@ -31,7 +31,7 @@ class SignUpActivity3 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.sign_up_view3)
+        setContentView(R.layout.page_sign_up_view3)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -78,10 +78,10 @@ class SignUpActivity3 : AppCompatActivity() {
         items_check({ is_Checked_Confirmed }, { is_Checked_Confirmed = it })
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity2)
-        clickBackButton(btn_back, data.filterValues { it != null } as Map<String, Any>, SignUpActivity2::class.java)
+        clickBackButton(btn_back, data.filterValues { it != null } as Map<String, Any>, Page_SignUpActivity2::class.java)
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity4)
-        clickNextButton(btn_next, data.filterValues { it != null } as Map<String, Any>, SignUpActivity4::class.java)
+        clickNextButton(btn_next, data.filterValues { it != null } as Map<String, Any>, Page_SignUpActivity4::class.java)
 
         // 화면 전환 간 데이터 유지 (SignUpActivity4.kt -> SignUpActivity3.kt)
         restorePassedData()
@@ -143,10 +143,10 @@ class SignUpActivity3 : AppCompatActivity() {
     fun updateNextButton() {
         if (is_Checked_Confirmed) {
             btn_next.isEnabled = true
-            btn_next.setBackgroundResource(R.drawable.enabled_button)
+            btn_next.setBackgroundResource(R.drawable.design_enabled_button)
         } else {
             btn_next.isEnabled = false
-            btn_next.setBackgroundResource(R.drawable.disabled_button)
+            btn_next.setBackgroundResource(R.drawable.design_disabled_button)
         }
     }
 

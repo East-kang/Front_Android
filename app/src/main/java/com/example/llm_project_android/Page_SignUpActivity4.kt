@@ -19,7 +19,7 @@ import com.google.android.material.chip.ChipGroup
 import kotlin.properties.Delegates
 import androidx.core.view.isNotEmpty
 
-class SignUpActivity4 : AppCompatActivity() {
+class Page_SignUpActivity4 : AppCompatActivity() {
 
     private lateinit var btn_back: ImageButton
     private lateinit var btn_completion: Button
@@ -29,16 +29,16 @@ class SignUpActivity4 : AppCompatActivity() {
     private lateinit var search_insurance: SearchView
     private lateinit var tag_chip: ChipGroup
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: PostContentAdapter
-    private var insuranceList: List<Post> = emptyList() // 문자열 배열 -> Post 객체 리스트로 변환
-    private val selectedPosts = mutableListOf<Post>()
+    private lateinit var adapter: ProductContentAdapter
+    private var insuranceList: List<Product> = emptyList() // 문자열 배열 -> Post 객체 리스트로 변환
+    private val selectedProducts = mutableListOf<Product>()
 
     var is_Check_Confirmed: Boolean by Delegates.observable(true) { _, _, _ -> updateCompletionButton() }        // 체크 완료 여부
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.sign_up_view4)
+        setContentView(R.layout.page_sign_up_view4)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -54,7 +54,7 @@ class SignUpActivity4 : AppCompatActivity() {
         tag_chip = findViewById<ChipGroup>(R.id.tagChipGroup)
         recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
 
-        insuranceList = resources.getStringArray(R.array.insurances).map { Post(it) }
+        insuranceList = resources.getStringArray(R.array.insurances).map { Product(it) }
 
         // 이전 화면에서 데이터 받아오기
         val data = getPassedExtras(
@@ -87,10 +87,10 @@ class SignUpActivity4 : AppCompatActivity() {
         updateByChipExistence({ is_Check_Confirmed = it })
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity3)
-        clickBackButton(btn_back, data.filter { it != null } as Map<String, Any>, SignUpActivity3::class.java)
+        clickBackButton(btn_back, data.filter { it != null } as Map<String, Any>, Page_SignUpActivity3::class.java)
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity4)
-        clickCompletionButton(btn_completion, data.filterValues { it != null } as Map<String, Any>, MainViewActivity::class.java)
+        clickCompletionButton(btn_completion, data.filterValues { it != null } as Map<String, Any>, Page_MainViewActivity::class.java)
     }
 
     // ChipView / RecyclerView 활성화 처리 함수
@@ -113,7 +113,7 @@ class SignUpActivity4 : AppCompatActivity() {
                     isActived(View.GONE, View.GONE)
                     setInsuranceConfirmed(true)
 
-                    selectedPosts.clear()                                   // Chip 선택 항목 초기화
+                    selectedProducts.clear()                                   // Chip 선택 항목 초기화
                     tag_chip.removeAllViews()                               // ChipGroup 내 모든 chip 제거
                     adapter.updateList(emptyList())                // RecyclerView 목록 초기화
                     search_insurance.setQuery("", false)    // 검색창 텍스트 제거
@@ -134,16 +134,16 @@ class SignUpActivity4 : AppCompatActivity() {
     }
 
     // 상품 검색 함수
-    fun search_items(searchView: SearchView, insuranceList: List<Post>, setInsuranceConfirmed: (Boolean) -> Unit) {
+    fun search_items(searchView: SearchView, insuranceList: List<Product>, setInsuranceConfirmed: (Boolean) -> Unit) {
 
-        adapter = PostContentAdapter(insuranceList)                 // 어댑터 설정 및 RecyclerView 연결
+        adapter = ProductContentAdapter(insuranceList)                 // 어댑터 설정 및 RecyclerView 연결
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
 
         // 아이템 클릭 이벤트
         adapter.setOnItemClickListener { post ->
-            selectedPosts.add(post)
+            selectedProducts.add(post)
             add_Chip(post.title)
             isActived(View.VISIBLE, View.GONE)
             search_insurance.setQuery("", false)
@@ -152,7 +152,7 @@ class SignUpActivity4 : AppCompatActivity() {
 
             val currentQuery = search_insurance.query.toString()
             val filtered = insuranceList
-                .filterNot { selectedPosts.contains(it) }
+                .filterNot { selectedProducts.contains(it) }
                 .filter { it.title.contains(currentQuery, ignoreCase = true)}
             adapter.updateList(filtered)
         }
@@ -171,7 +171,7 @@ class SignUpActivity4 : AppCompatActivity() {
                 else
                     isActived(View.GONE, View.VISIBLE)
 
-                val filtered = insuranceList.filterNot { selectedPosts.contains(it) }
+                val filtered = insuranceList.filterNot { selectedProducts.contains(it) }
                     .filter { it.title.contains(newText ?: "", ignoreCase = true)}
                 adapter.updateList(filtered)
                 return true
@@ -192,7 +192,7 @@ class SignUpActivity4 : AppCompatActivity() {
         chip.setOnCloseIconClickListener {
             tag_chip.removeView(chip)
 
-            val iterator = selectedPosts.iterator()
+            val iterator = selectedProducts.iterator()
             while (iterator.hasNext()) {
                 if (iterator.next().title == text.toString()) {
                     iterator.remove()
@@ -201,7 +201,7 @@ class SignUpActivity4 : AppCompatActivity() {
             }
 
             val currentQuery = search_insurance.query.toString()
-            val filtered = insuranceList.filterNot { selectedPosts.contains(it) }
+            val filtered = insuranceList.filterNot { selectedProducts.contains(it) }
                 .filter { it.title.contains(currentQuery, ignoreCase = true) }
             adapter.updateList(filtered)
         }
@@ -222,10 +222,10 @@ class SignUpActivity4 : AppCompatActivity() {
     fun updateCompletionButton() {
         if (is_Check_Confirmed) {
             btn_completion.isEnabled = true
-            btn_completion.setBackgroundResource(R.drawable.enabled_button)
+            btn_completion.setBackgroundResource(R.drawable.design_enabled_button)
         } else {
             btn_completion.isEnabled = false
-            btn_completion.setBackgroundResource(R.drawable.disabled_button)
+            btn_completion.setBackgroundResource(R.drawable.design_disabled_button)
         }
     }
 

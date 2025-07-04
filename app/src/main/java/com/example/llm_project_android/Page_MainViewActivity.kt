@@ -1,25 +1,23 @@
 package com.example.llm_project_android
 
 import android.os.Bundle
-import android.view.Gravity
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.llm_project_android.databinding.MainViewBinding
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
-import androidx.annotation.GravityInt
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
+import com.example.llm_project_android.databinding.PageMainViewBinding
 import com.google.android.material.navigation.NavigationView
 
-class MainViewActivity : AppCompatActivity() {
-    private lateinit var binding: MainViewBinding
+class Page_MainViewActivity : AppCompatActivity() {
+    private lateinit var binding: PageMainViewBinding
     private val sliderHandler = android.os.Handler(android.os.Looper.getMainLooper())
     private lateinit var sliderRunnable: Runnable
 
@@ -35,7 +33,7 @@ class MainViewActivity : AppCompatActivity() {
         enableEdgeToEdge()
 
         // 바인딩 초기화
-        binding = MainViewBinding.inflate(layoutInflater)
+        binding = PageMainViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.drawerLayout)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -61,7 +59,7 @@ class MainViewActivity : AppCompatActivity() {
         )
         val bannerList = listOf(                    // 배너 아이템 리스트
             R.drawable.image_birth_icon,            // 배너 아이템 0 (bannerList[0])
-            R.drawable.sample_image,                // 배너 아이템 1 (bannerList[1])
+            R.drawable.image_sample,                // 배너 아이템 1 (bannerList[1])
             R.drawable.image_name_icon              // 배너 아이템 2 (bannerList[2])
         )
 

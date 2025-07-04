@@ -1,34 +1,21 @@
 package com.example.llm_project_android
 
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.os.VibrationEffect
-import android.os.Vibrator
-import android.text.Editable
-import android.text.InputType
-import android.text.TextWatcher
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
-import com.example.llm_project_android.startShakeAnimation
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import org.w3c.dom.Text
 
-class LoginActivity : AppCompatActivity() {
+class Page_LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.login_view)
+        setContentView(R.layout.page_login_view)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -55,14 +42,14 @@ class LoginActivity : AppCompatActivity() {
         // 로그인 버튼 클릭 이벤트
         btn_login.setOnClickListener {
             if (id_text.text.toString() == id && pw_text.text.toString() == pw)           // 로그인 정보 일치 시 (화면 전환)
-                navigateTo(MainViewActivity::class.java)
+                navigateTo(Page_MainViewActivity::class.java)
             else
                 showLoginError(warning_text)
         }
 
         // 회원가입 텍스트 클릭 이벤트
         signUp_text.setOnClickListener {
-            navigateTo(SignUpActivity1::class.java, "source" to "LoginActivity")
+            navigateTo(Page_SignUpActivity1::class.java, "source" to "LoginActivity")
         }
 
         // 경고 메시지 플로팅 메서드

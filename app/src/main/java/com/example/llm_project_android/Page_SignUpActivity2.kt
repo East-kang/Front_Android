@@ -1,10 +1,7 @@
 package com.example.llm_project_android
 
-import android.content.res.Resources
-import android.graphics.Rect
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -13,7 +10,6 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import android.widget.ScrollView
 import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -24,7 +20,7 @@ import kotlin.properties.Delegates
 import kotlin.text.isNullOrEmpty
 
 
-class SignUpActivity2 : AppCompatActivity() {
+class Page_SignUpActivity2 : AppCompatActivity() {
 
     private lateinit var btn_next: Button
     private lateinit var btn_back: ImageButton
@@ -52,7 +48,7 @@ class SignUpActivity2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.sign_up_view2)
+        setContentView(R.layout.page_sign_up_view2)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -110,11 +106,11 @@ class SignUpActivity2 : AppCompatActivity() {
         select_job(job_spinner, { job -> selectedJob = job }, { is_Job_Confirmed }, { is_Job_Confirmed = it }, { is_Etc_Confirmed }, { is_Etc_Confirmed = it })
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity1)
-        clickBackButton(btn_back, SignUpActivity1::class.java, data.filterValues { it != null } as Map<String, Any>)
+        clickBackButton(btn_back, Page_SignUpActivity1::class.java, data.filterValues { it != null } as Map<String, Any>)
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity3)
         clickNextButton(btn_next, data.filterValues { it != null } as Map<String, Any>, name, birth, phone,
-            gender_M, married_N, job_etc, SignUpActivity3::class.java)
+            gender_M, married_N, job_etc, Page_SignUpActivity3::class.java)
 
         // 화면 전환 간 데이터 유지 (SignUpActivity3.kt -> SignUpActivity2.kt)
         restorePassedData()
@@ -329,10 +325,10 @@ class SignUpActivity2 : AppCompatActivity() {
     fun updateNextButton() {
         if (is_Name_Confirmed && is_Birth_Confirmed && is_Phone_Confirmed && is_Gender_Confirmed && is_Married_Confirmed && (is_Job_Confirmed || is_Etc_Confirmed)) {
             btn_next.isEnabled = true
-            btn_next.setBackgroundResource(R.drawable.enabled_button)
+            btn_next.setBackgroundResource(R.drawable.design_enabled_button)
         } else {
             btn_next.isEnabled = false
-            btn_next.setBackgroundResource(R.drawable.disabled_button)
+            btn_next.setBackgroundResource(R.drawable.design_disabled_button)
         }
     }
 

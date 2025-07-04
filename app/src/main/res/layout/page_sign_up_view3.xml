@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignUpActivity3">
+    tools:context=".Page_SignUpActivity3">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/title"
@@ -169,7 +169,7 @@
         android:layout_marginTop="40dp"
         android:layout_marginBottom="20dp"
         android:layout_marginHorizontal="30dp"
-        android:background="@drawable/disabled_button"
+        android:background="@drawable/design_disabled_button"
         android:gravity="center"
         android:text="다 음"
         android:textColor="#FFFFFF"

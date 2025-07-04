@@ -1,15 +1,11 @@
 package com.example.llm_project_android
 
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.util.TypedValue
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -17,7 +13,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.graphics.toColorInt
 import kotlin.properties.Delegates
 
-class SignUpActivity1 : AppCompatActivity() {
+class Page_SignUpActivity1 : AppCompatActivity() {
 
     private lateinit var btn_next: Button
     private lateinit var btn_idCheck: Button
@@ -41,7 +37,7 @@ class SignUpActivity1 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.sign_up_view1)
+        setContentView(R.layout.page_sign_up_view1)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -98,10 +94,10 @@ class SignUpActivity1 : AppCompatActivity() {
         pw_eye_visibility(btn_eye_check, pw_check, {pw_check_visible}, {pw_check_visible = it})
 
         // 뒤로가기 버튼 클릭 이벤트 (to InitActivity or LoginActivity)
-        clickBackButton(btn_back, source, InitActivity::class.java, LoginActivity::class.java)
+        clickBackButton(btn_back, source, Page_InitActivity::class.java, Page_LoginActivity::class.java)
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity2)
-        clickNextButton(btn_next,id_text,pw_text,email_text, source, SignUpActivity2::class.java)
+        clickNextButton(btn_next,id_text,pw_text,email_text, source, Page_SignUpActivity2::class.java)
 
         // 화면 전환으로 인한 데이터 수신
         restorePassedData()
@@ -195,8 +191,8 @@ class SignUpActivity1 : AppCompatActivity() {
                 onValidStateChanged = { isValid -> idCheck.isEnabled = isValid
                     setIsIdConfirmed(false)
                     idCheck.setBackgroundResource(
-                        if (isValid)    { R.drawable.enabled_button }     // 사용 가능 상태
-                        else            { R.drawable.disabled_button }   // 비활성 상태
+                        if (isValid)    { R.drawable.design_enabled_button }     // 사용 가능 상태
+                        else            { R.drawable.design_disabled_button }   // 비활성 상태
                     )
                     setBoxField(input_text, "#666666".toColorInt()) }))
     }
@@ -337,10 +333,10 @@ class SignUpActivity1 : AppCompatActivity() {
     fun updateNextButton() {
         if (isAllConfirmed(is_Id_Confirmed, is_Pw_Confirmed, is_Pw_Check_Confirmed, is_Email_Confirmed)) {
             btn_next.isEnabled = true
-            btn_next.setBackgroundResource(R.drawable.enabled_button)
+            btn_next.setBackgroundResource(R.drawable.design_enabled_button)
         } else {
             btn_next.isEnabled = false
-            btn_next.setBackgroundResource(R.drawable.disabled_button)
+            btn_next.setBackgroundResource(R.drawable.design_disabled_button)
         }
     }
 

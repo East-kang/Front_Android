@@ -1,19 +1,17 @@
 package com.example.llm_project_android
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
-class InitActivity : AppCompatActivity() {
+class Page_InitActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.init_view)
+        setContentView(R.layout.page_init_view)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -26,12 +24,12 @@ class InitActivity : AppCompatActivity() {
         // 로그인 버튼 클릭 이벤트
         btn_login.setOnClickListener {
             // navigateTo(LoginActivity::class.java)
-            navigateTo(MainViewActivity::class.java)
+            navigateTo(Page_CategoryView::class.java)
         }
 
         // 회원가입 버튼 클릭 이벤트
         btn_sign_up.setOnClickListener {
-            navigateTo(SignUpActivity1::class.java, "source" to "InitActivity")
+            navigateTo(Page_SignUpActivity1::class.java, "source" to "InitActivity")
         }
 
         // 뒤로가기 버튼 클릭 이벤트

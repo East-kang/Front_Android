@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Page_CategoryView">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/resize_back_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="보험 상품"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/menu_scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:id="@+id/category_Bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:id="@+id/group_Entire"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/category_Entire"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="전체"
+                    android:paddingTop="14dp"
+                    android:paddingEnd="2dp"
+                    android:textColor="@color/black"
+                    android:textSize="17sp"
+                    android:gravity="center"
+                    android:background="@android:color/transparent" />
+
+                <View
+                    android:id="@+id/underline_Entire"
+                    android:layout_width="match_parent"
+                    android:layout_height="2.5dp"
+                    android:layout_marginHorizontal="14dp"
+                    android:background="@color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/group0"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/category0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="암"
+                    android:paddingTop="14dp"
+                    android:paddingEnd="2dp"
+                    android:textColor="#8D8D92"
+                    android:textSize="17sp"
+                    android:background="@android:color/transparent" />
+
+                <View
+                    android:id="@+id/underline0"
+                    android:layout_width="match_parent"
+                    android:layout_height="2.5dp"
+                    android:layout_marginHorizontal="14dp"
+                    android:background="@color/white"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/group1"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/category1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="건강"
+                    android:paddingTop="14dp"
+                    android:paddingEnd="2dp"
+                    android:textColor="#8D8D92"
+                    android:textSize="17sp"
+                    android:background="@android:color/transparent" />
+
+                <View
+                    android:id="@+id/underline1"
+                    android:layout_width="match_parent"
+                    android:layout_height="2.5dp"
+                    android:layout_marginHorizontal="14dp"
+                    android:background="@color/white" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/group2"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/category2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="사망"
+                    android:paddingTop="14dp"
+                    android:paddingEnd="2dp"
+                    android:textColor="#8D8D92"
+                    android:textSize="17sp"
+                    android:background="@android:color/transparent" />
+
+                <View
+                    android:id="@+id/underline2"
+                    android:layout_width="match_parent"
+                    android:layout_height="2.5dp"
+                    android:layout_marginHorizontal="14dp"
+                    android:background="@color/white" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/group3"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/category3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="저축•연금"
+                    android:paddingTop="14dp"
+                    android:paddingEnd="2dp"
+                    android:textColor="#8D8D92"
+                    android:textSize="17sp"
+                    android:background="@android:color/transparent" />
+
+                <View
+                    android:id="@+id/underline3"
+                    android:layout_width="match_parent"
+                    android:layout_height="2.5dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@color/white" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/group4"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/category4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="유아"
+                    android:paddingTop="14dp"
+                    android:paddingEnd="2dp"
+                    android:textColor="#8D8D92"
+                    android:textSize="17sp"
+                    android:background="@android:color/transparent" />
+
+                <View
+                    android:id="@+id/underline4"
+                    android:layout_width="match_parent"
+                    android:layout_height="2.5dp"
+                    android:layout_marginHorizontal="14dp"
+                    android:background="@color/white" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/group5"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/category5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="기타"
+                    android:paddingTop="14dp"
+                    android:paddingEnd="2dp"
+                    android:textColor="#8D8D92"
+                    android:textSize="17sp"
+                    android:background="@android:color/transparent" />
+
+                <View
+                    android:id="@+id/underline5"
+                    android:layout_width="match_parent"
+                    android:layout_height="2.5dp"
+                    android:layout_marginHorizontal="14dp"
+                    android:background="@color/white" />
+            </LinearLayout>
+        </LinearLayout>
+    </HorizontalScrollView>
+    
+    <LinearLayout
+        android:id="@+id/filter_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="4dp"
+        app:layout_constraintTop_toBottomOf="@id/menu_scrollView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" >
+        
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/company0"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="10dp"
+            android:layout_marginHorizontal="7dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@drawable/design_categories_button"
+            android:text="삼성생명"
+            android:gravity="center"
+            android:textColor="#666666"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/company1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="10dp"
+            android:layout_marginHorizontal="7dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@drawable/design_categories_button"
+            android:text="현대해상"
+            android:gravity="center"
+            android:textColor="#666666" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/company2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="10dp"
+            android:layout_marginHorizontal="7dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@drawable/design_categories_button"
+            android:text="KB손해보험"
+            android:gravity="center"
+            android:textColor="#666666" />
+
+        <Spinner
+            android:id="@+id/list_filter"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="10dp"
+            android:layout_marginHorizontal="7dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1.2"
+            android:background="@drawable/design_spinner_window"
+            android:gravity="center"
+            android:overlapAnchor = "false" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/insurance_linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:background="#E4E9FB"
+        app:layout_constraintTop_toBottomOf="@id/filter_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/item_group"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginTop="25dp" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
