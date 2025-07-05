@@ -67,13 +67,13 @@ class Page_CategoryView : AppCompatActivity() {
         itemView = findViewById<RecyclerView>(R.id.item_group)  // 상품 목록 리사이클러 뷰
 
         // 상품 카테고리 버튼 클릭 이벤트
-        select_product_category()
+        select_Product_Category()
 
         // 회사 카테고리 버튼 클릭 이벤트
-        filtering_company()
+        filtering_Company()
 
         // 상품 정렬 이벤트
-        sorting_insurances({ type -> selectedSortType = type})
+        sorting_Insurances({ type -> selectedSortType = type})
 
         // 뒤로가기 버튼 클릭 이벤트 (to MainViewActivity)
         clickBackButton(btn_back, Page_MainViewActivity::class.java)
@@ -81,16 +81,16 @@ class Page_CategoryView : AppCompatActivity() {
     }
 
     // 상품 카테고리 선택 함수 (현재 버튼 활성화 이벤트만 구현) (+ 아이템 뷰 전환 이벤트도 구현해야함)
-    fun select_product_category() {
+    fun select_Product_Category() {
         for (i in 0 until categoryList.size) {
             categoryList[i].setOnClickListener {
-                change_types_product(i, categoryList[category_num], underline[category_num], categoryList[i], underline[i])
+                change_Types_Product(i, categoryList[category_num], underline[category_num], categoryList[i], underline[i])
             }
         }
     }
 
     // 상품 카테고리 속성 변경 함수 (비활성화 할 버튼, 뷰 / 활성화할 버튼, 뷰)
-    fun change_types_product(index: Int, toInactive_button: Button, toInactive_view: View, toActive_button: Button, toActive_view: View) {
+    fun change_Types_Product(index: Int, toInactive_button: Button, toInactive_view: View, toActive_button: Button, toActive_view: View) {
         // 선택 카테고리 인덱스 변경
         category_num = index
 
@@ -108,10 +108,10 @@ class Page_CategoryView : AppCompatActivity() {
     }
 
     // 회사 카테고리 필터링 함수
-    fun filtering_company() {
+    fun filtering_Company() {
         for (i in 0 until companyList.size) {
             companyList[i].setOnClickListener {
-                change_types_company(i, companyList[i])
+                change_Types_Company(i, companyList[i])
             }
         }
     }
@@ -127,7 +127,7 @@ class Page_CategoryView : AppCompatActivity() {
     }
 
     // 회사 카테고리 속성 변경 함수 (비활성화 할 버튼 / 활성화할 버튼)
-    fun change_types_company(index: Int, select_button: Button){
+    fun change_Types_Company(index: Int, select_button: Button){
         if (select_button.isSelected) {
             select_button.background.setTint(active_Color(-1))
             select_button.setTextColor("#666666".toColorInt())
@@ -140,9 +140,9 @@ class Page_CategoryView : AppCompatActivity() {
     }
 
     // 상품 정렬 함수 (상품 정렬 기능 추가해야함)
-    fun sorting_insurances(onSortedSelected: (String) -> Unit) {
-        var filterList = resources.getStringArray(R.array.list_filter)
-        var adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, filterList)
+    fun sorting_Insurances(onSortedSelected: (String) -> Unit) {
+        val filterList = resources.getStringArray(R.array.list_filter)
+        val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, filterList)
         filter.adapter = adapter
 
         filter.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
@@ -153,6 +153,10 @@ class Page_CategoryView : AppCompatActivity() {
             override fun onNothingSelected(p0: AdapterView<*>?) { }
         }
     }
+
+
+
+
 
 
     // '뒤로가기' 버튼 클릭 이벤트 정의 함수

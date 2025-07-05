@@ -32,7 +32,7 @@ class ProductContentAdapter (private var productList: List<Product>)
     // ViewHolder 생성 (XML 레이아웃 inflate)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.design_insurance_item, parent, false)
+            .inflate(R.layout.design_insurance_item_search, parent, false)
         return PostViewHolder(view)
     }
 
