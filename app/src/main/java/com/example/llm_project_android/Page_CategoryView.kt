@@ -9,12 +9,16 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.helper.widget.Carousel
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.core.graphics.toColorInt
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.llm_project_android.Products_Insurance
 
 class Page_CategoryView : AppCompatActivity() {
 
@@ -66,6 +70,9 @@ class Page_CategoryView : AppCompatActivity() {
         filter = findViewById<Spinner>(R.id.list_filter)        // 목록 필터 스피너
         itemView = findViewById<RecyclerView>(R.id.item_group)  // 상품 목록 리사이클러 뷰
 
+        // 보험 상품 노출
+        showing_Insurances()
+
         // 상품 카테고리 버튼 클릭 이벤트
         select_Product_Category()
 
@@ -79,6 +86,22 @@ class Page_CategoryView : AppCompatActivity() {
         clickBackButton(btn_back, Page_MainViewActivity::class.java)
 
     }
+
+    // 상품 띄우기
+    fun showing_Insurances() {
+        val adapter = InsuranceAdapter(Products_Insurance.productList)
+        itemView.adapter = adapter
+        itemView.layoutManager = LinearLayoutManager(this)
+
+        // 상품 클릭 이벤트
+        adapter.itemClick = object: InsuranceAdapter.ItemClick {
+            override fun onClick(view: View, position: Int) {
+                Toast.makeText(view.context, "클릭!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    }
+
 
     // 상품 카테고리 선택 함수 (현재 버튼 활성화 이벤트만 구현) (+ 아이템 뷰 전환 이벤트도 구현해야함)
     fun select_Product_Category() {
@@ -94,17 +117,17 @@ class Page_CategoryView : AppCompatActivity() {
         // 선택 카테고리 인덱스 변경
         category_num = index
 
-        // 활성화 버튼 (TextStyle: 굵게, TextColor: 검정)
-        toActive_button.setTypeface(null, Typeface.BOLD); toActive_button.setTextColor(Color.BLACK)
-
-        // 활성화 뷰 (Background: 검정색)
-        toActive_view.background.setTint(Color.BLACK)
-
         // 비활성화 버튼 (TextStyle: 일반, TextColor: 회색)
         toInactive_button.setTypeface(null, Typeface.NORMAL); toInactive_button.setTextColor("#8D8D92".toColorInt())
 
         // 비활성화 뷰 (Background: 흰색)
         toInactive_view.background.setTint(Color.WHITE)
+
+        // 활성화 버튼 (TextStyle: 굵게, TextColor: 검정)
+        toActive_button.setTypeface(null, Typeface.BOLD); toActive_button.setTextColor(Color.BLACK)
+
+        // 활성화 뷰 (Background: 검정색)
+        toActive_view.background.setTint(Color.BLACK)
     }
 
     // 회사 카테고리 필터링 함수
