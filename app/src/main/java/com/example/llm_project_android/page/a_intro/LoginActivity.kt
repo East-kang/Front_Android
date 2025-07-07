@@ -1,4 +1,4 @@
-package com.example.llm_project_android
+package com.example.llm_project_android.page.a_intro
 
 import android.os.Bundle
 import android.view.View
@@ -10,8 +10,15 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.llm_project_android.R
+import com.example.llm_project_android.functions.createFlexibleTextWatcher
+import com.example.llm_project_android.functions.navigateTo
+import com.example.llm_project_android.functions.pw_eye_visibility
+import com.example.llm_project_android.functions.startShakeAnimation
+import com.example.llm_project_android.page.c_product.MainViewActivity
+import com.example.llm_project_android.page.b_signup.SignUpActivity1
 
-class Page_LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -37,24 +44,34 @@ class Page_LoginActivity : AppCompatActivity() {
         val pw: String = "1234" // 임시 비밀번호
 
         // 비밀번호 시각화 버튼 클릭 이벤트
-        pw_eye_visibility(btn_pw,pw_text,{pw_visible}, {pw_visible = it})
+        pw_eye_visibility(btn_pw, pw_text, { pw_visible }, { pw_visible = it })
 
         // 로그인 버튼 클릭 이벤트
         btn_login.setOnClickListener {
             if (id_text.text.toString() == id && pw_text.text.toString() == pw)           // 로그인 정보 일치 시 (화면 전환)
-                navigateTo(Page_MainViewActivity::class.java)
+                navigateTo(MainViewActivity::class.java)
             else
                 showLoginError(warning_text)
         }
 
         // 회원가입 텍스트 클릭 이벤트
         signUp_text.setOnClickListener {
-            navigateTo(Page_SignUpActivity1::class.java, "source" to "LoginActivity")
+            navigateTo(SignUpActivity1::class.java, "source" to "LoginActivity")
         }
 
         // 경고 메시지 플로팅 메서드
-        id_text.addTextChangedListener(createFlexibleTextWatcher(targetTextView = warning_text, hideOnInput = true))
-        pw_text.addTextChangedListener(createFlexibleTextWatcher(targetTextView = warning_text, hideOnInput = true))
+        id_text.addTextChangedListener(
+            createFlexibleTextWatcher(
+                targetTextView = warning_text,
+                hideOnInput = true
+            )
+        )
+        pw_text.addTextChangedListener(
+            createFlexibleTextWatcher(
+                targetTextView = warning_text,
+                hideOnInput = true
+            )
+        )
     }
 
     // 입력 시 경고 메시지 숨김 처리

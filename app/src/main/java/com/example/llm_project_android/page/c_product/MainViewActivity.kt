@@ -1,24 +1,30 @@
-package com.example.llm_project_android
+package com.example.llm_project_android.page.c_product
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.RecyclerView
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
+import com.example.llm_project_android.R
+import com.example.llm_project_android.adapter.ViewPageAdapter
 import com.example.llm_project_android.databinding.PageMainViewBinding
+import com.example.llm_project_android.functions.registerExitDialogOnBackPressed
 import com.google.android.material.navigation.NavigationView
+import kotlin.math.abs
 
-class Page_MainViewActivity : AppCompatActivity() {
+class MainViewActivity : AppCompatActivity() {
     private lateinit var binding: PageMainViewBinding
-    private val sliderHandler = android.os.Handler(android.os.Looper.getMainLooper())
+    private val sliderHandler = Handler(Looper.getMainLooper())
     private lateinit var sliderRunnable: Runnable
 
     private lateinit var drawerLayout: DrawerLayout
@@ -115,7 +121,7 @@ class Page_MainViewActivity : AppCompatActivity() {
         val transformer = CompositePageTransformer().apply {
             addTransformer(MarginPageTransformer(30))   // 페이지 간 마진
             addTransformer { page: View, position: Float ->
-            val r = 1 - kotlin.math.abs(position)
+            val r = 1 - abs(position)
             page.scaleY = 0.85f + r * 0.15f     // 가운데는 크게, 양 옆은 작게
             page.alpha = 0.7f + r * 0.3f        // 자연스러운 페이드 효과
             }
@@ -149,7 +155,7 @@ class Page_MainViewActivity : AppCompatActivity() {
             if (!drawerLayout.isDrawerOpen(GravityCompat.END))
                 drawerLayout.openDrawer(GravityCompat.END)
         }
-        
+
         // 메뉴 닫기
         menus[1].setOnClickListener {
             if (drawerLayout.isDrawerOpen(GravityCompat.END))

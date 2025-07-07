@@ -1,9 +1,9 @@
-package com.example.llm_project_android
+package com.example.llm_project_android.functions
 
-import android.text.InputType
 import android.text.method.PasswordTransformationMethod
 import android.widget.EditText
 import android.widget.ImageButton
+import com.example.llm_project_android.R
 
 // 텍스트 시각화 여부 및 눈 아이콘 상태 함수 정의 파일
 fun togglePasswordVisibility(editText: EditText, isVisible: Boolean, imageButton: ImageButton): Boolean {

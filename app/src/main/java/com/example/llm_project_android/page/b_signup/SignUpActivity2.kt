@@ -1,4 +1,4 @@
-package com.example.llm_project_android
+package com.example.llm_project_android.page.b_signup
 
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
@@ -16,11 +16,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.llm_project_android.R
+import com.example.llm_project_android.functions.createFlexibleTextWatcher
+import com.example.llm_project_android.functions.getPassedExtras
+import com.example.llm_project_android.functions.navigateTo
+import com.example.llm_project_android.functions.setBoxField
 import kotlin.properties.Delegates
 import kotlin.text.isNullOrEmpty
 
 
-class Page_SignUpActivity2 : AppCompatActivity() {
+class SignUpActivity2 : AppCompatActivity() {
 
     private lateinit var btn_next: Button
     private lateinit var btn_back: ImageButton
@@ -106,11 +111,11 @@ class Page_SignUpActivity2 : AppCompatActivity() {
         select_job(job_spinner, { job -> selectedJob = job }, { is_Job_Confirmed }, { is_Job_Confirmed = it }, { is_Etc_Confirmed }, { is_Etc_Confirmed = it })
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity1)
-        clickBackButton(btn_back, Page_SignUpActivity1::class.java, data.filterValues { it != null } as Map<String, Any>)
+        clickBackButton(btn_back, SignUpActivity1::class.java, data.filterValues { it != null } as Map<String, Any>)
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity3)
         clickNextButton(btn_next, data.filterValues { it != null } as Map<String, Any>, name, birth, phone,
-            gender_M, married_N, job_etc, Page_SignUpActivity3::class.java)
+            gender_M, married_N, job_etc, SignUpActivity3::class.java)
 
         // 화면 전환 간 데이터 유지 (SignUpActivity3.kt -> SignUpActivity2.kt)
         restorePassedData()
@@ -180,17 +185,19 @@ class Page_SignUpActivity2 : AppCompatActivity() {
         // 이름 입력란 실시간 감지 이벤트
         input_text.addTextChangedListener(
             createFlexibleTextWatcher(
-                validateInput = { input -> name_Pattern.matches(input_text.text.toString())},
+                validateInput = { input -> name_Pattern.matches(input_text.text.toString()) },
                 onValidStateChanged = { isValid ->
                     when {
                         input_text.text.toString().isEmpty() -> {       // 공란
                             setBoxField(input_text, "#666666".toColorInt())
                             setNameConfirmed(false)
                         }
+
                         isValid -> {                                    // 이름 형식 충족
                             setBoxField(input_text, "#4B9F72".toColorInt())
                             setNameConfirmed(true)
                         }
+
                         else -> {                                       // 이름 형식 미충족
                             setBoxField(input_text, "#FF0000".toColorInt())
                             setNameConfirmed(false)
@@ -214,10 +221,12 @@ class Page_SignUpActivity2 : AppCompatActivity() {
                             setBoxField(input_text, "#666666".toColorInt())
                             setBirthConfirmed(false)
                         }
+
                         isValid -> {
                             setBoxField(input_text, "#4B9F72".toColorInt())
                             setBirthConfirmed(true)
                         }
+
                         else -> {
                             setBoxField(input_text, "#FF0000".toColorInt())
                             setBirthConfirmed(false)
@@ -241,10 +250,12 @@ class Page_SignUpActivity2 : AppCompatActivity() {
                             setBoxField(input_text, "#666666".toColorInt())
                             setPhoneConfirmed(false)
                         }
+
                         isValid -> {
                             setBoxField(input_text, "#4B9F72".toColorInt())
                             setPhoneConfirmed(true)
                         }
+
                         else -> {
                             setBoxField(input_text, "#FF0000".toColorInt())
                             setPhoneConfirmed(false)
@@ -276,7 +287,7 @@ class Page_SignUpActivity2 : AppCompatActivity() {
         var adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, job_list)
         spinner.adapter = adapter
 
-        spinner.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, p1: View?, position: Int, id: Long) {
                 val item = job_list[position]                           // item에 선택한 직업 할당
                 onJobSelected(item)                                     // selectedJob 변수에 선택한 항목 저장
@@ -303,8 +314,8 @@ class Page_SignUpActivity2 : AppCompatActivity() {
             createFlexibleTextWatcher(
                 validateInput = { input -> job_Pattern.matches(input) },
                 onValidStateChanged = { isValid ->
-                    if (!isValid)   setEtcConfirmed(false)
-                    else            setEtcConfirmed(true)
+                    if (!isValid) setEtcConfirmed(false)
+                    else setEtcConfirmed(true)
                 }
             )
         )

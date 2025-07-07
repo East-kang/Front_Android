@@ -1,4 +1,4 @@
-package com.example.llm_project_android
+package com.example.llm_project_android.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,8 @@ import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.llm_project_android.R
+import com.example.llm_project_android.data.model.Product
 
 class ProductContentAdapter (private var productList: List<Product>)
     : RecyclerView.Adapter<ProductContentAdapter.PostViewHolder>(), Filterable {

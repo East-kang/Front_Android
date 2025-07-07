@@ -1,4 +1,4 @@
-package com.example.llm_project_android
+package com.example.llm_project_android.page.b_signup
 
 import android.os.Bundle
 import android.view.View
@@ -11,9 +11,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.graphics.toColorInt
+import com.example.llm_project_android.R
+import com.example.llm_project_android.functions.createFlexibleTextWatcher
+import com.example.llm_project_android.functions.getPassedExtras
+import com.example.llm_project_android.functions.navigateTo
+import com.example.llm_project_android.functions.pw_eye_visibility
+import com.example.llm_project_android.functions.setBoxField
+import com.example.llm_project_android.functions.startShakeAnimation
+import com.example.llm_project_android.page.a_intro.InitActivity
+import com.example.llm_project_android.page.a_intro.LoginActivity
 import kotlin.properties.Delegates
 
-class Page_SignUpActivity1 : AppCompatActivity() {
+class SignUpActivity1 : AppCompatActivity() {
 
     private lateinit var btn_next: Button
     private lateinit var btn_idCheck: Button
@@ -90,14 +99,14 @@ class Page_SignUpActivity1 : AppCompatActivity() {
         create_email(email_text, email_check, { is_Email_Confirmed }, { is_Email_Confirmed = it })
 
         // 비밀번호 & 비밀번호 확인란 시각화 버튼 클릭 이벤트
-        pw_eye_visibility(btn_eye, pw_text, {pw_visible}, {pw_visible = it})
-        pw_eye_visibility(btn_eye_check, pw_check, {pw_check_visible}, {pw_check_visible = it})
+        pw_eye_visibility(btn_eye, pw_text, { pw_visible }, { pw_visible = it })
+        pw_eye_visibility(btn_eye_check, pw_check, { pw_check_visible }, { pw_check_visible = it })
 
         // 뒤로가기 버튼 클릭 이벤트 (to InitActivity or LoginActivity)
-        clickBackButton(btn_back, source, Page_InitActivity::class.java, Page_LoginActivity::class.java)
+        clickBackButton(btn_back, source, InitActivity::class.java, LoginActivity::class.java)
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity2)
-        clickNextButton(btn_next,id_text,pw_text,email_text, source, Page_SignUpActivity2::class.java)
+        clickNextButton(btn_next,id_text,pw_text,email_text, source, SignUpActivity2::class.java)
 
         // 화면 전환으로 인한 데이터 수신
         restorePassedData()
@@ -188,13 +197,20 @@ class Page_SignUpActivity1 : AppCompatActivity() {
                 updateText = { "6~12자의 영문, 숫자를 사용하세요" },
                 updateTextColor = { "#1F70CC".toColorInt() },
                 validateInput = { input -> id_Pattern.matches(input_text.text.toString()) },
-                onValidStateChanged = { isValid -> idCheck.isEnabled = isValid
+                onValidStateChanged = { isValid ->
+                    idCheck.isEnabled = isValid
                     setIsIdConfirmed(false)
                     idCheck.setBackgroundResource(
-                        if (isValid)    { R.drawable.design_enabled_button }     // 사용 가능 상태
-                        else            { R.drawable.design_disabled_button }   // 비활성 상태
+                        if (isValid) {
+                            R.drawable.design_enabled_button
+                        }     // 사용 가능 상태
+                        else {
+                            R.drawable.design_disabled_button
+                        }   // 비활성 상태
                     )
-                    setBoxField(input_text, "#666666".toColorInt()) }))
+                    setBoxField(input_text, "#666666".toColorInt())
+                })
+        )
     }
 
     // '비밀번호' 생성 기능 함수
@@ -207,28 +223,36 @@ class Page_SignUpActivity1 : AppCompatActivity() {
                 targetTextView = rule,
                 updateText = { input ->
                     if (pw_Pattern.matches(input_text.text.toString())) "사용 가능한 비밀번호입니다"    // 비밀번호 정규식 만족
-                    else "8~16자의 영문, 숫자를 사용하세요" },
+                    else "8~16자의 영문, 숫자를 사용하세요"
+                },
                 updateTextColor = { input ->
                     when {
                         input_text.text.toString().isEmpty() -> "#1F70CC".toColorInt()
                         pw_Pattern.matches(input) -> "#4B9F72".toColorInt()
                         else -> "#FF0000".toColorInt()
-                    }},
+                    }
+                },
                 validateInput = { input -> pw_Pattern.matches(input_text.text.toString()) },
                 onValidStateChanged = { isValid ->
                     when {
                         input_text.text.toString().isEmpty() -> {                           // 공란
                             setBoxField(input_text, "#666666".toColorInt())
-                            check_text.isEnabled = false                                       // 비밀번호 확인란 비활성화
-                            setPwIdConfirmed(false) }                                          // 다음 버튼 조건 미충족
+                            check_text.isEnabled =
+                                false                                       // 비밀번호 확인란 비활성화
+                            setPwIdConfirmed(false)
+                        }                                          // 다음 버튼 조건 미충족
                         isValid -> {                                                        // 비밀번호 사용 가능
                             setBoxField(input_text, "#4B9F72".toColorInt())
-                            check_text.isEnabled = true                                        // 비밀번호 확인란 활성화
-                            setPwIdConfirmed(true) }                                           // 다음 버튼 조건 충족
+                            check_text.isEnabled =
+                                true                                        // 비밀번호 확인란 활성화
+                            setPwIdConfirmed(true)
+                        }                                           // 다음 버튼 조건 충족
                         else -> {                                                           // 비밀번호 사용 불가
                             setBoxField(input_text, "#FF0000".toColorInt())
-                            check_text.isEnabled = false                                       // 비밀번호 확인란 비활성화
-                            setPwIdConfirmed(false) }                                          // 다음 버튼 조건 미충족
+                            check_text.isEnabled =
+                                false                                       // 비밀번호 확인란 비활성화
+                            setPwIdConfirmed(false)
+                        }                                          // 다음 버튼 조건 미충족
                     }
                 }
             )
@@ -246,28 +270,36 @@ class Page_SignUpActivity1 : AppCompatActivity() {
                         input_text.text.toString().isEmpty() -> "동일한 암호를 입력하세요"       // 공란
                         pw_text() == input_text.text.toString() -> "비밀번호가 일치합니다"      // 비밀번호 일치
                         else -> "비밀번호가 일치하지 않습니다"                                   // 비밀번호 불일치
-                    }},
+                    }
+                },
                 updateTextColor = { input ->
                     when {
                         input_text.text.toString().isEmpty() -> "#1F70CC".toColorInt()      // 공란
                         pw_text() == input_text.text.toString() -> "#4B9F72".toColorInt()   // 비밀번호 일치
                         else -> "#FF0000".toColorInt()                                      // 비밀번호 불일치
-                    }},
+                    }
+                },
                 validateInput = { input -> pw_text() == input_text.text.toString() },
                 onValidStateChanged = { isValid ->
                     when {
-                        input_text.text.toString(). isEmpty() -> {                             // 공란
+                        input_text.text.toString().isEmpty() -> {                             // 공란
                             setBoxField(input_text, "#666666".toColorInt())
-                            pw_window.isEnabled = true                                           // 비밀번호 입력창 활성화
-                            setPwCheckConfirmed(false) }                                         // 다음 버튼 클릭 조건 미충족
+                            pw_window.isEnabled =
+                                true                                           // 비밀번호 입력창 활성화
+                            setPwCheckConfirmed(false)
+                        }                                         // 다음 버튼 클릭 조건 미충족
                         isValid -> {                                                         // 비밀번호 일치
                             setBoxField(input_text, "#4B9F72".toColorInt())
-                            pw_window.isEnabled = false                                          // 비밀번호 입력창 비활성화
-                            setPwCheckConfirmed(true) }                                          // 다음 버튼 클릭 조건 충족
+                            pw_window.isEnabled =
+                                false                                          // 비밀번호 입력창 비활성화
+                            setPwCheckConfirmed(true)
+                        }                                          // 다음 버튼 클릭 조건 충족
                         else -> {                                                              // 비밀번호 불일치
                             setBoxField(input_text, "#FF0000".toColorInt())
-                            pw_window.isEnabled = false                                          // 비밀번호 입력창 비활성화
-                            setPwCheckConfirmed(false) }                                         // 다음 버튼 클릭 조건 미충족
+                            pw_window.isEnabled =
+                                false                                          // 비밀번호 입력창 비활성화
+                            setPwCheckConfirmed(false)
+                        }                                         // 다음 버튼 클릭 조건 미충족
                     }
                 }
             )
@@ -290,7 +322,8 @@ class Page_SignUpActivity1 : AppCompatActivity() {
                 },
                 updateTextColor = { input ->
                     when {
-                        input_text.text.toString().isEmpty() -> "#1F70CC".toColorInt()                         // 공란
+                        input_text.text.toString()
+                            .isEmpty() -> "#1F70CC".toColorInt()                         // 공란
                         !email_Pattern.matches(input_text.text.toString()) -> "#FF0000".toColorInt()    // 이메일 형식 불일치
                         else -> "#4B9F72".toColorInt()                                                         // 사용 가능한 이메일 형식 일치
                     }
@@ -300,13 +333,18 @@ class Page_SignUpActivity1 : AppCompatActivity() {
                     when {
                         input_text.text.toString().isEmpty() -> {                              // 공란
                             setBoxField(input_text, "#666666".toColorInt())
-                            setEmailIsIdConfirmed(false) }
+                            setEmailIsIdConfirmed(false)
+                        }
+
                         !isValid -> {         // 이메일 형식 불일치
                             setBoxField(input_text, "#FF0000".toColorInt())
-                            setEmailIsIdConfirmed(false) }
+                            setEmailIsIdConfirmed(false)
+                        }
+
                         else -> {                                                              // 사용 가능한 이메일 형식 일치
                             setBoxField(input_text, "#4B9F72".toColorInt())
-                            setEmailIsIdConfirmed(true) }
+                            setEmailIsIdConfirmed(true)
+                        }
                     }
                 }
             )

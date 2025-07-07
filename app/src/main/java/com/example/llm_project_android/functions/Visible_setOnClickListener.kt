@@ -1,4 +1,4 @@
-package com.example.llm_project_android
+package com.example.llm_project_android.functions
 
 import android.widget.EditText
 import android.widget.ImageButton

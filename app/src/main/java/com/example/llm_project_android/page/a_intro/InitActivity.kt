@@ -1,4 +1,4 @@
-package com.example.llm_project_android
+package com.example.llm_project_android.page.a_intro
 
 import android.os.Bundle
 import android.widget.Button
@@ -6,8 +6,13 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.llm_project_android.R
+import com.example.llm_project_android.functions.navigateTo
+import com.example.llm_project_android.functions.registerExitDialogOnBackPressed
+import com.example.llm_project_android.page.c_product.CategoryView
+import com.example.llm_project_android.page.b_signup.SignUpActivity1
 
-class Page_InitActivity : AppCompatActivity() {
+class InitActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -24,12 +29,12 @@ class Page_InitActivity : AppCompatActivity() {
         // 로그인 버튼 클릭 이벤트
         btn_login.setOnClickListener {
             // navigateTo(LoginActivity::class.java)
-            navigateTo(Page_CategoryView::class.java)
+            navigateTo(CategoryView::class.java)
         }
 
         // 회원가입 버튼 클릭 이벤트
         btn_sign_up.setOnClickListener {
-            navigateTo(Page_SignUpActivity1::class.java, "source" to "InitActivity")
+            navigateTo(SignUpActivity1::class.java, "source" to "InitActivity")
         }
 
         // 뒤로가기 버튼 클릭 이벤트

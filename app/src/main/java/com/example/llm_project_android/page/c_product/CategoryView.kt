@@ -1,4 +1,4 @@
-package com.example.llm_project_android
+package com.example.llm_project_android.page.c_product
 
 import android.graphics.Color
 import android.graphics.Typeface
@@ -12,16 +12,18 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.helper.widget.Carousel
+import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.RecyclerView
-import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.llm_project_android.Products_Insurance
-import kotlin.collections.mutableSetOf
+import androidx.recyclerview.widget.RecyclerView
+import com.example.llm_project_android.R
+import com.example.llm_project_android.adapter.InsuranceAdapter
+import com.example.llm_project_android.data.sample.Products_Insurance
+import com.example.llm_project_android.functions.navigateTo
+import com.example.llm_project_android.page.a_intro.InitActivity
 
-class Page_CategoryView : AppCompatActivity() {
+class CategoryView : AppCompatActivity() {
 
     private lateinit var btn_back: ImageButton
     private lateinit var categoryList: List<Button>
@@ -91,7 +93,7 @@ class Page_CategoryView : AppCompatActivity() {
         clickItems()
 
         // 뒤로가기 버튼 클릭 이벤트 (to MainViewActivity)
-        clickBackButton(btn_back, Page_InitActivity::class.java)
+        clickBackButton(btn_back, InitActivity::class.java)
 
     }
 
@@ -181,10 +183,11 @@ class Page_CategoryView : AppCompatActivity() {
     // 상품 정렬 함수 (상품 정렬 기능 추가해야함)
     fun sorting_Insurances(onSortedSelected: (String) -> Unit) {
         val filterList = resources.getStringArray(R.array.list_filter)
-        val spinnerAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, filterList)
+        val spinnerAdapter =
+            ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, filterList)
         filter.adapter = spinnerAdapter
 
-        filter.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
+        filter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
                 val item = filterList[position]     // item에 선택한 정렬 기준 할당
                 onSortedSelected(item)              // 선택 항목 저장

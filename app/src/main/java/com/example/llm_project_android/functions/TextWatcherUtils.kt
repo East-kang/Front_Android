@@ -1,9 +1,8 @@
-package com.example.llm_project_android
+package com.example.llm_project_android.functions
 
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.EditText
 import android.widget.TextView
 
 // 입력 텍스트 실시간 반영 함수 정의 파일

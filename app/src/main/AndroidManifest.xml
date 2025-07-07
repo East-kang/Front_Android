@@ -9,34 +9,34 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LLM_Project_Android">
         <activity
-            android:name=".Page_CategoryView"
+            android:name=".page.c_product.CategoryView"
             android:exported="false" />
         <activity
-            android:name=".Page_MainViewActivity"
+            android:name=".page.c_product.MainViewActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".Page_SignUpActivity4"
+            android:name=".page.b_signup.SignUpActivity4"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".Page_SignUpActivity3"
+            android:name=".page.b_signup.SignUpActivity3"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".Page_SignUpActivity2"
+            android:name=".page.b_signup.SignUpActivity2"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".Page_SignUpActivity1"
+            android:name=".page.b_signup.SignUpActivity1"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".Page_LoginActivity"
+            android:name=".page.a_intro.LoginActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".Page_InitActivity"
+            android:name=".page.a_intro.InitActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
