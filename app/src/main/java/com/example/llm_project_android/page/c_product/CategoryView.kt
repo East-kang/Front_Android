@@ -93,8 +93,7 @@ class CategoryView : AppCompatActivity() {
         clickItems()
 
         // 뒤로가기 버튼 클릭 이벤트 (to MainViewActivity)
-        clickBackButton(btn_back, InitActivity::class.java)
-
+        clickBackButton(btn_back, MainViewActivity::class.java)
     }
 
     // 상품 띄우기
@@ -104,11 +103,11 @@ class CategoryView : AppCompatActivity() {
         itemView.layoutManager = LinearLayoutManager(this)
     }
 
+    // 상품 클릭 이벤트
     fun clickItems() {
-        // 상품 클릭 이벤트
         adapter.itemClick = object: InsuranceAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
-                Toast.makeText(view.context, "클릭!", Toast.LENGTH_SHORT).show()
+                navigateTo(ProductDetailActivity::class.java)
             }
         }
     }
@@ -122,7 +121,7 @@ class CategoryView : AppCompatActivity() {
                 change_Types_Product(i, categoryList[category_num], underline[category_num], categoryList[i], underline[i])
                 selectedCategories.clear()
                 selectedCategories.add(category)
-                item_Filter()// 아이템 필터링
+                item_Filter()   // 아이템 필터링
             }
         }
     }
