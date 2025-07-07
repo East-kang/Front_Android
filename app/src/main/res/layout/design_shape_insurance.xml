@@ -86,6 +86,7 @@
             android:textSize="9sp"
             android:textColor="#5480F0"
             android:textStyle="bold"
+            android:gravity="center"
             android:background="@drawable/design_recommendation_tag"
             android:layout_marginEnd="3dp"
             app:layout_constraintEnd_toStartOf="@id/right_arrow"
