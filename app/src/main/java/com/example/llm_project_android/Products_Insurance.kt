@@ -97,7 +97,7 @@ object Products_Insurance {
             category = "실손"
         ),
         Insurance(
-            company_icon = R.drawable.resize_main_icon_small,
+            company_icon = R.drawable.imange_logo_kb,
             company_name = "KB손해보험",
             name = "KB 운전자안심보험",
             description = "교통사고 처리 지원 및 변호사 비용까지 보장합니다.",

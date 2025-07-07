@@ -32,7 +32,7 @@
             android:layout_marginStart="4dp"
             android:text="기업명"
             android:textColor="#666666"
-            android:textSize="17sp"
+            android:textSize="15sp"
             android:gravity="center"
             app:layout_constraintStart_toEndOf="@id/company_icon"
             app:layout_constraintTop_toTopOf="parent" />
@@ -70,17 +70,32 @@
             android:layout_height="match_parent"
             android:text="상품명"
             android:textColor="@color/black"
-            android:textSize="21sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:gravity="center"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
+        <TextView
+            android:id="@+id/recommendation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="8dp"
+            android:text="AI 추천!"
+            android:textSize="9sp"
+            android:textColor="#5480F0"
+            android:textStyle="bold"
+            android:background="@drawable/design_recommendation_tag"
+            android:layout_marginEnd="3dp"
+            app:layout_constraintEnd_toStartOf="@id/right_arrow"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
         <ImageView
             android:id="@+id/right_arrow"
-            android:layout_width="21dp"
-            android:layout_height="21dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:background="@drawable/image_right_arrow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -106,11 +121,11 @@
         android:id="@+id/insurance_payment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="17dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="10dp"
         android:text="월 N만원"
         android:textSize="20sp"
         android:textColor="@color/black"
-        app:layout_constraintTop_toBottomOf="@id/insurance_description"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

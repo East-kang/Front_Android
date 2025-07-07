@@ -1,6 +1,6 @@
 package com.example.llm_project_android
 
-import android.graphics.Color
+import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableStringBuilder
@@ -15,7 +15,39 @@ import com.example.llm_project_android.databinding.DesignShapeInsuranceBinding
 import androidx.core.graphics.toColorInt
 
 
-class InsuranceAdapter(val insuranceList: ArrayList<Insurance>) : RecyclerView.Adapter<InsuranceAdapter.Holder>() {
+class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter<InsuranceAdapter.Holder>() {
+
+    private val originalList: List<Insurance> = productList.toList()                    // 원본 데이터 보관용 리스트
+    private val insuranceList: MutableList<Insurance> = productList.toMutableList()
+
+    fun applyFilters(
+        filter1: String?,           // 카테고리
+        filter2: List<String>?,     // 회사
+        filter3: String?            // 정렬
+    ) {
+        var filtered = originalList
+
+        // 1번 필터링
+        if (!filter1.isNullOrEmpty() && filter1 != "전체")
+            filtered = filtered.filter { it.category == filter1 }
+        else if (filter1 == "전체")
+            filtered = originalList
+
+
+        // 2번 필터링
+        if (!filter2.isNullOrEmpty())
+            filtered = filtered.filter { filter2.contains(it.company_name) }
+
+        // 3번 필터링
+        filtered = when (filter3) {
+            "추천순" -> filtered.sortedBy { it.company_name }
+            "이름순" -> filtered.sortedBy { it.name }
+            else -> filtered
+        }
+
+        updateList(filtered)
+    }
+
     // 아이템 클릭 이벤트
     interface ItemClick {
         fun onClick(view: View, position: Int)
@@ -92,5 +124,12 @@ class InsuranceAdapter(val insuranceList: ArrayList<Insurance>) : RecyclerView.A
                 }
             }
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateList(newList: List<Insurance>) {
+        insuranceList.clear()
+        insuranceList.addAll(newList)
+        notifyDataSetChanged()
     }
 }

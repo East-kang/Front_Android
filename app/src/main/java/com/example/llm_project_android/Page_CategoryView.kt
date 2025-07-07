@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.llm_project_android.Products_Insurance
+import kotlin.collections.mutableSetOf
 
 class Page_CategoryView : AppCompatActivity() {
 
@@ -32,6 +33,10 @@ class Page_CategoryView : AppCompatActivity() {
     private var company_num: Int = -1               // 현재 선택된 회사 카테고리 인덱스 (-1: 미선택)
     private var company_isChecked: Boolean = false  // 회사 카테고리 선택 여부 (true: 이미 선택됨, false: 선택된 버튼 없음)
     private var selectedSortType: String = ""
+
+    private lateinit var adapter: InsuranceAdapter
+    private val selectedCategories: MutableSet<String> = mutableSetOf()
+    private val selectedCompanies: MutableSet<String> = mutableSetOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,32 +87,40 @@ class Page_CategoryView : AppCompatActivity() {
         // 상품 정렬 이벤트
         sorting_Insurances({ type -> selectedSortType = type})
 
+        // 아이템 클릭 이벤트
+        clickItems()
+
         // 뒤로가기 버튼 클릭 이벤트 (to MainViewActivity)
-        clickBackButton(btn_back, Page_MainViewActivity::class.java)
+        clickBackButton(btn_back, Page_InitActivity::class.java)
 
     }
 
     // 상품 띄우기
     fun showing_Insurances() {
-        val adapter = InsuranceAdapter(Products_Insurance.productList)
+        adapter = InsuranceAdapter(Products_Insurance.productList)
         itemView.adapter = adapter
         itemView.layoutManager = LinearLayoutManager(this)
+    }
 
+    fun clickItems() {
         // 상품 클릭 이벤트
         adapter.itemClick = object: InsuranceAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
                 Toast.makeText(view.context, "클릭!", Toast.LENGTH_SHORT).show()
             }
         }
-
     }
 
-
-    // 상품 카테고리 선택 함수 (현재 버튼 활성화 이벤트만 구현) (+ 아이템 뷰 전환 이벤트도 구현해야함)
+    // 상품 카테고리 선택 함수 (카테고리 시각화 및 필터링)
     fun select_Product_Category() {
-        for (i in 0 until categoryList.size) {
+        for (i in categoryList.indices) {
             categoryList[i].setOnClickListener {
+                val category = categoryList[i].text.toString()
+
                 change_Types_Product(i, categoryList[category_num], underline[category_num], categoryList[i], underline[i])
+                selectedCategories.clear()
+                selectedCategories.add(category)
+                item_Filter()// 아이템 필터링
             }
         }
     }
@@ -135,6 +148,7 @@ class Page_CategoryView : AppCompatActivity() {
         for (i in 0 until companyList.size) {
             companyList[i].setOnClickListener {
                 change_Types_Company(i, companyList[i])
+                item_Filter()   // 아이템 필터링
             }
         }
     }
@@ -155,32 +169,39 @@ class Page_CategoryView : AppCompatActivity() {
             select_button.background.setTint(active_Color(-1))
             select_button.setTextColor("#666666".toColorInt())
             select_button.isSelected = false
+            selectedCompanies.remove(select_button.text.toString())
         } else {
             select_button.background.setTint(active_Color(index))
             select_button.setTextColor(Color.WHITE)
             select_button.isSelected = true
+            selectedCompanies.add(select_button.text.toString())
         }
     }
 
     // 상품 정렬 함수 (상품 정렬 기능 추가해야함)
     fun sorting_Insurances(onSortedSelected: (String) -> Unit) {
         val filterList = resources.getStringArray(R.array.list_filter)
-        val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, filterList)
-        filter.adapter = adapter
+        val spinnerAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, filterList)
+        filter.adapter = spinnerAdapter
 
         filter.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
                 val item = filterList[position]     // item에 선택한 정렬 기준 할당
                 onSortedSelected(item)              // 선택 항목 저장
+                item_Filter()                       // 아이템 필터링
             }
             override fun onNothingSelected(p0: AdapterView<*>?) { }
         }
     }
 
-
-
-
-
+    // 아이템 필터링
+    fun item_Filter() {
+        adapter.applyFilters(
+            selectedCategories.firstOrNull(),
+            selectedCompanies.toList(),
+            selectedSortType
+        )
+    }
 
     // '뒤로가기' 버튼 클릭 이벤트 정의 함수
     fun AppCompatActivity.clickBackButton(backButton: View, targetActivity: Class<out AppCompatActivity>) {
