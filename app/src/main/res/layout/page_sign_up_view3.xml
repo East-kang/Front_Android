@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Page_SignUpActivity3">
+    tools:context=".page.b_signup.SignUpActivity3">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/title"

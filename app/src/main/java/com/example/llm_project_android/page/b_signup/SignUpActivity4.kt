@@ -1,4 +1,4 @@
-package com.example.llm_project_android
+package com.example.llm_project_android.page.b_signup
 
 import android.os.Bundle
 import android.view.View
@@ -18,8 +18,14 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import kotlin.properties.Delegates
 import androidx.core.view.isNotEmpty
+import com.example.llm_project_android.data.model.Product
+import com.example.llm_project_android.adapter.ProductContentAdapter
+import com.example.llm_project_android.R
+import com.example.llm_project_android.functions.getPassedExtras
+import com.example.llm_project_android.functions.navigateTo
+import com.example.llm_project_android.page.c_product.MainViewActivity
 
-class Page_SignUpActivity4 : AppCompatActivity() {
+class SignUpActivity4 : AppCompatActivity() {
 
     private lateinit var btn_back: ImageButton
     private lateinit var btn_completion: Button
@@ -87,10 +93,10 @@ class Page_SignUpActivity4 : AppCompatActivity() {
         updateByChipExistence({ is_Check_Confirmed = it })
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity3)
-        clickBackButton(btn_back, data.filter { it != null } as Map<String, Any>, Page_SignUpActivity3::class.java)
+        clickBackButton(btn_back, data.filter { it != null } as Map<String, Any>, SignUpActivity3::class.java)
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity4)
-        clickCompletionButton(btn_completion, data.filterValues { it != null } as Map<String, Any>, Page_MainViewActivity::class.java)
+        clickCompletionButton(btn_completion, data.filterValues { it != null } as Map<String, Any>, MainViewActivity::class.java)
     }
 
     // ChipView / RecyclerView 활성화 처리 함수

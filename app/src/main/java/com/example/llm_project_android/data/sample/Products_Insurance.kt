@@ -1,4 +1,7 @@
-package com.example.llm_project_android
+package com.example.llm_project_android.data.sample
+
+import com.example.llm_project_android.R
+import com.example.llm_project_android.data.model.Insurance
 
 object Products_Insurance {
 

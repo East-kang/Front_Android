@@ -1,11 +1,9 @@
-package com.example.llm_project_android
+package com.example.llm_project_android.functions
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import java.io.Serializable
+import com.example.llm_project_android.R
 
 // 화면 전환 정의 함수 파일
 
@@ -20,7 +18,7 @@ fun Context.navigateTo(target: Class<out AppCompatActivity>, vararg extras: Pair
             is ArrayList<*> -> {
                 if (value.all { it is String}) {
                     @Suppress("UNCHECKED_CAST")
-                    intent.putStringArrayListExtra(key, value as kotlin.collections.ArrayList<String>)
+                    intent.putStringArrayListExtra(key, value as ArrayList<String>)
                 } else {
                     throw IllegalArgumentException("Only ArrayList<String> is supported for key=$key")
                 }

@@ -1,4 +1,4 @@
-package com.example.llm_project_android
+package com.example.llm_project_android.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

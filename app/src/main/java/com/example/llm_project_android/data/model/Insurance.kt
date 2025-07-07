@@ -1,4 +1,4 @@
-package com.example.llm_project_android
+package com.example.llm_project_android.data.model
 
 data class Insurance(
     var company_icon: Int,      // 기업 아이콘

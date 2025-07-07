@@ -1,4 +1,4 @@
-package com.example.llm_project_android
+package com.example.llm_project_android.adapter
 
 import android.annotation.SuppressLint
 import android.graphics.Typeface
@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.llm_project_android.databinding.DesignShapeInsuranceBinding
 import androidx.core.graphics.toColorInt
+import com.example.llm_project_android.data.model.Insurance
 
 
 class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter<InsuranceAdapter.Holder>() {
@@ -71,13 +72,13 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): InsuranceAdapter.Holder {
+    ): Holder {
         val binding = DesignShapeInsuranceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return Holder(binding)
     }
 
     // 매개변수로 전달된 뷰 홀더 객체의 뷰에 데이터를 출력하거나 필요한 이벤트 등록
-    override fun onBindViewHolder(holder: InsuranceAdapter.Holder, position: Int) {
+    override fun onBindViewHolder(holder: Holder, position: Int) {
         val item = insuranceList[position]
         
         holder.C_icon.setImageResource(item.company_icon)   // 기업 로고
