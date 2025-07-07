@@ -19,7 +19,7 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
 
     private val originalList: List<Insurance> = productList.toList()                    // 원본 데이터 보관용 상품 리스트
     private val insuranceList: MutableList<Insurance> = productList.toMutableList()     // 화면에 표시될 상품 리스트
-    private var itemClick : ItemClick? = null        // 클릭 이벤트 변수
+    var itemClick : ItemClick? = null        // 클릭 이벤트 변수
     private var aiRecommendKey: String = "AI 추천"    // AI 추천 여부
 
     fun applyFilters(
@@ -42,7 +42,10 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
 
         // 3번 필터링
         filtered = when (filter3) {
-            "추천순" -> filtered.sortedBy { it.company_name }
+            "추천순" -> filtered.sortedWith (
+                compareByDescending<Insurance> { it.recommendation }    // 1순위: 추천 여부 true 먼저
+                    .thenBy { it.name }                                             // 2순위: 이름 오름차순 정렬
+            )
             "이름순" -> filtered.sortedBy { it.name }
             else -> filtered
         }
@@ -82,7 +85,6 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
         holder.P_name.text = item.name                      // 상품명
         holder.P_description.text = item.description        // 상품 설명
         holder.P_category.text = item.category              // 상품 카테고리
-        holder.AI_recommendation.text = item.recommendation // ai 추천
 
         val payment = item.payment.toString()               // 상품 월납입금
         val styledText = SpannableStringBuilder()
@@ -112,10 +114,9 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
 
         holder.P_payment.text = styledText  // 납입금 문구 저장
 
-        if (item.recommendation == aiRecommendKey)  // 'AI 추천' 문구 표시
-            holder.AI_recommendation.visibility = View.VISIBLE
-        else
-            holder.AI_recommendation.visibility = View.GONE
+        // 'AI 추천' 문구 표시
+        holder.AI_recommendation.visibility =
+            if (item.recommendation) View.VISIBLE else View.GONE
     }
 
     // RecyclerView에 몇 가지의 아이템이 떠야되는지 알려주는 메서드, 반환한 숫자만큼 onBindViewHoler() 함수가 호출되어 항목 만듦.
@@ -132,7 +133,7 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
         val P_description = binding.insuranceDescription
         val P_payment = binding.insurancePayment
         val P_category = binding.category
-        val AI_recommendation = binding.recommendation
+        var AI_recommendation = binding.recommendation
 
         init {
             binding.root.setOnClickListener {
