@@ -150,4 +150,9 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
     interface ItemClick {
         fun onClick(view: View, position: Int)
     }
+
+    // 선택한 아이템 반환
+    fun getItem(position: Int): Insurance {
+        return insuranceList[position]
+    }
 }

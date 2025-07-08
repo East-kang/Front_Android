@@ -46,6 +46,7 @@ fun AppCompatActivity.getPassedExtras(keys: List<Pair<String, Class<*>>>): Map<S
         val value = when (type) {
             String::class.java -> intent.getStringExtra(key)
             Boolean::class.java -> intent.getBooleanExtra(key, false)
+            Int::class.java -> intent.getIntExtra(key, 0)
             else -> throw IllegalArgumentException("Unsupported type: $key → $type")
         }
         key to value

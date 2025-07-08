@@ -32,8 +32,6 @@ class CategoryView : AppCompatActivity() {
     private lateinit var filter: Spinner
     private lateinit var itemView: RecyclerView
     private var category_num: Int = 0               // 현재 선택된 상품 카테고리 인덱스
-    private var company_num: Int = -1               // 현재 선택된 회사 카테고리 인덱스 (-1: 미선택)
-    private var company_isChecked: Boolean = false  // 회사 카테고리 선택 여부 (true: 이미 선택됨, false: 선택된 버튼 없음)
     private var selectedSortType: String = ""
 
     private lateinit var adapter: InsuranceAdapter
@@ -107,7 +105,16 @@ class CategoryView : AppCompatActivity() {
     fun clickItems() {
         adapter.itemClick = object: InsuranceAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
-                navigateTo(ProductDetailActivity::class.java)
+                val selectedItem = adapter.getItem(position)
+
+                navigateTo(
+                    ProductDetailActivity::class.java,
+                    "source" to "CategoryView",
+                    "company_icon" to selectedItem.company_icon,
+                    "company_name" to selectedItem.company_name,
+                    "category" to selectedItem.category,
+                    "insurance_name" to selectedItem.name,
+                    "recommendation" to selectedItem.recommendation)
             }
         }
     }
