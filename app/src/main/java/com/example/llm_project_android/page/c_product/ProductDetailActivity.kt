@@ -55,6 +55,7 @@ class ProductDetailActivity : AppCompatActivity() {
             listOf(
                 "source" to String::class.java,
                 "company_icon" to Int::class.java,
+                "company_name" to String::class.java,
                 "category" to String::class.java,
                 "insurance_name" to String::class.java,
                 "recommendation" to Boolean::class.java
@@ -74,6 +75,7 @@ class ProductDetailActivity : AppCompatActivity() {
     // 상품 내용 반영
     fun init() {
         icon.setBackgroundResource(data["company_icon"] as Int)
+        company_name.text = data["company_name"] as String
         category.text = data["category"] as String
         insurance_name.text = data["insurance_name"] as String
 
