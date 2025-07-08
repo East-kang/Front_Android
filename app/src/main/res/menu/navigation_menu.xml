@@ -8,7 +8,7 @@
 
     <item
         android:id="@+id/wishList"
-        android:icon="@drawable/vector_image_ic_wish_on"
+        android:icon="@drawable/vector_image_ic_wish_off"
         android:title="찜한 상품" />
 
     <item
