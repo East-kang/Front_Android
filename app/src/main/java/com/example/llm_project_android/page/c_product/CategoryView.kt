@@ -3,6 +3,7 @@ package com.example.llm_project_android.page.c_product
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.llm_project_android.R
@@ -23,6 +25,7 @@ import com.example.llm_project_android.adapter.InsuranceAdapter
 import com.example.llm_project_android.data.sample.Products_Insurance
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
+import kotlin.text.get
 
 class CategoryView : AppCompatActivity() {
 
@@ -34,6 +37,7 @@ class CategoryView : AppCompatActivity() {
     private lateinit var itemView: RecyclerView
     private var category_num: Int = 0               // 현재 선택된 상품 카테고리 인덱스
     private var selectedSortType: String = ""
+    private var data: String = ""
 
     private lateinit var adapter: InsuranceAdapter
     private val selectedCategories: MutableSet<String> = mutableSetOf()
@@ -80,10 +84,10 @@ class CategoryView : AppCompatActivity() {
         filter = findViewById<Spinner>(R.id.list_filter)        // 목록 필터 스피너
         itemView = findViewById<RecyclerView>(R.id.item_group)  // 상품 목록 리사이클러 뷰
 
-        val data = getPassedExtras("category", String::class.java)["category"] as? String? : "전체"
+        val data = getPassedExtras("category", String::class.java)["category"] as? String? ?: ""
 
         // 카테고리 초기화
-        init_Category(data)
+        init_Category()
 
         // 보험 상품 노출
         showing_Insurances()
@@ -105,21 +109,32 @@ class CategoryView : AppCompatActivity() {
     }
 
     // 상품 카테고리 초기화 함수
-    private fun init_Category(data: String) {
-        // 카테고리 활성화
-        for (button in categoryList) {
-            if (button.text.toString() == data) {
-                var index = categoryList.indexOf(button)
-                change_Types_Product(index, categoryList[0], underline[0], button, underline[index])
+    private fun init_Category() {
+        var index: Int
+
+        for (i in 0 until categoryList.size) {
+            if (underline[i].isVisible) {
+                category_num = i
+                break
             }
         }
+        // 카테고리 활성화
+        for (i in 0 until categoryList.size)
+            if (categoryList[i].text.toString().trim() == data.trim()) {
+                index = i
+                change_Types_Product(index, categoryList[category_num], underline[category_num], categoryList[i], underline[i])
+                selectedCategories.clear()
+                selectedCategories.add(categoryList[index].text.toString())
+                item_Filter()   // 아이템 필터링
+                break
+            }
     }
 
     // 상품 띄우기
     private fun showing_Insurances() {
+        itemView.layoutManager = LinearLayoutManager(this)
         adapter = InsuranceAdapter(Products_Insurance.productList)
         itemView.adapter = adapter
-        itemView.layoutManager = LinearLayoutManager(this)
     }
 
     // 상품 클릭 이벤트

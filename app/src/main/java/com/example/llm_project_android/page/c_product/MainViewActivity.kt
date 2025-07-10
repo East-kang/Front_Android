@@ -12,6 +12,7 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
@@ -171,7 +172,7 @@ class MainViewActivity : AppCompatActivity() {
             categories[i].setOnClickListener {
                 navigateTo(
                     CategoryView::class.java,
-                    "category" to categories[i].text.toString()
+                    "category" to categories[i].text.toString().trim()
                 )
             }
         }
@@ -181,6 +182,7 @@ class MainViewActivity : AppCompatActivity() {
     private fun recentItems() {
         val recentItems = RecentViewedManager.getRecentItems()
         val recentAdapter = InsuranceAdapter(ArrayList(recentItems))
+        recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = recentAdapter
     }
 
