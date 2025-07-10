@@ -2,6 +2,7 @@ package com.example.llm_project_android.adapter
 
 import android.annotation.SuppressLint
 import android.graphics.Typeface
+import android.os.Build
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
@@ -10,9 +11,11 @@ import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.llm_project_android.databinding.DesignShapeInsuranceBinding
 import androidx.core.graphics.toColorInt
+import com.example.llm_project_android.RecentViewedManager
 import com.example.llm_project_android.data.model.Insurance
 
 
@@ -20,7 +23,7 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
 
     private val originalList: List<Insurance> = productList.toList()                    // 원본 데이터 보관용 상품 리스트
     private val insuranceList: MutableList<Insurance> = productList.toMutableList()     // 화면에 표시될 상품 리스트
-    var itemClick : ItemClick? = null        // 클릭 이벤트 변수
+    var itemClick : ItemClick? = null                 // 클릭 이벤트 변수
     private var aiRecommendKey: String = "AI 추천"    // AI 추천 여부
 
     fun applyFilters(
@@ -69,6 +72,7 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
     }
 
     // viewHolder 객체 생성, 반환된 뷰 홀더 객체는 자동으로 onBindViewHolder() 함수의 매개변수로 전달
+    @RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -78,6 +82,7 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
     }
 
     // 매개변수로 전달된 뷰 홀더 객체의 뷰에 데이터를 출력하거나 필요한 이벤트 등록
+    @RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val item = insuranceList[position]
         
@@ -126,6 +131,7 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
     }
 
     // ViewHolder 정의
+    @RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
     inner class Holder(val binding: DesignShapeInsuranceBinding) : RecyclerView.ViewHolder(binding.root) {
         // 데이터 바인딩
         val C_icon = binding.companyIcon
@@ -141,6 +147,10 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     itemClick?.onClick(it, position)
+
+                    // 최근 본 상품 저장
+                    val item = insuranceList[position]
+                    RecentViewedManager.addItem(item)
                 }
             }
         }

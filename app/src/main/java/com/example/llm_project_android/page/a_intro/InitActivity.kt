@@ -11,6 +11,7 @@ import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.functions.registerExitDialogOnBackPressed
 import com.example.llm_project_android.page.c_product.CategoryView
 import com.example.llm_project_android.page.b_signup.SignUpActivity1
+import com.example.llm_project_android.page.c_product.MainViewActivity
 import com.example.llm_project_android.page.c_product.ProductDetailActivity
 
 class InitActivity : AppCompatActivity() {
@@ -35,7 +36,7 @@ class InitActivity : AppCompatActivity() {
 
         // 회원가입 버튼 클릭 이벤트
         btn_sign_up.setOnClickListener {
-            navigateTo(CategoryView::class.java, "source" to "InitActivity")
+            navigateTo(MainViewActivity::class.java, "source" to "InitActivity")
         }
 
         // 뒤로가기 버튼 클릭 이벤트

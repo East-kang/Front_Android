@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.graphics.toColorInt
 import com.example.llm_project_android.R
 import com.example.llm_project_android.functions.createFlexibleTextWatcher
+import com.example.llm_project_android.functions.getPassedExtra
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.functions.pw_eye_visibility
@@ -75,7 +76,7 @@ class SignUpActivity1 : AppCompatActivity() {
         var pw_visible: Boolean = false             // 비밀번호 시각화 여부 (true: 시각화, false: 비시각화)
         var pw_check_visible: Boolean = false       // 비밀번호 확인 시각화 여부 (true: 시각화, false: 비시각화)
 
-        val source = getPassedExtras("source", String::class.java)["source"] as? String ?: "" // 이전 화면 소스
+        val source = getPassedExtra("source", String::class.java) as? String ?: "" // 이전 화면 소스
 
         // 초기 설정 (버튼 비활성화, 입력 값 초기화)
         updateNextButton()

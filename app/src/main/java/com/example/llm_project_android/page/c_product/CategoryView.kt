@@ -18,8 +18,11 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.llm_project_android.R
+import com.example.llm_project_android.RecentViewedManager
 import com.example.llm_project_android.adapter.InsuranceAdapter
 import com.example.llm_project_android.data.sample.Products_Insurance
+import com.example.llm_project_android.functions.getPassedExtra
+import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.page.a_intro.InitActivity
 
@@ -40,6 +43,10 @@ class CategoryView : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // SharedPreferences 초기화
+        RecentViewedManager.init(applicationContext)
+
         enableEdgeToEdge()
         setContentView(R.layout.page_activity_category_view)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -75,6 +82,11 @@ class CategoryView : AppCompatActivity() {
         filter = findViewById<Spinner>(R.id.list_filter)        // 목록 필터 스피너
         itemView = findViewById<RecyclerView>(R.id.item_group)  // 상품 목록 리사이클러 뷰
 
+        val data = getPassedExtra("category", String::class.java)
+
+        // 카테고리 초기화
+        init_Category(data as String)
+
         // 보험 상품 노출
         showing_Insurances()
 
@@ -94,15 +106,26 @@ class CategoryView : AppCompatActivity() {
         clickBackButton(btn_back, MainViewActivity::class.java)
     }
 
+    // 상품 카테고리 초기화 함수
+    private fun init_Category(data: String) {
+        // 카테고리 활성화
+        for (button in categoryList) {
+            if (button.text.toString() == data) {
+                var index = categoryList.indexOf(button)
+                change_Types_Product(index, categoryList[0], underline[0], button, underline[index])
+            }
+        }
+    }
+
     // 상품 띄우기
-    fun showing_Insurances() {
+    private fun showing_Insurances() {
         adapter = InsuranceAdapter(Products_Insurance.productList)
         itemView.adapter = adapter
         itemView.layoutManager = LinearLayoutManager(this)
     }
 
     // 상품 클릭 이벤트
-    fun clickItems() {
+    private fun clickItems() {
         adapter.itemClick = object: InsuranceAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
                 val selectedItem = adapter.getItem(position)
@@ -120,7 +143,7 @@ class CategoryView : AppCompatActivity() {
     }
 
     // 상품 카테고리 선택 함수 (카테고리 시각화 및 필터링)
-    fun select_Product_Category() {
+    private fun select_Product_Category() {
         for (i in categoryList.indices) {
             categoryList[i].setOnClickListener {
                 val category = categoryList[i].text.toString()
@@ -134,7 +157,7 @@ class CategoryView : AppCompatActivity() {
     }
 
     // 상품 카테고리 속성 변경 함수 (비활성화 할 버튼, 뷰 / 활성화할 버튼, 뷰)
-    fun change_Types_Product(index: Int, toInactive_button: Button, toInactive_view: View, toActive_button: Button, toActive_view: View) {
+    private fun change_Types_Product(index: Int, toInactive_button: Button, toInactive_view: View, toActive_button: Button, toActive_view: View) {
         // 선택 카테고리 인덱스 변경
         category_num = index
 
@@ -152,7 +175,7 @@ class CategoryView : AppCompatActivity() {
     }
 
     // 회사 카테고리 필터링 함수
-    fun filtering_Company() {
+    private fun filtering_Company() {
         for (i in 0 until companyList.size) {
             companyList[i].setOnClickListener {
                 change_Types_Company(i, companyList[i])
@@ -162,7 +185,7 @@ class CategoryView : AppCompatActivity() {
     }
 
     // 회사 종류에 따른 버튼 색상 부여 함수
-    fun active_Color(index: Int): Int{
+    private fun active_Color(index: Int): Int{
         return when (index) {
             0 -> "#4885FF".toColorInt()
             1 -> "#FF9500".toColorInt()
@@ -172,7 +195,7 @@ class CategoryView : AppCompatActivity() {
     }
 
     // 회사 카테고리 속성 변경 함수 (비활성화 할 버튼 / 활성화할 버튼)
-    fun change_Types_Company(index: Int, select_button: Button){
+    private fun change_Types_Company(index: Int, select_button: Button){
         if (select_button.isSelected) {
             select_button.background.setTint(active_Color(-1))
             select_button.setTextColor("#666666".toColorInt())
@@ -187,7 +210,7 @@ class CategoryView : AppCompatActivity() {
     }
 
     // 상품 정렬 함수 (상품 정렬 기능 추가해야함)
-    fun sorting_Insurances(onSortedSelected: (String) -> Unit) {
+    private fun sorting_Insurances(onSortedSelected: (String) -> Unit) {
         val filterList = resources.getStringArray(R.array.list_filter)
         val spinnerAdapter =
             ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, filterList)
@@ -213,7 +236,7 @@ class CategoryView : AppCompatActivity() {
     }
 
     // '뒤로가기' 버튼 클릭 이벤트 정의 함수
-    fun AppCompatActivity.clickBackButton(backButton: View, targetActivity: Class<out AppCompatActivity>) {
+    private fun AppCompatActivity.clickBackButton(backButton: View, targetActivity: Class<out AppCompatActivity>) {
         backButton.setOnClickListener {
             navigateTo(
                 targetActivity,
