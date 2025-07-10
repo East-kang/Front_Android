@@ -221,7 +221,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@drawable/design_circle_stroke"
-            android:layout_marginEnd="25dp"
+            android:layout_marginRight="25dp"
             android:layout_marginBottom="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
@@ -231,14 +231,14 @@
                 android:layout_height="56dp"
                 android:layout_gravity="center"
                 android:background="@drawable/design_circle_mask"
-                android:clipToOutline="true" >
+                android:clipToOutline="true">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="6dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/image_chat_icon" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="6dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/image_chat_icon" />
             </FrameLayout>
         </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

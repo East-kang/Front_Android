@@ -37,7 +37,7 @@ fun Context.navigateTo(target: Class<out AppCompatActivity>, vararg extras: Pair
 }
 
 // 단일 데이터 타입 키 가져오기 (단일 키용 오버로드 함수)
-fun AppCompatActivity.getPassedExtra(key: String, type: Class<*>): Map<String, Any?> {
+fun AppCompatActivity.getPassedExtras(key: String, type: Class<*>): Map<String, Any?> {
     return getPassedExtras(listOf(key to type))
 }
 

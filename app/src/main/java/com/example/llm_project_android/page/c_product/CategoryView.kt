@@ -21,10 +21,8 @@ import com.example.llm_project_android.R
 import com.example.llm_project_android.RecentViewedManager
 import com.example.llm_project_android.adapter.InsuranceAdapter
 import com.example.llm_project_android.data.sample.Products_Insurance
-import com.example.llm_project_android.functions.getPassedExtra
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
-import com.example.llm_project_android.page.a_intro.InitActivity
 
 class CategoryView : AppCompatActivity() {
 
@@ -82,10 +80,10 @@ class CategoryView : AppCompatActivity() {
         filter = findViewById<Spinner>(R.id.list_filter)        // 목록 필터 스피너
         itemView = findViewById<RecyclerView>(R.id.item_group)  // 상품 목록 리사이클러 뷰
 
-        val data = getPassedExtra("category", String::class.java)
+        val data = getPassedExtras("category", String::class.java)["category"] as? String? : "전체"
 
         // 카테고리 초기화
-        init_Category(data as String)
+        init_Category(data)
 
         // 보험 상품 노출
         showing_Insurances()
