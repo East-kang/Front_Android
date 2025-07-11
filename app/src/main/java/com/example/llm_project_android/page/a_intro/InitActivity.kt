@@ -13,6 +13,7 @@ import com.example.llm_project_android.page.c_product.CategoryView
 import com.example.llm_project_android.page.b_signup.SignUpActivity1
 import com.example.llm_project_android.page.c_product.MainViewActivity
 import com.example.llm_project_android.page.c_product.ProductDetailActivity
+import com.example.llm_project_android.page.chat.ChatView
 
 class InitActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +32,7 @@ class InitActivity : AppCompatActivity() {
         // 로그인 버튼 클릭 이벤트
         btn_login.setOnClickListener {
             // navigateTo(LoginActivity::class.java)
-            navigateTo(ProductDetailActivity::class.java)
+            navigateTo(ChatView::class.java)
         }
 
         // 회원가입 버튼 클릭 이벤트
