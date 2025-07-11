@@ -15,6 +15,7 @@ fun Context.navigateTo(target: Class<out AppCompatActivity>, vararg extras: Pair
             null -> intent.putExtra(key, null as String?)   // null 허용
             is String -> intent.putExtra(key, value)
             is Boolean -> intent.putExtra(key, value)
+            is Int -> intent.putExtra(key, value)
             is ArrayList<*> -> {
                 if (value.all { it is String}) {
                     @Suppress("UNCHECKED_CAST")
@@ -46,6 +47,7 @@ fun AppCompatActivity.getPassedExtras(keys: List<Pair<String, Class<*>>>): Map<S
         val value = when (type) {
             String::class.java -> intent.getStringExtra(key)
             Boolean::class.java -> intent.getBooleanExtra(key, false)
+            Int::class.java -> intent.getIntExtra(key, 0)
             else -> throw IllegalArgumentException("Unsupported type: $key → $type")
         }
         key to value

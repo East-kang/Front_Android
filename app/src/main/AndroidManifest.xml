@@ -9,6 +9,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LLM_Project_Android">
         <activity
+            android:name=".page.c_product.ProductDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".page.c_product.CategoryView"
             android:exported="false" />
         <activity

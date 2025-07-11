@@ -12,12 +12,16 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import com.example.llm_project_android.R
+import com.example.llm_project_android.functions.RecentViewedManager
+import com.example.llm_project_android.adapter.InsuranceAdapter
 import com.example.llm_project_android.adapter.ViewPageAdapter
 import com.example.llm_project_android.databinding.PageMainViewBinding
+import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.functions.registerExitDialogOnBackPressed
 import com.google.android.material.navigation.NavigationView
 import kotlin.math.abs
@@ -32,10 +36,14 @@ class MainViewActivity : AppCompatActivity() {
     private lateinit var menuView: NavigationView
     private lateinit var menus: List<ImageButton>
     private lateinit var categories: List<Button>
+    private lateinit var recyclerView: RecyclerView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // SharedPreferences 초기화
+        RecentViewedManager.init(applicationContext)
         enableEdgeToEdge()
 
         // 바인딩 초기화
@@ -50,12 +58,16 @@ class MainViewActivity : AppCompatActivity() {
         drawerLayout = findViewById<DrawerLayout>(R.id.drawerLayout)    // 루트 Drawer 레이아웃 (네비게이션 메뉴용)
         btn_search = findViewById<ImageButton>(R.id.search_icon)        // 검색 버튼
         menuView = findViewById<NavigationView>(R.id.navigationView)    // 사이드 메뉴
+        recyclerView = findViewById<RecyclerView>(R.id.item_group)      // 최근 조회 상품 목록
 
-        menus = listOf(                              // 메뉴 버튼 리스트 (0: 열기 버튼 / 1: 닫힘 버튼
+        val headerView = menuView.getHeaderView(0)
+        val btn_menu_white = headerView.findViewById<ImageButton>(R.id.menu_icon_white)
+
+        menus = listOf(                         // 메뉴 버튼 리스트 (0: 열기 버튼 / 1: 닫힘 버튼
             findViewById(R.id.menu_icon_black), // 메뉴 열기 버튼 (menus[0])
-            findViewById(R.id.menu_icon_white)  // 메뉴 닫기 버튼 (menus[1])
+            btn_menu_white                      // 메뉴 닫기 버튼 (menus[1])
         )
-        categories= listOf(                          // 카테고리 버튼 리스트
+        categories= listOf(                     // 카테고리 버튼 리스트
             findViewById(R.id.category0),       // categories[0]
             findViewById(R.id.category1),       // categories[1]
             findViewById(R.id.category2),       // categories[2]
@@ -78,6 +90,12 @@ class MainViewActivity : AppCompatActivity() {
 
         // 상품 검색
         search_Insurance()
+
+        // 카테고리 클릭 이벤트
+        clickCategory()
+
+        // 최근 조회 상품 목록 보여주기
+        recentItems()
 
         // 프로필 뷰 이동
         goTo_Profile_View()
@@ -143,9 +161,34 @@ class MainViewActivity : AppCompatActivity() {
         sliderHandler.postDelayed(sliderRunnable, 3000)
     }
 
+    override fun onResume() {
+        super.onResume()
+        recentItems() // 돌아올 때 항상 복구
+    }
+
     override fun onPause() {
         super.onPause()
         sliderHandler.removeCallbacks(sliderRunnable)
+    }
+
+    // 카테고리 클릭 이벤트
+    private fun clickCategory() {
+        for (i in 0 until categories.size) {
+            categories[i].setOnClickListener {
+                navigateTo(
+                    CategoryView::class.java,
+                    "category" to categories[i].text.toString().trim()
+                )
+            }
+        }
+    }
+
+    // 최근 조회 목록 보여주기 함수
+    private fun recentItems() {
+        val recentItems = RecentViewedManager.getRecentItems()
+        val recentAdapter = InsuranceAdapter(ArrayList(recentItems))
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = recentAdapter
     }
 
     // 메뉴 기능
