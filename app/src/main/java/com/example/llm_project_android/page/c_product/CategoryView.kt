@@ -3,29 +3,24 @@ package com.example.llm_project_android.page.c_product
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Spinner
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.llm_project_android.R
-import com.example.llm_project_android.RecentViewedManager
 import com.example.llm_project_android.adapter.InsuranceAdapter
 import com.example.llm_project_android.data.sample.Products_Insurance
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
-import kotlin.text.get
 
 class CategoryView : AppCompatActivity() {
 
@@ -59,7 +54,6 @@ class CategoryView : AppCompatActivity() {
 
         btn_back = findViewById<ImageButton>(R.id.backButton)   // 뒤로가기 버튼
         categoryList = listOf(                                       // 상품 카테고리 버튼 리스트
-            findViewById<Button>(R.id.category_Entire),
             findViewById<Button>(R.id.category0),
             findViewById<Button>(R.id.category1),
             findViewById<Button>(R.id.category2),
@@ -68,7 +62,6 @@ class CategoryView : AppCompatActivity() {
             findViewById<Button>(R.id.category5)
         )
         underline = listOf(                                          // 상품 카테고리 뷰 리스트 (밑줄)
-            findViewById<View>(R.id.underline_Entire),
             findViewById<View>(R.id.underline0),
             findViewById<View>(R.id.underline1),
             findViewById<View>(R.id.underline2),
@@ -123,9 +116,12 @@ class CategoryView : AppCompatActivity() {
                 categoryList[i].setTypeface(null, Typeface.BOLD)
                 categoryList[i].setTextColor(Color.BLACK)
                 underline[i].visibility = View.VISIBLE
+                category_num = i
             }
         }
-        item_Filter()
+        selectedCategories.clear()
+        selectedCategories.add(category)
+        item_Filter()   // 아이템 필터링
     }
 
     // 상품 클릭 이벤트

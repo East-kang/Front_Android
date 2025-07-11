@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import com.example.llm_project_android.R
-import com.example.llm_project_android.RecentViewedManager
+import com.example.llm_project_android.functions.RecentViewedManager
 import com.example.llm_project_android.adapter.InsuranceAdapter
 import com.example.llm_project_android.adapter.ViewPageAdapter
 import com.example.llm_project_android.databinding.PageMainViewBinding

@@ -15,7 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.llm_project_android.databinding.DesignShapeInsuranceBinding
 import androidx.core.graphics.toColorInt
-import com.example.llm_project_android.RecentViewedManager
+import com.example.llm_project_android.functions.RecentViewedManager
 import com.example.llm_project_android.data.model.Insurance
 
 
@@ -34,11 +34,8 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
         var filtered = originalList // 원본 리스트로 초기화
 
         // 1번 필터링
-        if (!filter1.isNullOrEmpty() && filter1 != "전체")
+        if (!filter1.isNullOrEmpty())
             filtered = filtered.filter { it.category == filter1 }
-        else if (filter1 == "전체")
-            filtered = originalList
-
 
         // 2번 필터링
         if (!filter2.isNullOrEmpty())

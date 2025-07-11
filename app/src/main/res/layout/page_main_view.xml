@@ -125,7 +125,7 @@
                         android:layout_rowWeight="1"
                         android:layout_columnWeight="1"
                         android:layout_gravity="fill"
-                        android:text="전체"
+                        android:text="암"
                         android:textStyle="bold"/>
 
                     <android.widget.Button
@@ -137,7 +137,8 @@
                         android:layout_rowWeight="1"
                         android:layout_columnWeight="1"
                         android:layout_gravity="fill"
-                        android:text="암" />
+                        android:text="건강"
+                        android:textStyle="bold" />
 
                     <android.widget.Button
                         android:id="@+id/category2"
@@ -148,7 +149,8 @@
                         android:layout_rowWeight="1"
                         android:layout_columnWeight="1"
                         android:layout_gravity="fill"
-                        android:text="건강" />
+                        android:text="사망"
+                        android:textStyle="bold" />
 
                     <android.widget.Button
                         android:id="@+id/category3"
@@ -159,7 +161,8 @@
                         android:layout_rowWeight="1"
                         android:layout_columnWeight="1"
                         android:layout_gravity="fill"
-                        android:text="사망" />
+                        android:text="저축•연금"
+                        android:textStyle="bold" />
 
                     <android.widget.Button
                         android:id="@+id/category4"
@@ -170,7 +173,8 @@
                         android:layout_rowWeight="1"
                         android:layout_columnWeight="1"
                         android:layout_gravity="fill"
-                        android:text="저축•연금" />
+                        android:text="유아"
+                        android:textStyle="bold" />
 
                     <android.widget.Button
                         android:id="@+id/category5"
@@ -181,7 +185,8 @@
                         android:layout_rowWeight="1"
                         android:layout_columnWeight="1"
                         android:layout_gravity="fill"
-                        android:text="유아" />
+                        android:text="기타"
+                        android:textStyle="bold" />
                 </GridLayout>
 
                 <TextView
@@ -202,7 +207,10 @@
                 <LinearLayout
                     android:id="@+id/insurance_linearLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="80dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
                     app:layout_constraintTop_toBottomOf="@id/title1"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -211,7 +219,8 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/item_group"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
                         android:layout_marginHorizontal="16dp"
                         android:layout_marginTop="5dp" />
                 </LinearLayout>
@@ -222,7 +231,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@drawable/design_circle_stroke"
-            android:layout_marginRight="25dp"
+            android:layout_marginEnd="25dp"
             android:layout_marginBottom="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent">

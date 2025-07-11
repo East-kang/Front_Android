@@ -1,4 +1,4 @@
-package com.example.llm_project_android
+package com.example.llm_project_android.functions
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -35,7 +35,7 @@ object RecentViewedManager{
 
         // 3개 초과 시 제거
         if (current.size > 3) {
-            current.removeLast()
+            current.removeAt(current.size - 1)
         }
 
         // 저장
