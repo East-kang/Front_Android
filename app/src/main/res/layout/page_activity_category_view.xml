@@ -212,7 +212,7 @@
             </LinearLayout>
         </LinearLayout>
     </HorizontalScrollView>
-    
+
     <LinearLayout
         android:id="@+id/filter_bar"
         android:layout_width="match_parent"
