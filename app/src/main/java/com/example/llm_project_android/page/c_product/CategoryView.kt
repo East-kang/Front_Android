@@ -35,7 +35,7 @@ class CategoryView : AppCompatActivity() {
     private lateinit var companyList: List<Button>
     private lateinit var filter: Spinner
     private lateinit var itemView: RecyclerView
-    private var category_num: Int = 0               // 현재 선택된 상품 카테고리 인덱스
+    private var category_num: Int = 0  // 현재 선택된 상품 카테고리 인덱스
     private var selectedSortType: String = ""
     private var data: String = ""
 
@@ -47,7 +47,7 @@ class CategoryView : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         // SharedPreferences 초기화
-        RecentViewedManager.init(applicationContext)
+        //RecentViewedManager.init(applicationContext)
 
         enableEdgeToEdge()
         setContentView(R.layout.page_activity_category_view)
@@ -84,13 +84,13 @@ class CategoryView : AppCompatActivity() {
         filter = findViewById<Spinner>(R.id.list_filter)        // 목록 필터 스피너
         itemView = findViewById<RecyclerView>(R.id.item_group)  // 상품 목록 리사이클러 뷰
 
-        val data = getPassedExtras("category", String::class.java)["category"] as? String? ?: ""
-
-        // 카테고리 초기화
-        init_Category()
+        data = getPassedExtras("category", String::class.java)["category"] as? String? ?: ""
 
         // 보험 상품 노출
         showing_Insurances()
+
+        // 카테고리 초기화
+        init_Category(data)
 
         // 상품 카테고리 버튼 클릭 이벤트
         select_Product_Category()
@@ -108,33 +108,24 @@ class CategoryView : AppCompatActivity() {
         clickBackButton(btn_back, MainViewActivity::class.java)
     }
 
-    // 상품 카테고리 초기화 함수
-    private fun init_Category() {
-        var index: Int
-
-        for (i in 0 until categoryList.size) {
-            if (underline[i].isVisible) {
-                category_num = i
-                break
-            }
-        }
-        // 카테고리 활성화
-        for (i in 0 until categoryList.size)
-            if (categoryList[i].text.toString().trim() == data.trim()) {
-                index = i
-                change_Types_Product(index, categoryList[category_num], underline[category_num], categoryList[i], underline[i])
-                selectedCategories.clear()
-                selectedCategories.add(categoryList[index].text.toString())
-                item_Filter()   // 아이템 필터링
-                break
-            }
-    }
-
     // 상품 띄우기
     private fun showing_Insurances() {
         itemView.layoutManager = LinearLayoutManager(this)
         adapter = InsuranceAdapter(Products_Insurance.productList)
         itemView.adapter = adapter
+    }
+
+    // 상품 카테고리 초기화 함수
+    private fun init_Category(category: String) {
+        for (i in categoryList.indices) {
+            val btnText = categoryList[i].text.toString().trim()
+            if (btnText == category.trim()) {
+                categoryList[i].setTypeface(null, Typeface.BOLD)
+                categoryList[i].setTextColor(Color.BLACK)
+                underline[i].visibility = View.VISIBLE
+            }
+        }
+        item_Filter()
     }
 
     // 상품 클릭 이벤트
@@ -160,7 +151,6 @@ class CategoryView : AppCompatActivity() {
         for (i in categoryList.indices) {
             categoryList[i].setOnClickListener {
                 val category = categoryList[i].text.toString()
-
                 change_Types_Product(i, categoryList[category_num], underline[category_num], categoryList[i], underline[i])
                 selectedCategories.clear()
                 selectedCategories.add(category)
@@ -177,14 +167,14 @@ class CategoryView : AppCompatActivity() {
         // 비활성화 버튼 (TextStyle: 일반, TextColor: 회색)
         toInactive_button.setTypeface(null, Typeface.NORMAL); toInactive_button.setTextColor("#8D8D92".toColorInt())
 
-        // 비활성화 뷰 (Background: 흰색)
-        toInactive_view.background.setTint(Color.WHITE)
+        // 비활성화 뷰 (뷰 비활성화)
+        toInactive_view.visibility = View.INVISIBLE
 
         // 활성화 버튼 (TextStyle: 굵게, TextColor: 검정)
         toActive_button.setTypeface(null, Typeface.BOLD); toActive_button.setTextColor(Color.BLACK)
 
-        // 활성화 뷰 (Background: 검정색)
-        toActive_view.background.setTint(Color.BLACK)
+        // 활성화 뷰 (뷰 활성화)
+        toActive_view.visibility = View.VISIBLE
     }
 
     // 회사 카테고리 필터링 함수

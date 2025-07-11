@@ -63,11 +63,11 @@ class MainViewActivity : AppCompatActivity() {
         val headerView = menuView.getHeaderView(0)
         val btn_menu_white = headerView.findViewById<ImageButton>(R.id.menu_icon_white)
 
-        menus = listOf(                              // 메뉴 버튼 리스트 (0: 열기 버튼 / 1: 닫힘 버튼
+        menus = listOf(                         // 메뉴 버튼 리스트 (0: 열기 버튼 / 1: 닫힘 버튼
             findViewById(R.id.menu_icon_black), // 메뉴 열기 버튼 (menus[0])
-            btn_menu_white                           // 메뉴 닫기 버튼 (menus[1])
+            btn_menu_white                      // 메뉴 닫기 버튼 (menus[1])
         )
-        categories= listOf(                          // 카테고리 버튼 리스트
+        categories= listOf(                     // 카테고리 버튼 리스트
             findViewById(R.id.category0),       // categories[0]
             findViewById(R.id.category1),       // categories[1]
             findViewById(R.id.category2),       // categories[2]
@@ -159,6 +159,11 @@ class MainViewActivity : AppCompatActivity() {
             }
         }
         sliderHandler.postDelayed(sliderRunnable, 3000)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        recentItems() // 돌아올 때 항상 복구
     }
 
     override fun onPause() {
