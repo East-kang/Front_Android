@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.llm_project_android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:allowBackup="true"
@@ -9,7 +8,43 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LLM_Project_Android">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".page.chat.ChatView"
+            android:exported="false" />
+        <activity
+            android:name=".page.c_product.ProductDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".page.c_product.CategoryView"
+            android:exported="false" />
+        <activity
+            android:name=".page.c_product.MainViewActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".page.b_signup.SignUpActivity4"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".page.b_signup.SignUpActivity3"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".page.b_signup.SignUpActivity2"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".page.b_signup.SignUpActivity1"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".page.a_intro.LoginActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".page.a_intro.InitActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
