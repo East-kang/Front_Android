@@ -42,7 +42,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -91,23 +91,5 @@
             app:layout_constraintBottom_toBottomOf="@+id/chat_window"
             app:layout_constraintRight_toRightOf="@+id/chat_window"
             app:layout_constraintTop_toTopOf="@+id/chat_window" />
-
-<!--        <FrameLayout-->
-<!--            android:layout_width="25dp"-->
-<!--            android:layout_height="25dp"-->
-<!--            android:background="@drawable/design_circle_gray"-->
-<!--            android:layout_marginEnd="10dp"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/chat_window"-->
-<!--            app:layout_constraintRight_toRightOf="@+id/chat_window"-->
-<!--            app:layout_constraintTop_toTopOf="@+id/chat_window">-->
-
-<!--            <ImageView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:padding="2dp"-->
-<!--                android:scaleType="centerCrop"-->
-<!--                android:src="@drawable/vector_image_arrow_up_gray" />-->
-<!--        </FrameLayout>-->
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
