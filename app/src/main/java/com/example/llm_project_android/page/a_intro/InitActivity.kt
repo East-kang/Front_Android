@@ -37,7 +37,7 @@ class InitActivity : AppCompatActivity() {
 
         // 회원가입 버튼 클릭 이벤트
         btn_sign_up.setOnClickListener {
-            navigateTo(MainViewActivity::class.java, "source" to "InitActivity")
+            navigateTo(SignUpActivity1::class.java, "source" to "InitActivity")
         }
 
         // 뒤로가기 버튼 클릭 이벤트
