@@ -54,7 +54,7 @@ class ChatAdapter (
 
     // User 메시지 바인딩 함수
     class UserViewHoler(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val messageText: TextView = itemView.findViewById(R.id.message)
+        private val messageText: TextView = itemView.findViewById(R.id.message_user)
         private val timeText: TextView = itemView.findViewById(R.id.send_time_user)
 
         fun bind(msg: Chat) {       // 메시지, 전송 시간 바인딩

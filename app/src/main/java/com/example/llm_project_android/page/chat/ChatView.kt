@@ -3,12 +3,14 @@ package com.example.llm_project_android.page.chat
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.EditText
 import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.llm_project_android.R
 import com.example.llm_project_android.adapter.ChatAdapter
@@ -16,11 +18,12 @@ import com.example.llm_project_android.data.model.Chat
 
 class ChatView : AppCompatActivity() {
 
-    private lateinit var adpater: ChatAdapter
-    private val messages = mutableListOf<Chat>()
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var inputBox: EditText
-    private lateinit var btn_send: ImageButton
+    private lateinit var adapter: ChatAdapter       // 어뎁터
+    private val messages = mutableListOf<Chat>()    // 메시지 목록
+    private lateinit var recyclerView: RecyclerView // 채팅 목록
+    private lateinit var inputBox: EditText         // 텍스트 입력창
+    private lateinit var btn_send: ImageButton      // 전송 버튼
+    private lateinit var btn_back: ImageButton      // 뒤로가기 버튼
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +36,10 @@ class ChatView : AppCompatActivity() {
         }
 
         recyclerView = findViewById(R.id.listView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
         inputBox = findViewById(R.id.chat_window)
         btn_send = findViewById(R.id.send_button)
+        btn_back = findViewById(R.id.backButton)
 
         // 초기 설정 (어뎁터, 전송 버튼 초기화)
         init()
@@ -49,14 +54,21 @@ class ChatView : AppCompatActivity() {
     // 초기 설정
     private fun init() {
         // 어뎁터 초기화
-        adpater = ChatAdapter(messages) { suggestion ->
-            inputBox.setText(suggestion)
-            inputBox.setSelection(suggestion.length)
+        adapter = ChatAdapter(messages) { suggestion ->
+            addUserMessage(suggestion)
+            addAiMessage("'$suggestion'에 대한 AI의 응답입니다.")
         }
-        recyclerView.adapter = adpater
+        recyclerView.adapter = adapter
 
         // 전송 버튼 초기 상태 (비활성화)
         btn_send.isEnabled = false
+
+        addAiMessage("안녕하세요! AI 보험 상담사입니다.\uD83E\uDD16\n\n어떤 보험에 대해 궁금한 점이 있으신가요? 아래 버튼을 선택하시거나 직접 질문해주세요!",
+            listOf(
+                "암보험 추천 서비스",
+                "보험료 계산 서비스",
+                "자동차 보험 서비스",
+                "건강 보험 상담 서비스"))
     }
 
     // 전송 버튼 활성화 함수
@@ -65,13 +77,13 @@ class ChatView : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                btn_send.isEnabled = !s.isNullOrBlank()
-                btn_send.setBackgroundResource(
-                    if (!s.isNullOrBlank())
-                        R.drawable.design_arrow_up_active
-                    else
-                        R.drawable.design_arrow_up_inactive
-                )
+                if (!s.isNullOrBlank()) {
+                    btn_send.isEnabled = true
+                    btn_send.setBackgroundResource(R.drawable.design_arrow_up_active)
+                } else {
+                    btn_send.isEnabled = false
+                    btn_send.setBackgroundResource(R.drawable.design_arrow_up_inactive)
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {}
@@ -80,10 +92,28 @@ class ChatView : AppCompatActivity() {
 
     // 메시지 전송 클릭 버튼 이벤트 함수
     private fun click_send_button() {
-        val userMessage = inputBox.text.toString().trim()
-        if (userMessage.isNotEmpty()) {
-
+        btn_send.setOnClickListener {
+            val userMessage = inputBox.text.toString().trim()
+            if (userMessage.isNotEmpty()) {
+                addUserMessage(userMessage)
+                inputBox.setText("")
+                addAiMessage("답장이다!", null)
+            }
         }
+    }
+
+    // User 메시지 추가 함수
+    private fun addUserMessage(message: String) {
+        messages.add(Chat(content = message, isUser = true, timestamp = System.currentTimeMillis(), showTime = true))
+        adapter.notifyItemInserted(messages.lastIndex)
+        recyclerView.scrollToPosition(messages.lastIndex)
+    }
+
+    // AI 메시지 추가 함수
+    private fun addAiMessage(message: String, suggestions: List<String>? = null) {
+        messages.add(Chat(content = message, isUser = false, timestamp = System.currentTimeMillis(), suggestions = suggestions, showTime = true))
+        adapter.notifyItemInserted(messages.lastIndex)
+        recyclerView.scrollToPosition(messages.lastIndex)
     }
 
 }

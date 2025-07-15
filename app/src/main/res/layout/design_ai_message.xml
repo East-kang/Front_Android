@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingStart="15dp">
+    android:layout_marginTop="10dp"
+    android:paddingStart="7dp">
 
     <!--화면 절반 기준선-->
     <androidx.constraintlayout.widget.Guideline
@@ -11,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+        app:layout_constraintGuide_percent="0.65" />
 
     <ImageView
         android:id="@+id/AI_icon"
@@ -23,14 +24,18 @@
 
     <TextView
         android:id="@+id/message_ai"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/design_gray_solid"
         android:text="AI 메시지."
         android:textSize="15sp"
         android:textColor="@color/black"
-        android:paddingHorizontal="17dp"
+        android:gravity="start|center"
+        android:paddingHorizontal="14dp"
         android:paddingVertical="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constrainedWidth="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/AI_icon"
         app:layout_constraintEnd_toEndOf="@id/guideline_half"/>
