@@ -1,8 +1,9 @@
-package com.example.llm_project_android.data.local
+package com.example.llm_project_android.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import com.example.llm_project_android.data.local.entity.ChatEntity
 
 // DAO: 대화 내역 저장/조회/삭제
 @Dao
