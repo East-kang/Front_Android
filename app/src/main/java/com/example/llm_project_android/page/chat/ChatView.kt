@@ -97,7 +97,7 @@ class ChatView : AppCompatActivity() {
             if (userMessage.isNotEmpty()) {
                 addUserMessage(userMessage)
                 inputBox.setText("")
-                addAiMessage("답장이다!", null)
+                addAiMessage("답장이다!")
             }
         }
     }
@@ -115,5 +115,4 @@ class ChatView : AppCompatActivity() {
         adapter.notifyItemInserted(messages.lastIndex)
         recyclerView.scrollToPosition(messages.lastIndex)
     }
-
 }

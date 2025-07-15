@@ -99,6 +99,8 @@ class ChatAdapter (
                         serviceLayout.visibility = View.GONE
                     }
                 }
+            } else {
+                serviceLayout.visibility = View.GONE
             }
         }
     }
