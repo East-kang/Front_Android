@@ -2,22 +2,19 @@ package com.example.llm_project_android.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.llm_project_android.data.local.entity.ChatEntity
+import com.example.llm_project_android.data.local.entity.RecentInsuranceEntity
 
-// DAO: 대화 내역 저장/조회/삭제
 @Dao
-interface ChatDao {
+interface RecentInsuranceDao {
 
-    // 대화 내역 1건 저장
-    @Insert
-    suspend fun insert(chat: ChatEntity)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(item: RecentInsuranceEntity)
 
-    // 대화 내역 페이징 조회 (최신순 정렬)
-    @Query("SELECT * FROM chat_history ORDER BY timestamp DESC LIMIT :limit OFFSET :offset")
-    suspend fun getPagedChats(limit: Int, offset: Int): List<ChatEntity>
+    @Query("SELECT * FROM recent_insurance ORDER BY timestamp DESC LIMIT :limit")
+    suspend fun getRecentItems(limit: Int): List<RecentInsuranceEntity>
 
-    // 전체 삭제 (로그아웃 시 사용)
-    @Query("DELETE FROM chat_history")
+    @Query("DELETE FROM recent_insurance")
     suspend fun clearAll()
 }
