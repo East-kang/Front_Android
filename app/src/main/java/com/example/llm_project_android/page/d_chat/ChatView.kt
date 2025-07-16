@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.llm_project_android.R
 import com.example.llm_project_android.adapter.ChatAdapter
 import com.example.llm_project_android.data.model.Chat
+import com.example.llm_project_android.functions.navigateTo
+import com.example.llm_project_android.page.c_product.ProductDetailActivity
 
 class ChatView : AppCompatActivity() {
 
@@ -26,9 +28,11 @@ class ChatView : AppCompatActivity() {
     private lateinit var btn_back: ImageButton      // 뒤로가기 버튼
     private lateinit var btn_clear: Button          // 초기화 버튼
 
-    private var currentPage = 0
-    private val pageSize = 10
-    private var isLoading = false
+    private var companyIcon: Int = -1
+    private var companyName: String = ""
+    private var category: String = ""
+    private var productName: String = ""
+    private var recommendation: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,10 +73,24 @@ class ChatView : AppCompatActivity() {
     // 초기 설정
     private fun init() {
         // 어뎁터 초기화
-        adapter = ChatAdapter(messages) { suggestion ->
-            addUserMessage(suggestion)
-            addAiMessage("'$suggestion'에 대한 AI의 응답입니다.")
-        }
+        adapter = ChatAdapter(
+            messages = messages,
+            onSuggestionClick = { suggestion ->
+                addUserMessage(suggestion)
+                addAiMessage("'$suggestion'에 대한 AI의 응답입니다.")
+            },
+            onRecommendationClick = { companyIcon, companyName, category, productName, recommendation ->
+                navigateTo(
+                    ProductDetailActivity::class.java,
+                    "source" to "ChatView",
+                    "company_icon" to companyIcon,
+                    "company_name" to companyName,
+                    "category" to category,
+                    "insurance_name" to productName,
+                    "recommendation" to recommendation
+                )
+            }
+        )
         recyclerView.adapter = adapter
 
         // 전송 버튼 초기 상태 (비활성화)
