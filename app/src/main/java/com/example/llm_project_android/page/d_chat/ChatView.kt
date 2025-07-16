@@ -89,7 +89,7 @@ class ChatView : AppCompatActivity() {
                     "insurance_name" to productName,
                     "recommendation" to recommendation
                 )
-            }
+            }   // 이를 위해 AI한테 이 항목들을 모두 받아야함.
         )
         recyclerView.adapter = adapter
 
