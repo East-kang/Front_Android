@@ -9,11 +9,8 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.llm_project_android.R
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.functions.registerExitDialogOnBackPressed
-import com.example.llm_project_android.page.c_product.CategoryView
 import com.example.llm_project_android.page.b_signup.SignUpActivity1
-import com.example.llm_project_android.page.c_product.MainViewActivity
-import com.example.llm_project_android.page.c_product.ProductDetailActivity
-import com.example.llm_project_android.page.chat.ChatView
+import com.example.llm_project_android.page.d_chat.ChatView
 
 class InitActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

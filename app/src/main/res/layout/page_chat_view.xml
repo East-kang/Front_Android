@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".page.chat.ChatView"
+    tools:context=".page.d_chat.ChatView"
     android:fitsSystemWindows="true"
     android:orientation="vertical" >
 

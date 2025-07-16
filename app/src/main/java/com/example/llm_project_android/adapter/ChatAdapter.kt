@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+// ChatView.kt  : 채팅 기능
 class ChatAdapter (
     private val messages: List<Chat>,                // 메시지 리스트
     private val onSuggestionClick: (String) -> Unit // 빠른말 서비스 클릭
