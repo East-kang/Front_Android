@@ -10,16 +10,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.llm_project_android.R
 import com.example.llm_project_android.adapter.ChatAdapter
-import com.example.llm_project_android.data.local.db.AppDatabase
-import com.example.llm_project_android.data.mapper.toEntity
-import com.example.llm_project_android.data.mapper.toModel
 import com.example.llm_project_android.data.model.Chat
-import kotlinx.coroutines.launch
 
 class ChatView : AppCompatActivity() {
 
@@ -83,24 +78,8 @@ class ChatView : AppCompatActivity() {
         // 전송 버튼 초기 상태 (비활성화)
         btn_send.isEnabled = false
 
-        // 과거 대화 내역 불러오기
-        loadMoreMessages()
-
         // 인삿말 항상 출력 및 저장
         AI_initMessage()
-
-        // 스크롤이 맨 위에 닿았을 때 더 불러오기
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                val firstVisiblePosition = layoutManager.findFirstVisibleItemPosition()
-
-                if (firstVisiblePosition == 0 && !isLoading) {
-                    loadMoreMessages()
-                }
-            }
-        })
-
     }
 
     // 전송 버튼 활성화 함수
@@ -140,7 +119,6 @@ class ChatView : AppCompatActivity() {
         messages.add(chat)
         adapter.notifyItemInserted(messages.lastIndex)
         recyclerView.scrollToPosition(messages.lastIndex)
-        saveMessage(chat)   // 내부 db에 저장
     }
 
     // AI 메시지
@@ -149,59 +127,6 @@ class ChatView : AppCompatActivity() {
         messages.add(chat)
         adapter.notifyItemInserted(messages.lastIndex)
         recyclerView.scrollToPosition(messages.lastIndex)
-        saveMessage(chat)   // 내부 db에 저장
     }
 
-    // 메시지 내부 db 저장 함수
-    private fun saveMessage(chat: Chat) {
-        val dao = AppDatabase.getDatabase(applicationContext).chatDao()
-        val entity = chat.toEntity()
-
-        lifecycleScope.launch {
-            dao.insert(entity)
-        }
-    }
-
-    // 대화내역 불러오기 (최조 진입 시 + 페이징)
-    private fun loadMoreMessages() {
-        if (isLoading) return
-        isLoading = true
-
-        val dao = AppDatabase.getDatabase(applicationContext).chatDao()
-
-        lifecycleScope.launch {
-            val entities = dao.getPagedChats(limit = pageSize, offset = currentPage * pageSize)
-            val loaded = entities.map { it.toModel() }.reversed()
-
-            if (loaded.isNotEmpty()) {
-                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                val prevPosition = layoutManager.findFirstVisibleItemPosition()
-
-                // 스크롤 위치 보정 (이전 메시지 수만큼)
-                messages.addAll(0, loaded)
-                adapter.notifyItemRangeInserted(0, loaded.size)
-
-                layoutManager.scrollToPositionWithOffset(prevPosition + loaded.size, 0)
-                currentPage++
-            }
-
-            isLoading = false
-        }
-    }
-
-    // DB 초기화
-    private fun clear_DB() {
-        btn_clear.setOnClickListener {
-            val dao = AppDatabase.getDatabase(applicationContext).chatDao()
-
-            lifecycleScope.launch {
-                dao.clearAll()                  // DB에서 모든 대화 내역 삭제
-                messages.clear()                // 메모리상의 메시지 리스트도 모두 제거
-                adapter.notifyDataSetChanged()  // RecyclerView 갱신 → 화면에서 대화가 전부 사라짐
-                AI_initMessage()                // AI 인삿말 메시지를 다시 추가 및 표시 + DB에 저장
-            }
-
-
-        }
-    }
 }
