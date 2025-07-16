@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.llm_project_android.databinding.DesignItemBannerBinding
 
+// MainViewActivity.kt  : 배너 기능
 class ViewPageAdapter(private val images : List<Int>) :
     RecyclerView.Adapter<ViewPageAdapter.BannerViewHolder>() {
 

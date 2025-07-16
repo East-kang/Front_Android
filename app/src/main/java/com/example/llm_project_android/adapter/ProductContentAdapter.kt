@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.llm_project_android.R
 import com.example.llm_project_android.data.model.Product
 
+// SignUpActivity4.kt   : 검색 상품 필터링
 class ProductContentAdapter (private var productList: List<Product>)
     : RecyclerView.Adapter<ProductContentAdapter.PostViewHolder>(), Filterable {
 
