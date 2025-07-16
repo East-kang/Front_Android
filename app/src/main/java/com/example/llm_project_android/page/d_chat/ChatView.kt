@@ -1,9 +1,9 @@
-package com.example.llm_project_android.page.chat
+package com.example.llm_project_android.page.d_chat
 
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.llm_project_android.R
 import com.example.llm_project_android.adapter.ChatAdapter
 import com.example.llm_project_android.data.model.Chat
+import com.example.llm_project_android.functions.navigateTo
+import com.example.llm_project_android.page.c_product.ProductDetailActivity
 
 class ChatView : AppCompatActivity() {
 
@@ -24,6 +26,13 @@ class ChatView : AppCompatActivity() {
     private lateinit var inputBox: EditText         // 텍스트 입력창
     private lateinit var btn_send: ImageButton      // 전송 버튼
     private lateinit var btn_back: ImageButton      // 뒤로가기 버튼
+    private lateinit var btn_clear: Button          // 초기화 버튼
+
+    private var companyIcon: Int = -1
+    private var companyName: String = ""
+    private var category: String = ""
+    private var productName: String = ""
+    private var recommendation: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +49,7 @@ class ChatView : AppCompatActivity() {
         inputBox = findViewById(R.id.chat_window)
         btn_send = findViewById(R.id.send_button)
         btn_back = findViewById(R.id.backButton)
+        btn_clear = findViewById(R.id.clearButton)
 
         // 초기 설정 (어뎁터, 전송 버튼 초기화)
         init()
@@ -51,24 +61,43 @@ class ChatView : AppCompatActivity() {
         click_send_button()
     }
 
-    // 초기 설정
-    private fun init() {
-        // 어뎁터 초기화
-        adapter = ChatAdapter(messages) { suggestion ->
-            addUserMessage(suggestion)
-            addAiMessage("'$suggestion'에 대한 AI의 응답입니다.")
-        }
-        recyclerView.adapter = adapter
-
-        // 전송 버튼 초기 상태 (비활성화)
-        btn_send.isEnabled = false
-
+    private fun AI_initMessage() {
         addAiMessage("안녕하세요! AI 보험 상담사입니다.\uD83E\uDD16\n\n어떤 보험에 대해 궁금한 점이 있으신가요? 아래 버튼을 선택하시거나 직접 질문해주세요!",
             listOf(
                 "암보험 추천 서비스",
                 "보험료 계산 서비스",
                 "자동차 보험 서비스",
                 "건강 보험 상담 서비스"))
+    }
+
+    // 초기 설정
+    private fun init() {
+        // 어뎁터 초기화
+        adapter = ChatAdapter(
+            messages = messages,
+            onSuggestionClick = { suggestion ->
+                addUserMessage(suggestion)
+                addAiMessage("'$suggestion'에 대한 AI의 응답입니다.")
+            },
+            onRecommendationClick = { companyIcon, companyName, category, productName, recommendation ->
+                navigateTo(
+                    ProductDetailActivity::class.java,
+                    "source" to "ChatView",
+                    "company_icon" to companyIcon,
+                    "company_name" to companyName,
+                    "category" to category,
+                    "insurance_name" to productName,
+                    "recommendation" to recommendation
+                )
+            }   // 이를 위해 AI한테 이 항목들을 모두 받아야함.
+        )
+        recyclerView.adapter = adapter
+
+        // 전송 버튼 초기 상태 (비활성화)
+        btn_send.isEnabled = false
+
+        // 인삿말 항상 출력 및 저장
+        AI_initMessage()
     }
 
     // 전송 버튼 활성화 함수
@@ -97,21 +126,23 @@ class ChatView : AppCompatActivity() {
             if (userMessage.isNotEmpty()) {
                 addUserMessage(userMessage)
                 inputBox.setText("")
-                addAiMessage("답장이다!", null)
+                addAiMessage("답장이다!")
             }
         }
     }
 
-    // User 메시지 추가 함수
+    // User 메시지
     private fun addUserMessage(message: String) {
-        messages.add(Chat(content = message, isUser = true, timestamp = System.currentTimeMillis(), showTime = true))
+        val chat = Chat(content = message, isUser = true, timestamp = System.currentTimeMillis(), showTime = true)
+        messages.add(chat)
         adapter.notifyItemInserted(messages.lastIndex)
         recyclerView.scrollToPosition(messages.lastIndex)
     }
 
-    // AI 메시지 추가 함수
+    // AI 메시지
     private fun addAiMessage(message: String, suggestions: List<String>? = null) {
-        messages.add(Chat(content = message, isUser = false, timestamp = System.currentTimeMillis(), suggestions = suggestions, showTime = true))
+        val chat = Chat(content = message, isUser = false, timestamp = System.currentTimeMillis(), suggestions = suggestions, showTime = true)
+        messages.add(chat)
         adapter.notifyItemInserted(messages.lastIndex)
         recyclerView.scrollToPosition(messages.lastIndex)
     }

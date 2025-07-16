@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LLM_Project_Android">
         <activity
-            android:name=".page.chat.ChatView"
+            android:name=".page.d_chat.ChatView"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity

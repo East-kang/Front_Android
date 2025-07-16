@@ -18,7 +18,8 @@ import androidx.core.graphics.toColorInt
 import com.example.llm_project_android.functions.RecentViewedManager
 import com.example.llm_project_android.data.model.Insurance
 
-
+// MainViewActivity.kt  : 최근 조회 목록
+// CategoryView.kt      : 상품 목록
 class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter<InsuranceAdapter.Holder>() {
 
     private val originalList: List<Insurance> = productList.toList()                    // 원본 데이터 보관용 상품 리스트
@@ -45,7 +46,7 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
         filtered = when (filter3) {
             "추천순" -> filtered.sortedWith (
                 compareByDescending<Insurance> { it.recommendation }    // 1순위: 추천 여부 true 먼저
-                    .thenBy { it.name }                                             // 2순위: 이름 오름차순 정렬
+                    .thenBy { it.name }                                 // 2순위: 이름 오름차순 정렬
             )
             "이름순" -> filtered.sortedBy { it.name }
             else -> filtered
