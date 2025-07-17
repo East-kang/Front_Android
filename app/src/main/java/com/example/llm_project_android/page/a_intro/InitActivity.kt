@@ -10,7 +10,7 @@ import com.example.llm_project_android.R
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.functions.registerExitDialogOnBackPressed
 import com.example.llm_project_android.page.b_signup.SignUpActivity1
-import com.example.llm_project_android.page.d_chat.ChatView
+import com.example.llm_project_android.page.e_chat.ChatView
 
 class InitActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
