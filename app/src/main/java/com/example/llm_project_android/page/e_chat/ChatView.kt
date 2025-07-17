@@ -1,4 +1,4 @@
-package com.example.llm_project_android.page.d_chat
+package com.example.llm_project_android.page.e_chat
 
 import android.os.Bundle
 import android.text.Editable
