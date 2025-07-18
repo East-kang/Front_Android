@@ -20,14 +20,14 @@ import com.example.llm_project_android.R
 import com.example.llm_project_android.functions.RecentViewedManager
 import com.example.llm_project_android.adapter.InsuranceAdapter
 import com.example.llm_project_android.adapter.ViewPageAdapter
-import com.example.llm_project_android.databinding.PageMainViewBinding
+import com.example.llm_project_android.databinding.CPageMainViewBinding
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.functions.registerExitDialogOnBackPressed
 import com.google.android.material.navigation.NavigationView
 import kotlin.math.abs
 
 class MainViewActivity : AppCompatActivity() {
-    private lateinit var binding: PageMainViewBinding
+    private lateinit var binding: CPageMainViewBinding
     private val sliderHandler = Handler(Looper.getMainLooper())
     private lateinit var sliderRunnable: Runnable
 
@@ -47,7 +47,7 @@ class MainViewActivity : AppCompatActivity() {
         enableEdgeToEdge()
 
         // 바인딩 초기화
-        binding = PageMainViewBinding.inflate(layoutInflater)
+        binding = CPageMainViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.drawerLayout)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

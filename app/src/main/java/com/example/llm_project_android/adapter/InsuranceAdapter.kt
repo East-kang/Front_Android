@@ -13,7 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
-import com.example.llm_project_android.databinding.DesignShapeInsuranceBinding
+import com.example.llm_project_android.databinding.ZDesignShapeInsuranceBinding
 import androidx.core.graphics.toColorInt
 import com.example.llm_project_android.functions.RecentViewedManager
 import com.example.llm_project_android.data.model.Insurance
@@ -75,7 +75,7 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
         parent: ViewGroup,
         viewType: Int
     ): Holder {
-        val binding = DesignShapeInsuranceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ZDesignShapeInsuranceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return Holder(binding)
     }
 
@@ -130,7 +130,7 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
 
     // ViewHolder 정의
     @RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
-    inner class Holder(val binding: DesignShapeInsuranceBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class Holder(val binding: ZDesignShapeInsuranceBinding) : RecyclerView.ViewHolder(binding.root) {
         // 데이터 바인딩
         val C_icon = binding.companyIcon
         val C_name = binding.companyName
