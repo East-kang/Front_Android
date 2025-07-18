@@ -46,10 +46,10 @@ class ChatAdapter (
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return if (viewType == VIEW_TYPE_USER) {
-            val view = inflater.inflate(R.layout.design_user_message, parent, false)
+            val view = inflater.inflate(R.layout.z_design_user_message, parent, false)
             UserViewHoler(view)
         } else {
-            val view = inflater.inflate(R.layout.design_ai_message, parent, false)
+            val view = inflater.inflate(R.layout.z_design_ai_message, parent, false)
             AiViewHolder(view, messages, onSuggestionClick, onRecommendationClick)
         }
     }

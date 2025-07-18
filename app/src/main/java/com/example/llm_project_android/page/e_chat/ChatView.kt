@@ -26,7 +26,6 @@ class ChatView : AppCompatActivity() {
     private lateinit var inputBox: EditText         // 텍스트 입력창
     private lateinit var btn_send: ImageButton      // 전송 버튼
     private lateinit var btn_back: ImageButton      // 뒤로가기 버튼
-    private lateinit var btn_clear: Button          // 초기화 버튼
 
     private var companyIcon: Int = -1
     private var companyName: String = ""
@@ -37,7 +36,7 @@ class ChatView : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.page_chat_view)
+        setContentView(R.layout.e_page_chat_view)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -49,7 +48,6 @@ class ChatView : AppCompatActivity() {
         inputBox = findViewById(R.id.chat_window)
         btn_send = findViewById(R.id.send_button)
         btn_back = findViewById(R.id.backButton)
-        btn_clear = findViewById(R.id.clearButton)
 
         // 초기 설정 (어뎁터, 전송 버튼 초기화)
         init()
