@@ -27,6 +27,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="취소"
+            android:textSize="18sp"
+            android:textColor="#FF5C5C"
+            android:gravity="center"
+            android:background="#EAEAEB"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -49,6 +63,7 @@
             android:textColor="#4285F4"
             android:gravity="center"
             android:background="#EAEAEB"
+            android:stateListAnimator="@null"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -162,7 +177,6 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_marginTop="6dp"
-                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/line1_1">
@@ -198,16 +212,17 @@
                             android:id="@+id/user_pw"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/black"
                             android:hint="변경할 비밀번호를 입력하세요"
                             android:textSize="17sp"
-                            android:textColor="@color/black"
-                            android:gravity="end|center"
-                            android:background="@null"
+                            android:background="#d6d6d6"
+                            android:gravity="end"
                             android:layout_marginHorizontal="5dp"
-                            android:paddingVertical="4dp"
+                            android:paddingEnd="5dp"
                             app:layout_constraintStart_toStartOf="@id/guideline1_2"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
+
 
                         <TextView
                             android:id="@+id/user_pw_rule"
@@ -229,7 +244,6 @@
                         android:layout_height="1dp"
                         android:background="#EAEAEB"
                         android:layout_marginVertical="6dp"
-                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/pw_Field"/>
@@ -280,13 +294,26 @@
                             android:hint="변경할 이메일을 입력하세요"
                             android:textSize="17sp"
                             android:enabled="false"
-                            android:background="@null"
+                            android:background="@color/white"
                             android:gravity="end"
                             android:layout_marginHorizontal="5dp"
                             android:paddingEnd="5dp"
                             app:layout_constraintStart_toStartOf="@id/guideline1_3"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/user_email_rule"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="이메일을 정확히 입력해주세요"
+                            android:textSize="10sp"
+                            android:textColor="#1F70CC"
+                            android:layout_marginHorizontal="5dp"
+                            android:gravity="end"
+                            app:layout_constraintStart_toStartOf="@id/guideline1_3"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/user_email" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
@@ -419,11 +446,11 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="19980404"
-                            android:hint="생년월일을 입력하세요 (YYYY/MM/DD)"
+                            android:hint="YYYY/MM/DD"
                             android:textSize="17sp"
                             android:textColor="@color/black"
                             android:gravity="end|center"
-                            android:background="@null"
+                            android:background="@color/white"
                             android:inputType="number"
                             android:enabled="false"
                             android:layout_marginHorizontal="5dp"
@@ -431,6 +458,19 @@
                             app:layout_constraintStart_toStartOf="@id/guideline2_2"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/user_birth_rule"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="생년월일을 정확히 입력해주세요"
+                            android:textSize="10sp"
+                            android:textColor="#1F70CC"
+                            android:layout_marginHorizontal="5dp"
+                            android:gravity="end"
+                            app:layout_constraintStart_toStartOf="@id/guideline2_2"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/user_birth" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <View
@@ -490,13 +530,26 @@
                             android:textColor="@color/black"
                             android:gravity="end|center"
                             android:enabled="false"
-                            android:background="@null"
+                            android:background="@color/white"
                             android:inputType="phone"
                             android:layout_marginHorizontal="5dp"
                             android:paddingVertical="4dp"
                             app:layout_constraintStart_toStartOf="@id/guideline2_3"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/user_phone_rule"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="전화번호를 정확히 입력해주세요"
+                            android:textSize="10sp"
+                            android:textColor="#1F70CC"
+                            android:layout_marginHorizontal="5dp"
+                            android:gravity="end"
+                            app:layout_constraintStart_toStartOf="@id/guideline2_3"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/user_phone" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <View
@@ -547,7 +600,7 @@
                             app:layout_constraintBottom_toBottomOf="parent" />
 
                         <TextView
-                            android:id="@+id/gender"
+                            android:id="@+id/user_gender"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="남자"
@@ -556,6 +609,7 @@
                             android:gravity="end"
                             android:layout_marginHorizontal="5dp"
                             android:paddingEnd="5dp"
+                            android:visibility="visible"
                             app:layout_constraintStart_toStartOf="@id/guideline2_4"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -646,7 +700,7 @@
                             app:layout_constraintBottom_toBottomOf="parent" />
 
                         <TextView
-                            android:id="@+id/married"
+                            android:id="@+id/user_married"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="기혼"
@@ -655,6 +709,7 @@
                             android:gravity="end"
                             android:layout_marginHorizontal="5dp"
                             android:paddingEnd="5dp"
+                            android:visibility="visible"
                             app:layout_constraintStart_toStartOf="@id/guideline2_5"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -745,7 +800,7 @@
                             app:layout_constraintBottom_toBottomOf="parent" />
 
                         <TextView
-                            android:id="@+id/job"
+                            android:id="@+id/user_job"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="회사원"
@@ -754,6 +809,7 @@
                             android:gravity="end"
                             android:layout_marginHorizontal="5dp"
                             android:paddingEnd="5dp"
+                            android:visibility="visible"
                             app:layout_constraintStart_toStartOf="@id/guideline2_6"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -769,6 +825,22 @@
                             android:visibility="gone"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
+
+                        <EditText
+                            android:id="@+id/job_etc"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:background="#d6d6d6"
+                            android:layout_gravity="center"
+                            android:hint="직업을 입력하세요"
+                            android:textSize="17sp"
+                            android:gravity="end"
+                            android:layout_marginHorizontal="5dp"
+                            android:layout_marginTop="5dp"
+                            android:visibility="gone"
+                            app:layout_constraintStart_toStartOf="@id/guideline2_6"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/job_spinner"/>
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -784,33 +856,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="건강 상태"
-                        android:layout_marginStart="10dp"
-                        android:textStyle="bold"
-                        android:textSize="16sp" />
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:paddingHorizontal="20dp"
-                        android:paddingVertical="12dp"
-                        android:background="@drawable/design_categories_button" >
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/field4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="15dp" >
-
-                    <TextView
-                        android:id="@+id/title_4st"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="보험 가입 이력"
                         android:layout_marginStart="10dp"
                         android:textStyle="bold"
                         android:textSize="16sp" />
