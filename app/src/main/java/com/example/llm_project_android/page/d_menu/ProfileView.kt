@@ -17,6 +17,8 @@ import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.llm_project_android.R
+import com.example.llm_project_android.functions.createFlexibleTextWatcher
+import com.example.llm_project_android.functions.setBoxField
 
 class ProfileView : AppCompatActivity() {
 
@@ -53,7 +55,22 @@ class ProfileView : AppCompatActivity() {
 
     private lateinit var job_spinner: Spinner
 
-    private var edit_state: Boolean = false  // 편집 여부 상태 변수
+    private var edit_state: Boolean = false         // 편집 여부 상태 변수 (true: 편집 중, false: 편집x)
+    
+    private var isPasswordValid: Boolean = false    // 비밀번호 정규식 조건 만족 유효성 (true: 정규식 만족, false: 정규식 불만족)
+    private var isEmailValid: Boolean = false       // 이메일 정규식 조건 만족 유효성
+    private var isBirthValid: Boolean = false       // 생년월일 정규식 조건 만족 유효성
+    private var isPhoneValid: Boolean = false       // 이메일 정규식 조건 만족 유효성
+    private var isGenderChecked: Boolean = true     // 성별 체크 여부
+
+    private var isPasswordChanged: Boolean = false  // 비밀번호 변경 여부
+    private var isEmailChanged: Boolean = false     // 이메일 변경 여부
+    private var isBirthChanged: Boolean = false     // 생년월일 변경 여부
+    private var isPhoneChanged: Boolean = false     // 전화번호 변경 여부
+    private var isGenderChanged: Boolean = false    // 성별 변경 여부
+    private var isMarriedChanged: Boolean = false   // 결혼 여부 변경 여부
+    private var isJobChanged: Boolean = false       // 직업 변경 여부
+
 
     private var id: String = ""
     private var pw: String = ""
@@ -114,6 +131,9 @@ class ProfileView : AppCompatActivity() {
 
         // 편집 버튼 클릭 이벤트
         click_EditButton()
+
+        // 비밀번호 변경 이벤트
+        input_password()
         
     }
 
@@ -240,14 +260,60 @@ class ProfileView : AppCompatActivity() {
 
     // 취소 버튼 클릭 이벤트
     private fun click_CancelButton() {
-
+        // 편집 취소할건지 msgBox 물어보기
+    }
+    
+    // 완료 버튼 클릭 이벤트
+    private fun click_CompletionButton() {
+        // 변경된 데이터가 있다면 변경할건지 물어보기
+        // 비밀번호 정규식 만족 및 변경 true일 때, 사용자 인증하기
     }
 
     // 비밀번호 입력 이벤트
-    private fun input_pw() {
-
+    private fun input_password() {
+        val pattern = Regex("^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{8,16}$")    // 영문, 숫자 (8-16자리)
+        
+        // 비밀번호 입력란 실시간 감지 이벤트
+        user_pw.addTextChangedListener(
+            createFlexibleTextWatcher (
+                targetTextView = pw_rule,
+                updateText = { input ->
+                    when {
+                        user_pw.text.toString() == pw -> "기존 비밀번호와 동일합니다"               // 기존과 동일
+                        user_pw.text.toString().isEmpty() -> "8~16자의 영문, 숫자를 사용하세요"     // 공란
+                        pattern.matches(user_pw.text.toString()) -> "사용 가능한 비밀번호입니다"    // 정규식 만족
+                        else -> "8~16자의 영문, 숫자를 사용하세요"                                  // 정규식 불만족
+                    }
+                },
+                updateTextColor = { input ->
+                    when {
+                        user_pw.text.toString().isEmpty() || user_pw.text.toString() == pw -> "#1F70CC".toColorInt()    // 공란 or 기존과 동일 (파란색)
+                        pattern.matches(user_pw.text.toString()) -> "#4B9F72".toColorInt()      // 정규식 만족 (초록색)
+                        else -> "#FF0000".toColorInt()                                          // 정규식 불만족 (빨간색)
+                    }
+                },
+                validateInput = { input -> pattern.matches(user_pw.text.toString()) },
+                onValidStateChanged = { isValid ->
+                    when {
+                        user_pw.text.toString().isEmpty() || user_pw.text.toString() == pw -> { // 공란 or 기존과 동일 (= Skip)
+                            isPasswordValid = true                                              // skip 가능
+                            isPasswordChanged = false                                           // 변경 사항 미존재
+                        }
+                        pattern.matches(user_pw.text.toString()) -> {                           // 정규식 만족 (= 본인인증 수행)
+                            isPasswordValid = true                                              // skip 가능
+                            isPasswordChanged = true                                            // 변경 사항 존재
+                        }
+                        else -> {                                                               // 정규식 만족 x
+                            isPasswordValid = false                                             // skip 불가능
+                            isPasswordChanged = true                                            // 변경 사항 존재
+                        }
+                    }
+                }
+            )
+        )
     }
 
+    
     // 이메일 입력 이벤트
     private fun input_email() {
 
