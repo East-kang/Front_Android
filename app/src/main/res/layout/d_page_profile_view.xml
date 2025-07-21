@@ -546,31 +546,55 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent" />
 
+                        <TextView
+                            android:id="@+id/gender"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="남자"
+                            android:textColor="@color/black"
+                            android:textSize="17sp"
+                            android:gravity="end"
+                            android:layout_marginHorizontal="5dp"
+                            android:paddingEnd="5dp"
+                            app:layout_constraintStart_toStartOf="@id/guideline2_4"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
                         <RadioGroup
-                            android:id="@+id/radioGender"
+                            android:id="@+id/gender_Group"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
+                            android:visibility="gone"
                             app:layout_constraintStart_toStartOf="@+id/guideline2_4"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent" >
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:gravity="center" >
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.7" />
 
                             <RadioButton
                                 android:id="@+id/radioMale"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="  남성"
-                                android:textSize="17dp" />
+                                android:text="남성"
+                                android:textSize="17sp"
+                                android:gravity="center" />
 
                             <RadioButton
                                 android:id="@+id/radioFemale"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="  여성"
-                                android:textSize="17dp" />
+                                android:text="여성"
+                                android:textSize="17sp"
+                                android:gravity="center" />
                         </RadioGroup>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -583,7 +607,224 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/gender_Field"/>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/married_Field"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="6dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/line2_4">
+
+                        <TextView
+                            android:id="@+id/title_married"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="결혼 여부"
+                            android:textStyle="bold"
+                            android:textSize="15sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideline2_5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.25" />
+
+                        <View
+                            android:id="@+id/view2_5"
+                            android:layout_width="1dp"
+                            android:layout_height="0dp"
+                            android:background="#EAEAEB"
+                            app:layout_constraintStart_toStartOf="@id/guideline2_5"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <TextView
+                            android:id="@+id/married"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="기혼"
+                            android:textColor="@color/black"
+                            android:textSize="17sp"
+                            android:gravity="end"
+                            android:layout_marginHorizontal="5dp"
+                            android:paddingEnd="5dp"
+                            app:layout_constraintStart_toStartOf="@id/guideline2_5"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <RadioGroup
+                            android:id="@+id/married_Group"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:visibility="gone"
+                            app:layout_constraintStart_toStartOf="@+id/guideline2_5"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:gravity="center" >
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.7" />
+
+                            <RadioButton
+                                android:id="@+id/radioSingle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="미혼"
+                                android:textSize="17sp"
+                                android:gravity="center" />
+
+                            <RadioButton
+                                android:id="@+id/radioMarried"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="기혼"
+                                android:textSize="17sp"
+                                android:gravity="center" />
+                        </RadioGroup>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <View
+                        android:id="@+id/line2_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#EAEAEB"
+                        android:layout_marginVertical="6dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/married_Field"/>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/job_Field"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="6dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/line2_5">
+
+                        <TextView
+                            android:id="@+id/title_job"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="직업"
+                            android:textStyle="bold"
+                            android:textSize="15sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/guideline2_6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.25" />
+
+                        <View
+                            android:id="@+id/view2_6"
+                            android:layout_width="1dp"
+                            android:layout_height="0dp"
+                            android:background="#EAEAEB"
+                            app:layout_constraintStart_toStartOf="@id/guideline2_6"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <TextView
+                            android:id="@+id/job"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="회사원"
+                            android:textColor="@color/black"
+                            android:textSize="17sp"
+                            android:gravity="end"
+                            android:layout_marginHorizontal="5dp"
+                            android:paddingEnd="5dp"
+                            app:layout_constraintStart_toStartOf="@id/guideline2_6"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <Spinner
+                            android:id="@+id/job_spinner"
+                            android:layout_width="200dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/design_spinner_window"
+                            android:layout_gravity="end"
+                            android:overlapAnchor = "false"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:id="@+id/field3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="15dp" >
+
+                    <TextView
+                        android:id="@+id/title_3st"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="건강 상태"
+                        android:layout_marginStart="10dp"
+                        android:textStyle="bold"
+                        android:textSize="16sp" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:paddingHorizontal="20dp"
+                        android:paddingVertical="12dp"
+                        android:background="@drawable/design_categories_button" >
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/field4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="15dp" >
+
+                    <TextView
+                        android:id="@+id/title_4st"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="보험 가입 이력"
+                        android:layout_marginStart="10dp"
+                        android:textStyle="bold"
+                        android:textSize="16sp" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:paddingHorizontal="20dp"
+                        android:paddingVertical="12dp"
+                        android:background="@drawable/design_categories_button" >
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
