@@ -37,6 +37,7 @@
             android:gravity="center"
             android:background="#EAEAEB"
             android:visibility="gone"
+            android:stateListAnimator="@null"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -63,6 +64,7 @@
             android:textColor="#4285F4"
             android:gravity="center"
             android:background="#EAEAEB"
+            android:paddingStart="10dp"
             android:stateListAnimator="@null"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -105,8 +107,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:paddingHorizontal="20dp"
-                    android:paddingVertical="12dp"
+                    android:paddingHorizontal="18dp"
+                    android:paddingVertical="8dp"
                     android:background="@drawable/design_categories_button" >
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -114,6 +116,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:paddingVertical="4dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" >
@@ -134,7 +137,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            app:layout_constraintGuide_percent="0.25" />
+                            app:layout_constraintGuide_percent="0.22" />
 
                         <View
                             android:id="@+id/view1_1"
@@ -149,12 +152,13 @@
                             android:id="@+id/user_id"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="hongil2323"
+                            android:text="gildong2"
                             android:textColor="@color/black"
                             android:textSize="17sp"
                             android:gravity="end"
-                            android:layout_marginHorizontal="5dp"
-                            android:paddingEnd="5dp"
+                            android:paddingEnd="8dp"
+                            android:paddingVertical="4dp"
+                            android:layout_marginStart="5dp"
                             app:layout_constraintStart_toStartOf="@id/guideline1_1"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -176,7 +180,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginTop="6dp"
+                        android:paddingVertical="4dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/line1_1">
@@ -197,7 +201,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            app:layout_constraintGuide_percent="0.25" />
+                            app:layout_constraintGuide_percent="0.22" />
 
                         <View
                             android:id="@+id/view1_2"
@@ -215,10 +219,11 @@
                             android:textColor="@color/black"
                             android:hint="변경할 비밀번호를 입력하세요"
                             android:textSize="17sp"
-                            android:background="#d6d6d6"
+                            android:background="@drawable/design_gray_solid"
                             android:gravity="end"
-                            android:layout_marginHorizontal="5dp"
-                            android:paddingEnd="5dp"
+                            android:paddingEnd="8dp"
+                            android:paddingVertical="4dp"
+                            android:layout_marginStart="5dp"
                             app:layout_constraintStart_toStartOf="@id/guideline1_2"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -253,7 +258,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginTop="6dp"
+                        android:paddingVertical="4dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/line1_2">
@@ -274,7 +279,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            app:layout_constraintGuide_percent="0.25" />
+                            app:layout_constraintGuide_percent="0.22" />
 
                         <View
                             android:id="@+id/view1_3"
@@ -289,15 +294,16 @@
                             android:id="@+id/user_email"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="qwer1234@naver.com"
+                            android:text="gildong22@naver.com"
                             android:textColor="@color/black"
                             android:hint="변경할 이메일을 입력하세요"
                             android:textSize="17sp"
                             android:enabled="false"
                             android:background="@color/white"
                             android:gravity="end"
-                            android:layout_marginHorizontal="5dp"
-                            android:paddingEnd="5dp"
+                            android:paddingEnd="8dp"
+                            android:paddingVertical="4dp"
+                            android:layout_marginStart="5dp"
                             app:layout_constraintStart_toStartOf="@id/guideline1_3"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -338,7 +344,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:paddingHorizontal="20dp"
+                    android:paddingHorizontal="14dp"
                     android:paddingVertical="12dp"
                     android:background="@drawable/design_categories_button" >
 
@@ -367,7 +373,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            app:layout_constraintGuide_percent="0.25" />
+                            app:layout_constraintGuide_percent="0.22" />
 
                         <View
                             android:id="@+id/view2_1"
@@ -386,8 +392,9 @@
                             android:textColor="@color/black"
                             android:textSize="17sp"
                             android:gravity="end"
-                            android:layout_marginHorizontal="5dp"
-                            android:paddingEnd="5dp"
+                            android:paddingEnd="8dp"
+                            android:paddingVertical="4dp"
+                            android:layout_marginStart="5dp"
                             app:layout_constraintStart_toStartOf="@id/guideline2_1"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -430,7 +437,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            app:layout_constraintGuide_percent="0.25" />
+                            app:layout_constraintGuide_percent="0.22" />
 
                         <View
                             android:id="@+id/view2_2"
@@ -453,8 +460,9 @@
                             android:background="@color/white"
                             android:inputType="number"
                             android:enabled="false"
-                            android:layout_marginHorizontal="5dp"
+                            android:paddingEnd="8dp"
                             android:paddingVertical="4dp"
+                            android:layout_marginStart="5dp"
                             app:layout_constraintStart_toStartOf="@id/guideline2_2"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -509,7 +517,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            app:layout_constraintGuide_percent="0.25" />
+                            app:layout_constraintGuide_percent="0.22" />
 
                         <View
                             android:id="@+id/view2_3"
@@ -532,8 +540,9 @@
                             android:enabled="false"
                             android:background="@color/white"
                             android:inputType="phone"
-                            android:layout_marginHorizontal="5dp"
+                            android:paddingEnd="8dp"
                             android:paddingVertical="4dp"
+                            android:layout_marginStart="5dp"
                             app:layout_constraintStart_toStartOf="@id/guideline2_3"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -588,7 +597,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            app:layout_constraintGuide_percent="0.25" />
+                            app:layout_constraintGuide_percent="0.22" />
 
                         <View
                             android:id="@+id/view2_4"
@@ -607,8 +616,9 @@
                             android:textColor="@color/black"
                             android:textSize="17sp"
                             android:gravity="end"
-                            android:layout_marginHorizontal="5dp"
-                            android:paddingEnd="5dp"
+                            android:paddingEnd="8dp"
+                            android:paddingVertical="4dp"
+                            android:layout_marginStart="5dp"
                             android:visibility="visible"
                             app:layout_constraintStart_toStartOf="@id/guideline2_4"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -630,25 +640,23 @@
                             <View
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="0.7" />
+                                android:layout_weight="1" />
 
                             <RadioButton
                                 android:id="@+id/radioMale"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="남성"
-                                android:textSize="17sp"
-                                android:gravity="center" />
+                                android:text="  남성"
+                                android:textSize="17sp" />
 
                             <RadioButton
                                 android:id="@+id/radioFemale"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="여성"
-                                android:textSize="17sp"
-                                android:gravity="center" />
+                                android:text="  여성"
+                                android:textSize="17sp" />
                         </RadioGroup>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -688,7 +696,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            app:layout_constraintGuide_percent="0.25" />
+                            app:layout_constraintGuide_percent="0.22" />
 
                         <View
                             android:id="@+id/view2_5"
@@ -707,8 +715,9 @@
                             android:textColor="@color/black"
                             android:textSize="17sp"
                             android:gravity="end"
-                            android:layout_marginHorizontal="5dp"
-                            android:paddingEnd="5dp"
+                            android:paddingEnd="8dp"
+                            android:paddingVertical="4dp"
+                            android:layout_marginStart="5dp"
                             android:visibility="visible"
                             app:layout_constraintStart_toStartOf="@id/guideline2_5"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -730,25 +739,23 @@
                             <View
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="0.7" />
+                                android:layout_weight="1" />
 
                             <RadioButton
                                 android:id="@+id/radioSingle"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="미혼"
-                                android:textSize="17sp"
-                                android:gravity="center" />
+                                android:text="  미혼"
+                                android:textSize="17sp" />
 
                             <RadioButton
                                 android:id="@+id/radioMarried"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="기혼"
-                                android:textSize="17sp"
-                                android:gravity="center" />
+                                android:text="  기혼"
+                                android:textSize="17sp" />
                         </RadioGroup>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -788,7 +795,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            app:layout_constraintGuide_percent="0.25" />
+                            app:layout_constraintGuide_percent="0.22" />
 
                         <View
                             android:id="@+id/view2_6"
@@ -807,8 +814,9 @@
                             android:textColor="@color/black"
                             android:textSize="17sp"
                             android:gravity="end"
-                            android:layout_marginHorizontal="5dp"
-                            android:paddingEnd="5dp"
+                            android:paddingEnd="8dp"
+                            android:paddingVertical="4dp"
+                            android:layout_marginStart="5dp"
                             android:visibility="visible"
                             app:layout_constraintStart_toStartOf="@id/guideline2_6"
                             app:layout_constraintEnd_toEndOf="parent"

@@ -10,7 +10,6 @@ import android.widget.RadioGroup
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
-import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.toColorInt
@@ -18,7 +17,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.llm_project_android.R
 import com.example.llm_project_android.functions.createFlexibleTextWatcher
-import com.example.llm_project_android.functions.setBoxField
 
 class ProfileView : AppCompatActivity() {
 
@@ -126,15 +124,15 @@ class ProfileView : AppCompatActivity() {
 
         job_spinner = findViewById(R.id.job_spinner)    // 직업 선택 박스 (Spinner)
 
-        // 초기 프로필 상태 불러오기
-        init_Profile()
+        init_Profile()      // 초기 프로필 상태 불러오기
 
-        // 편집 버튼 클릭 이벤트
-        click_EditButton()
-
-        // 비밀번호 변경 이벤트
-        input_password()
+        click_EditButton()  // 편집 버튼 클릭 이벤트
         
+        input_password()    // 비밀번호 변경 이벤트
+        input_email()       // 이메일 변경 이벤트
+        input_birth()       // 생년월일 변경 이벤트
+        input_phone()       // 전화번호 변경 이벤트
+
     }
 
     // (feature/common 브랜치에서 다시 함수 파일 만들 예정)
@@ -169,6 +167,7 @@ class ProfileView : AppCompatActivity() {
         user_email.isEnabled = false        // '로그인 정보' 상태 초기화
         pw_field.visibility = View.GONE
         email_rule.visibility = View.GONE
+        line.visibility = View.GONE
 
         user_birth.isEnabled = false        // '사용자 정보' 상태 초기화
         user_phone.isEnabled = false
@@ -196,8 +195,9 @@ class ProfileView : AppCompatActivity() {
                 user_email.isEnabled = true             // '로그인 정보' 상태 초기화
                 pw_field.visibility = View.VISIBLE
                 email_rule.visibility = View.VISIBLE
+                line.visibility = View.VISIBLE
 
-                user_email.setBackgroundColor("#d6d6d6".toColorInt())
+                user_email.setBackgroundResource(R.drawable.design_gray_solid)
 
                 user_birth.isEnabled = true            // '사용자 정보' 상태 초기화
                 user_phone.isEnabled = true
@@ -213,8 +213,8 @@ class ProfileView : AppCompatActivity() {
                 if (job == "기타") job_etc.visibility = View.VISIBLE
                 else job_etc.visibility = View.GONE
 
-                user_birth.setBackgroundColor("#d6d6d6".toColorInt())
-                user_phone.setBackgroundColor("#d6d6d6".toColorInt())
+                user_birth.setBackgroundResource(R.drawable.design_gray_solid)
+                user_phone.setBackgroundResource(R.drawable.design_gray_solid)
 
                 // '건강 상태' 상태 초기화
 
@@ -232,6 +232,7 @@ class ProfileView : AppCompatActivity() {
                 user_email.isEnabled = false            // '로그인 정보' 상태 초기화
                 pw_field.visibility = View.GONE
                 email_rule.visibility = View.GONE
+                line.visibility = View.GONE
 
                 user_email.setBackgroundColor("#FFFFFF".toColorInt())
 
@@ -279,7 +280,7 @@ class ProfileView : AppCompatActivity() {
                 targetTextView = pw_rule,
                 updateText = { input ->
                     when {
-                        user_pw.text.toString() == pw -> "기존 비밀번호와 동일합니다"               // 기존과 동일
+                        user_pw.text.toString() == pw -> "기존 입력과 동일합니다"               // 기존과 동일
                         user_pw.text.toString().isEmpty() -> "8~16자의 영문, 숫자를 사용하세요"     // 공란
                         pattern.matches(user_pw.text.toString()) -> "사용 가능한 비밀번호입니다"    // 정규식 만족
                         else -> "8~16자의 영문, 숫자를 사용하세요"                                  // 정규식 불만족
@@ -313,20 +314,136 @@ class ProfileView : AppCompatActivity() {
         )
     }
 
-    
     // 이메일 입력 이벤트
     private fun input_email() {
+        val pattern = Regex("^[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,}\$")               // '계정@도메인.최상위도메인'
 
+        // 이메일 입력란 실시간 감지 이벤트
+        user_email.addTextChangedListener(
+            createFlexibleTextWatcher (
+                targetTextView = email_rule,
+                updateText = { input ->
+                    when {
+                        user_email.text.toString() == email -> "기존 입력과 동일합니다"           // 기존과 동일
+                        user_email.text.toString().isEmpty() -> "이메일을 형식에 맞게 입력해주세요"  // 공란
+                        pattern.matches(user_email.text.toString()) -> "사용 가능한 이메일입니다"   // 정규식 만족
+                        else -> "사용 불가능한 이메일 형식입니다"                                    // 정규식 불만족
+                    }
+                },
+                updateTextColor = { input ->
+                    when {
+                        user_email.text.toString().isEmpty() || user_email.text.toString() == email -> "#1F70CC".toColorInt()   // 공란 or 기존과 동일 (파란색)
+                        pattern.matches(user_email.text.toString()) -> "#4B9F72".toColorInt()   // 정규식 만족 (초록색)
+                        else -> "#FF0000".toColorInt()                                          // 정규식 불만족 (빨간색)
+                    }
+                },
+                validateInput = { input -> pattern.matches(user_email.text.toString()) },
+                onValidStateChanged = { isValid ->
+                    when {
+                        user_email.text.toString().isEmpty() || user_email.text.toString() == email -> {    // 공란 or 기존과 동일 (= Skip)
+                            isEmailValid = true                                                 // skip 가능
+                            isEmailChanged = false                                              // 변경 사항 미존재
+                        }
+                        pattern.matches(user_email.text.toString()) -> {                        // 정규식 만족
+                            isEmailValid = true                                                 // skip 가능
+                            isEmailChanged = true                                               // 변경 사항 존재
+                        }
+                        else -> {                                                               // 정규식 만족 x
+                            isEmailValid = false                                                // skip 불가능
+                            isEmailChanged = true                                               // 변경 사항 존재
+                        }
+                    }
+                }
+            )
+        )
     }
 
     // 생년월일 입력 이벤트
     private fun input_birth() {
+        val pattern = Regex("^(19[0-9]{2}|20[0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])$")    // 생년월일 정규식 (YYYYMMDD)
 
+        // 생년월일 입력란 실시간 감지 이벤트
+        user_birth.addTextChangedListener(
+            createFlexibleTextWatcher (
+                targetTextView = birth_rule,
+                updateText = { input ->
+                    when {
+                        user_birth.text.toString() == birth.toString() -> "기존 입력과 동일합니다"  // 기존과 동일
+                        user_birth.text.toString().isEmpty() -> "생년월일을 형식에 맞게 입력해주세요" // 공란
+                        pattern.matches(user_email.text.toString()) -> "사용 가능한 이메일입니다"   // 정규식 만족
+                        else -> "사용 불가능한 이메일 형식입니다"                                    // 정규식 불만족
+                    }
+                },
+                updateTextColor = { input ->
+                    when {
+                        user_birth.text.toString().isEmpty() || user_birth.text.toString() == birth.toString() -> "#1F70CC".toColorInt()   // 공란 or 기존과 동일 (파란색)
+                        pattern.matches(user_birth.text.toString()) -> "#4B9F72".toColorInt()   // 정규식 만족 (초록색)
+                        else -> "#FF0000".toColorInt()                                          // 정규식 불만족 (빨간색)
+                    }
+                },
+                validateInput = { input -> pattern.matches(user_birth.text.toString()) },
+                onValidStateChanged = { isValid ->
+                    when {
+                        user_birth.text.toString().isEmpty() || user_birth.text.toString() == birth.toString() -> {    // 공란 or 기존과 동일 (= Skip)
+                            isBirthValid = true                                                 // skip 가능
+                            isBirthChanged = false                                              // 변경 사항 미존재
+                        }
+                        pattern.matches(user_email.text.toString()) -> {                        // 정규식 만족
+                            isBirthValid = true                                                 // skip 가능
+                            isBirthChanged = true                                               // 변경 사항 존재
+                        }
+                        else -> {                                                               // 정규식 만족 x
+                            isBirthValid = false                                                // skip 불가능
+                            isBirthChanged = true                                               // 변경 사항 존재
+                        }
+                    }
+                }
+            )
+        )
     }
 
     // 전화번호 입력 이벤트
     private fun input_phone() {
+        val pattern = Regex("^(010-[0-9]{4}-[0-9]{4})$")    // 전화번호 정규식 (010-xxxx-xxxx)
 
+        // 전화번호 입력란 실시간 감지 이벤트
+        user_phone.addTextChangedListener(
+            createFlexibleTextWatcher (
+                targetTextView = phone_rule,
+                updateText = { input ->
+                    when {
+                        user_phone.text.toString() == phone -> "기존 입력과 동일합니다"             // 기존과 동일
+                        user_phone.text.toString().isEmpty() -> "전화번호를 형식에 맞게 입력해주세요" // 공란
+                        pattern.matches(user_phone.text.toString()) -> "사용 가능합니다"           // 정규식 만족
+                        else -> "사용 불가능합니다"                                                // 정규식 불만족
+                    }
+                },
+                updateTextColor = { input ->
+                    when {
+                        user_phone.text.toString().isEmpty() || user_phone.text.toString() == phone -> "#1F70CC".toColorInt()   // 공란 or 기존과 동일 (파란색)
+                        pattern.matches(user_phone.text.toString()) -> "#4B9F72".toColorInt()   // 정규식 만족 (초록색)
+                        else -> "#FF0000".toColorInt()                                          // 정규식 불만족 (빨간색)
+                    }
+                },
+                validateInput = { input -> pattern.matches(user_phone.text.toString()) },
+                onValidStateChanged = { isValid ->
+                    when {
+                        user_phone.text.toString().isEmpty() || user_phone.text.toString() == phone -> {    // 공란 or 기존과 동일 (= Skip)
+                            isPhoneValid = true                                                 // skip 가능
+                            isPhoneChanged = false                                              // 변경 사항 미존재
+                        }
+                        pattern.matches(user_phone.text.toString()) -> {                        // 정규식 만족
+                            isPhoneValid = true                                                 // skip 가능
+                            isPhoneChanged = true                                               // 변경 사항 존재
+                        }
+                        else -> {                                                               // 정규식 만족 x
+                            isPhoneValid = false                                                // skip 불가능
+                            isPhoneChanged = true                                               // 변경 사항 존재
+                        }
+                    }
+                }
+            )
+        )
     }
 
     // 성별 체크 이벤트
