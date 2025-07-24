@@ -304,6 +304,7 @@
                             android:paddingEnd="8dp"
                             android:paddingVertical="4dp"
                             android:layout_marginStart="5dp"
+                            android:inputType="textEmailAddress"
                             app:layout_constraintStart_toStartOf="@id/guideline1_3"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -463,6 +464,7 @@
                             android:paddingEnd="8dp"
                             android:paddingVertical="4dp"
                             android:layout_marginStart="5dp"
+                            android:maxLength="8"
                             app:layout_constraintStart_toStartOf="@id/guideline2_2"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -543,6 +545,7 @@
                             android:paddingEnd="8dp"
                             android:paddingVertical="4dp"
                             android:layout_marginStart="5dp"
+                            android:maxLength="13"
                             app:layout_constraintStart_toStartOf="@id/guideline2_3"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -838,7 +841,7 @@
                             android:id="@+id/job_etc"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:background="#d6d6d6"
+                            android:background="@drawable/design_gray_solid"
                             android:layout_gravity="center"
                             android:hint="직업을 입력하세요"
                             android:textSize="17sp"
