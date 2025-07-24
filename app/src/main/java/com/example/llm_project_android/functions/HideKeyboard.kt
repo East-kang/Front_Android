@@ -36,14 +36,33 @@ private fun findTouchedView(view: View?, x: Int, y: Int): View? {
 }
 
 // 터치가 EditText 외 영역이면 키보드 내리기
-fun handleTouchOutsideEditText(activity: Activity, event: MotionEvent): Boolean {
-    val focusedView = activity.currentFocus
-    if (focusedView is EditText) {
-        val rootView = activity.window.decorView
-        val touchedView = findTouchedView(rootView, event.rawX.toInt(), event.rawY.toInt())
+var downX = 0f
+var downY = 0f
+const val TOUCH_SLOP = 1  // 허용되는 짧은 움직임 거리(px)
 
-        if (touchedView !is EditText) {
-            hideKeyboard(activity)
+fun handleTouchOutsideEditText(activity: Activity, event: MotionEvent): Boolean {
+    when (event.action) {
+        MotionEvent.ACTION_DOWN -> {
+            downX = event.rawX
+            downY = event.rawY
+        }
+
+        MotionEvent.ACTION_UP -> {
+            val deltaX = Math.abs(event.rawX - downX)
+            val deltaY = Math.abs(event.rawY - downY)
+
+            // 움직임이 거의 없는 경우 = 짧은 클릭
+            if (deltaX < TOUCH_SLOP && deltaY < TOUCH_SLOP) {
+                val focusedView = activity.currentFocus
+                if (focusedView is EditText) {
+                    val rootView = activity.window.decorView
+                    val touchedView = findTouchedView(rootView, event.rawX.toInt(), event.rawY.toInt())
+
+                    if (touchedView !is EditText) {
+                        hideKeyboard(activity)
+                    }
+                }
+            }
         }
     }
     return false

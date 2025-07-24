@@ -2,6 +2,7 @@ package com.example.llm_project_android.page.d_menu
 
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.AdapterView
@@ -147,19 +148,43 @@ class ProfileView : AppCompatActivity() {
         job_spinner.adapter = adapter
 
         loadData()              // 프로필 값 불러오기
+        Log.d("loadData()","TxtView: "+user_job.visibility)
+        Log.d("loadData()","EditText: "+job_etc.visibility)
         init_Profile()          // 초기 프로필 상태 불러오기
+        Log.d("init_Profile()","TxtView: "+user_job.visibility)
+        Log.d("init_Profile()","EditText: "+job_etc.visibility)
 
         click_BackButton()      // 뒤로가기 버튼 클릭 이벤트
+        Log.d("click_BackButton()","TxtView: "+user_job.visibility)
+        Log.d("click_BackButton()","EditText: "+job_etc.visibility)
         click_EditButton()      // 편집/완료 버튼 클릭 이벤트
+        Log.d("click_EditButton()","TxtView: "+user_job.visibility)
+        Log.d("click_EditButton()","EditText: "+job_etc.visibility)
         click_CancelButton()    // 취소 버튼 클릭 이벤트
+        Log.d("click_CancelButton()","TxtView: "+user_job.visibility)
+        Log.d("click_CancelButton()","EditText: "+job_etc.visibility)
 
         edit_password()         // 비밀번호 변경 이벤트
+        Log.d("edit_password()","TxtView: "+user_job.visibility)
+        Log.d("edit_password()","EditText: "+job_etc.visibility)
         edit_email()            // 이메일 변경 이벤트
+        Log.d("edit_email()","TxtView: "+user_job.visibility)
+        Log.d("edit_email()","EditText: "+job_etc.visibility)
         edit_birth()            // 생년월일 변경 이벤트
+        Log.d("edit_birth()","TxtView: "+user_job.visibility)
+        Log.d("edit_birth()","EditText: "+job_etc.visibility)
         edit_phone()            // 전화번호 변경 이벤트
+        Log.d("edit_phone()","TxtView: "+user_job.visibility)
+        Log.d("edit_phone()","EditText: "+job_etc.visibility)
         edit_gender()           // 성별 체크 이벤트
+        Log.d("edit_gender()","TxtView: "+user_job.visibility)
+        Log.d("edit_gender()","EditText: "+job_etc.visibility)
         edit_married()          // 결혼 여부 체크 이벤트
+        Log.d("edit_married()","TxtView: "+user_job.visibility)
+        Log.d("edit_married()","EditText: "+job_etc.visibility)
         edit_job()              // 직업 선택 이벤트
+        Log.d("edit_job()","TxtView: "+user_job.visibility)
+        Log.d("edit_job()","EditText: "+job_etc.visibility)
 
     }
 
@@ -373,7 +398,7 @@ class ProfileView : AppCompatActivity() {
     // 비밀번호 입력 이벤트
     private fun edit_password() {
         val pattern = Regex("^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{8,16}$")    // 영문, 숫자 (8-16자리)
-        
+
         // 비밀번호 입력란 실시간 감지 이벤트
         user_pw.addTextChangedListener(
             createFlexibleTextWatcher (
@@ -381,14 +406,14 @@ class ProfileView : AppCompatActivity() {
                 updateText = { input ->
                     when {
                         user_pw.text.toString() == pw -> "기존 입력과 동일합니다"                  // 기존과 동일
-                        user_pw.text.toString().isEmpty() -> "8~16자의 영문, 숫자를 사용하세요"     // 공란
+                        user_pw.text.toString().isBlank() -> "8~16자의 영문, 숫자를 사용하세요"     // 공란
                         pattern.matches(user_pw.text.toString()) -> "사용 가능합니다"             // 정규식 만족
                         else -> "8~16자의 영문, 숫자를 사용하세요"                                  // 정규식 불만족
                     }
                 },
                 updateTextColor = { input ->
                     when {
-                        user_pw.text.toString().isEmpty() || user_pw.text.toString() == pw -> "#1F70CC".toColorInt()    // 공란 or 기존과 동일 (파란색)
+                        user_pw.text.toString().isBlank() || user_pw.text.toString() == pw -> "#1F70CC".toColorInt()    // 공란 or 기존과 동일 (파란색)
                         pattern.matches(user_pw.text.toString()) -> "#4B9F72".toColorInt()      // 정규식 만족 (초록색)
                         else -> "#FF0000".toColorInt()                                          // 정규식 불만족 (빨간색)
                     }
@@ -396,7 +421,7 @@ class ProfileView : AppCompatActivity() {
                 validateInput = { input -> pattern.matches(user_pw.text.toString()) },
                 onValidStateChanged = { isValid ->
                     when {
-                        user_pw.text.toString().isEmpty() || user_pw.text.toString() == pw -> { // 공란 or 기존과 동일 (= Skip)
+                        user_pw.text.toString().isBlank() || user_pw.text.toString() == pw -> { // 공란 or 기존과 동일 (= Skip)
                             isPasswordValid = true                                              // skip 가능
                             isPasswordChanged = false                                           // 변경 사항 미존재
                         }
@@ -437,14 +462,14 @@ class ProfileView : AppCompatActivity() {
                 updateText = { input ->
                     when {
                         user_email.text.toString() == email -> "기존 입력과 동일합니다"             // 기존과 동일
-                        user_email.text.toString().isEmpty() -> "이메일을 형식에 맞게 입력해주세요"   // 공란
+                        user_email.text.toString().isBlank() -> "이메일을 형식에 맞게 입력해주세요"   // 공란
                         pattern.matches(user_email.text.toString()) -> "사용 가능합니다"           // 정규식 만족
                         else -> "사용 불가능한 형식입니다"                                          // 정규식 불만족
                     }
                 },
                 updateTextColor = { input ->
                     when {
-                        user_email.text.toString().isEmpty() || user_email.text.toString() == email -> "#1F70CC".toColorInt()   // 공란 or 기존과 동일 (파란색)
+                        user_email.text.toString().isBlank() || user_email.text.toString() == email -> "#1F70CC".toColorInt()   // 공란 or 기존과 동일 (파란색)
                         pattern.matches(user_email.text.toString()) -> "#4B9F72".toColorInt()   // 정규식 만족 (초록색)
                         else -> "#FF0000".toColorInt()                                          // 정규식 불만족 (빨간색)
                     }
@@ -452,7 +477,7 @@ class ProfileView : AppCompatActivity() {
                 validateInput = { input -> pattern.matches(user_email.text.toString()) },
                 onValidStateChanged = { isValid ->
                     when {
-                        user_email.text.toString().isEmpty() || user_email.text.toString() == email -> {    // 공란 or 기존과 동일 (= Skip)
+                        user_email.text.toString().isBlank() || user_email.text.toString() == email -> {    // 공란 or 기존과 동일 (= Skip)
                             isEmailValid = true                                                 // skip 가능
                             isEmailChanged = false                                              // 변경 사항 미존재
                         }
@@ -493,14 +518,14 @@ class ProfileView : AppCompatActivity() {
                 updateText = { input ->
                     when {
                         user_birth.text.toString() == birth.toString() -> "기존 입력과 동일합니다"  // 기존과 동일
-                        user_birth.text.toString().isEmpty() -> "생년월일을 형식에 맞게 입력해주세요" // 공란
+                        user_birth.text.toString().isBlank() -> "생년월일을 형식에 맞게 입력해주세요" // 공란
                         pattern.matches(user_birth.text.toString()) -> "사용 가능합니다"           // 정규식 만족
                         else -> "사용 불가능합니다"                                                // 정규식 불만족
                     }
                 },
                 updateTextColor = { input ->
                     when {
-                        user_birth.text.toString().isEmpty() || user_birth.text.toString() == birth.toString() -> "#1F70CC".toColorInt()   // 공란 or 기존과 동일 (파란색)
+                        user_birth.text.toString().isBlank() || user_birth.text.toString() == birth.toString() -> "#1F70CC".toColorInt()   // 공란 or 기존과 동일 (파란색)
                         pattern.matches(user_birth.text.toString()) -> "#4B9F72".toColorInt()   // 정규식 만족 (초록색)
                         else -> "#FF0000".toColorInt()                                          // 정규식 불만족 (빨간색)
                     }
@@ -508,7 +533,7 @@ class ProfileView : AppCompatActivity() {
                 validateInput = { input -> pattern.matches(user_birth.text.toString()) },
                 onValidStateChanged = { isValid ->
                     when {
-                        user_birth.text.toString().isEmpty() || user_birth.text.toString() == birth.toString() -> {    // 공란 or 기존과 동일 (= Skip)
+                        user_birth.text.toString().isBlank() || user_birth.text.toString() == birth.toString() -> {    // 공란 or 기존과 동일 (= Skip)
                             isBirthValid = true                                                 // skip 가능
                             isBirthChanged = false                                              // 변경 사항 미존재
                         }
@@ -551,14 +576,14 @@ class ProfileView : AppCompatActivity() {
                 updateText = { input ->
                     when {
                         user_phone.text.toString() == phone -> "기존 입력과 동일합니다"             // 기존과 동일
-                        user_phone.text.toString().isEmpty() -> "전화번호를 형식에 맞게 입력해주세요" // 공란
+                        user_phone.text.toString().isBlank() -> "전화번호를 형식에 맞게 입력해주세요" // 공란
                         pattern.matches(user_phone.text.toString()) -> "사용 가능합니다"           // 정규식 만족
                         else -> "사용 불가능합니다"                                                // 정규식 불만족
                     }
                 },
                 updateTextColor = { input ->
                     when {
-                        user_phone.text.toString().isEmpty() || user_phone.text.toString() == phone -> "#1F70CC".toColorInt()   // 공란 or 기존과 동일 (파란색)
+                        user_phone.text.toString().isBlank() || user_phone.text.toString() == phone -> "#1F70CC".toColorInt()   // 공란 or 기존과 동일 (파란색)
                         pattern.matches(user_phone.text.toString()) -> "#4B9F72".toColorInt()   // 정규식 만족 (초록색)
                         else -> "#FF0000".toColorInt()                                          // 정규식 불만족 (빨간색)
                     }
@@ -566,7 +591,7 @@ class ProfileView : AppCompatActivity() {
                 validateInput = { input -> pattern.matches(user_phone.text.toString()) },
                 onValidStateChanged = { isValid ->
                     when {
-                        user_phone.text.toString().isEmpty() || user_phone.text.toString() == phone -> {    // 공란 or 기존과 동일 (= Skip)
+                        user_phone.text.toString().isBlank() || user_phone.text.toString() == phone -> {    // 공란 or 기존과 동일 (= Skip)
                             isPhoneValid = true                                                 // skip 가능
                             isPhoneChanged = false                                              // 변경 사항 미존재
                         }
@@ -638,11 +663,14 @@ class ProfileView : AppCompatActivity() {
         job_spinner.setSelection(initialIndex)      // 기존 직업 종류 적용
 
         // 기존 직업 종류 적용 ('기타' 일 경우)
-        if (initialIndex == job_list.lastIndex) {
-            job_etc.setText(job)
-            job_etc.visibility = View.VISIBLE
-        } else {
-            job_etc.visibility = View.GONE
+        if (edit_state) {
+            if (initialIndex == job_list.lastIndex) {
+                job_etc.setText(job)
+                job_etc.visibility = View.VISIBLE
+            } else {
+                job_etc.setText("")
+                job_etc.visibility = View.GONE
+            }
         }
 
         job_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -665,6 +693,7 @@ class ProfileView : AppCompatActivity() {
                         isJobEtcChanged = currentEtcJob != job
                     }
                     else -> {
+                        job_etc.setText("")
                         job_etc.visibility = View.GONE
                         job_rule.visibility = View.GONE
                         isJobValid = true
@@ -685,7 +714,7 @@ class ProfileView : AppCompatActivity() {
                 targetTextView = job_rule,
                 updateText = { input ->
                     when {
-                        job_etc.text.isNullOrEmpty() -> "2~20자의 한글을 입력하세요"      // 초기 기본 안내
+                        job_etc.text.isBlank() -> "2~20자의 한글을 입력하세요"            // 초기 기본 안내
                         job_etc.text.toString() == job -> "기존 입력과 동일합니다"        // 기존 동일
                         pattern.matches(job_etc.text.toString()) -> "사용 가능합니다"     // 유효 입력
                         else -> "형식에 맞지 않습니다"                                    // 유효하지 않음
@@ -693,12 +722,12 @@ class ProfileView : AppCompatActivity() {
                 },
                 updateTextColor = { input ->
                     when {
-                        job_etc.text.toString().isEmpty() || job_etc.text.toString() == phone -> "#1F70CC".toColorInt()   // 공란 or 기존과 동일 (파란색)
+                        job_etc.text.toString().isBlank() || job_etc.text.toString() == phone -> "#1F70CC".toColorInt()   // 공란 or 기존과 동일 (파란색)
                         pattern.matches(job_etc.text.toString()) -> "#4B9F72".toColorInt()      // 정규식 만족 (초록색)
                         else -> "#FF0000".toColorInt()                                          // 정규식 불만족 (빨간색)
                     }
                 },
-                validateInput = { input -> pattern.matches(input) },
+                validateInput = { input -> pattern.matches(job_etc.text.toString()) },
                 onValidStateChanged = { isValid ->
                     val currentEtcJob = job_etc.text.toString().trim()
 
@@ -737,7 +766,7 @@ class ProfileView : AppCompatActivity() {
         }
     }
 
-    // 키보드 숨기기 이벤트 (editText 이외의 영역을 눌렀을 경우)
+    // 키보드 숨기기 이벤트 (editText 이외의 영역을 눌렀을 경우, 스크롤 제외)
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         handleTouchOutsideEditText(this, ev)
         return super.dispatchTouchEvent(ev)
