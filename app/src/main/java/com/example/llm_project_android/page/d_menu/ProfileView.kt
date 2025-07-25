@@ -2,7 +2,6 @@ package com.example.llm_project_android.page.d_menu
 
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.AdapterView
@@ -83,6 +82,8 @@ class ProfileView : AppCompatActivity() {
     private var isJobChanged: Boolean = false       // 직업 변경 여부
     private var isJobEtcChanged: Boolean = false    // 직업 변경 여부
 
+    private var isJobRule: Boolean = false
+
     private lateinit var job_list: Array<String>
     private lateinit var adapter: ArrayAdapter<String>
 
@@ -148,43 +149,19 @@ class ProfileView : AppCompatActivity() {
         job_spinner.adapter = adapter
 
         loadData()              // 프로필 값 불러오기
-        Log.d("loadData()","TxtView: "+user_job.visibility)
-        Log.d("loadData()","EditText: "+job_etc.visibility)
         init_Profile()          // 초기 프로필 상태 불러오기
-        Log.d("init_Profile()","TxtView: "+user_job.visibility)
-        Log.d("init_Profile()","EditText: "+job_etc.visibility)
 
         click_BackButton()      // 뒤로가기 버튼 클릭 이벤트
-        Log.d("click_BackButton()","TxtView: "+user_job.visibility)
-        Log.d("click_BackButton()","EditText: "+job_etc.visibility)
         click_EditButton()      // 편집/완료 버튼 클릭 이벤트
-        Log.d("click_EditButton()","TxtView: "+user_job.visibility)
-        Log.d("click_EditButton()","EditText: "+job_etc.visibility)
         click_CancelButton()    // 취소 버튼 클릭 이벤트
-        Log.d("click_CancelButton()","TxtView: "+user_job.visibility)
-        Log.d("click_CancelButton()","EditText: "+job_etc.visibility)
 
         edit_password()         // 비밀번호 변경 이벤트
-        Log.d("edit_password()","TxtView: "+user_job.visibility)
-        Log.d("edit_password()","EditText: "+job_etc.visibility)
         edit_email()            // 이메일 변경 이벤트
-        Log.d("edit_email()","TxtView: "+user_job.visibility)
-        Log.d("edit_email()","EditText: "+job_etc.visibility)
         edit_birth()            // 생년월일 변경 이벤트
-        Log.d("edit_birth()","TxtView: "+user_job.visibility)
-        Log.d("edit_birth()","EditText: "+job_etc.visibility)
         edit_phone()            // 전화번호 변경 이벤트
-        Log.d("edit_phone()","TxtView: "+user_job.visibility)
-        Log.d("edit_phone()","EditText: "+job_etc.visibility)
         edit_gender()           // 성별 체크 이벤트
-        Log.d("edit_gender()","TxtView: "+user_job.visibility)
-        Log.d("edit_gender()","EditText: "+job_etc.visibility)
         edit_married()          // 결혼 여부 체크 이벤트
-        Log.d("edit_married()","TxtView: "+user_job.visibility)
-        Log.d("edit_married()","EditText: "+job_etc.visibility)
         edit_job()              // 직업 선택 이벤트
-        Log.d("edit_job()","TxtView: "+user_job.visibility)
-        Log.d("edit_job()","EditText: "+job_etc.visibility)
 
     }
 
@@ -239,6 +216,7 @@ class ProfileView : AppCompatActivity() {
 
         user_birth.isEnabled = false            // '사용자 정보' 상태 초기화
         user_phone.isEnabled = false
+        job_etc.isEnabled = false
         birth_rule.visibility = View.GONE
         phone_rule.visibility = View.GONE
         user_gender.visibility = View.VISIBLE
@@ -258,7 +236,7 @@ class ProfileView : AppCompatActivity() {
 
     // 편집 전용 상태 뷰 구성 함수
     private fun toEditMode() {
-        
+
         btn_back.visibility = View.GONE         // '상단 바' 상태 변경
         btn_cancel.visibility = View.VISIBLE
         btn_edit.text = "완료"
@@ -274,6 +252,7 @@ class ProfileView : AppCompatActivity() {
 
         user_birth.isEnabled = true            // '사용자 정보' 상태 초기화
         user_phone.isEnabled = true
+        job_etc.isEnabled = true
         birth_rule.visibility = View.GONE
         phone_rule.visibility = View.GONE
         user_gender.visibility = View.GONE
@@ -346,11 +325,11 @@ class ProfileView : AppCompatActivity() {
         isPasswordChanged = false;    isEmailChanged = false;    isBirthChanged = false;    isPhoneChanged = false
         isGenderChanged = false;      isMarriedChanged = false;  isJobChanged = false;      isJobEtcChanged = false     // 변경 상태 초기화
     }
-    
+
     // 편집/완료 버튼 클릭 이벤트
     private fun click_EditButton() {
         btn_edit.setOnClickListener {
-            if (edit_state) {       // 편집 버튼 클릭 이벤트 (완료->읽기)
+            if (edit_state) {       // 편집 버튼 클릭 이벤트 (편집->읽기)
                 when {
                     !isPasswordValid -> showErrorDialog(this, "유효하지 않은 비밀번호 형식입니다.")    // 비밀번호 형식 오류
                     !isEmailValid -> showErrorDialog(this, "유효하지 않은 이메일 형식입니다.")         // 이메일 형식 오류
@@ -361,12 +340,12 @@ class ProfileView : AppCompatActivity() {
                     isPasswordChanged || isEmailChanged || isBirthChanged || isPhoneChanged                      // 데이터 변경 시
                             || isGenderChanged || isMarriedChanged || isJobChanged || isJobEtcChanged
                         -> showConfirmDialog(this, "변경 사항을 저장하시겠습니까?") { result ->
-                            if (result) {               // "예" 버튼 클릭 시
-                                edit_state = false      // 상태: 편집 완료
-                                toViewMode()            // 읽기 뷰 모드로 뷰 변환
-                                changes_Profile()       // 변경 데이터 적용
-                                storeData()             // 변경 데이터 내부 DB에 저장
-                            }
+                        if (result) {               // "예" 버튼 클릭 시
+                            edit_state = false      // 상태: 편집 완료
+                            toViewMode()            // 읽기 뷰 모드로 뷰 변환
+                            changes_Profile()       // 변경 데이터 적용
+                            storeData()             // 변경 데이터 내부 DB에 저장
+                        }
                     }
                     else -> {               // 변경 데이터 없음
                         edit_state = false
@@ -377,6 +356,7 @@ class ProfileView : AppCompatActivity() {
                 edit_state = true       // 상태: 편집 중
                 toEditMode()            // 편집 뷰 모드로 뷰 변환
             }
+            isJobRule = false
         }
     }
 
@@ -691,12 +671,14 @@ class ProfileView : AppCompatActivity() {
                         new_job = currentEtcJob
                         isJobValid = true
                         isJobEtcChanged = currentEtcJob != job
+                        isJobEtcValid = !isJobEtcChanged
                     }
                     else -> {
                         job_etc.setText("")
                         job_etc.visibility = View.GONE
                         job_rule.visibility = View.GONE
                         isJobValid = true
+                        isJobEtcValid = true
                         isJobEtcChanged = false
                         new_job = job_list[position]
                     }
@@ -709,54 +691,67 @@ class ProfileView : AppCompatActivity() {
             }
         }
 
-        job_etc.addTextChangedListener(
-            createFlexibleTextWatcher(
-                targetTextView = job_rule,
-                updateText = { input ->
-                    when {
-                        job_etc.text.isBlank() -> "2~20자의 한글을 입력하세요"            // 초기 기본 안내
-                        job_etc.text.toString() == job -> "기존 입력과 동일합니다"        // 기존 동일
-                        pattern.matches(job_etc.text.toString()) -> "사용 가능합니다"     // 유효 입력
-                        else -> "형식에 맞지 않습니다"                                    // 유효하지 않음
-                    }
-                },
-                updateTextColor = { input ->
-                    when {
-                        job_etc.text.toString().isBlank() || job_etc.text.toString() == phone -> "#1F70CC".toColorInt()   // 공란 or 기존과 동일 (파란색)
-                        pattern.matches(job_etc.text.toString()) -> "#4B9F72".toColorInt()      // 정규식 만족 (초록색)
-                        else -> "#FF0000".toColorInt()                                          // 정규식 불만족 (빨간색)
-                    }
-                },
-                validateInput = { input -> pattern.matches(job_etc.text.toString()) },
-                onValidStateChanged = { isValid ->
-                    val currentEtcJob = job_etc.text.toString().trim()
+        if (!isJobRule) {
+            job_etc.addTextChangedListener(
+                createFlexibleTextWatcher(
+                    targetTextView = job_rule,
+                    updateText = { input ->
+                        if (!isJobRule) {       // 최초 포커스 상태: 고정된 기본 안내 문구
+                            "직업명을 정확히 입력해주세요"
+                        } else {
+                            when {
+                                job_etc.text.isBlank() -> "2~20자의 한글을 입력하세요"            // 초기 기본 안내
+                                job_etc.text.toString() == job -> "기존 입력과 동일합니다"        // 기존 동일
+                                pattern.matches(job_etc.text.toString()) -> "사용 가능합니다"     // 유효 입력
+                                else -> "형식에 맞지 않습니다"                                    // 유효하지 않음
+                            }
+                        }
+                    },
+                    updateTextColor = { input ->
+                        when {
+                            !isJobRule -> "#1F70CC".toColorInt()
+                            job_etc.text.toString()
+                                .isBlank() || job_etc.text.toString() == job -> "#1F70CC".toColorInt()   // 공란 or 기존과 동일 (파란색)
+                            pattern.matches(job_etc.text.toString()) -> "#4B9F72".toColorInt()      // 정규식 만족 (초록색)
+                            else -> "#FF0000".toColorInt()                                          // 정규식 불만족 (빨간색)
+                        }
+                    },
+                    validateInput = { input -> pattern.matches(job_etc.text.toString()) },
+                    onValidStateChanged = { isValid ->
+                        val currentEtcJob = job_etc.text.toString().trim()
 
-                    when {
-                        currentEtcJob.isEmpty() || currentEtcJob == job -> {
-                            isJobEtcChanged = false    // 변경 사항 없음
-                            isJobEtcValid = true       // 공란 또는 기존 값이면 검사 skip
+                        when {
+                            currentEtcJob.isBlank() -> {   // 빈칸
+                                isJobEtcChanged = true
+                                isJobEtcValid = false
+                            }
+                            currentEtcJob == job -> {           // 기존과 동일
+                                isJobEtcChanged = false    // 변경 사항 없음
+                                isJobEtcValid = true       // 공란 또는 기존 값이면 검사 skip
+                            }
+                            pattern.matches(currentEtcJob) -> { // 정규식 만족
+                                isJobEtcChanged = true
+                                isJobEtcValid = true       // 변경 + 정규식 만족
+                            }
+                            else -> {                           // 정규식 불만족
+                                isJobEtcChanged = true
+                                isJobEtcValid = false      // 변경 + 정규식 불만족
+                            }
                         }
 
-                        pattern.matches(currentEtcJob) -> {
-                            isJobEtcChanged = true     // 변경 + 정규식 만족
-                            isJobEtcValid = true
-                        }
-
-                        else -> {
-                            isJobEtcChanged = true     // 변경 + 정규식 불만족
-                            isJobEtcValid = false
-                        }
+                        new_job = currentEtcJob   // new_job은 항상 최신 값으로 유지
                     }
-
-                    new_job = currentEtcJob   // new_job은 항상 최신 값으로 유지
-                }
+                )
             )
-        )
+        }
 
         // 포커스 및 편집 여부에 따른 안내 텍스트 시각화 결정
         job_etc.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-            if (hasFocus)
+            if (hasFocus) {
+                if (!isJobRule)
+                    isJobRule = true
                 job_rule.visibility = View.VISIBLE
+            }
             else {
                 if (isJobEtcChanged)
                     job_rule.visibility = View.VISIBLE
