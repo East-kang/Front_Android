@@ -10,13 +10,14 @@ import com.example.llm_project_android.R
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.functions.registerExitDialogOnBackPressed
 import com.example.llm_project_android.page.b_signup.SignUpActivity1
-import com.example.llm_project_android.page.d_chat.ChatView
+import com.example.llm_project_android.page.d_menu.ProfileView
+import com.example.llm_project_android.page.e_chat.ChatView
 
 class InitActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.page_init_view)
+        setContentView(R.layout.a_page_init_view)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -29,7 +30,7 @@ class InitActivity : AppCompatActivity() {
         // 로그인 버튼 클릭 이벤트
         btn_login.setOnClickListener {
             // navigateTo(LoginActivity::class.java)
-            navigateTo(ChatView::class.java)
+            navigateTo(ProfileView::class.java)
         }
 
         // 회원가입 버튼 클릭 이벤트

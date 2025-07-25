@@ -45,7 +45,7 @@ class CategoryView : AppCompatActivity() {
         //RecentViewedManager.init(applicationContext)
 
         enableEdgeToEdge()
-        setContentView(R.layout.page_category_view)
+        setContentView(R.layout.c_page_category_view)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
