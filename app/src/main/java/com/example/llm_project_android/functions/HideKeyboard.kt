@@ -51,13 +51,18 @@ fun handleTouchOutsideEditText(activity: Activity, event: MotionEvent): Boolean 
             val deltaX = Math.abs(event.rawX - downX)
             val deltaY = Math.abs(event.rawY - downY)
 
-            // 움직임이 거의 없는 경우 = 짧은 클릭
             if (deltaX < TOUCH_SLOP && deltaY < TOUCH_SLOP) {
                 val focusedView = activity.currentFocus
                 if (focusedView is EditText) {
                     val rootView = activity.window.decorView
                     val touchedView = findTouchedView(rootView, event.rawX.toInt(), event.rawY.toInt())
 
+                    // touchedView가 EditText이고 현재 포커스된 View와 같다면 → 무시
+                    if (touchedView is EditText && touchedView == focusedView) {
+                        return false // 키보드 유지
+                    }
+
+                    // touchedView가 EditText가 아니면 → 키보드 숨기기
                     if (touchedView !is EditText) {
                         hideKeyboard(activity)
                     }
