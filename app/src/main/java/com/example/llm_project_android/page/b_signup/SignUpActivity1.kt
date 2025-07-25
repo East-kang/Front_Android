@@ -82,7 +82,7 @@ class SignUpActivity1 : AppCompatActivity() {
         var pw_visible: Boolean = false             // 비밀번호 시각화 여부 (true: 시각화, false: 비시각화)
         var pw_check_visible: Boolean = false       // 비밀번호 확인 시각화 여부 (true: 시각화, false: 비시각화)
 
-        source = getPassedExtras("source", String::class.java) as? String ?: ""
+        source = getPassedExtras("source", String::class.java) as? String ?: ""     // source intent에서 수신
 
         // 초기 설정 (버튼 비활성화, 입력 값 초기화)
         updateNextButton()
@@ -117,7 +117,6 @@ class SignUpActivity1 : AppCompatActivity() {
     fun restorePassedData() {
         lifecycleScope.launch {
             val user = getUserInfo(applicationContext)
-            source = intent.getStringExtra("source") ?: ""      // source intent에서 수신
 
             // 세 필드가 모두 유효할 경우에만 복원
             if (user != null && !user.userId.isNullOrBlank() && !user.password.isNullOrBlank() && !user.email.isNullOrBlank()) {
