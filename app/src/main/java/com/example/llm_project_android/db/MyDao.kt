@@ -13,6 +13,10 @@ interface MyDAO {
     @Query("SELECT * FROM user_table LIMIT 1")
     suspend fun getLoggedInUser(): User?
 
+    // 유저 정보 수정 (부분 업데이트용)
+    @Update
+    suspend fun updateUser(user: User)
+
     // 전체 삭제 (로그아웃 시 사용)
     @Query("DELETE FROM user_table")
     suspend fun deleteAllUsers()

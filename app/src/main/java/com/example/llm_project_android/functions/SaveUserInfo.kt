@@ -8,43 +8,45 @@ import com.example.llm_project_android.db.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-suspend fun SaveUserInfo(
+suspend fun saveUserInfo(
     context: Context,
-    userId: String,
-    password: String,
-    email: String,
-    name: String = "",
-    phoneNumber: String = "",
-    birthDate: String = "",
-    gender: String = "",
-    isMarried: Boolean = false,
-    job: String = "",
-    diseases: List<String> = emptyList(),
-    subscriptions: List<String> = emptyList(),
-    createdAt: String = "",
-    modifiedAt: String = "",
-    isLogin: Boolean = true,
-    isDeleted: Boolean = false
+    userId: String? = null,
+    password: String? = null,
+    email: String? = null,
+    name: String? = null,
+    phoneNumber: String? = null,
+    birthDate: String? = null,
+    gender: String? = null,
+    isMarried: Boolean? = null,
+    job: String? = null,
+    diseases: List<String>? = null,
+    subscriptions: List<String>? = null,
+    createdAt: String? = null,
+    modifiedAt: String? = null,
+    isLogin: Boolean? = null,
+    isDeleted: Boolean? = null
 ) {
     withContext(Dispatchers.IO) {
         val dao = MyDatabase.getDatabase(context).getMyDao()
-        val user = User(
-            userId = userId,
-            password = password,
-            email = email,
-            name = name,
-            phoneNumber = phoneNumber,
-            birthDate = birthDate,
-            gender = gender,
-            isMarried = isMarried,
-            job = job,
-            diseases = diseases,
-            subscriptions = subscriptions,
-            createdAt = createdAt,
-            modifiedAt = modifiedAt,
-            isLogin = isLogin,
-            isDeleted = isDeleted
+        val currentUser = dao.getLoggedInUser() ?: User.empty()
+
+        val updatedUser = currentUser.copy(
+            userId = userId ?: currentUser.userId,
+            password = password ?: currentUser.password,
+            email = email ?: currentUser.email,
+            name = name ?: currentUser.name,
+            phoneNumber = phoneNumber ?: currentUser.phoneNumber,
+            birthDate = birthDate ?: currentUser.birthDate,
+            gender = gender ?: currentUser.gender,
+            isMarried = isMarried ?: currentUser.isMarried,
+            job = job ?: currentUser.job,
+            diseases = diseases ?: currentUser.diseases,
+            subscriptions = subscriptions ?: currentUser.subscriptions,
+            createdAt = createdAt ?: currentUser.createdAt,
+            modifiedAt = modifiedAt ?: currentUser.modifiedAt,
+            isLogin = isLogin ?: currentUser.isLogin,
+            isDeleted = isDeleted ?: currentUser.isDeleted
         )
-        dao.insertUser(user)
+        dao.insertUser(updatedUser)
     }
 }
