@@ -1,3 +1,5 @@
+// User 엔티티 정의
+
 package com.example.llm_project_android.db
 
 import androidx.room.Entity

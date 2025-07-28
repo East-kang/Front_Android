@@ -1,6 +1,7 @@
 package com.example.llm_project_android.page.b_signup
 
 import android.os.Bundle
+import android.view.MotionEvent
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -16,6 +17,7 @@ import com.example.llm_project_android.functions.clearUserFields
 import com.example.llm_project_android.functions.createFlexibleTextWatcher
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.getUserInfo
+import com.example.llm_project_android.functions.handleTouchOutsideEditText
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.functions.pw_eye_visibility
 import com.example.llm_project_android.functions.saveUserInfo
@@ -118,8 +120,8 @@ class SignUpActivity1 : AppCompatActivity() {
         lifecycleScope.launch {
             val user = getUserInfo(applicationContext)
 
-            // 세 필드가 모두 유효할 경우에만 복원
-            if (user != null && !user.userId.isNullOrBlank() && !user.password.isNullOrBlank() && !user.email.isNullOrBlank()) {
+            // 데이터 필드가 모두 유효할 경우에만 복원
+            if (user != null && user.userId.isNotBlank() && user.password.isNotBlank() && user.email.isNotBlank()) {
 
                 id_text.setText(user.userId);   pw_text.setText(user.password);   pw_check.setText(user.password);   email_text.setText(user.email)
 
@@ -363,5 +365,11 @@ class SignUpActivity1 : AppCompatActivity() {
                 "source" to source
             )
         }
+    }
+
+    // 키보드 숨기기 이벤트 (editText 이외의 영역을 눌렀을 경우, 스크롤 제외)
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        handleTouchOutsideEditText(this, ev)
+        return super.dispatchTouchEvent(ev)
     }
 }

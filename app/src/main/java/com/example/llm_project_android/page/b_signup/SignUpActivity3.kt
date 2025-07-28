@@ -1,6 +1,7 @@
 package com.example.llm_project_android.page.b_signup
 
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
@@ -9,9 +10,14 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.R
-import com.example.llm_project_android.functions.getPassedExtras
+import com.example.llm_project_android.functions.clearUserDiseases
+import com.example.llm_project_android.functions.getUserInfo
+import com.example.llm_project_android.functions.handleTouchOutsideEditText
 import com.example.llm_project_android.functions.navigateTo
+import com.example.llm_project_android.functions.saveUserInfo
+import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
 class SignUpActivity3 : AppCompatActivity() {
@@ -29,7 +35,9 @@ class SignUpActivity3 : AppCompatActivity() {
     private lateinit var btn_back: ImageButton
     private lateinit var btn_next: Button
     private lateinit var checkBoxList: List<CheckBox>
-    var is_Checked_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }        // 체크 완료 여부
+
+    var source: String = ""
+    private var is_Checked_Confirmed: Boolean by Delegates.observable(false) { _, _, _ -> updateNextButton() }        // 체크 완료 여부
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,18 +69,7 @@ class SignUpActivity3 : AppCompatActivity() {
         )
 
         // 이전 화면에서 데이터 받아오기
-        val data = getPassedExtras(
-            listOf(
-                "id" to String::class.java, "pw" to String::class.java,
-                "email" to String::class.java, "source" to String::class.java,          // SignUp1
-
-                "name" to String::class.java, "birth" to String::class.java,
-                "phone" to String::class.java, "gender" to String::class.java,
-                "married" to String::class.java, "job" to String::class.java,           // SignUp2
-            )
-        )
-
-        btn_next.isEnabled = true
+        source = intent.getStringExtra("source") ?: ""
 
         // 초기 설정 (버튼 비활성화)
         updateNextButton()
@@ -81,34 +78,33 @@ class SignUpActivity3 : AppCompatActivity() {
         items_check({ is_Checked_Confirmed }, { is_Checked_Confirmed = it })
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity2)
-        clickBackButton(btn_back, data.filterValues { it != null } as Map<String, Any>, SignUpActivity2::class.java)
+        clickBackButton(SignUpActivity2::class.java)
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity4)
-        clickNextButton(btn_next, data.filterValues { it != null } as Map<String, Any>, SignUpActivity4::class.java)
+        clickNextButton(SignUpActivity4::class.java)
 
         // 화면 전환 간 데이터 유지 (SignUpActivity4.kt -> SignUpActivity3.kt)
         restorePassedData()
     }
 
-
+    // 화면 전환간 데이터 수신 및 적용
     fun restorePassedData() {
-        val data = getPassedExtras(
-            listOf(
-                "disease0" to Boolean::class.java, "disease1" to Boolean::class.java,
-                "disease2" to Boolean::class.java, "disease3" to Boolean::class.java,
-                "disease4" to Boolean::class.java, "disease5" to Boolean::class.java,
-                "disease6" to Boolean::class.java, "disease7" to Boolean::class.java,
-                "disease8" to Boolean::class.java, "disease9" to Boolean::class.java
-            )
-        )
-        if (data["disease0"] == true)                                   // item0만 체크, 나머지는 해제, 비활성화
-            for (i in checkBoxList.indices) {
-                checkBoxList[i].isChecked = (i == 0)
-                checkBoxList[i].isEnabled = (i == 0)
+        lifecycleScope.launch {
+            val user = getUserInfo(applicationContext)
+
+            // 데이터 필드가 모두 유효할 경우에만 복원
+            if (user != null && user.diseases.isNotEmpty()) {
+                if (user.diseases[0] == item0.text.toString())  // "질병 없음"
+                    for (i in checkBoxList.indices) {
+                        checkBoxList[i].isChecked = (i == 0)    // item0만 체크
+                        checkBoxList[i].isEnabled = (i == 0)    // item0만 활성화
+                    }
+                else
+                    for (i in checkBoxList.indices)
+                        checkBoxList[i].isChecked = (user.diseases[i].isNotEmpty())     // item1 ~ item9 중 true인 항목만 체크
+
+                is_Checked_Confirmed = true
             }
-        else {
-            for (i in 0 until checkBoxList.size)
-                checkBoxList[i].isChecked = (data["disease$i"] == true) // item1 ~ item9 중 true인 항목만 체크
         }
     }
 
@@ -154,28 +150,44 @@ class SignUpActivity3 : AppCompatActivity() {
     }
 
     // '뒤로가기' 버튼 클릭 이벤트 정의 함수
-    fun AppCompatActivity.clickBackButton(backButton: View, data: Map<String, Any>, targetActivity: Class<out AppCompatActivity>) {
-        backButton.setOnClickListener {
+    fun AppCompatActivity.clickBackButton(targetActivity: Class<out AppCompatActivity>) {
+        btn_back.setOnClickListener {
+            lifecycleScope.launch {
+                clearUserDiseases(this@SignUpActivity3)
+            }
             navigateTo(
                 targetActivity,
-                *data.mapValues { it.value }.toList().toTypedArray(),
+                "source" to source,
                 reverseAnimation = true
             )
         }
     }
 
     // '다음' 버튼 클릭 이벤트 정의 함수
-    fun AppCompatActivity.clickNextButton(nextButton: View, data: Map<String, Any>, targetActivity: Class<out AppCompatActivity>) {
-        nextButton.setOnClickListener {
-            val diseaseData = (0 until 10).map { i ->
-            "disease$i" to checkBoxList[i].isChecked
+    fun AppCompatActivity.clickNextButton(targetActivity: Class<out AppCompatActivity>) {
+        btn_next.setOnClickListener {
+
+            val selectedDiseases = checkBoxList
+                .filter { it.isChecked }
+                .map { it.text.toString() }
+
+            lifecycleScope.launch {
+                saveUserInfo(
+                    context = this@SignUpActivity3,
+                    diseases = selectedDiseases
+                )
             }
 
             navigateTo(
                 targetActivity,
-                *data.mapValues { it.value }.toList().toTypedArray(),
-                *diseaseData.toTypedArray()
+                "source" to source
             )
         }
+    }
+
+    // 키보드 숨기기 이벤트 (editText 이외의 영역을 눌렀을 경우, 스크롤 제외)
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        handleTouchOutsideEditText(this, ev)
+        return super.dispatchTouchEvent(ev)
     }
 }

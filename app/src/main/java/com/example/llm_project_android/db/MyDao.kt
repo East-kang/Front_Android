@@ -1,3 +1,5 @@
+// SQL 기반 데이터 접근 메서드 정의
+
 package com.example.llm_project_android.db
 
 import androidx.room.*

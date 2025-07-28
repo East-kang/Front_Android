@@ -2,6 +2,7 @@ package com.example.llm_project_android.page.b_signup
 
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.view.MotionEvent
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -20,8 +21,8 @@ import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.R
 import com.example.llm_project_android.functions.clearUserFields
 import com.example.llm_project_android.functions.createFlexibleTextWatcher
-import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.getUserInfo
+import com.example.llm_project_android.functions.handleTouchOutsideEditText
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.functions.saveUserInfo
 import com.example.llm_project_android.functions.setBoxField
@@ -47,8 +48,8 @@ class SignUpActivity2 : AppCompatActivity() {
     private lateinit var job_spinner: Spinner
 
     private var selectedJob: String = ""
-    private var source: String = ""
     private val job_Pattern = Regex("^[\\s가-힣]{2,20}$")
+    var source: String = ""
 
     private lateinit var job_list: Array<String>
     private lateinit var adapter: ArrayAdapter<String>
@@ -91,8 +92,6 @@ class SignUpActivity2 : AppCompatActivity() {
         // 이전 화면에서 받아온 데이터
         source = intent.getStringExtra("source") ?: ""
 
-        btn_next.isEnabled = true
-
         // 체크 박스 체크 취소
         gender.clearCheck()
         married.clearCheck()
@@ -134,9 +133,11 @@ class SignUpActivity2 : AppCompatActivity() {
         lifecycleScope.launch {
             val user = getUserInfo(applicationContext)
 
-            if (user != null && user.name.isNullOrBlank()
-                && user.birthDate.isNullOrBlank() && user.phoneNumber.isNullOrBlank()
-                && user.gender.isNullOrBlank() && user.job.isNullOrBlank()) {
+            // 데이터 필드가 모두 유효할 경우에만 복원
+            if (user != null && user.name.isNotBlank()
+                && user.birthDate.isNotBlank() && user.phoneNumber.isNotBlank()
+                && user.gender.isNotBlank() && user.job.isNotBlank()
+            ) {
 
                 name.setText(user.name);    birth.setText(user.birthDate);    phone.setText(user.phoneNumber)
 
@@ -231,6 +232,8 @@ class SignUpActivity2 : AppCompatActivity() {
     // '전화번호' 생성 기능 함수
     fun create_phone(getPhoneConfirmed: () -> Boolean, setPhoneConfirmed: (Boolean) -> Unit) {
         val phone_Pattern = Regex("^(010-[0-9]{4}-[0-9]{4})$") // 전화번호 정규식 (010-xxxx-xxxx)
+
+        phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         phone.addTextChangedListener(
             createFlexibleTextWatcher(
@@ -353,5 +356,11 @@ class SignUpActivity2 : AppCompatActivity() {
                 "source" to source
             )
         }
+    }
+
+    // 키보드 숨기기 이벤트 (editText 이외의 영역을 눌렀을 경우, 스크롤 제외)
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        handleTouchOutsideEditText(this, ev)
+        return super.dispatchTouchEvent(ev)
     }
 }
