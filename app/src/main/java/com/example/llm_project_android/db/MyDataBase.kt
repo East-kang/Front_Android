@@ -1,3 +1,5 @@
+// Room DB 객체 생성과 싱글톤 관리. DB와 DAO 연결 역할
+
 package com.example.llm_project_android.db
 
 import android.content.Context

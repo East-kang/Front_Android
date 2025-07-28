@@ -1,3 +1,5 @@
+// User 엔티티 정의
+
 package com.example.llm_project_android.db
 
 import androidx.room.Entity
@@ -8,19 +10,24 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "user_table")
 
 data class User(
-    @PrimaryKey val userId: String,
-    val password: String,
-    val email: String,
-    val name: String,
-    val phoneNumber: String,
-    val birthDate: String,              // ISO 8601 문자열로 받을 경우: ex. "1995-08-15"
-    val gender: String,
-    val isMarried: Boolean,
-    val job: String,
-    val diseases: List<String>,
-    val subscriptions: List<String>,
-    val createdAt: String,              // Date는 보통 문자열로 받음
-    val modifiedAt: String,
-    val isLogin: Boolean,
-    val isDeleted: Boolean
-)
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val userId: String = "",
+    val password: String = "",
+    val email: String = "",
+    val name: String = "",
+    val phoneNumber: String = "",
+    val birthDate: String = "",
+    val gender: String = "",
+    val isMarried: Boolean = false,
+    val job: String = "",
+    val diseases: List<String> = emptyList(),
+    val subscriptions: List<String> = emptyList(),
+    val createdAt: String = "",
+    val modifiedAt: String = "",
+    val isLogin: Boolean = false,
+    val isDeleted: Boolean = false
+) {
+    companion object {
+        fun empty(): User = User()  // 기본 생성자 호출
+    }
+}
