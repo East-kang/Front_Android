@@ -1,6 +1,7 @@
 package com.example.llm_project_android.page.b_signup
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.widget.Button
 import android.widget.EditText
@@ -84,8 +85,10 @@ class SignUpActivity1 : AppCompatActivity() {
         var pw_visible: Boolean = false             // 비밀번호 시각화 여부 (true: 시각화, false: 비시각화)
         var pw_check_visible: Boolean = false       // 비밀번호 확인 시각화 여부 (true: 시각화, false: 비시각화)
 
-        source = getPassedExtras("source", String::class.java) as? String ?: ""     // source intent에서 수신
+        val extras = getPassedExtras("source", String::class.java)
+        source = extras["source"] as? String ?: ""  // source 값 intent에서 수신
 
+        Log.d("1_source", "source: " +source)
         // 초기 설정 (버튼 비활성화, 입력 값 초기화)
         updateNextButton()
 
@@ -322,6 +325,7 @@ class SignUpActivity1 : AppCompatActivity() {
                     fieldsToClear = listOf("userId", "password", "email")
                 )
             }
+
             when (source) {
                 "InitActivity" -> navigateTo(targetActivity1, reverseAnimation = true)   // 초기화된 화면
                 "LoginActivity" -> navigateTo(targetActivity2, reverseAnimation = true) // 값 유지된 화면
@@ -364,6 +368,7 @@ class SignUpActivity1 : AppCompatActivity() {
                 targetActivity,
                 "source" to source
             )
+
         }
     }
 

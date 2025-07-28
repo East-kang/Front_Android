@@ -23,7 +23,6 @@ import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.data.model.Product
 import com.example.llm_project_android.adapter.ProductContentAdapter
 import com.example.llm_project_android.R
-import com.example.llm_project_android.functions.clearUserDiseases
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.handleTouchOutsideEditText
 import com.example.llm_project_android.functions.navigateTo
@@ -70,7 +69,8 @@ class SignUpActivity4 : AppCompatActivity() {
         insuranceList = resources.getStringArray(R.array.insurances).map { Product(it) }
 
         // 이전 화면에서 받아온 데이터
-        source = intent.getStringExtra("source") ?: ""
+        val extras = getPassedExtras("source", String::class.java)
+        source = extras["source"] as? String ?: ""
 
         // 초기 설정 (버튼 비활성화)
         updateCompletionButton()

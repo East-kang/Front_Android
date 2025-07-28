@@ -7,6 +7,8 @@ import com.example.llm_project_android.db.MyDatabase
 import com.example.llm_project_android.db.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 // 일부 데이터 초기화
 suspend fun clearUserFields(context: Context, fieldsToClear: List<String>) {
@@ -74,5 +76,38 @@ suspend fun clearAllUserFields(context: Context) {
             )
             dao.updateUser(clearedUser)
         }
+    }
+}
+
+suspend fun resetUserTable(context: Context) {
+    withContext(Dispatchers.IO) {
+        val dao = MyDatabase.getDatabase(context).getMyDao()
+
+        // 1. 모든 사용자 삭제
+        dao.deleteAllUsers()
+
+        // 2. AUTO_INCREMENT 초기화
+        dao.resetAutoIncrement()
+
+        // 3. 새 유저 삽입 (id = 1부터 시작됨)
+        val newUser = User(
+            userId = "",
+            password = "",
+            email = "",
+            name = "",
+            phoneNumber = "",
+            birthDate = "",
+            gender = "",
+            isMarried = false,
+            job = "",
+            diseases = emptyList(),
+            subscriptions = emptyList(),
+            createdAt = "",
+            modifiedAt = "",
+            isLogin = false,
+            isDeleted = false
+        )
+
+        dao.insertUser(newUser)
     }
 }

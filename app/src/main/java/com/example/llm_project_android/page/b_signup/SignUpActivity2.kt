@@ -2,6 +2,7 @@ package com.example.llm_project_android.page.b_signup
 
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.AdapterView
@@ -21,6 +22,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.R
 import com.example.llm_project_android.functions.clearUserFields
 import com.example.llm_project_android.functions.createFlexibleTextWatcher
+import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.getUserInfo
 import com.example.llm_project_android.functions.handleTouchOutsideEditText
 import com.example.llm_project_android.functions.navigateTo
@@ -28,8 +30,6 @@ import com.example.llm_project_android.functions.saveUserInfo
 import com.example.llm_project_android.functions.setBoxField
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
-import kotlin.text.isNullOrEmpty
-
 
 class SignUpActivity2 : AppCompatActivity() {
 
@@ -90,7 +90,8 @@ class SignUpActivity2 : AppCompatActivity() {
         updateNextButton()
 
         // 이전 화면에서 받아온 데이터
-        source = intent.getStringExtra("source") ?: ""
+        val extras = getPassedExtras("source", String::class.java)
+        source = extras["source"] as? String ?: ""
 
         // 체크 박스 체크 취소
         gender.clearCheck()
@@ -315,11 +316,13 @@ class SignUpActivity2 : AppCompatActivity() {
                     fieldsToClear = listOf("name", "birthDate", "phoneNumber", "gender", "isMarried", "job")
                 )
             }
+            Log.d("2_back", "source: " +source)
             navigateTo(
                 targetActivity,
                 "source" to source,
                 reverseAnimation = true
             )
+
         }
     }
 
@@ -349,12 +352,14 @@ class SignUpActivity2 : AppCompatActivity() {
                     job = if (selectedJob == "기타") job_etc.text.toString() else selectedJob
                 )
             }
+            Log.d("2_next", "source: " +source)
 
             // 회원가입3 화면으로 이동
             navigateTo(
                 targetActivity,
                 "source" to source
             )
+
         }
     }
 
