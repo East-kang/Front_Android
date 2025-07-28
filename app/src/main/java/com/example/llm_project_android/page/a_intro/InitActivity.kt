@@ -10,9 +10,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.R
 import com.example.llm_project_android.db.MyDatabase
-import com.example.llm_project_android.functions.clearUserFields
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.functions.registerExitDialogOnBackPressed
+import com.example.llm_project_android.functions.resetUserTable
 import com.example.llm_project_android.page.b_signup.SignUpActivity1
 import com.example.llm_project_android.page.d_menu.ProfileView
 import kotlinx.coroutines.launch
@@ -34,8 +34,7 @@ class InitActivity : AppCompatActivity() {
 
         view.setOnClickListener {
             lifecycleScope.launch {
-                val dao = MyDatabase.getDatabase(this@InitActivity).getMyDao()
-                dao.deleteAllUsers()
+                resetUserTable(this@InitActivity)
             }
         }
 
@@ -48,10 +47,10 @@ class InitActivity : AppCompatActivity() {
         // 회원가입 버튼 클릭 이벤트
         btn_sign_up.setOnClickListener {
             // 내부 DB 데이터 초기화
-//            lifecycleScope.launch {
-//                val dao = MyDatabase.getDatabase(this@InitActivity).getMyDao()
-//                dao.deleteAllUsers()
-//            }
+            lifecycleScope.launch {
+                val dao = MyDatabase.getDatabase(this@InitActivity).getMyDao()
+                dao.deleteAllUsers()
+            }
 
             //화면 전환
             navigateTo(SignUpActivity1::class.java, "source" to "InitActivity")

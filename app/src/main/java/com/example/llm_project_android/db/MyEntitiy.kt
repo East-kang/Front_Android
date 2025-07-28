@@ -24,7 +24,7 @@ data class User(
     val subscriptions: List<String> = emptyList(),
     val createdAt: String = "",
     val modifiedAt: String = "",
-    val isLogin: Boolean = true,
+    val isLogin: Boolean = false,
     val isDeleted: Boolean = false
 ) {
     companion object {

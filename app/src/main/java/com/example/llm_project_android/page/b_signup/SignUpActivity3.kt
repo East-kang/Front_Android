@@ -2,7 +2,6 @@ package com.example.llm_project_android.page.b_signup
 
 import android.os.Bundle
 import android.view.MotionEvent
-import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageButton
@@ -13,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.R
 import com.example.llm_project_android.functions.clearUserDiseases
+import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.getUserInfo
 import com.example.llm_project_android.functions.handleTouchOutsideEditText
 import com.example.llm_project_android.functions.navigateTo
@@ -69,7 +69,8 @@ class SignUpActivity3 : AppCompatActivity() {
         )
 
         // 이전 화면에서 데이터 받아오기
-        source = intent.getStringExtra("source") ?: ""
+        val extras = getPassedExtras("source", String::class.java)
+        source = extras["source"] as? String ?: ""
 
         // 초기 설정 (버튼 비활성화)
         updateNextButton()
