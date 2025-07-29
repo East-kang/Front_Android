@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
@@ -30,6 +31,7 @@ class CategoryView : AppCompatActivity() {
     private lateinit var companyList: List<Button>
     private lateinit var filter: Spinner
     private lateinit var itemView: RecyclerView
+    private lateinit var btn_chat: FrameLayout
     private var category_num: Int = 0  // 현재 선택된 상품 카테고리 인덱스
     private var selectedSortType: String = ""
     private var data: String = ""
@@ -40,9 +42,6 @@ class CategoryView : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // SharedPreferences 초기화
-        //RecentViewedManager.init(applicationContext)
 
         enableEdgeToEdge()
         setContentView(R.layout.c_page_category_view)
@@ -76,6 +75,7 @@ class CategoryView : AppCompatActivity() {
         )
         filter = findViewById<Spinner>(R.id.list_filter)        // 목록 필터 스피너
         itemView = findViewById<RecyclerView>(R.id.item_group)  // 상품 목록 리사이클러 뷰
+        btn_chat = findViewById<FrameLayout>(R.id.chatButton)   // 채팅 버튼
 
         data = getPassedExtras("category", String::class.java)["category"] as? String? ?: ""
 
@@ -95,10 +95,12 @@ class CategoryView : AppCompatActivity() {
         sorting_Insurances({ type -> selectedSortType = type})
 
         // 아이템 클릭 이벤트
-        clickItems()
+        click_Items()
+
+        //
 
         // 뒤로가기 버튼 클릭 이벤트 (to MainViewActivity)
-        clickBackButton(btn_back, MainViewActivity::class.java)
+        clickBackButton(MainViewActivity::class.java)
     }
 
     // 상품 띄우기
@@ -125,7 +127,7 @@ class CategoryView : AppCompatActivity() {
     }
 
     // 상품 클릭 이벤트
-    private fun clickItems() {
+    private fun click_Items() {
         adapter.itemClick = object: InsuranceAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
                 val selectedItem = adapter.getItem(position)
@@ -235,8 +237,8 @@ class CategoryView : AppCompatActivity() {
     }
 
     // '뒤로가기' 버튼 클릭 이벤트 정의 함수
-    private fun AppCompatActivity.clickBackButton(backButton: View, targetActivity: Class<out AppCompatActivity>) {
-        backButton.setOnClickListener {
+    private fun AppCompatActivity.clickBackButton(targetActivity: Class<out AppCompatActivity>) {
+        btn_back.setOnClickListener {
             navigateTo(
                 targetActivity,
                 reverseAnimation = true

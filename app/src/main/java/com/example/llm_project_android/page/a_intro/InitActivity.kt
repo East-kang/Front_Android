@@ -15,6 +15,7 @@ import com.example.llm_project_android.functions.registerExitDialogOnBackPressed
 import com.example.llm_project_android.functions.resetUserTable
 import com.example.llm_project_android.functions.saveUserInfo
 import com.example.llm_project_android.page.b_signup.SignUpActivity1
+import com.example.llm_project_android.page.c_product.MainViewActivity
 import com.example.llm_project_android.page.d_menu.ProfileView
 import kotlinx.coroutines.launch
 
@@ -56,7 +57,7 @@ class InitActivity : AppCompatActivity() {
                 )
             }
             // navigateTo(LoginActivity::class.java)
-            navigateTo(ProfileView::class.java)
+            navigateTo(MainViewActivity::class.java)
         }
 
         // 회원가입 버튼 클릭 이벤트
