@@ -405,6 +405,7 @@ class ProfileView : AppCompatActivity() {
             finish()
             navigateTo(
                 MainViewActivity::class.java,
+                "source" to "ProfileView",
                 reverseAnimation = true
             )
         }
