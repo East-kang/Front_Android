@@ -23,6 +23,7 @@ import com.example.llm_project_android.functions.RecentViewedManager
 import com.example.llm_project_android.adapter.InsuranceAdapter
 import com.example.llm_project_android.adapter.ViewPageAdapter
 import com.example.llm_project_android.databinding.CPageMainViewBinding
+import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.functions.registerExitDialogOnBackPressed
 import com.example.llm_project_android.page.d_menu.ProfileView
@@ -43,10 +44,13 @@ class MainViewActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
 
     private lateinit var btn_chat: FrameLayout
+    private var source: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        RecentViewedManager.init(this)  // RecentViewedManager 초기화
 
         // 바인딩 초기화
         binding = CPageMainViewBinding.inflate(layoutInflater)
@@ -56,6 +60,8 @@ class MainViewActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        source = getPassedExtras("source", String::class.java)["source"] as? String
 
         drawerLayout = findViewById<DrawerLayout>(R.id.drawerLayout)    // 루트 Drawer 레이아웃 (네비게이션 메뉴용)
         btn_search = findViewById<ImageButton>(R.id.search_icon)        // 검색 버튼
@@ -192,6 +198,12 @@ class MainViewActivity : AppCompatActivity() {
 
     // 메뉴 기능
     private fun menu_control() {
+
+        if (source == null)                                 // 이전 화면이 메뉴를 통한 화면이 아닐 경우
+            drawerLayout.closeDrawer(GravityCompat.END)
+        else                                                // 이전 화면이 메뉴를 통한 화면일 경우
+            drawerLayout.openDrawer(GravityCompat.END)
+
         // 메뉴 열기
         menus[0].setOnClickListener {
             if (!drawerLayout.isDrawerOpen(GravityCompat.END))
