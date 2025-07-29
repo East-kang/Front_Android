@@ -42,15 +42,10 @@ class MainViewActivity : AppCompatActivity() {
     private lateinit var categories: List<Button>
     private lateinit var recyclerView: RecyclerView
 
-
     private lateinit var btn_chat: FrameLayout
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // SharedPreferences 초기화
-        RecentViewedManager.init(applicationContext)
         enableEdgeToEdge()
 
         // 바인딩 초기화
@@ -69,6 +64,7 @@ class MainViewActivity : AppCompatActivity() {
 
         val headerView = menuView.getHeaderView(0)
         val btn_menu_white = headerView.findViewById<ImageButton>(R.id.menu_icon_white)
+
 
         menus = listOf(                         // 메뉴 버튼 리스트 (0: 열기 버튼 / 1: 닫힘 버튼
             findViewById(R.id.menu_icon_black), // 메뉴 열기 버튼 (menus[0])
