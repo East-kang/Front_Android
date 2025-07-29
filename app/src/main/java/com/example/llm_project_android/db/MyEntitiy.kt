@@ -1,11 +1,9 @@
-// User 엔티티 정의
+// User 엔티티 정의 (내부 DB 테이블 스키마 정의)
 
 package com.example.llm_project_android.db
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-
-// 내부 DB 테이블 스키마 정의
 
 @Entity(tableName = "user_table")
 

@@ -27,6 +27,7 @@ import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.handleTouchOutsideEditText
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.functions.saveUserInfo
+import com.example.llm_project_android.page.a_intro.LoginActivity
 import com.example.llm_project_android.page.c_product.MainViewActivity
 import kotlinx.coroutines.launch
 
@@ -87,8 +88,8 @@ class SignUpActivity4 : AppCompatActivity() {
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity3)
         clickBackButton(SignUpActivity3::class.java)
 
-        // 다음 버튼 클릭 이벤트 (to SignUpActivity4)
-        clickCompletionButton(MainViewActivity::class.java)
+        // 다음 버튼 클릭 이벤트 (to LoginActivity)
+        clickCompletionButton(LoginActivity::class.java)
     }
 
     // ChipView / RecyclerView 활성화 처리 함수
