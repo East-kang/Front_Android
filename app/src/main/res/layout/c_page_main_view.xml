@@ -228,6 +228,7 @@
         </ScrollView>
 
         <FrameLayout
+            android:id="@+id/chatButton"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@drawable/design_circle_stroke"
