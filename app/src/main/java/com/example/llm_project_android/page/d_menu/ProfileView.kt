@@ -2,6 +2,7 @@ package com.example.llm_project_android.page.d_menu
 
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.AdapterView
@@ -19,13 +20,17 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.R
+import com.example.llm_project_android.db.MyDatabase
 import com.example.llm_project_android.functions.createFlexibleTextWatcher
 import com.example.llm_project_android.functions.handleTouchOutsideEditText
 import com.example.llm_project_android.functions.navigateTo
+import com.example.llm_project_android.functions.saveUserInfo
 import com.example.llm_project_android.functions.showConfirmDialog
 import com.example.llm_project_android.functions.showErrorDialog
 import com.example.llm_project_android.page.c_product.MainViewActivity
+import kotlinx.coroutines.launch
 
 class ProfileView : AppCompatActivity() {
 
@@ -94,7 +99,7 @@ class ProfileView : AppCompatActivity() {
     private var birth: Int = 0
     private var phone: String = ""
     private var gender: String = ""
-    private var married: String = ""
+    private var married: Boolean = false
     private var job: String = ""
 
     private var new_job: String = ""                // 변경할 직업 값
@@ -149,7 +154,6 @@ class ProfileView : AppCompatActivity() {
         job_spinner.adapter = adapter
 
         loadData()              // 프로필 값 불러오기
-        init_Profile()          // 초기 프로필 상태 불러오기
 
         click_BackButton()      // 뒤로가기 버튼 클릭 이벤트
         click_EditButton()      // 편집/완료 버튼 클릭 이벤트
@@ -165,24 +169,45 @@ class ProfileView : AppCompatActivity() {
 
     }
 
-    // (feature/common 브랜치에서 다시 함수 파일 만들 예정)
-    // 내부 DB 데이터 불러오기 (샘플 데이터로 대체)
+    // 내부 DB 데이터 불러오기
     fun loadData() {
-        id = "gildong2"
-        pw = "qwer1234"
-        email = "gildong22@naver.com"
-        name = "홍길동"
-        birth = 19980404
-        phone = "010-1234-5678"
-        gender = "남성"
-        married = "기혼"
-        job = "콩나물"     // 샘플 데이터
+        lifecycleScope.launch {
+            val dao = MyDatabase.getDatabase(this@ProfileView).getMyDao()
+            val user = dao.getLoggedInUser()
+
+            user?.let {
+                id = it.userId
+                pw = it.password
+                email = it.email
+                name = it.name
+                birth = it.birthDate.toIntOrNull() ?: 0
+                phone = it.phoneNumber
+                gender = it.gender
+                married = it.isMarried
+                job = it.job
+
+                // 데이터 로드 후 UI 반영
+                init_Profile()          // 초기 프로필 상태 불러오기
+                Log.d("처음", "it.isMarried: " + it.isMarried)
+                Log.d("처음", "married: " + it.isMarried)
+            }
+        }
     }
 
-    // (feature/common 브랜치에서 다시 함수 파일 만들 예정)
-    // 내부 DB 데이터 저장하기
+    // 내부 DB로 데이터 저장하기
     fun storeData() {
-
+        lifecycleScope.launch {
+            saveUserInfo(
+                context = this@ProfileView,
+                password = pw,
+                email = email,
+                birthDate = birth.toString(),
+                phoneNumber = phone.replace("-", ""),
+                gender = gender,
+                isMarried = married,
+                job = job
+            )
+        }
     }
 
     // 초기 프로필 데이터 적용 함수
@@ -194,7 +219,20 @@ class ProfileView : AppCompatActivity() {
         user_birth.setText(birth.toString())
         user_phone.setText(phone)
         user_gender.setText(gender)
-        user_married.setText(married)
+
+        if (gender == "남성")
+            radio_male.isChecked = true
+        else
+            radio_female.isChecked = true
+
+        if (married) {
+            user_married.setText("기혼")
+            radio_married.isChecked = true
+        } else {
+            user_married.setText("미혼")
+            radio_single.isChecked = true
+        }
+
         user_job.setText(job)
 
         toViewMode()    // 읽기 뷰 모드로 뷰 설정
@@ -309,10 +347,10 @@ class ProfileView : AppCompatActivity() {
 
         if (isMarriedChanged) {                                  // 결혼 여부 변경 시: 결혼 여부 데이터 변경, 변경된 값 EditText에 적용
             if (radio_single.isChecked) {
-                married = "미혼"
+                married = false
                 user_married.setText("미혼")
             } else {
-                married = "기혼"
+                married = true
                 user_married.setText("기혼")
             }
         }
@@ -329,6 +367,7 @@ class ProfileView : AppCompatActivity() {
     // 편집/완료 버튼 클릭 이벤트
     private fun click_EditButton() {
         btn_edit.setOnClickListener {
+            Log.d("클릭", "married: " + married)
             if (edit_state) {       // 편집 버튼 클릭 이벤트 (편집->읽기)
                 when {
                     !isPasswordValid -> showErrorDialog(this, "유효하지 않은 비밀번호 형식입니다.")    // 비밀번호 형식 오류
@@ -339,7 +378,7 @@ class ProfileView : AppCompatActivity() {
                     !isJobEtcValid -> showErrorDialog(this, "유효하지 않은 직업명 형식입니다.")        // 직업명 형식 오류
                     isPasswordChanged || isEmailChanged || isBirthChanged || isPhoneChanged                      // 데이터 변경 시
                             || isGenderChanged || isMarriedChanged || isJobChanged || isJobEtcChanged
-                        -> showConfirmDialog(this, "변경 사항을 저장하시겠습니까?") { result ->
+                        -> showConfirmDialog(this, "확인", "변경 사항을 저장하시겠습니까?") { result ->
                         if (result) {               // "예" 버튼 클릭 시
                             edit_state = false      // 상태: 편집 완료
                             toViewMode()            // 읽기 뷰 모드로 뷰 변환
@@ -363,6 +402,7 @@ class ProfileView : AppCompatActivity() {
     // 뒤로가기 버튼 클릭 이벤트
     private fun click_BackButton() {
         btn_back.setOnClickListener {
+            finish()
             navigateTo(
                 MainViewActivity::class.java,
                 reverseAnimation = true
@@ -372,7 +412,23 @@ class ProfileView : AppCompatActivity() {
 
     // 취소 버튼 클릭 이벤트
     private fun click_CancelButton() {
+
         // 편집 취소할건지 msgBox 물어보기
+        btn_cancel.setOnClickListener {
+            // 변경 사항 존재
+            if (isPasswordChanged || isEmailChanged || isBirthChanged || isPhoneChanged || isGenderChanged || isMarriedChanged || isJobChanged || isJobEtcChanged) {
+                showConfirmDialog(this, "확인", "변경을 취소하시겠습니까?") { result ->
+                    if (result) {
+                        edit_state = false
+                        init_Profile()            // 읽기 뷰 모드로 뷰 변환
+                    }
+                }
+            } else {    // 변경 사항 미존재
+                edit_state = false
+                init_Profile()
+            }
+
+        }
     }
 
     // 비밀번호 입력 이벤트
@@ -620,13 +676,13 @@ class ProfileView : AppCompatActivity() {
 
     // 결혼 여부 체크 이벤트
     private fun edit_married() {
-        if (married.trim() == "미혼") radio_single.isChecked = true else radio_married.isChecked = true
+        if (married) radio_married.isChecked = true else radio_single.isChecked = true
 
         group_married.setOnCheckedChangeListener { _, checkedID ->
             val selectedMarried = when (checkedID) {
-                R.id.radioSingle -> "미혼"
-                R.id.radioMarried -> "기혼"
-                else -> ""
+                R.id.radioSingle -> false
+                R.id.radioMarried -> true
+                else -> false
             }
             if (selectedMarried == married)
                 isMarriedChanged = false

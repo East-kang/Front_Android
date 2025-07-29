@@ -14,14 +14,15 @@ fun showErrorDialog(activity: Activity, message: String) {
         .show()
 }
 
-// 확인 메시지 창 정의
+// 예/아니오 메시지 창 정의
 fun showConfirmDialog(
     activity: Activity,
+    title: String,
     message: String,
     onResult: (Boolean) -> Unit  // true: 예, false: 아니오
 ) {
     AlertDialog.Builder(activity)
-        .setTitle("확인")
+        .setTitle(title)
         .setMessage(message)
         .setPositiveButton("예") { dialog, _ ->
             dialog.dismiss()
