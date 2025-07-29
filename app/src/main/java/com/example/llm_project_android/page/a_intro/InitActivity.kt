@@ -13,6 +13,7 @@ import com.example.llm_project_android.db.MyDatabase
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.functions.registerExitDialogOnBackPressed
 import com.example.llm_project_android.functions.resetUserTable
+import com.example.llm_project_android.functions.saveUserInfo
 import com.example.llm_project_android.page.b_signup.SignUpActivity1
 import com.example.llm_project_android.page.d_menu.ProfileView
 import kotlinx.coroutines.launch
@@ -32,6 +33,7 @@ class InitActivity : AppCompatActivity() {
         val btn_sign_up = findViewById<Button>(R.id.sign_up_Button)     // 회원가입 버튼 선언
         val view = findViewById<ImageView>(R.id.image)
 
+
         view.setOnClickListener {
             lifecycleScope.launch {
                 resetUserTable(this@InitActivity)
@@ -40,6 +42,19 @@ class InitActivity : AppCompatActivity() {
 
         // 로그인 버튼 클릭 이벤트
         btn_login.setOnClickListener {
+            lifecycleScope.launch {
+                saveUserInfo(
+                    context = this@InitActivity,
+                    userId = "jojojojo12",
+                    email = "as@as.com",
+                    name = "길동",
+                    birthDate = "19991111",
+                    phoneNumber = "010-2222-1111",
+                    gender = "남성",
+                    isMarried = true,
+                    job = "오리"
+                )
+            }
             // navigateTo(LoginActivity::class.java)
             navigateTo(ProfileView::class.java)
         }

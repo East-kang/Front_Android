@@ -8,7 +8,7 @@ import androidx.room.*
 interface MyDAO {
 
     // 유저 저장 또는 덮어쓰기 (로그인 시 사용)
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUser(user: User)
 
     // 유저 정보 가져오기 (로그인 유저 조회)

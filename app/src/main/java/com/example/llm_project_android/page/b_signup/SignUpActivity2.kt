@@ -2,7 +2,6 @@ package com.example.llm_project_android.page.b_signup
 
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.AdapterView
@@ -316,7 +315,7 @@ class SignUpActivity2 : AppCompatActivity() {
                     fieldsToClear = listOf("name", "birthDate", "phoneNumber", "gender", "isMarried", "job")
                 )
             }
-            Log.d("2_back", "source: " +source)
+
             navigateTo(
                 targetActivity,
                 "source" to source,
@@ -352,7 +351,6 @@ class SignUpActivity2 : AppCompatActivity() {
                     job = if (selectedJob == "기타") job_etc.text.toString() else selectedJob
                 )
             }
-            Log.d("2_next", "source: " +source)
 
             // 회원가입3 화면으로 이동
             navigateTo(
