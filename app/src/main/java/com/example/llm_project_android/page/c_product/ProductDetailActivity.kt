@@ -85,10 +85,10 @@ class ProductDetailActivity : AppCompatActivity() {
             bookmark.visibility = View.GONE
 
         if (isChecked_wish) {
-            btn_wish.setBackgroundResource(R.drawable.vector_image_ic_wish_on)
+            btn_wish.setImageResource(R.drawable.vector_image_ic_wish_on)
             isChecked_wish = true
         } else {
-            btn_wish.setBackgroundResource(R.drawable.vector_image_ic_wish_off)
+            btn_wish.setImageResource(R.drawable.vector_image_ic_wish_off)
             isChecked_wish = false
         }
     }
@@ -98,10 +98,10 @@ class ProductDetailActivity : AppCompatActivity() {
     fun click_WishButton() {
         btn_wish.setOnClickListener { 
             if (isChecked_wish) {
-                btn_wish.setBackgroundResource(R.drawable.vector_image_ic_wish_off)
+                btn_wish.setImageResource(R.drawable.vector_image_ic_wish_off)
                 isChecked_wish = false
             } else {
-                btn_wish.setBackgroundResource(R.drawable.vector_image_ic_wish_on)
+                btn_wish.setImageResource(R.drawable.vector_image_ic_wish_on)
                 isChecked_wish = true
             }
         }
