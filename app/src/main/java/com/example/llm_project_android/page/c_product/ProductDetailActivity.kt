@@ -121,7 +121,10 @@ class ProductDetailActivity : AppCompatActivity() {
         backButton.setOnClickListener {
             when (source) {
                 "MainViewActivity" -> navigateTo(targetActivity1, reverseAnimation = true)
-                "CategoryView" -> navigateTo(targetActivity2, reverseAnimation = true)
+                "CategoryView" -> navigateTo(
+                    targetActivity2,
+                    "category" to data["category"],
+                    reverseAnimation = true)
             }
         }
     }
