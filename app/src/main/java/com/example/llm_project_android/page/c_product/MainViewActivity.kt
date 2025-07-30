@@ -3,6 +3,7 @@ package com.example.llm_project_android.page.c_product
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.FrameStats
 import android.view.View
 import android.widget.Button
@@ -22,6 +23,7 @@ import com.example.llm_project_android.R
 import com.example.llm_project_android.functions.RecentViewedManager
 import com.example.llm_project_android.adapter.InsuranceAdapter
 import com.example.llm_project_android.adapter.ViewPageAdapter
+import com.example.llm_project_android.data.sample.Products_Insurance
 import com.example.llm_project_android.databinding.CPageMainViewBinding
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
@@ -45,6 +47,9 @@ class MainViewActivity : AppCompatActivity() {
 
     private lateinit var btn_chat: FrameLayout
     private var source: String? = null
+
+    private lateinit var adapter: InsuranceAdapter
+    private lateinit var recentAdapter: InsuranceAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,21 +97,29 @@ class MainViewActivity : AppCompatActivity() {
 
         btn_chat = findViewById(R.id.chatButton)
 
+        recentAdapter = InsuranceAdapter(ArrayList(arrayListOf()))        // 전역 adapter 초기화
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = recentAdapter
+
         // 배너 슬라이딩 기능
         setupViewPager(bannerList)
         startAutoScroll(bannerList)
 
         // 사이드 메뉴 클릭 이벤트
-        menu_control()
+        menu_Control()
 
         // 상품 검색
         search_Insurance()
 
         // 카테고리 클릭 이벤트
-        clickCategory()
+        click_Category()
+
+        // 최근 조회 상품 클릭 이벤트
+        click_Items()
 
         // 최근 조회 상품 목록 보여주기
-        recentItems()
+        recent_Items()
+
 
         // 메뉴 아이템 클릭 이벤트
         click_Menu_item()
@@ -168,7 +181,7 @@ class MainViewActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        recentItems() // 돌아올 때 항상 복구
+        recent_Items() // 돌아올 때 항상 복구
     }
 
     override fun onPause() {
@@ -177,7 +190,7 @@ class MainViewActivity : AppCompatActivity() {
     }
 
     // 카테고리 클릭 이벤트
-    private fun clickCategory() {
+    private fun click_Category() {
         for (i in 0 until categories.size) {
             categories[i].setOnClickListener {
                 navigateTo(
@@ -188,16 +201,33 @@ class MainViewActivity : AppCompatActivity() {
         }
     }
 
+    // 최근 조회 상품 클릭 이벤트
+    private fun click_Items() {
+        recentAdapter.itemClick = object : InsuranceAdapter.ItemClick {
+            override fun onClick(view: View, position: Int) {
+                val selectedItem = recentAdapter.getItem(position)
+                Log.d("","Click!")
+                navigateTo(
+                    ProductDetailActivity::class.java,
+                    "source" to "MainViewActivity",
+                    "company_icon" to selectedItem.company_icon,
+                    "company_name" to selectedItem.company_name,
+                    "category" to selectedItem.category,
+                    "insurance_name" to selectedItem.name,
+                    "recommendation" to selectedItem.recommendation
+                )
+            }
+        }
+    }
+
     // 최근 조회 목록 보여주기 함수
-    private fun recentItems() {
+    private fun recent_Items() {
         val recentItems = RecentViewedManager.getRecentItems()
-        val recentAdapter = InsuranceAdapter(ArrayList(recentItems))
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = recentAdapter
+        recentAdapter.updateList(recentItems)       // 리스트 갱신
     }
 
     // 메뉴 기능
-    private fun menu_control() {
+    private fun menu_Control() {
 
         if (source == null)                                 // 이전 화면이 메뉴를 통한 화면이 아닐 경우
             drawerLayout.closeDrawer(GravityCompat.END)
@@ -222,6 +252,7 @@ class MainViewActivity : AppCompatActivity() {
 
     // 메뉴 아이템 클릭 이벤트
     fun click_Menu_item() {
+
         menuView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.profile -> {           // '내 프로필' 버튼 클릭 이벤트
