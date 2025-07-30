@@ -128,7 +128,7 @@ class CategoryView : AppCompatActivity() {
 
     // 상품 클릭 이벤트
     private fun click_Items() {
-        adapter.itemClick = object: InsuranceAdapter.ItemClick {
+        adapter.itemClick = object : InsuranceAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
                 val selectedItem = adapter.getItem(position)
 
