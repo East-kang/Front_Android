@@ -3,6 +3,7 @@ package com.example.llm_project_android.page.d_menu
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.util.Log
+import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.widget.AdapterView
@@ -14,14 +15,18 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.biometric.BiometricPrompt
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.R
+import com.example.llm_project_android.databinding.DPageProfileViewBinding
 import com.example.llm_project_android.db.MyDatabase
 import com.example.llm_project_android.functions.createFlexibleTextWatcher
 import com.example.llm_project_android.functions.handleTouchOutsideEditText
@@ -31,6 +36,7 @@ import com.example.llm_project_android.functions.showConfirmDialog
 import com.example.llm_project_android.functions.showErrorDialog
 import com.example.llm_project_android.page.c_product.MainViewActivity
 import kotlinx.coroutines.launch
+import java.util.concurrent.Executor
 
 class ProfileView : AppCompatActivity() {
 
@@ -38,35 +44,26 @@ class ProfileView : AppCompatActivity() {
     private lateinit var btn_edit: Button
     private lateinit var btn_cancel: Button
 
-    private lateinit var user_id: TextView
-    private lateinit var user_name: TextView
-    private lateinit var user_gender: TextView
-    private lateinit var user_married: TextView
-    private lateinit var user_job: TextView
-    private lateinit var pw_rule: TextView
-    private lateinit var email_rule: TextView
-    private lateinit var birth_rule: TextView
-    private lateinit var phone_rule: TextView
-    private lateinit var job_rule: TextView
+    private lateinit var user_id: TextView;     private lateinit var user_name: TextView
+    private lateinit var user_gender: TextView; private lateinit var user_married: TextView
+    private lateinit var user_job: TextView;    private lateinit var pw_rule: TextView
+    private lateinit var email_rule: TextView;  private lateinit var birth_rule: TextView
+    private lateinit var phone_rule: TextView;  private lateinit var job_rule: TextView
 
     private lateinit var pw_field: ConstraintLayout
     private lateinit var line: View
 
-    private lateinit var user_pw: EditText
-    private lateinit var user_email: EditText
-    private lateinit var user_birth: EditText
-    private lateinit var user_phone: EditText
+    private lateinit var user_pw: EditText;     private lateinit var user_email: EditText
+    private lateinit var user_birth: EditText;  private lateinit var user_phone: EditText
     private lateinit var job_etc: EditText
 
-    private lateinit var group_gender: RadioGroup
-    private lateinit var group_married: RadioGroup
+    private lateinit var group_gender: RadioGroup;  private lateinit var group_married: RadioGroup
 
-    private lateinit var radio_male: RadioButton
-    private lateinit var radio_female: RadioButton
-    private lateinit var radio_single: RadioButton
-    private lateinit var radio_married: RadioButton
+    private lateinit var radio_male: RadioButton;   private lateinit var radio_female: RadioButton
+    private lateinit var radio_single: RadioButton; private lateinit var radio_married: RadioButton
 
     private lateinit var job_spinner: Spinner
+
 
     private var edit_state: Boolean = false         // 편집 여부 상태 변수 (true: 편집 중, false: 편집x)
 
@@ -77,7 +74,6 @@ class ProfileView : AppCompatActivity() {
     private var isJobValid: Boolean = true          // 기타 직업명 정규식 조건 만족 유효성
     private var isJobEtcValid: Boolean = true       // 기타 직업명 정규식 조건 만족 유효성
 
-
     private var isPasswordChanged: Boolean = false  // 비밀번호 변경 여부
     private var isEmailChanged: Boolean = false     // 이메일 변경 여부
     private var isBirthChanged: Boolean = false     // 생년월일 변경 여부
@@ -86,20 +82,19 @@ class ProfileView : AppCompatActivity() {
     private var isMarriedChanged: Boolean = false   // 결혼 여부 변경 여부
     private var isJobChanged: Boolean = false       // 직업 변경 여부
     private var isJobEtcChanged: Boolean = false    // 직업 변경 여부
-
     private var isJobRule: Boolean = false
 
     private lateinit var job_list: Array<String>
     private lateinit var adapter: ArrayAdapter<String>
 
-    private var id: String = ""
-    private var pw: String = ""
-    private var email: String = ""
-    private var name: String = ""
-    private var birth: Int = 0
-    private var phone: String = ""
-    private var gender: String = ""
-    private var married: Boolean = false
+    private lateinit var executor: Executor
+    private lateinit var biometricPrompt: BiometricPrompt
+    private lateinit var promptInfo: BiometricPrompt.PromptInfo
+
+    private var id: String = "";        private var pw: String = ""
+    private var email: String = "";     private var name: String = ""
+    private var birth: Int = 0;         private var phone: String = ""
+    private var gender: String = "";    private var married: Boolean = false
     private var job: String = ""
 
     private var new_job: String = ""                // 변경할 직업 값
@@ -213,7 +208,7 @@ class ProfileView : AppCompatActivity() {
     // 초기 프로필 데이터 적용 함수
     private fun init_Profile() {
         user_id.setText(id)
-        user_pw.setText(pw)
+        user_pw.setText("")
         user_email.setText(email)
         user_name.setText(name)
         user_birth.setText(birth.toString())
@@ -317,8 +312,10 @@ class ProfileView : AppCompatActivity() {
     // 프로필 뷰 변경 사항 반영 함수
     private fun changes_Profile() {
 
-        if (isPasswordChanged)                                  // 비밀변호 변경 시: 비밀번호 데이터 변경
+        if (isPasswordChanged) {                                // 비밀변호 변경 시: 비밀번호 데이터 변경
             pw = user_pw.text.toString()
+            user_pw.setText("")
+        }
 
         if (isEmailChanged) {                                   // 이메일 변경 시: 이메일 데이터 변경, 변경된 값 EditText에 적용
             email = user_email.text.toString()
@@ -360,14 +357,20 @@ class ProfileView : AppCompatActivity() {
             user_job.setText(job)
         }
 
+        // 유효성 초기화
+        isPasswordValid = true;       isEmailValid = true;       isBirthValid = true
+        isPhoneValid = true;          isJobValid = true;         isJobEtcValid = true
+
+        // 변경 상태 초기화
         isPasswordChanged = false;    isEmailChanged = false;    isBirthChanged = false;    isPhoneChanged = false
-        isGenderChanged = false;      isMarriedChanged = false;  isJobChanged = false;      isJobEtcChanged = false     // 변경 상태 초기화
+        isGenderChanged = false;      isMarriedChanged = false;  isJobChanged = false;      isJobEtcChanged = false
+
     }
 
-    // 편집/완료 버튼 클릭 이벤트
+    // 편집,완료 버튼 클릭 이벤트
     private fun click_EditButton() {
         btn_edit.setOnClickListener {
-            Log.d("클릭", "married: " + married)
+
             if (edit_state) {       // 편집 버튼 클릭 이벤트 (편집->읽기)
                 when {
                     !isPasswordValid -> showErrorDialog(this, "유효하지 않은 비밀번호 형식입니다.")    // 비밀번호 형식 오류
@@ -376,7 +379,23 @@ class ProfileView : AppCompatActivity() {
                     !isPhoneValid -> showErrorDialog(this, "유효하지 않은 전화번호 형식입니다.")       // 전화번호 형식 오류
                     !isJobValid -> showErrorDialog(this, "직업이 선택되지 않았습니다.")               // 직업 선택 오류
                     !isJobEtcValid -> showErrorDialog(this, "유효하지 않은 직업명 형식입니다.")        // 직업명 형식 오류
-                    isPasswordChanged || isEmailChanged || isBirthChanged || isPhoneChanged                      // 데이터 변경 시
+                    isPasswordChanged -> {
+                        fingerPrint(
+                            onSuccess = {
+                                edit_state = false      // 상태: 편집 완료
+                                toViewMode()            // 읽기 뷰 모드로 뷰 변환
+                                changes_Profile()       // 변경 데이터 적용
+                                storeData()             // 변경 데이터 내부 DB에 저장
+                            },
+                            onFailure = {
+
+                            },
+                            onCancel = {
+
+                            }
+                        )
+                    }                                                                                            // 비밀번호 변경 시
+                    isEmailChanged || isBirthChanged || isPhoneChanged                                           // 데이터 변경 시
                             || isGenderChanged || isMarriedChanged || isJobChanged || isJobEtcChanged
                         -> showConfirmDialog(this, "확인", "변경 사항을 저장하시겠습니까?") { result ->
                         if (result) {               // "예" 버튼 클릭 시
@@ -824,4 +843,43 @@ class ProfileView : AppCompatActivity() {
         return super.dispatchTouchEvent(ev)
     }
 
+    // 지문인식 기능
+    private fun fingerPrint(onSuccess: () -> Unit, onFailure: () -> Unit, onCancel: () -> Unit) {
+        executor = ContextCompat.getMainExecutor(this@ProfileView)
+        biometricPrompt = BiometricPrompt(this@ProfileView, executor,
+            object : BiometricPrompt.AuthenticationCallback() {
+
+                override fun onAuthenticationSucceeded(
+                    result: BiometricPrompt.AuthenticationResult) {
+                    super.onAuthenticationSucceeded(result)
+                    val toast = Toast.makeText(applicationContext, "프로필 수정 완료", Toast.LENGTH_SHORT)
+                    toast.setGravity(Gravity.BOTTOM, 0, 100)
+                    toast.show()
+                    onSuccess()
+                }
+
+                override fun onAuthenticationFailed() {
+                    super.onAuthenticationFailed()
+                    onFailure()
+                }
+
+                override fun onAuthenticationError(errorCode: Int,
+                                                   errString: CharSequence) {
+                    super.onAuthenticationError(errorCode, errString)
+                    if (errorCode == BiometricPrompt.ERROR_NEGATIVE_BUTTON ||
+                        errorCode == BiometricPrompt.ERROR_CANCELED) {
+                        onCancel()  // 인증 취소
+                    } else
+                        onFailure() // 그 외 오류 -> 실패 처리
+                }
+            })
+
+        promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle("지문 인증")
+            .setSubtitle("기기에 등록된 지문을 이용하여 지문을 인증해주세요")
+            .setNegativeButtonText("취소")
+            .build()
+
+        biometricPrompt.authenticate(promptInfo)
+    }
 }
