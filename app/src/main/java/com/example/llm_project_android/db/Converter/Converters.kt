@@ -1,6 +1,6 @@
 // Room에서 List<String> ↔ String 변환에 사용되는 TypeConverter 클래스
 
-package com.example.llm_project_android.db
+package com.example.llm_project_android.db.Converter
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson

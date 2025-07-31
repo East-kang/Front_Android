@@ -9,14 +9,13 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.R
-import com.example.llm_project_android.db.MyDatabase
+import com.example.llm_project_android.db.Users.MyDatabase
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.functions.registerExitDialogOnBackPressed
 import com.example.llm_project_android.functions.resetUserTable
 import com.example.llm_project_android.functions.saveUserInfo
 import com.example.llm_project_android.page.b_signup.SignUpActivity1
 import com.example.llm_project_android.page.c_product.MainViewActivity
-import com.example.llm_project_android.page.d_menu.ProfileView
 import kotlinx.coroutines.launch
 
 class InitActivity : AppCompatActivity() {

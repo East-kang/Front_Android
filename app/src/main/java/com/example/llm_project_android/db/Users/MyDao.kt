@@ -1,6 +1,6 @@
 // SQL 기반 데이터 접근 메서드 정의
 
-package com.example.llm_project_android.db
+package com.example.llm_project_android.db.Users
 
 import androidx.room.*
 
@@ -12,7 +12,7 @@ interface MyDAO {
     suspend fun insertUser(user: User)
 
     // 유저 정보 가져오기 (로그인 유저 조회)
-    @Query("SELECT * FROM user_table LIMIT 1")
+    @Query("SELECT * FROM users LIMIT 1")
     suspend fun getLoggedInUser(): User?
 
     // 유저 정보 수정 (부분 업데이트용)
@@ -20,7 +20,7 @@ interface MyDAO {
     suspend fun updateUser(user: User)
 
     // 전체 삭제 (로그아웃 시 사용)
-    @Query("DELETE FROM user_table")
+    @Query("DELETE FROM users")
     suspend fun deleteAllUsers()
 
     // 시퀀스 초기화

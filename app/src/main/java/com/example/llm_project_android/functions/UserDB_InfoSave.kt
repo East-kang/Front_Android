@@ -3,8 +3,8 @@
 package com.example.llm_project_android.functions
 
 import android.content.Context
-import com.example.llm_project_android.db.MyDatabase
-import com.example.llm_project_android.db.User
+import com.example.llm_project_android.db.Users.MyDatabase
+import com.example.llm_project_android.db.Users.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

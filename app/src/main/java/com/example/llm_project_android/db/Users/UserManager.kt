@@ -1,6 +1,6 @@
 // 유저 데이터를 고수준에서 관리하는 중간 레이어
 
-package com.example.llm_project_android.db
+package com.example.llm_project_android.db.Users
 
 import android.content.Context
 import kotlinx.coroutines.Dispatchers

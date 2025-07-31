@@ -1,4 +1,4 @@
-// 테이블 스키마 정의
+package com.example.llm_project_android.db.Users// 테이블 스키마 정의
 
 data class UserDto(
     val userId: String,
