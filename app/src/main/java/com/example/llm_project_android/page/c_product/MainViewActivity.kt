@@ -48,7 +48,6 @@ class MainViewActivity : AppCompatActivity() {
     private lateinit var btn_chat: FrameLayout
     private var source: String? = null
 
-    private lateinit var adapter: InsuranceAdapter
     private lateinit var recentAdapter: InsuranceAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
