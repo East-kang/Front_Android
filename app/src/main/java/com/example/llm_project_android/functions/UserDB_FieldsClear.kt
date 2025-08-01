@@ -3,12 +3,10 @@
 package com.example.llm_project_android.functions
 
 import android.content.Context
-import com.example.llm_project_android.db.MyDatabase
-import com.example.llm_project_android.db.User
+import com.example.llm_project_android.db.user.MyDatabase
+import com.example.llm_project_android.db.user.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 // 일부 데이터 초기화
 suspend fun clearUserFields(context: Context, fieldsToClear: List<String>) {
