@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.Spinner
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.toColorInt
@@ -22,6 +23,7 @@ import com.example.llm_project_android.adapter.InsuranceAdapter
 import com.example.llm_project_android.data.sample.Products_Insurance
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
+import com.example.llm_project_android.page.b_signup.SignUpActivity3
 
 class CategoryView : AppCompatActivity() {
 
@@ -99,8 +101,8 @@ class CategoryView : AppCompatActivity() {
 
         //
 
-        // 뒤로가기 버튼 클릭 이벤트 (to MainViewActivity)
-        clickBackButton(MainViewActivity::class.java)
+        // 뒤로가기 이벤트 (to MainViewActivity)
+        clickBackButton()
     }
 
     // 상품 띄우기
@@ -238,11 +240,20 @@ class CategoryView : AppCompatActivity() {
         )
     }
 
-    // '뒤로가기' 버튼 클릭 이벤트 정의 함수
-    private fun AppCompatActivity.clickBackButton(targetActivity: Class<out AppCompatActivity>) {
+    // 뒤로가기 이벤트 정의 함수
+    private fun AppCompatActivity.clickBackButton() {
+        // 뒤로가기 버튼 클릭
         btn_back.setOnClickListener {
             navigateTo(
-                targetActivity,
+                MainViewActivity::class.java,
+                reverseAnimation = true
+            )
+        }
+
+        // 기기 내장 뒤로가기 버튼 클릭
+        onBackPressedDispatcher.addCallback(this) {
+            navigateTo(
+                MainViewActivity::class.java,
                 reverseAnimation = true
             )
         }

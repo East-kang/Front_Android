@@ -87,9 +87,8 @@ class SignUpActivity4 : AppCompatActivity() {
         // Chip 존재 여부 실시간 확인
         updateByChipExistence({ is_Check_Confirmed = it })
 
-        // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity3)
+        // 뒤로가기 이벤트 (to SignUpActivity3)
         clickBackButton()
-        click_backpressdKey()
 
         // 다음 버튼 클릭 이벤트 (to LoginActivity)
         clickCompletionButton(LoginActivity::class.java)
@@ -231,8 +230,9 @@ class SignUpActivity4 : AppCompatActivity() {
         }
     }
 
-    // '뒤로가기' 버튼 클릭 이벤트 정의 함수
+    // 뒤로가기 이벤트 정의 함수
     fun AppCompatActivity.clickBackButton() {
+        // 뒤로가기 버튼 클릭
         btn_back.setOnClickListener {
             navigateTo(
                 SignUpActivity3::class.java,
@@ -240,10 +240,8 @@ class SignUpActivity4 : AppCompatActivity() {
                 reverseAnimation = true
             )
         }
-    }
 
-    // 기기 내장 뒤로가기 버튼 클릭 이벤트
-    private fun click_backpressdKey() {
+        // 기기 내장 뒤로가기 버튼 클릭
         onBackPressedDispatcher.addCallback(this) {
             navigateTo(
                 SignUpActivity3::class.java,
