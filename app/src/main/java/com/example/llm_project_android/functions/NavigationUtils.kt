@@ -1,11 +1,11 @@
+// 화면 전환 정의 함수 파일
+
 package com.example.llm_project_android.functions
 
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import com.example.llm_project_android.R
-
-// 화면 전환 정의 함수 파일
 
 // 화면 전환 함수
 fun Context.navigateTo(target: Class<out AppCompatActivity>, vararg extras: Pair<String, Any?>, reverseAnimation: Boolean = false) {

@@ -7,5 +7,7 @@ data class Insurance(
     var description: String,    // 상품 설명
     var payment: Int,           // 월 납입금
     var category: String,       // 보험 카테고리
-    var recommendation: Boolean  // AI 추천 여부
+    var recommendation: Boolean,// AI 추천 여부
+    var isWished: Boolean,      // 찜 여부
+    var wishedTimeStamp: Long = 0L  // 찜한 시간 기록
 )

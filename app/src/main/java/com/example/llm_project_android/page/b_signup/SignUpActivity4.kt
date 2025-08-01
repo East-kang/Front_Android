@@ -1,6 +1,7 @@
 package com.example.llm_project_android.page.b_signup
 
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
@@ -18,12 +19,17 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import kotlin.properties.Delegates
 import androidx.core.view.isNotEmpty
+import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.data.model.Product
 import com.example.llm_project_android.adapter.ProductContentAdapter
 import com.example.llm_project_android.R
 import com.example.llm_project_android.functions.getPassedExtras
+import com.example.llm_project_android.functions.handleTouchOutsideEditText
 import com.example.llm_project_android.functions.navigateTo
+import com.example.llm_project_android.functions.saveUserInfo
+import com.example.llm_project_android.page.a_intro.LoginActivity
 import com.example.llm_project_android.page.c_product.MainViewActivity
+import kotlinx.coroutines.launch
 
 class SignUpActivity4 : AppCompatActivity() {
 
@@ -40,11 +46,12 @@ class SignUpActivity4 : AppCompatActivity() {
     private val selectedProducts = mutableListOf<Product>()
 
     var is_Check_Confirmed: Boolean by Delegates.observable(true) { _, _, _ -> updateCompletionButton() }        // 체크 완료 여부
+    var source: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.page_sign_up_view4)
+        setContentView(R.layout.b_page_sign_up_view4)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -62,23 +69,9 @@ class SignUpActivity4 : AppCompatActivity() {
 
         insuranceList = resources.getStringArray(R.array.insurances).map { Product(it) }
 
-        // 이전 화면에서 데이터 받아오기
-        val data = getPassedExtras(
-            listOf(
-                "id" to String::class.java, "pw" to String::class.java,
-                "email" to String::class.java, "source" to String::class.java,          // SignUp1
-
-                "name" to String::class.java, "birth" to String::class.java,
-                "phone" to String::class.java, "gender" to String::class.java,
-                "married" to String::class.java, "job" to String::class.java,           // SignUp2
-
-                "disease0" to Boolean::class.java, "disease1" to Boolean::class.java,
-                "disease2" to Boolean::class.java, "disease3" to Boolean::class.java,
-                "disease4" to Boolean::class.java, "disease5" to Boolean::class.java,
-                "disease6" to Boolean::class.java, "disease7" to Boolean::class.java,
-                "disease8" to Boolean::class.java, "disease9" to Boolean::class.java    // SignUp3
-            )
-        )
+        // 이전 화면에서 받아온 데이터
+        val extras = getPassedExtras("source", String::class.java)
+        source = extras["source"] as? String ?: ""
 
         // 초기 설정 (버튼 비활성화)
         updateCompletionButton()
@@ -93,10 +86,10 @@ class SignUpActivity4 : AppCompatActivity() {
         updateByChipExistence({ is_Check_Confirmed = it })
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity3)
-        clickBackButton(btn_back, data.filter { it != null } as Map<String, Any>, SignUpActivity3::class.java)
+        clickBackButton(SignUpActivity3::class.java)
 
-        // 다음 버튼 클릭 이벤트 (to SignUpActivity4)
-        clickCompletionButton(btn_completion, data.filterValues { it != null } as Map<String, Any>, MainViewActivity::class.java)
+        // 다음 버튼 클릭 이벤트 (to LoginActivity)
+        clickCompletionButton(LoginActivity::class.java)
     }
 
     // ChipView / RecyclerView 활성화 처리 함수
@@ -119,9 +112,9 @@ class SignUpActivity4 : AppCompatActivity() {
                     isActived(View.GONE, View.GONE)
                     setInsuranceConfirmed(true)
 
-                    selectedProducts.clear()                                   // Chip 선택 항목 초기화
-                    tag_chip.removeAllViews()                               // ChipGroup 내 모든 chip 제거
-                    adapter.updateList(emptyList())                // RecyclerView 목록 초기화
+                    selectedProducts.clear()                             // Chip 선택 항목 초기화
+                    tag_chip.removeAllViews()                            // ChipGroup 내 모든 chip 제거
+                    adapter.updateList(emptyList())                      // RecyclerView 목록 초기화
                     search_insurance.setQuery("", false)    // 검색창 텍스트 제거
                 }
             }
@@ -236,19 +229,19 @@ class SignUpActivity4 : AppCompatActivity() {
     }
 
     // '뒤로가기' 버튼 클릭 이벤트 정의 함수
-    fun AppCompatActivity.clickBackButton(backButton: View, data: Map<String, Any>, targetActivity: Class<out AppCompatActivity>) {
-        backButton.setOnClickListener {
+    fun AppCompatActivity.clickBackButton(targetActivity: Class<out AppCompatActivity>) {
+        btn_back.setOnClickListener {
             navigateTo(
                 targetActivity,
-                *data.mapValues { it.value }.toList().toTypedArray(),
+                "source" to source,
                 reverseAnimation = true
             )
         }
     }
 
     // '완료' 버튼 클릭 이벤트 정의 함수
-    fun AppCompatActivity.clickCompletionButton(nextButton: View, data: Map<String, Any>, targetActivity: Class<out AppCompatActivity>) {
-        nextButton.setOnClickListener {
+    fun AppCompatActivity.clickCompletionButton(targetActivity: Class<out AppCompatActivity>) {
+        btn_completion.setOnClickListener {
             // Chip 텍스트 배열로 추출
             val chipTexts = ArrayList<String>().apply() {
                 for (i in 0 until tag_chip.childCount) {
@@ -256,11 +249,23 @@ class SignUpActivity4 : AppCompatActivity() {
                     if (child is Chip) add(child.text.toString())
                 }
             }
+
+            lifecycleScope.launch {
+                saveUserInfo(
+                    context = this@SignUpActivity4,
+                    subscriptions = chipTexts
+                )
+            }
+
             navigateTo(
-                targetActivity,
-                *data.mapValues { it.value }.toList().toTypedArray(),
-                 "insurances" to chipTexts
-            )
+                targetActivity
+                /* , +중앙 db에 데이터 전송 기능 */)
         }
+    }
+
+    // 키보드 숨기기 이벤트 (editText 이외의 영역을 눌렀을 경우, 스크롤 제외)
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        handleTouchOutsideEditText(this, ev)
+        return super.dispatchTouchEvent(ev)
     }
 }

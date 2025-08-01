@@ -3,13 +3,13 @@ package com.example.llm_project_android.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.llm_project_android.databinding.DesignItemBannerBinding
+import com.example.llm_project_android.databinding.ZDesignItemBannerBinding
 
 // MainViewActivity.kt  : 배너 기능
 class ViewPageAdapter(private val images : List<Int>) :
     RecyclerView.Adapter<ViewPageAdapter.BannerViewHolder>() {
 
-    inner class BannerViewHolder(private val binding : DesignItemBannerBinding) :
+    inner class BannerViewHolder(private val binding : ZDesignItemBannerBinding) :
         RecyclerView.ViewHolder(binding.root){
         fun bind(item : Int) {
             binding.ivBanner.setImageResource(item)
@@ -17,7 +17,7 @@ class ViewPageAdapter(private val images : List<Int>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BannerViewHolder {
-        val binding = DesignItemBannerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ZDesignItemBannerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return BannerViewHolder(binding)
     }
 

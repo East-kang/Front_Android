@@ -3,8 +3,11 @@ package com.example.llm_project_android.page.c_product
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
+import android.view.FrameStats
 import android.view.View
 import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -20,14 +23,18 @@ import com.example.llm_project_android.R
 import com.example.llm_project_android.functions.RecentViewedManager
 import com.example.llm_project_android.adapter.InsuranceAdapter
 import com.example.llm_project_android.adapter.ViewPageAdapter
-import com.example.llm_project_android.databinding.PageMainViewBinding
+import com.example.llm_project_android.data.sample.Products_Insurance
+import com.example.llm_project_android.databinding.CPageMainViewBinding
+import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.functions.registerExitDialogOnBackPressed
+import com.example.llm_project_android.page.d_menu.ProfileView
+import com.example.llm_project_android.page.e_chat.ChatView
 import com.google.android.material.navigation.NavigationView
 import kotlin.math.abs
 
 class MainViewActivity : AppCompatActivity() {
-    private lateinit var binding: PageMainViewBinding
+    private lateinit var binding: CPageMainViewBinding
     private val sliderHandler = Handler(Looper.getMainLooper())
     private lateinit var sliderRunnable: Runnable
 
@@ -38,22 +45,28 @@ class MainViewActivity : AppCompatActivity() {
     private lateinit var categories: List<Button>
     private lateinit var recyclerView: RecyclerView
 
+    private lateinit var btn_chat: FrameLayout
+    private var source: String? = null
+
+    private lateinit var adapter: InsuranceAdapter
+    private lateinit var recentAdapter: InsuranceAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // SharedPreferences 초기화
-        RecentViewedManager.init(applicationContext)
         enableEdgeToEdge()
 
+        RecentViewedManager.init(this)  // RecentViewedManager 초기화
+
         // 바인딩 초기화
-        binding = PageMainViewBinding.inflate(layoutInflater)
+        binding = CPageMainViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.drawerLayout)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        source = getPassedExtras("source", String::class.java)["source"] as? String
 
         drawerLayout = findViewById<DrawerLayout>(R.id.drawerLayout)    // 루트 Drawer 레이아웃 (네비게이션 메뉴용)
         btn_search = findViewById<ImageButton>(R.id.search_icon)        // 검색 버튼
@@ -63,17 +76,18 @@ class MainViewActivity : AppCompatActivity() {
         val headerView = menuView.getHeaderView(0)
         val btn_menu_white = headerView.findViewById<ImageButton>(R.id.menu_icon_white)
 
+
         menus = listOf(                         // 메뉴 버튼 리스트 (0: 열기 버튼 / 1: 닫힘 버튼
             findViewById(R.id.menu_icon_black), // 메뉴 열기 버튼 (menus[0])
             btn_menu_white                      // 메뉴 닫기 버튼 (menus[1])
         )
-        categories= listOf(                     // 카테고리 버튼 리스트
-            findViewById(R.id.category0),       // categories[0]
-            findViewById(R.id.category1),       // categories[1]
-            findViewById(R.id.category2),       // categories[2]
-            findViewById(R.id.category3),       // categories[3]
-            findViewById(R.id.category4),       // categories[4]
-            findViewById(R.id.category5)        // categories[5]
+        categories= listOf(                     // 상품 카테고리 버튼 리스트
+            findViewById(R.id.category0),       // categories[0] (암)
+            findViewById(R.id.category1),       // categories[1] (건강)
+            findViewById(R.id.category2),       // categories[2] (사망)
+            findViewById(R.id.category3),       // categories[3] (저축/연금)
+            findViewById(R.id.category4),       // categories[4] (유아)
+            findViewById(R.id.category5)        // categories[5] (기타)
         )
         val bannerList = listOf(                    // 배너 아이템 리스트
             R.drawable.image_birth_icon,            // 배너 아이템 0 (bannerList[0])
@@ -81,30 +95,34 @@ class MainViewActivity : AppCompatActivity() {
             R.drawable.image_name_icon              // 배너 아이템 2 (bannerList[2])
         )
 
+        btn_chat = findViewById(R.id.chatButton)
+
+        recentAdapter = InsuranceAdapter(ArrayList(arrayListOf()))        // 전역 adapter 초기화
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = recentAdapter
+
         // 배너 슬라이딩 기능
         setupViewPager(bannerList)
         startAutoScroll(bannerList)
 
         // 사이드 메뉴 클릭 이벤트
-        menu_control()
+        menu_Control()
 
         // 상품 검색
         search_Insurance()
 
         // 카테고리 클릭 이벤트
-        clickCategory()
+        click_Category()
+
+        // 최근 조회 상품 클릭 이벤트
+        click_Items()
 
         // 최근 조회 상품 목록 보여주기
-        recentItems()
+        recent_Items()
 
-        // 프로필 뷰 이동
-        goTo_Profile_View()
 
-        // 찜목록 뷰 이동
-        goTo_WishList_View()
-
-        // 가입한 보험 뷰 이동
-        goTo_JoinedInsurance_View()
+        // 메뉴 아이템 클릭 이벤트
+        click_Menu_item()
 
         // 채팅 뷰 이동
         goTo_Chat_View()
@@ -163,7 +181,7 @@ class MainViewActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        recentItems() // 돌아올 때 항상 복구
+        recent_Items() // 돌아올 때 항상 복구
     }
 
     override fun onPause() {
@@ -172,7 +190,7 @@ class MainViewActivity : AppCompatActivity() {
     }
 
     // 카테고리 클릭 이벤트
-    private fun clickCategory() {
+    private fun click_Category() {
         for (i in 0 until categories.size) {
             categories[i].setOnClickListener {
                 navigateTo(
@@ -183,16 +201,40 @@ class MainViewActivity : AppCompatActivity() {
         }
     }
 
+    // 최근 조회 상품 클릭 이벤트
+    private fun click_Items() {
+        recentAdapter.itemClick = object : InsuranceAdapter.ItemClick {
+            override fun onClick(view: View, position: Int) {
+                val selectedItem = recentAdapter.getItem(position)
+                Log.d("","Click!")
+                navigateTo(
+                    ProductDetailActivity::class.java,
+                    "source" to "MainViewActivity",
+                    "company_icon" to selectedItem.company_icon,
+                    "company_name" to selectedItem.company_name,
+                    "category" to selectedItem.category,
+                    "insurance_name" to selectedItem.name,
+                    "recommendation" to selectedItem.recommendation,
+                    "isWished" to selectedItem.isWished
+                )
+            }
+        }
+    }
+
     // 최근 조회 목록 보여주기 함수
-    private fun recentItems() {
+    private fun recent_Items() {
         val recentItems = RecentViewedManager.getRecentItems()
-        val recentAdapter = InsuranceAdapter(ArrayList(recentItems))
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = recentAdapter
+        recentAdapter.updateList(recentItems)       // 리스트 갱신
     }
 
     // 메뉴 기능
-    private fun menu_control() {
+    private fun menu_Control() {
+
+        if (source == null)                                 // 이전 화면이 메뉴를 통한 화면이 아닐 경우
+            drawerLayout.closeDrawer(GravityCompat.END)
+        else                                                // 이전 화면이 메뉴를 통한 화면일 경우
+            drawerLayout.openDrawer(GravityCompat.END)
+
         // 메뉴 열기
         menus[0].setOnClickListener {
             if (!drawerLayout.isDrawerOpen(GravityCompat.END))
@@ -209,15 +251,35 @@ class MainViewActivity : AppCompatActivity() {
     // 검색 기능
     fun search_Insurance() {}
 
-    // 프로필 페이지 전환
-    fun goTo_Profile_View() {}
+    // 메뉴 아이템 클릭 이벤트
+    fun click_Menu_item() {
 
-    // 찜목록 페이지 전환
-    fun goTo_WishList_View() {}
-
-    // 가입한 보험 페이지 전환
-    fun goTo_JoinedInsurance_View() {}
+        menuView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.profile -> {           // '내 프로필' 버튼 클릭 이벤트
+                    navigateTo(ProfileView::class.java, "source" to "MainViewActivity")
+                    true    // 이벤트 종료
+                }
+                R.id.wishList -> {          // '찜 목록' 버튼 클릭 이벤트
+                    
+                    true
+                }
+                R.id.joined_insurance -> {  // '가입한 내 보험' 버튼 클릭 이벤트
+                    
+                    true
+                }
+                else -> false
+            }
+        }
+    }
 
     // 채팅 페이지 전환
-    fun goTo_Chat_View() {}
+    fun goTo_Chat_View() {
+        btn_chat.setOnClickListener{
+            navigateTo(
+                ChatView::class.java,
+                "source" to "MainView"
+            )
+        }
+    }
 }
