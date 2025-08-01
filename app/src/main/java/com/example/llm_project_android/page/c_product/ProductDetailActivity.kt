@@ -10,9 +10,14 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.R
+import com.example.llm_project_android.data.sample.Products_Insurance
+import com.example.llm_project_android.db.Users.MyDatabase
+import com.example.llm_project_android.db.Users.UserManager
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
+import kotlinx.coroutines.launch
 
 class ProductDetailActivity : AppCompatActivity() {
 
@@ -27,8 +32,16 @@ class ProductDetailActivity : AppCompatActivity() {
     private lateinit var insurance_name: TextView
 
     private lateinit var data: Map<String, Any?>
+    private lateinit var userManager: UserManager
 
-    var isChecked_wish: Boolean = false
+    private var source: String = ""
+    private var data_icon: Int = 0
+    private var data_company: String = ""
+    private var data_category:String = ""
+    private var data_name: String = ""
+    private var data_recommendation: Boolean = false
+    private var data_isWished: Boolean = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +53,9 @@ class ProductDetailActivity : AppCompatActivity() {
             insets
         }
 
+        // 초기화
+        userManager = UserManager(this)
+
         btn_back = findViewById<ImageButton>(R.id.backButton)
         btn_wish = findViewById<ImageButton>(R.id.wishList_button)
         btn_compare = findViewById<Button>(R.id.compare_button)
@@ -50,6 +66,7 @@ class ProductDetailActivity : AppCompatActivity() {
         bookmark = findViewById<TextView>(R.id.bookmark)
         insurance_name = findViewById<TextView>(R.id.insurance_name)
 
+
         // 이전 화면에서 받아온 데이터
         data = getPassedExtras(
             listOf(
@@ -58,51 +75,88 @@ class ProductDetailActivity : AppCompatActivity() {
                 "company_name" to String::class.java,
                 "category" to String::class.java,
                 "insurance_name" to String::class.java,
-                "recommendation" to Boolean::class.java
+                "recommendation" to Boolean::class.java,
+                "isWished" to Boolean::class.java
             )
         )
         
-        // 상품 내용 반영
+        // 초기 진입 반영 반영
         init()
 
         // 찜 버튼 클릭 이벤트
         click_WishButton()
         
         // 뒤로가기 버튼 클릭 이벤트
-        clickBackButton(btn_back, data["source"] as String, MainViewActivity::class.java,  CategoryView::class.java)
+        clickBackButton(MainViewActivity::class.java, CategoryView::class.java)
     }
 
-    // 상품 내용 반영
+    // 초기 진입 반영
     fun init() {
-        icon.setBackgroundResource(data["company_icon"] as Int)
-        company_name.text = data["company_name"] as String
-        category.text = data["category"] as String
-        insurance_name.text = data["insurance_name"] as String
+        source = data["source"] as String
+        data_icon = data["company_icon"] as Int
+        data_company = data["company_name"] as String
+        data_category = data["category"] as String
+        data_name = data["insurance_name"] as String
+        data_recommendation = data["recommendation"] as Boolean     // 아이템 값 저장
 
-        if (data["recommendation"] as Boolean)
-            bookmark.visibility = View.VISIBLE
-        else
-            bookmark.visibility = View.GONE
+        // 찜 여부 확인
+        lifecycleScope.launch {
+            val db = MyDatabase.getDatabase(this@ProductDetailActivity)
+            val user = db.getMyDao().getLoggedInUser() ?: return@launch
+            val wishDao = db.getUserWishListDao()
 
-        if (isChecked_wish) {
-            btn_wish.setImageResource(R.drawable.vector_image_ic_wish_on)
-            isChecked_wish = true
-        } else {
-            btn_wish.setImageResource(R.drawable.vector_image_ic_wish_off)
-            isChecked_wish = false
+            val wishItem = wishDao.getWishItem(user.id, data_name)
+            data_isWished = (wishItem != null)
+            updateWishButtonUI()
         }
+
+        // 아이템 디자인
+        icon.setBackgroundResource(data_icon)
+        company_name.text = data_company
+        category.text = data_category
+        insurance_name.text = data_name
+        bookmark.visibility = if (data_recommendation) View.VISIBLE else View.GONE
     }
 
+    // 찜 버튼 UI 업데이트
+    private fun updateWishButtonUI() {
+        if (data_isWished)
+            btn_wish.setImageResource(R.drawable.vector_image_ic_wish_on)
+        else
+            btn_wish.setImageResource(R.drawable.vector_image_ic_wish_off)
+    }
 
     // 찜 목록 버튼 클릭 이벤트 정의 함수
     fun click_WishButton() {
-        btn_wish.setOnClickListener { 
-            if (isChecked_wish) {
-                btn_wish.setImageResource(R.drawable.vector_image_ic_wish_off)
-                isChecked_wish = false
-            } else {
-                btn_wish.setImageResource(R.drawable.vector_image_ic_wish_on)
-                isChecked_wish = true
+        btn_wish.setOnClickListener {
+            lifecycleScope.launch {
+                val user = userManager.getUser() ?: return@launch
+                val db = MyDatabase.getDatabase(this@ProductDetailActivity)
+                val wishDao = db.getUserWishListDao()
+
+                val existingWish = wishDao.getWishItem(user.id, data_name)
+
+                if (existingWish != null) {
+                    // 이미 찜 → 삭제
+                    wishDao.deleteWishByProduct(user.id, data_name)
+                    data_isWished = false
+                    btn_wish.setImageResource(R.drawable.vector_image_ic_wish_off)
+                } else {
+                    // 새로운 찜 → 추가
+                    val newWish = UserWishList(userId = user.id, productName = data_name)
+                    wishDao.insertWish(newWish)
+                    data_isWished = true
+                    btn_wish.setImageResource(R.drawable.vector_image_ic_wish_on)
+                }
+
+                // UI 반영
+                updateWishButtonUI()
+
+                // 메모리 내 상품 리스트 상태 동기화
+                Products_Insurance.productList.find { it.name == data_name }?.apply {
+                    isWished = data_isWished
+                    wishedTimeStamp = if (data_isWished) System.currentTimeMillis() else 0L
+                }
             }
         }
     }
@@ -117,8 +171,8 @@ class ProductDetailActivity : AppCompatActivity() {
     }
 
     // '뒤로가기' 버튼 클릭 이벤트 정의 함수
-    fun AppCompatActivity.clickBackButton(backButton: View, source: String, targetActivity1: Class<out AppCompatActivity>, targetActivity2: Class<out AppCompatActivity>) {
-        backButton.setOnClickListener {
+    fun AppCompatActivity.clickBackButton(targetActivity1: Class<out AppCompatActivity>, targetActivity2: Class<out AppCompatActivity>) {
+        btn_back.setOnClickListener {
             when (source) {
                 "MainViewActivity" -> navigateTo(targetActivity1, reverseAnimation = true)
                 "CategoryView" -> navigateTo(

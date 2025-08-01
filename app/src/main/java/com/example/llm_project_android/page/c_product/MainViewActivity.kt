@@ -212,7 +212,8 @@ class MainViewActivity : AppCompatActivity() {
                     "company_name" to selectedItem.company_name,
                     "category" to selectedItem.category,
                     "insurance_name" to selectedItem.name,
-                    "recommendation" to selectedItem.recommendation
+                    "recommendation" to selectedItem.recommendation,
+                    "isWished" to selectedItem.isWished
                 )
             }
         }

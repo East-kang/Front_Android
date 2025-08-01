@@ -7,7 +7,12 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+<<<<<<<< HEAD:app/src/main/java/com/example/llm_project_android/db/Users/MyDataBase.kt
+import com.example.llm_project_android.db.Converter.Converters
+import com.example.llm_project_android.db.Users.User
+========
 import com.example.llm_project_android.db.converter.Converters
+>>>>>>>> c21d2fdee798c3bd8221462e4bf9e3886670ad93:app/src/main/java/com/example/llm_project_android/db/user/MyDataBase.kt
 
 //Room database의 기본틀
 @Database(entities = [User::class], version = 1, exportSchema = false)
@@ -24,7 +29,7 @@ abstract class MyDatabase : RoomDatabase() {    // RoomDatabase 상속
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     MyDatabase::class.java,
-                    "user_database"
+                    "users"
                 ).build()
                 INSTANCE = instance
                 instance
