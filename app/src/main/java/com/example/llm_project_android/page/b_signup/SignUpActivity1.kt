@@ -109,9 +109,8 @@ class SignUpActivity1 : AppCompatActivity() {
         pw_eye_visibility(btn_eye, pw_text, { pw_visible }, { pw_visible = it })
         pw_eye_visibility(btn_eye_check, pw_check, { pw_check_visible }, { pw_check_visible = it })
 
-        // 뒤로가기 버튼 클릭 이벤트 (to InitActivity or LoginActivity)
+        // 뒤로가기 이벤트 (to InitActivity or LoginActivity)
         clickBackButton()
-        click_backpressdKey()
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity2)
         clickNextButton(SignUpActivity2::class.java)
@@ -318,8 +317,9 @@ class SignUpActivity1 : AppCompatActivity() {
                         } } }))
     }
 
-    // '뒤로가기' 버튼 클릭 이벤트 정의 함수
+    // 뒤로가기 이벤트 정의 함수
     fun AppCompatActivity.clickBackButton() {
+        // 뒤로가기 버튼 클릭
         btn_back.setOnClickListener {
             lifecycleScope.launch {
                 clearUserFields(
@@ -327,17 +327,14 @@ class SignUpActivity1 : AppCompatActivity() {
                     fieldsToClear = listOf("userId", "password", "email")
                 )
             }
-
             when (source) {
                 "InitActivity" -> navigateTo(InitActivity::class.java, reverseAnimation = true)   // 초기화된 화면
                 "LoginActivity" -> navigateTo(LoginActivity::class.java, reverseAnimation = true) // 값 유지된 화면
                 else -> finish()
             }
         }
-    }
 
-    // 기기 내장 뒤로가기 버튼 클릭 이벤트
-    private fun click_backpressdKey() {
+        // 기기 내장 뒤로가기 버튼 클릭
         onBackPressedDispatcher.addCallback(this) {
             lifecycleScope.launch {
                 clearUserFields(
@@ -345,7 +342,6 @@ class SignUpActivity1 : AppCompatActivity() {
                     fieldsToClear = listOf("userId", "password", "email")
                 )
             }
-
             when (source) {
                 "InitActivity" -> navigateTo(InitActivity::class.java, reverseAnimation = true)   // 초기화된 화면
                 "LoginActivity" -> navigateTo(LoginActivity::class.java, reverseAnimation = true) // 값 유지된 화면

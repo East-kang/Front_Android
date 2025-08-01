@@ -80,9 +80,8 @@ class SignUpActivity3 : AppCompatActivity() {
         // item 체크
         items_check({ is_Checked_Confirmed }, { is_Checked_Confirmed = it })
 
-        // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity2)
+        // 뒤로가기 이벤트 (to SignUpActivity2)
         clickBackButton()
-        click_backpressdKey()
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity4)
         clickNextButton(SignUpActivity4::class.java)
@@ -153,8 +152,9 @@ class SignUpActivity3 : AppCompatActivity() {
         }
     }
 
-    // '뒤로가기' 버튼 클릭 이벤트 정의 함수
+    // 뒤로가기 이벤트 정의 함수
     fun AppCompatActivity.clickBackButton() {
+        // 뒤로가기 버튼 클릭
         btn_back.setOnClickListener {
             lifecycleScope.launch {
                 clearUserDiseases(this@SignUpActivity3)
@@ -165,10 +165,8 @@ class SignUpActivity3 : AppCompatActivity() {
                 reverseAnimation = true
             )
         }
-    }
 
-    // 기기 내장 뒤로가기 버튼 클릭 이벤트
-    private fun click_backpressdKey() {
+        // 기기 내장 뒤로가기 버튼 클릭
         onBackPressedDispatcher.addCallback(this) {
             lifecycleScope.launch {
                 clearUserDiseases(this@SignUpActivity3)

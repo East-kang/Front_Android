@@ -1,11 +1,13 @@
 package com.example.llm_project_android.page.c_product
 
+import UserManager
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -13,8 +15,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.R
 import com.example.llm_project_android.data.sample.Products_Insurance
-import com.example.llm_project_android.db.Users.MyDatabase
-import com.example.llm_project_android.db.Users.UserManager
+import com.example.llm_project_android.db.user.MyDatabase
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
 import kotlinx.coroutines.launch
@@ -86,8 +87,8 @@ class ProductDetailActivity : AppCompatActivity() {
         // 찜 버튼 클릭 이벤트
         click_WishButton()
         
-        // 뒤로가기 버튼 클릭 이벤트
-        clickBackButton(MainViewActivity::class.java, CategoryView::class.java)
+        // 뒤로가기 이벤트
+        clickBackButton()
     }
 
     // 초기 진입 반영
@@ -99,16 +100,6 @@ class ProductDetailActivity : AppCompatActivity() {
         data_name = data["insurance_name"] as String
         data_recommendation = data["recommendation"] as Boolean     // 아이템 값 저장
 
-        // 찜 여부 확인
-        lifecycleScope.launch {
-            val db = MyDatabase.getDatabase(this@ProductDetailActivity)
-            val user = db.getMyDao().getLoggedInUser() ?: return@launch
-            val wishDao = db.getUserWishListDao()
-
-            val wishItem = wishDao.getWishItem(user.id, data_name)
-            data_isWished = (wishItem != null)
-            updateWishButtonUI()
-        }
 
         // 아이템 디자인
         icon.setBackgroundResource(data_icon)
@@ -132,19 +123,15 @@ class ProductDetailActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 val user = userManager.getUser() ?: return@launch
                 val db = MyDatabase.getDatabase(this@ProductDetailActivity)
-                val wishDao = db.getUserWishListDao()
 
-                val existingWish = wishDao.getWishItem(user.id, data_name)
 
-                if (existingWish != null) {
+                if (data_isWished != null) {
                     // 이미 찜 → 삭제
-                    wishDao.deleteWishByProduct(user.id, data_name)
+
                     data_isWished = false
                     btn_wish.setImageResource(R.drawable.vector_image_ic_wish_off)
                 } else {
                     // 새로운 찜 → 추가
-                    val newWish = UserWishList(userId = user.id, productName = data_name)
-                    wishDao.insertWish(newWish)
                     data_isWished = true
                     btn_wish.setImageResource(R.drawable.vector_image_ic_wish_on)
                 }
@@ -170,13 +157,25 @@ class ProductDetailActivity : AppCompatActivity() {
 
     }
 
-    // '뒤로가기' 버튼 클릭 이벤트 정의 함수
-    fun AppCompatActivity.clickBackButton(targetActivity1: Class<out AppCompatActivity>, targetActivity2: Class<out AppCompatActivity>) {
+    // 뒤로가기 이벤트 정의 함수
+    fun AppCompatActivity.clickBackButton() {
+        // 뒤로가기 버튼 클릭
         btn_back.setOnClickListener {
             when (source) {
-                "MainViewActivity" -> navigateTo(targetActivity1, reverseAnimation = true)
+                "MainViewActivity" -> navigateTo(MainViewActivity::class.java, reverseAnimation = true)
                 "CategoryView" -> navigateTo(
-                    targetActivity2,
+                    CategoryView::class.java,
+                    "category" to data["category"],
+                    reverseAnimation = true)
+            }
+        }
+
+        // 기기 내장 뒤로가기 버튼 클릭
+        onBackPressedDispatcher.addCallback(this) {
+            when (source) {
+                "MainViewActivity" -> navigateTo(MainViewActivity::class.java, reverseAnimation = true)
+                "CategoryView" -> navigateTo(
+                    CategoryView::class.java,
                     "category" to data["category"],
                     reverseAnimation = true)
             }
