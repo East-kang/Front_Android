@@ -15,8 +15,6 @@ import com.example.llm_project_android.R
 import com.example.llm_project_android.data.sample.Products_Insurance
 import com.example.llm_project_android.db.Users.MyDatabase
 import com.example.llm_project_android.db.Users.UserManager
-import com.example.llm_project_android.db.WishList.UserWishList
-import com.example.llm_project_android.db.WishList.UserWishListDao
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
 import kotlinx.coroutines.launch
