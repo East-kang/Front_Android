@@ -1,6 +1,5 @@
 package com.example.llm_project_android.page.c_product
 
-import UserManager
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -16,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.R
 import com.example.llm_project_android.data.sample.Products_Insurance
 import com.example.llm_project_android.db.user.MyDatabase
+import com.example.llm_project_android.db.user.UserManager
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
 import kotlinx.coroutines.launch
