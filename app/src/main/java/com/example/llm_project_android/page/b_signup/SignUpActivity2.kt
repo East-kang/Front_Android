@@ -12,6 +12,7 @@ import android.widget.ImageButton
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Spinner
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.toColorInt
@@ -27,6 +28,8 @@ import com.example.llm_project_android.functions.handleTouchOutsideEditText
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.functions.saveUserInfo
 import com.example.llm_project_android.functions.setBoxField
+import com.example.llm_project_android.page.a_intro.InitActivity
+import com.example.llm_project_android.page.a_intro.LoginActivity
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
@@ -119,7 +122,8 @@ class SignUpActivity2 : AppCompatActivity() {
         select_job({ job -> selectedJob = job }, { is_Job_Confirmed }, { is_Job_Confirmed = it }, { is_Etc_Confirmed }, { is_Etc_Confirmed = it })
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity1)
-        clickBackButton(SignUpActivity1::class.java)
+        clickBackButton()
+        click_backpressdKey()
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity3)
         clickNextButton(SignUpActivity3::class.java)
@@ -307,7 +311,7 @@ class SignUpActivity2 : AppCompatActivity() {
     }
 
     // '뒤로가기' 버튼 클릭 이벤트 정의 함수
-    fun AppCompatActivity.clickBackButton(targetActivity: Class<out AppCompatActivity>) {
+    fun AppCompatActivity.clickBackButton() {
         btn_back.setOnClickListener {
             lifecycleScope.launch {
                 clearUserFields(
@@ -317,11 +321,28 @@ class SignUpActivity2 : AppCompatActivity() {
             }
 
             navigateTo(
-                targetActivity,
+                SignUpActivity1::class.java,
                 "source" to source,
                 reverseAnimation = true
             )
+        }
+    }
 
+    // 기기 내장 뒤로가기 버튼 클릭 이벤트
+    private fun click_backpressdKey() {
+        onBackPressedDispatcher.addCallback(this) {
+            lifecycleScope.launch {
+                clearUserFields(
+                    context = this@SignUpActivity2,
+                    fieldsToClear = listOf("name", "birthDate", "phoneNumber", "gender", "isMarried", "job")
+                )
+            }
+
+            navigateTo(
+                SignUpActivity1::class.java,
+                "source" to source,
+                reverseAnimation = true
+            )
         }
     }
 
