@@ -9,7 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.R
-import com.example.llm_project_android.db.Users.MyDatabase
+import com.example.llm_project_android.db.user.MyDatabase
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.functions.registerExitDialogOnBackPressed
 import com.example.llm_project_android.functions.resetUserTable

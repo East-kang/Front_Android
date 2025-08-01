@@ -1,6 +1,10 @@
 // User 엔티티 정의 (내부 DB 테이블 스키마 정의)
 
+<<<<<<<< HEAD:app/src/main/java/com/example/llm_project_android/db/Users/Users.kt
 package com.example.llm_project_android.db.Users
+========
+package com.example.llm_project_android.db.user
+>>>>>>>> c21d2fdee798c3bd8221462e4bf9e3886670ad93:app/src/main/java/com/example/llm_project_android/db/user/MyEntitiy.kt
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
