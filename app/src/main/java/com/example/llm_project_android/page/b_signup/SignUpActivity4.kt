@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import androidx.activity.addCallback
 import androidx.appcompat.widget.SearchView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +24,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.data.model.Product
 import com.example.llm_project_android.adapter.ProductContentAdapter
 import com.example.llm_project_android.R
+import com.example.llm_project_android.functions.clearUserDiseases
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.handleTouchOutsideEditText
 import com.example.llm_project_android.functions.navigateTo
@@ -86,7 +88,8 @@ class SignUpActivity4 : AppCompatActivity() {
         updateByChipExistence({ is_Check_Confirmed = it })
 
         // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity3)
-        clickBackButton(SignUpActivity3::class.java)
+        clickBackButton()
+        click_backpressdKey()
 
         // 다음 버튼 클릭 이벤트 (to LoginActivity)
         clickCompletionButton(LoginActivity::class.java)
@@ -229,10 +232,21 @@ class SignUpActivity4 : AppCompatActivity() {
     }
 
     // '뒤로가기' 버튼 클릭 이벤트 정의 함수
-    fun AppCompatActivity.clickBackButton(targetActivity: Class<out AppCompatActivity>) {
+    fun AppCompatActivity.clickBackButton() {
         btn_back.setOnClickListener {
             navigateTo(
-                targetActivity,
+                SignUpActivity3::class.java,
+                "source" to source,
+                reverseAnimation = true
+            )
+        }
+    }
+
+    // 기기 내장 뒤로가기 버튼 클릭 이벤트
+    private fun click_backpressdKey() {
+        onBackPressedDispatcher.addCallback(this) {
+            navigateTo(
+                SignUpActivity3::class.java,
                 "source" to source,
                 reverseAnimation = true
             )
