@@ -15,7 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.R
 import com.example.llm_project_android.data.sample.Products_Insurance
 import com.example.llm_project_android.db.user.MyDatabase
-import com.example.llm_project_android.db.user.UserManager
+import com.example.llm_project_android.db.wishList.WishedManager
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
 import kotlinx.coroutines.launch
@@ -33,7 +33,6 @@ class ProductDetailActivity : AppCompatActivity() {
     private lateinit var insurance_name: TextView
 
     private lateinit var data: Map<String, Any?>
-    private lateinit var userManager: UserManager
 
     private var source: String = ""
     private var data_icon: Int = 0
@@ -42,6 +41,8 @@ class ProductDetailActivity : AppCompatActivity() {
     private var data_name: String = ""
     private var data_recommendation: Boolean = false
     private var data_isWished: Boolean = false
+
+    lateinit var wishedManager: WishedManager
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +56,7 @@ class ProductDetailActivity : AppCompatActivity() {
         }
 
         // 초기화
-        userManager = UserManager(this)
+        wishedManager = WishedManager(this)
 
         btn_back = findViewById<ImageButton>(R.id.backButton)
         btn_wish = findViewById<ImageButton>(R.id.wishList_button)
@@ -76,8 +77,7 @@ class ProductDetailActivity : AppCompatActivity() {
                 "company_name" to String::class.java,
                 "category" to String::class.java,
                 "insurance_name" to String::class.java,
-                "recommendation" to Boolean::class.java,
-                "isWished" to Boolean::class.java
+                "recommendation" to Boolean::class.java
             )
         )
         
@@ -98,8 +98,7 @@ class ProductDetailActivity : AppCompatActivity() {
         data_company = data["company_name"] as String
         data_category = data["category"] as String
         data_name = data["insurance_name"] as String
-        data_recommendation = data["recommendation"] as Boolean     // 아이템 값 저장
-
+        data_recommendation = data["recommendation"] as Boolean
 
         // 아이템 디자인
         icon.setBackgroundResource(data_icon)
@@ -107,6 +106,12 @@ class ProductDetailActivity : AppCompatActivity() {
         category.text = data_category
         insurance_name.text = data_name
         bookmark.visibility = if (data_recommendation) View.VISIBLE else View.GONE
+
+        // 찜 여부
+        lifecycleScope.launch {
+            data_isWished = wishedManager.isWished(data_name)     // 아이템 값 저장
+            updateWishButtonUI() // UI 반영
+        }
     }
 
     // 찜 버튼 UI 업데이트
@@ -121,29 +126,15 @@ class ProductDetailActivity : AppCompatActivity() {
     fun click_WishButton() {
         btn_wish.setOnClickListener {
             lifecycleScope.launch {
-                val user = userManager.getUser() ?: return@launch
-                val db = MyDatabase.getDatabase(this@ProductDetailActivity)
-
-
-                if (data_isWished != null) {
-                    // 이미 찜 → 삭제
-
+                if (data_isWished) {    // 찜 → 해제
+                    wishedManager.removeWish(data_name)
                     data_isWished = false
-                    btn_wish.setImageResource(R.drawable.vector_image_ic_wish_off)
-                } else {
-                    // 새로운 찜 → 추가
+                } else {                // 해제 -> 찜
+                    wishedManager.addWish(data_name)
                     data_isWished = true
-                    btn_wish.setImageResource(R.drawable.vector_image_ic_wish_on)
                 }
-
                 // UI 반영
                 updateWishButtonUI()
-
-                // 메모리 내 상품 리스트 상태 동기화
-                Products_Insurance.productList.find { it.name == data_name }?.apply {
-                    isWished = data_isWished
-                    wishedTimeStamp = if (data_isWished) System.currentTimeMillis() else 0L
-                }
             }
         }
     }

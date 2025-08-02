@@ -14,8 +14,7 @@ import com.example.llm_project_android.data.model.Insurance
                 description = "일상생활에서 발생할 수 있는 다양한 질병과 상해를 보장합니다.",
                 payment = 8,
                 category = "건강",
-                recommendation = true,
-                isWished = false
+                recommendation = true
             ),
             Insurance(
                 company_icon = R.drawable.image_logo_samsung,
@@ -24,8 +23,7 @@ import com.example.llm_project_android.data.model.Insurance
                 description = "보험료 인상 없이 1천만원 보장하는 수술보험입니다.",
                 payment = 3,
                 category = "암",
-                recommendation = false,
-                isWished = false
+                recommendation = false
             ),
         Insurance(
             company_icon = R.drawable.image_logo_samsung,
@@ -34,8 +32,7 @@ import com.example.llm_project_android.data.model.Insurance
             description = "사망 시 유가족에게 경제적 안정을 보장하는 종신보험입니다.",
             payment = 12,
             category = "사망",
-            recommendation = true,
-            isWished = false
+            recommendation = true
         ),
         Insurance(
             company_icon = R.drawable.image_logo_samsung,
@@ -44,8 +41,7 @@ import com.example.llm_project_android.data.model.Insurance
             description = "은퇴 후 안정적인 노후 생활을 위한 연금을 제공합니다.",
             payment = 15,
             category = "연금",
-            recommendation = true,
-            isWished = false
+            recommendation = true
         ),
 
         // 현대해상
@@ -56,8 +52,7 @@ import com.example.llm_project_android.data.model.Insurance
             description = "각종 질병과 입원, 수술비를 보장하는 종합 건강보험입니다.",
             payment = 9,
             category = "건강",
-            recommendation = false,
-            isWished = false
+            recommendation = false
         ),
         Insurance(
             company_icon = R.drawable.image_logo_hyundai,
@@ -66,8 +61,7 @@ import com.example.llm_project_android.data.model.Insurance
             description = "암 진단부터 치료까지 폭넓게 보장하는 암 전문 보험입니다.",
             payment = 4,
             category = "암",
-            recommendation = false,
-            isWished = false
+            recommendation = false
         ),
         Insurance(
             company_icon = R.drawable.image_logo_hyundai,
@@ -76,8 +70,7 @@ import com.example.llm_project_android.data.model.Insurance
             description = "입원·외래·약제비까지 실제 발생한 병원비를 보장합니다.",
             payment = 4,
             category = "실손",
-            recommendation = false,
-            isWished = false
+            recommendation = false
         ),
         Insurance(
             company_icon = R.drawable.image_logo_hyundai,
@@ -86,8 +79,7 @@ import com.example.llm_project_android.data.model.Insurance
             description = "교통사고 시 형사·벌금·치료비까지 폭넓게 보장합니다.",
             payment = 2,
             category = "운전자",
-            recommendation = false,
-            isWished = false
+            recommendation = false
         ),
 
         // KB손해보험
@@ -98,8 +90,7 @@ import com.example.llm_project_android.data.model.Insurance
             description = "질병과 상해를 종합적으로 보장하는 건강보험입니다.",
             payment = 15,
             category = "건강",
-            recommendation = true,
-            isWished = false
+            recommendation = true
         ),
         Insurance(
             company_icon = R.drawable.image_logo_kb,
@@ -108,8 +99,7 @@ import com.example.llm_project_android.data.model.Insurance
             description = "암 진단 시 고액 보장과 치료비를 보장합니다.",
             payment = 6,
             category = "암",
-            recommendation = false,
-            isWished = false
+            recommendation = false
         ),
         Insurance(
             company_icon = R.drawable.image_logo_kb,
@@ -118,8 +108,7 @@ import com.example.llm_project_android.data.model.Insurance
             description = "실제 지출한 병원비를 보장하는 기본 실손 보험입니다.",
             payment = 3,
             category = "실손",
-            recommendation = false,
-            isWished = false
+            recommendation = false
         ),
         Insurance(
             company_icon = R.drawable.image_logo_kb,
@@ -128,8 +117,7 @@ import com.example.llm_project_android.data.model.Insurance
             description = "교통사고 처리 지원 및 변호사 비용까지 보장합니다.",
             payment = 2,
             category = "운전자",
-            recommendation = false,
-            isWished = false
+            recommendation = false
         )
     )
 }
