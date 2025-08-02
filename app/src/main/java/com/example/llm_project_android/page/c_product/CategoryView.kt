@@ -23,7 +23,6 @@ import com.example.llm_project_android.adapter.InsuranceAdapter
 import com.example.llm_project_android.data.sample.Products_Insurance
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
-import com.example.llm_project_android.page.b_signup.SignUpActivity3
 
 class CategoryView : AppCompatActivity() {
 
@@ -141,8 +140,7 @@ class CategoryView : AppCompatActivity() {
                     "company_name" to selectedItem.company_name,
                     "category" to selectedItem.category,
                     "insurance_name" to selectedItem.name,
-                    "recommendation" to selectedItem.recommendation,
-                    "isWished" to selectedItem.isWished
+                    "recommendation" to selectedItem.recommendation
                 )
             }
         }

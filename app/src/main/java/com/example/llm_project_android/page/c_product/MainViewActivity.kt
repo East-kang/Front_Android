@@ -204,7 +204,7 @@ class MainViewActivity : AppCompatActivity() {
         recentAdapter.itemClick = object : InsuranceAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
                 val selectedItem = recentAdapter.getItem(position)
-                Log.d("","Click!")
+
                 navigateTo(
                     ProductDetailActivity::class.java,
                     "source" to "MainViewActivity",
@@ -212,8 +212,7 @@ class MainViewActivity : AppCompatActivity() {
                     "company_name" to selectedItem.company_name,
                     "category" to selectedItem.category,
                     "insurance_name" to selectedItem.name,
-                    "recommendation" to selectedItem.recommendation,
-                    "isWished" to selectedItem.isWished
+                    "recommendation" to selectedItem.recommendation
                 )
             }
         }

@@ -89,7 +89,6 @@ class SignUpActivity1 : AppCompatActivity() {
         val extras = getPassedExtras("source", String::class.java)
         source = extras["source"] as? String ?: ""  // source 값 intent에서 수신
 
-        Log.d("1_source", "source: " +source)
         // 초기 설정 (버튼 비활성화, 입력 값 초기화)
         updateNextButton()
 
