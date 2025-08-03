@@ -3,18 +3,20 @@ package com.example.llm_project_android.page.c_product
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import android.view.FrameStats
 import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.appcompat.widget.SearchView
+import androidx.core.widget.NestedScrollView
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
@@ -22,7 +24,10 @@ import androidx.viewpager2.widget.MarginPageTransformer
 import com.example.llm_project_android.R
 import com.example.llm_project_android.functions.RecentViewedManager
 import com.example.llm_project_android.adapter.InsuranceAdapter
+import com.example.llm_project_android.adapter.ProductContentAdapter
 import com.example.llm_project_android.adapter.ViewPageAdapter
+import com.example.llm_project_android.data.model.Insurance
+import com.example.llm_project_android.data.model.Product
 import com.example.llm_project_android.data.sample.Products_Insurance
 import com.example.llm_project_android.databinding.CPageMainViewBinding
 import com.example.llm_project_android.functions.getPassedExtras
@@ -39,14 +44,25 @@ class MainViewActivity : AppCompatActivity() {
     private lateinit var sliderRunnable: Runnable
 
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var topBar: ConstraintLayout
     private lateinit var btn_search: ImageButton
     private lateinit var menuView: NavigationView
     private lateinit var menus: List<ImageButton>
+
+    private lateinit var search_area: ConstraintLayout
+    private lateinit var btn_back: ImageButton
+    private lateinit var search_box: SearchView
+
+    private lateinit var scrollView: NestedScrollView
     private lateinit var categories: List<Button>
     private lateinit var recyclerView: RecyclerView
 
     private lateinit var btn_chat: FrameLayout
     private var source: String? = null
+
+    private lateinit var adapter: ProductContentAdapter
+    private var insuranceList: List<Product> = emptyList()  // 문자열 배열 -> Post 객체 리스트로 변환
+    private val selectedProducts = mutableListOf<Product>()
 
     private lateinit var recentAdapter: InsuranceAdapter
 
@@ -68,13 +84,18 @@ class MainViewActivity : AppCompatActivity() {
         source = getPassedExtras("source", String::class.java)["source"] as? String
 
         drawerLayout = findViewById<DrawerLayout>(R.id.drawerLayout)    // 루트 Drawer 레이아웃 (네비게이션 메뉴용)
+        topBar = findViewById<ConstraintLayout>(R.id.topBar)            // 상단 바 영역
         btn_search = findViewById<ImageButton>(R.id.search_icon)        // 검색 버튼
         menuView = findViewById<NavigationView>(R.id.navigationView)    // 사이드 메뉴
+        search_area = findViewById<ConstraintLayout>(R.id.search_area)  // 검색 영역
+        btn_back = findViewById<ImageButton>(R.id.backButton)           // 검색 취소 버튼
+        search_box = findViewById<SearchView>(R.id.search_box)          // 검색창
+        scrollView = findViewById<NestedScrollView>(R.id.scrollView)    // 스크롤 뷰
         recyclerView = findViewById<RecyclerView>(R.id.item_group)      // 최근 조회 상품 목록
+        btn_chat = findViewById(R.id.chatButton)
 
         val headerView = menuView.getHeaderView(0)
         val btn_menu_white = headerView.findViewById<ImageButton>(R.id.menu_icon_white)
-
 
         menus = listOf(                         // 메뉴 버튼 리스트 (0: 열기 버튼 / 1: 닫힘 버튼
             findViewById(R.id.menu_icon_black), // 메뉴 열기 버튼 (menus[0])
@@ -94,39 +115,39 @@ class MainViewActivity : AppCompatActivity() {
             R.drawable.image_name_icon              // 배너 아이템 2 (bannerList[2])
         )
 
-        btn_chat = findViewById(R.id.chatButton)
+        insuranceList = Products_Insurance.productList.map { insurance -> Product(insurance.name) }
+        adapter = ProductContentAdapter(insuranceList)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
+        recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
+
 
         recentAdapter = InsuranceAdapter(ArrayList(arrayListOf()))        // 전역 adapter 초기화
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = recentAdapter
 
-        // 배너 슬라이딩 기능
+        init()                      // 초기 레이아웃 구성
+
         setupViewPager(bannerList)
-        startAutoScroll(bannerList)
+        startAutoScroll(bannerList) // 배너 슬라이딩 기능
 
-        // 사이드 메뉴 클릭 이벤트
-        menu_Control()
+        menu_Control()              // 사이드 메뉴 클릭 이벤트
+        search_Insurance()          // 상품 검색
+        click_Category()            // 카테고리 클릭 이벤트
+        click_Items()               // 최근 조회 상품 클릭 이벤트
+        recent_Items()              // 최근 조회 상품 목록 보여주기
+        click_Menu_item()           // 메뉴 아이템 클릭 이벤트
+        goTo_Chat_View()            // 채팅 뷰 이동
 
-        // 상품 검색
-        search_Insurance()
+        registerExitDialogOnBackPressed()   // 기기 내장 뒤로가기 버튼 클릭 이벤트
+    }
 
-        // 카테고리 클릭 이벤트
-        click_Category()
-
-        // 최근 조회 상품 클릭 이벤트
-        click_Items()
-
-        // 최근 조회 상품 목록 보여주기
-        recent_Items()
-
-        // 메뉴 아이템 클릭 이벤트
-        click_Menu_item()
-
-        // 채팅 뷰 이동
-        goTo_Chat_View()
-
-        // 기기 내장 뒤로가기 버튼 클릭 이벤트
-        registerExitDialogOnBackPressed()
+    // 초기 구성
+    private fun init() {
+        topBar.visibility = View.VISIBLE
+        scrollView.visibility = View.VISIBLE
+        btn_chat.visibility = View.VISIBLE
+        search_area.visibility = View.GONE
     }
 
     // 배너 양 옆 이미지 노출 함수
@@ -246,7 +267,61 @@ class MainViewActivity : AppCompatActivity() {
     }
 
     // 검색 기능
-    fun search_Insurance() {}
+    fun search_Insurance() {
+        click_searchButton()    // 검색 버튼 클릭
+        click_backButton()      // 뒤로가기 버튼 클릭
+        active_searchBar()      // 검색창 클릭 이벤트
+    }
+    
+    // 검색 버튼 클릭 이벤트
+    fun click_searchButton() {
+        btn_search.setOnClickListener {
+            topBar.visibility = View.GONE
+            scrollView.visibility = View.GONE
+            btn_chat.visibility = View.GONE
+            search_area.visibility = View.VISIBLE   // UI 반영
+        }
+    }
+
+    // 뒤로가기 버튼 클릭 이벤트
+    fun click_backButton() {
+        btn_back.setOnClickListener {
+            init()  // UI 반영
+            search_box.setQuery("", false)  // SearchView 내용 초기화
+            adapter.updateList(emptyList())              // RecyclerView 목록 초기화
+        }
+    }
+
+    // 검색창 클릭 이벤트
+    fun active_searchBar() {
+        // 검색창 리스너
+        search_box.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean = false
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val filtered = insuranceList.filter { it.title.contains(newText ?: "", ignoreCase = true) }
+                adapter.updateList(filtered)
+                return true
+            }
+        })
+
+        // 아이템 클릭 이벤트
+        adapter.setOnItemClickListener { post ->
+            val selectedInsurance = Products_Insurance.productList.find { it.name == post.title }
+            search_box.setQuery("", false)
+
+            if (selectedInsurance != null) {
+                navigateTo(
+                    ProductDetailActivity::class.java,
+                    "company_icon" to selectedInsurance.company_icon,
+                    "company_name" to selectedInsurance.company_name,
+                    "category" to selectedInsurance.category,
+                    "insurance_name" to selectedInsurance.name,
+                    "recommendation" to selectedInsurance.recommendation
+                )
+            }
+        }
+    }
 
     // 메뉴 아이템 클릭 이벤트
     fun click_Menu_item() {
