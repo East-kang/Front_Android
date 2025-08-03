@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -88,7 +89,6 @@ class SignUpActivity1 : AppCompatActivity() {
         val extras = getPassedExtras("source", String::class.java)
         source = extras["source"] as? String ?: ""  // source 값 intent에서 수신
 
-        Log.d("1_source", "source: " +source)
         // 초기 설정 (버튼 비활성화, 입력 값 초기화)
         updateNextButton()
 
@@ -108,8 +108,8 @@ class SignUpActivity1 : AppCompatActivity() {
         pw_eye_visibility(btn_eye, pw_text, { pw_visible }, { pw_visible = it })
         pw_eye_visibility(btn_eye_check, pw_check, { pw_check_visible }, { pw_check_visible = it })
 
-        // 뒤로가기 버튼 클릭 이벤트 (to InitActivity or LoginActivity)
-        clickBackButton(InitActivity::class.java, LoginActivity::class.java)
+        // 뒤로가기 이벤트 (to InitActivity or LoginActivity)
+        clickBackButton()
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity2)
         clickNextButton(SignUpActivity2::class.java)
@@ -316,8 +316,9 @@ class SignUpActivity1 : AppCompatActivity() {
                         } } }))
     }
 
-    // '뒤로가기' 버튼 클릭 이벤트 정의 함수
-    fun AppCompatActivity.clickBackButton(targetActivity1: Class<out AppCompatActivity>, targetActivity2: Class<out AppCompatActivity>) {
+    // 뒤로가기 이벤트 정의 함수
+    fun AppCompatActivity.clickBackButton() {
+        // 뒤로가기 버튼 클릭
         btn_back.setOnClickListener {
             lifecycleScope.launch {
                 clearUserFields(
@@ -325,10 +326,24 @@ class SignUpActivity1 : AppCompatActivity() {
                     fieldsToClear = listOf("userId", "password", "email")
                 )
             }
-
             when (source) {
-                "InitActivity" -> navigateTo(targetActivity1, reverseAnimation = true)   // 초기화된 화면
-                "LoginActivity" -> navigateTo(targetActivity2, reverseAnimation = true) // 값 유지된 화면
+                "InitActivity" -> navigateTo(InitActivity::class.java, reverseAnimation = true)   // 초기화된 화면
+                "LoginActivity" -> navigateTo(LoginActivity::class.java, reverseAnimation = true) // 값 유지된 화면
+                else -> finish()
+            }
+        }
+
+        // 기기 내장 뒤로가기 버튼 클릭
+        onBackPressedDispatcher.addCallback(this) {
+            lifecycleScope.launch {
+                clearUserFields(
+                    context = this@SignUpActivity1,
+                    fieldsToClear = listOf("userId", "password", "email")
+                )
+            }
+            when (source) {
+                "InitActivity" -> navigateTo(InitActivity::class.java, reverseAnimation = true)   // 초기화된 화면
+                "LoginActivity" -> navigateTo(LoginActivity::class.java, reverseAnimation = true) // 값 유지된 화면
                 else -> finish()
             }
         }

@@ -1,14 +1,13 @@
 // Room DB 객체 생성과 싱글톤 관리. DB와 DAO 연결 역할
 
-package com.example.llm_project_android.db
+package com.example.llm_project_android.db.user
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.llm_project_android.db.Converter.Converters
-import com.example.llm_project_android.db.Users.User
+import com.example.llm_project_android.db.converter.Converters
 
 //Room database의 기본틀
 @Database(entities = [User::class], version = 1, exportSchema = false)
@@ -25,7 +24,7 @@ abstract class MyDatabase : RoomDatabase() {    // RoomDatabase 상속
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     MyDatabase::class.java,
-                    "users"
+                    "user_database"
                 ).build()
                 INSTANCE = instance
                 instance

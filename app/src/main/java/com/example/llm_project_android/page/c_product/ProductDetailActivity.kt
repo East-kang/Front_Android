@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -13,8 +14,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.R
 import com.example.llm_project_android.data.sample.Products_Insurance
-import com.example.llm_project_android.db.Users.MyDatabase
-import com.example.llm_project_android.db.Users.UserManager
+import com.example.llm_project_android.db.user.MyDatabase
+import com.example.llm_project_android.db.wishList.WishedManager
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
 import kotlinx.coroutines.launch
@@ -32,7 +33,6 @@ class ProductDetailActivity : AppCompatActivity() {
     private lateinit var insurance_name: TextView
 
     private lateinit var data: Map<String, Any?>
-    private lateinit var userManager: UserManager
 
     private var source: String = ""
     private var data_icon: Int = 0
@@ -41,6 +41,8 @@ class ProductDetailActivity : AppCompatActivity() {
     private var data_name: String = ""
     private var data_recommendation: Boolean = false
     private var data_isWished: Boolean = false
+
+    lateinit var wishedManager: WishedManager
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +56,7 @@ class ProductDetailActivity : AppCompatActivity() {
         }
 
         // 초기화
-        userManager = UserManager(this)
+        wishedManager = WishedManager(this)
 
         btn_back = findViewById<ImageButton>(R.id.backButton)
         btn_wish = findViewById<ImageButton>(R.id.wishList_button)
@@ -75,8 +77,7 @@ class ProductDetailActivity : AppCompatActivity() {
                 "company_name" to String::class.java,
                 "category" to String::class.java,
                 "insurance_name" to String::class.java,
-                "recommendation" to Boolean::class.java,
-                "isWished" to Boolean::class.java
+                "recommendation" to Boolean::class.java
             )
         )
         
@@ -86,8 +87,8 @@ class ProductDetailActivity : AppCompatActivity() {
         // 찜 버튼 클릭 이벤트
         click_WishButton()
         
-        // 뒤로가기 버튼 클릭 이벤트
-        clickBackButton(MainViewActivity::class.java, CategoryView::class.java)
+        // 뒤로가기 이벤트
+        clickBackButton()
     }
 
     // 초기 진입 반영
@@ -97,18 +98,7 @@ class ProductDetailActivity : AppCompatActivity() {
         data_company = data["company_name"] as String
         data_category = data["category"] as String
         data_name = data["insurance_name"] as String
-        data_recommendation = data["recommendation"] as Boolean     // 아이템 값 저장
-
-        // 찜 여부 확인
-        lifecycleScope.launch {
-            val db = MyDatabase.getDatabase(this@ProductDetailActivity)
-            val user = db.getMyDao().getLoggedInUser() ?: return@launch
-            val wishDao = db.getUserWishListDao()
-
-            val wishItem = wishDao.getWishItem(user.id, data_name)
-            data_isWished = (wishItem != null)
-            updateWishButtonUI()
-        }
+        data_recommendation = data["recommendation"] as Boolean
 
         // 아이템 디자인
         icon.setBackgroundResource(data_icon)
@@ -116,6 +106,12 @@ class ProductDetailActivity : AppCompatActivity() {
         category.text = data_category
         insurance_name.text = data_name
         bookmark.visibility = if (data_recommendation) View.VISIBLE else View.GONE
+
+        // 찜 여부
+        lifecycleScope.launch {
+            data_isWished = wishedManager.isWished(data_name)     // 아이템 값 저장
+            updateWishButtonUI() // UI 반영
+        }
     }
 
     // 찜 버튼 UI 업데이트
@@ -130,33 +126,15 @@ class ProductDetailActivity : AppCompatActivity() {
     fun click_WishButton() {
         btn_wish.setOnClickListener {
             lifecycleScope.launch {
-                val user = userManager.getUser() ?: return@launch
-                val db = MyDatabase.getDatabase(this@ProductDetailActivity)
-                val wishDao = db.getUserWishListDao()
-
-                val existingWish = wishDao.getWishItem(user.id, data_name)
-
-                if (existingWish != null) {
-                    // 이미 찜 → 삭제
-                    wishDao.deleteWishByProduct(user.id, data_name)
+                if (data_isWished) {    // 찜 → 해제
+                    wishedManager.removeWish(data_name)
                     data_isWished = false
-                    btn_wish.setImageResource(R.drawable.vector_image_ic_wish_off)
-                } else {
-                    // 새로운 찜 → 추가
-                    val newWish = UserWishList(userId = user.id, productName = data_name)
-                    wishDao.insertWish(newWish)
+                } else {                // 해제 -> 찜
+                    wishedManager.addWish(data_name)
                     data_isWished = true
-                    btn_wish.setImageResource(R.drawable.vector_image_ic_wish_on)
                 }
-
                 // UI 반영
                 updateWishButtonUI()
-
-                // 메모리 내 상품 리스트 상태 동기화
-                Products_Insurance.productList.find { it.name == data_name }?.apply {
-                    isWished = data_isWished
-                    wishedTimeStamp = if (data_isWished) System.currentTimeMillis() else 0L
-                }
             }
         }
     }
@@ -170,13 +148,25 @@ class ProductDetailActivity : AppCompatActivity() {
 
     }
 
-    // '뒤로가기' 버튼 클릭 이벤트 정의 함수
-    fun AppCompatActivity.clickBackButton(targetActivity1: Class<out AppCompatActivity>, targetActivity2: Class<out AppCompatActivity>) {
+    // 뒤로가기 이벤트 정의 함수
+    fun AppCompatActivity.clickBackButton() {
+        // 뒤로가기 버튼 클릭
         btn_back.setOnClickListener {
             when (source) {
-                "MainViewActivity" -> navigateTo(targetActivity1, reverseAnimation = true)
+                "MainViewActivity" -> navigateTo(MainViewActivity::class.java, reverseAnimation = true)
                 "CategoryView" -> navigateTo(
-                    targetActivity2,
+                    CategoryView::class.java,
+                    "category" to data["category"],
+                    reverseAnimation = true)
+            }
+        }
+
+        // 기기 내장 뒤로가기 버튼 클릭
+        onBackPressedDispatcher.addCallback(this) {
+            when (source) {
+                "MainViewActivity" -> navigateTo(MainViewActivity::class.java, reverseAnimation = true)
+                "CategoryView" -> navigateTo(
+                    CategoryView::class.java,
                     "category" to data["category"],
                     reverseAnimation = true)
             }

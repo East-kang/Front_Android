@@ -5,6 +5,7 @@ import android.view.MotionEvent
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageButton
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -12,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.R
 import com.example.llm_project_android.functions.clearUserDiseases
+import com.example.llm_project_android.functions.clearUserFields
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.getUserInfo
 import com.example.llm_project_android.functions.handleTouchOutsideEditText
@@ -78,8 +80,8 @@ class SignUpActivity3 : AppCompatActivity() {
         // item 체크
         items_check({ is_Checked_Confirmed }, { is_Checked_Confirmed = it })
 
-        // 뒤로가기 버튼 클릭 이벤트 (to SignUpActivity2)
-        clickBackButton(SignUpActivity2::class.java)
+        // 뒤로가기 이벤트 (to SignUpActivity2)
+        clickBackButton()
 
         // 다음 버튼 클릭 이벤트 (to SignUpActivity4)
         clickNextButton(SignUpActivity4::class.java)
@@ -150,14 +152,27 @@ class SignUpActivity3 : AppCompatActivity() {
         }
     }
 
-    // '뒤로가기' 버튼 클릭 이벤트 정의 함수
-    fun AppCompatActivity.clickBackButton(targetActivity: Class<out AppCompatActivity>) {
+    // 뒤로가기 이벤트 정의 함수
+    fun AppCompatActivity.clickBackButton() {
+        // 뒤로가기 버튼 클릭
         btn_back.setOnClickListener {
             lifecycleScope.launch {
                 clearUserDiseases(this@SignUpActivity3)
             }
             navigateTo(
-                targetActivity,
+                SignUpActivity2::class.java,
+                "source" to source,
+                reverseAnimation = true
+            )
+        }
+
+        // 기기 내장 뒤로가기 버튼 클릭
+        onBackPressedDispatcher.addCallback(this) {
+            lifecycleScope.launch {
+                clearUserDiseases(this@SignUpActivity3)
+            }
+            navigateTo(
+                SignUpActivity2::class.java,
                 "source" to source,
                 reverseAnimation = true
             )

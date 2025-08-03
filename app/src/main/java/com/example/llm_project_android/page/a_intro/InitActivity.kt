@@ -9,7 +9,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.R
-import com.example.llm_project_android.db.Users.MyDatabase
+import com.example.llm_project_android.db.user.MyDatabase
+import com.example.llm_project_android.db.wishList.WishedManager
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.functions.registerExitDialogOnBackPressed
 import com.example.llm_project_android.functions.resetUserTable
@@ -19,6 +20,12 @@ import com.example.llm_project_android.page.c_product.MainViewActivity
 import kotlinx.coroutines.launch
 
 class InitActivity : AppCompatActivity() {
+
+    private lateinit var btn_login: Button
+    private lateinit var btn_sign_up: Button
+    private lateinit var view: ImageView
+    lateinit var wishedManager: WishedManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -29,14 +36,15 @@ class InitActivity : AppCompatActivity() {
             insets
         }
 
-        val btn_login = findViewById<Button>(R.id.login_Button)         // 로그인 버튼 선언
-        val btn_sign_up = findViewById<Button>(R.id.sign_up_Button)     // 회원가입 버튼 선언
-        val view = findViewById<ImageView>(R.id.image)
+        btn_login = findViewById<Button>(R.id.login_Button)         // 로그인 버튼 선언
+        btn_sign_up = findViewById<Button>(R.id.sign_up_Button)     // 회원가입 버튼 선언
+        view = findViewById<ImageView>(R.id.image)
 
 
         view.setOnClickListener {
             lifecycleScope.launch {
                 resetUserTable(this@InitActivity)
+                wishedManager.clearAllWishes()
             }
         }
 

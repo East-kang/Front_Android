@@ -48,7 +48,6 @@ class MainViewActivity : AppCompatActivity() {
     private lateinit var btn_chat: FrameLayout
     private var source: String? = null
 
-    private lateinit var adapter: InsuranceAdapter
     private lateinit var recentAdapter: InsuranceAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -119,7 +118,6 @@ class MainViewActivity : AppCompatActivity() {
 
         // 최근 조회 상품 목록 보여주기
         recent_Items()
-
 
         // 메뉴 아이템 클릭 이벤트
         click_Menu_item()
@@ -206,7 +204,7 @@ class MainViewActivity : AppCompatActivity() {
         recentAdapter.itemClick = object : InsuranceAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
                 val selectedItem = recentAdapter.getItem(position)
-                Log.d("","Click!")
+
                 navigateTo(
                     ProductDetailActivity::class.java,
                     "source" to "MainViewActivity",
@@ -214,8 +212,7 @@ class MainViewActivity : AppCompatActivity() {
                     "company_name" to selectedItem.company_name,
                     "category" to selectedItem.category,
                     "insurance_name" to selectedItem.name,
-                    "recommendation" to selectedItem.recommendation,
-                    "isWished" to selectedItem.isWished
+                    "recommendation" to selectedItem.recommendation
                 )
             }
         }

@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.Spinner
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.toColorInt
@@ -32,8 +33,8 @@ class CategoryView : AppCompatActivity() {
     private lateinit var filter: Spinner
     private lateinit var itemView: RecyclerView
     private lateinit var btn_chat: FrameLayout
-    private var category_num: Int = 0  // 현재 선택된 상품 카테고리 인덱스
-    private var selectedSortType: String = ""
+    private var category_num: Int = 0               // 현재 선택된 상품 카테고리 인덱스
+    private var selectedSortType: String = ""       // 정렬 타입
     private var data: String = ""
 
     private lateinit var adapter: InsuranceAdapter
@@ -99,8 +100,8 @@ class CategoryView : AppCompatActivity() {
 
         //
 
-        // 뒤로가기 버튼 클릭 이벤트 (to MainViewActivity)
-        clickBackButton(MainViewActivity::class.java)
+        // 뒤로가기 이벤트 (to MainViewActivity)
+        clickBackButton()
     }
 
     // 상품 띄우기
@@ -139,8 +140,7 @@ class CategoryView : AppCompatActivity() {
                     "company_name" to selectedItem.company_name,
                     "category" to selectedItem.category,
                     "insurance_name" to selectedItem.name,
-                    "recommendation" to selectedItem.recommendation,
-                    "isWished" to selectedItem.isWished
+                    "recommendation" to selectedItem.recommendation
                 )
             }
         }
@@ -238,11 +238,20 @@ class CategoryView : AppCompatActivity() {
         )
     }
 
-    // '뒤로가기' 버튼 클릭 이벤트 정의 함수
-    private fun AppCompatActivity.clickBackButton(targetActivity: Class<out AppCompatActivity>) {
+    // 뒤로가기 이벤트 정의 함수
+    private fun AppCompatActivity.clickBackButton() {
+        // 뒤로가기 버튼 클릭
         btn_back.setOnClickListener {
             navigateTo(
-                targetActivity,
+                MainViewActivity::class.java,
+                reverseAnimation = true
+            )
+        }
+
+        // 기기 내장 뒤로가기 버튼 클릭
+        onBackPressedDispatcher.addCallback(this) {
+            navigateTo(
+                MainViewActivity::class.java,
                 reverseAnimation = true
             )
         }
