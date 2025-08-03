@@ -33,8 +33,8 @@ class CategoryView : AppCompatActivity() {
     private lateinit var filter: Spinner
     private lateinit var itemView: RecyclerView
     private lateinit var btn_chat: FrameLayout
-    private var category_num: Int = 0  // 현재 선택된 상품 카테고리 인덱스
-    private var selectedSortType: String = ""
+    private var category_num: Int = 0               // 현재 선택된 상품 카테고리 인덱스
+    private var selectedSortType: String = ""       // 정렬 타입
     private var data: String = ""
 
     private lateinit var adapter: InsuranceAdapter

@@ -54,16 +54,6 @@
             android:background="@drawable/design_category_tag"
             app:layout_constraintStart_toEndOf="@id/company_name"
             app:layout_constraintBottom_toBottomOf="parent" />
-
-        <ImageView
-            android:id="@+id/isWished"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/vector_image_ic_wish_off"
-            android:layout_marginEnd="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
