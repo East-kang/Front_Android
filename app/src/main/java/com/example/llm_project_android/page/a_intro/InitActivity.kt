@@ -41,6 +41,7 @@ class InitActivity : AppCompatActivity() {
         btn_sign_up = findViewById<Button>(R.id.sign_up_Button)     // 회원가입 버튼 선언
         view = findViewById<ImageView>(R.id.image)
 
+        wishedManager = WishedManager(this)
 
         view.setOnClickListener {
             lifecycleScope.launch {
