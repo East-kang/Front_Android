@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -18,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.appcompat.widget.SearchView
 import androidx.core.widget.NestedScrollView
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,6 +33,7 @@ import com.example.llm_project_android.adapter.ViewPageAdapter
 import com.example.llm_project_android.data.model.Product
 import com.example.llm_project_android.data.sample.Products_Insurance
 import com.example.llm_project_android.databinding.CPageMainViewBinding
+import com.example.llm_project_android.db.user.MyDatabase
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.handleTouchOutsideEditText
 import com.example.llm_project_android.functions.navigateTo
@@ -38,6 +41,7 @@ import com.example.llm_project_android.functions.registerExitDialogOnBackPressed
 import com.example.llm_project_android.page.d_menu.ProfileView
 import com.example.llm_project_android.page.e_chat.ChatView
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 class MainViewActivity : AppCompatActivity() {
@@ -50,6 +54,9 @@ class MainViewActivity : AppCompatActivity() {
     private lateinit var btn_search: ImageButton
     private lateinit var menuView: NavigationView
     private lateinit var menus: List<ImageButton>
+
+    private lateinit var btn_menu_white: ImageButton
+    private lateinit var name_field: TextView
 
     private lateinit var search_area: ConstraintLayout
     private lateinit var btn_back: ImageButton
@@ -95,7 +102,8 @@ class MainViewActivity : AppCompatActivity() {
         btn_chat = findViewById(R.id.chatButton)
 
         val headerView = menuView.getHeaderView(0)
-        val btn_menu_white = headerView.findViewById<ImageButton>(R.id.menu_icon_white)
+        btn_menu_white = headerView.findViewById<ImageButton>(R.id.menu_icon_white)
+        name_field = headerView.findViewById<TextView>(R.id.nameView)
 
         menus = listOf(                         // 메뉴 버튼 리스트 (0: 열기 버튼 / 1: 닫힘 버튼
             findViewById(R.id.menu_icon_black), // 메뉴 열기 버튼 (menus[0])
@@ -143,6 +151,13 @@ class MainViewActivity : AppCompatActivity() {
         scrollView.visibility = View.VISIBLE
         btn_chat.visibility = View.VISIBLE
         search_area.visibility = View.GONE
+
+        lifecycleScope.launch {
+            val dao = MyDatabase.getDatabase(this@MainViewActivity).getMyDao()
+            val user = dao.getLoggedInUser()
+
+            name_field.setText(user?.name+"님")
+        }
     }
 
     // 배너 양 옆 이미지 노출 함수
