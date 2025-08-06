@@ -16,6 +16,7 @@ import com.example.llm_project_android.functions.registerExitDialogOnBackPressed
 import com.example.llm_project_android.functions.resetUserTable
 import com.example.llm_project_android.functions.saveUserInfo
 import com.example.llm_project_android.page.b_signup.SignUpActivity1
+import com.example.llm_project_android.page.b_signup.SignUpActivity3
 import com.example.llm_project_android.page.c_product.MainViewActivity
 import kotlinx.coroutines.launch
 
@@ -76,7 +77,7 @@ class InitActivity : AppCompatActivity() {
             }
 
             //화면 전환
-            navigateTo(SignUpActivity1::class.java, "source" to "InitActivity")
+            navigateTo(SignUpActivity3::class.java, "source" to "InitActivity")
         }
 
         // 뒤로가기 버튼 클릭 이벤트
