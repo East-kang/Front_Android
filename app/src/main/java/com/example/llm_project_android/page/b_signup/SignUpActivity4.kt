@@ -24,6 +24,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.data.model.Product
 import com.example.llm_project_android.adapter.ProductContentAdapter
 import com.example.llm_project_android.R
+import com.example.llm_project_android.data.sample.Products_Insurance
 import com.example.llm_project_android.functions.clearUserDiseases
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.handleTouchOutsideEditText
@@ -69,7 +70,7 @@ class SignUpActivity4 : AppCompatActivity() {
         tag_chip = findViewById<ChipGroup>(R.id.tagChipGroup)
         recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
 
-        insuranceList = resources.getStringArray(R.array.insurances).map { Product(it) }
+        insuranceList = Products_Insurance.productList.map { Product(it.name) }
 
         // 이전 화면에서 받아온 데이터
         val extras = getPassedExtras("source", String::class.java)

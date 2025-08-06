@@ -3,6 +3,8 @@ package com.example.llm_project_android.page.c_product
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
@@ -26,11 +28,11 @@ import com.example.llm_project_android.functions.RecentViewedManager
 import com.example.llm_project_android.adapter.InsuranceAdapter
 import com.example.llm_project_android.adapter.ProductContentAdapter
 import com.example.llm_project_android.adapter.ViewPageAdapter
-import com.example.llm_project_android.data.model.Insurance
 import com.example.llm_project_android.data.model.Product
 import com.example.llm_project_android.data.sample.Products_Insurance
 import com.example.llm_project_android.databinding.CPageMainViewBinding
 import com.example.llm_project_android.functions.getPassedExtras
+import com.example.llm_project_android.functions.handleTouchOutsideEditText
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.functions.registerExitDialogOnBackPressed
 import com.example.llm_project_android.page.d_menu.ProfileView
@@ -52,6 +54,7 @@ class MainViewActivity : AppCompatActivity() {
     private lateinit var search_area: ConstraintLayout
     private lateinit var btn_back: ImageButton
     private lateinit var search_box: SearchView
+    private lateinit var search_list: RecyclerView
 
     private lateinit var scrollView: NestedScrollView
     private lateinit var categories: List<Button>
@@ -60,11 +63,7 @@ class MainViewActivity : AppCompatActivity() {
     private lateinit var btn_chat: FrameLayout
     private var source: String? = null
 
-    private lateinit var adapter: ProductContentAdapter
-    private var insuranceList: List<Product> = emptyList()  // 문자열 배열 -> Post 객체 리스트로 변환
-    private val selectedProducts = mutableListOf<Product>()
-
-    private lateinit var recentAdapter: InsuranceAdapter
+    private lateinit var recentAdapter: InsuranceAdapter        // 최근 조회 어뎁터
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,6 +89,7 @@ class MainViewActivity : AppCompatActivity() {
         search_area = findViewById<ConstraintLayout>(R.id.search_area)  // 검색 영역
         btn_back = findViewById<ImageButton>(R.id.backButton)           // 검색 취소 버튼
         search_box = findViewById<SearchView>(R.id.search_box)          // 검색창
+        search_list = findViewById<RecyclerView>(R.id.search_list)      // 검색 목록
         scrollView = findViewById<NestedScrollView>(R.id.scrollView)    // 스크롤 뷰
         recyclerView = findViewById<RecyclerView>(R.id.item_group)      // 최근 조회 상품 목록
         btn_chat = findViewById(R.id.chatButton)
@@ -115,12 +115,7 @@ class MainViewActivity : AppCompatActivity() {
             R.drawable.image_name_icon              // 배너 아이템 2 (bannerList[2])
         )
 
-        insuranceList = Products_Insurance.productList.map { insurance -> Product(insurance.name) }
-        adapter = ProductContentAdapter(insuranceList)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = adapter
         recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
-
 
         recentAdapter = InsuranceAdapter(ArrayList(arrayListOf()))        // 전역 adapter 초기화
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -268,9 +263,54 @@ class MainViewActivity : AppCompatActivity() {
 
     // 검색 기능
     fun search_Insurance() {
+        // 보험 데이터 → Product 변환
+        val insuranceProducts = Products_Insurance.productList.map { Product(it.name) }
+
+        // 어뎁터 초기화
+        val searchAdapter = ProductContentAdapter(insuranceProducts)
+        search_list.layoutManager = LinearLayoutManager(this)
+        search_list.adapter = searchAdapter
+        search_list.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
+
         click_searchButton()    // 검색 버튼 클릭
         click_backButton()      // 뒤로가기 버튼 클릭
-        active_searchBar()      // 검색창 클릭 이벤트
+
+        // 검색어 입력 리스너
+        search_box.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchAdapter.filter.filter(query) // 검색 실행
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                // 입력 시 필터링
+                searchAdapter.filter.filter(newText)
+                return true
+            }
+        })
+
+        // 초기 데이터 표시 (검색어 없을 때에는 전체 리스트 대신 emptyList 방지)
+        searchAdapter.filter.filter("")
+        search_box.clearFocus() // 클릭 시 검색창 포커스 해제
+
+        // 아이템 클릭 이벤트
+        searchAdapter.setOnItemClickListener { product ->
+            val selectedInsurance = Products_Insurance.productList.find { it.name.trim() == product.title.trim() }
+
+            if (selectedInsurance != null) {
+                Log.d("","navigateTo")
+                navigateTo(
+                    ProductDetailActivity::class.java,
+                    "source" to "MainViewActivity",
+                    "company_icon" to selectedInsurance.company_icon,
+                    "company_name" to selectedInsurance.company_name,
+                    "category" to selectedInsurance.category,
+                    "insurance_name" to selectedInsurance.name,
+                    "recommendation" to selectedInsurance.recommendation
+                )
+            } else
+                Log.d("", "null")
+        }
     }
     
     // 검색 버튼 클릭 이벤트
@@ -288,38 +328,7 @@ class MainViewActivity : AppCompatActivity() {
         btn_back.setOnClickListener {
             init()  // UI 반영
             search_box.setQuery("", false)  // SearchView 내용 초기화
-            adapter.updateList(emptyList())              // RecyclerView 목록 초기화
-        }
-    }
 
-    // 검색창 클릭 이벤트
-    fun active_searchBar() {
-        // 검색창 리스너
-        search_box.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean = false
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                val filtered = insuranceList.filter { it.title.contains(newText ?: "", ignoreCase = true) }
-                adapter.updateList(filtered)
-                return true
-            }
-        })
-
-        // 아이템 클릭 이벤트
-        adapter.setOnItemClickListener { post ->
-            val selectedInsurance = Products_Insurance.productList.find { it.name == post.title }
-            search_box.setQuery("", false)
-
-            if (selectedInsurance != null) {
-                navigateTo(
-                    ProductDetailActivity::class.java,
-                    "company_icon" to selectedInsurance.company_icon,
-                    "company_name" to selectedInsurance.company_name,
-                    "category" to selectedInsurance.category,
-                    "insurance_name" to selectedInsurance.name,
-                    "recommendation" to selectedInsurance.recommendation
-                )
-            }
         }
     }
 
@@ -353,5 +362,11 @@ class MainViewActivity : AppCompatActivity() {
                 "source" to "MainView"
             )
         }
+    }
+
+    // 키보드 숨기기 이벤트 (editText 이외의 영역을 눌렀을 경우, 스크롤 제외)
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        handleTouchOutsideEditText(this, ev)
+        return super.dispatchTouchEvent(ev)
     }
 }
