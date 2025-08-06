@@ -39,6 +39,7 @@ import com.example.llm_project_android.functions.handleTouchOutsideEditText
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.functions.registerExitDialogOnBackPressed
 import com.example.llm_project_android.page.d_menu.ProfileView
+import com.example.llm_project_android.page.d_menu.WishListViewActivity
 import com.example.llm_project_android.page.e_chat.ChatView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.launch
@@ -357,7 +358,7 @@ class MainViewActivity : AppCompatActivity() {
                     true    // 이벤트 종료
                 }
                 R.id.wishList -> {          // '찜 목록' 버튼 클릭 이벤트
-                    
+                    navigateTo(WishListViewActivity::class.java, "source" to "MainViewActivity")
                     true
                 }
                 R.id.joined_insurance -> {  // '가입한 내 보험' 버튼 클릭 이벤트
