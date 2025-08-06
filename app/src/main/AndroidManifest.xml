@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,6 +10,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LLM_Project_Android">
+        <activity
+            android:name=".page.d_menu.WishListViewActivity"
+            android:exported="false" />
         <activity
             android:name=".page.d_menu.ProfileView"
             android:exported="false"

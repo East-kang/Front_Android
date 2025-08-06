@@ -97,15 +97,9 @@ class SignUpActivity3 : AppCompatActivity() {
 
             // 데이터 필드가 모두 유효할 경우에만 복원
             if (user != null && user.diseases.isNotEmpty()) {
-                if (user.diseases[0] == item0.text.toString())  // "질병 없음"
-                    for (i in checkBoxList.indices) {
-                        checkBoxList[i].isChecked = (i == 0)    // item0만 체크
-                        checkBoxList[i].isEnabled = (i == 0)    // item0만 활성화
+                checkBoxList.forEach { checkBox ->
+                        checkBox.isChecked = user.diseases.contains(checkBox.text.toString())
                     }
-                else
-                    for (i in checkBoxList.indices)
-                        checkBoxList[i].isChecked = (user.diseases[i].isNotEmpty())     // item1 ~ item9 중 true인 항목만 체크
-
                 is_Checked_Confirmed = true
             }
         }
@@ -115,30 +109,26 @@ class SignUpActivity3 : AppCompatActivity() {
     fun items_check(getCheckConfirmed: () -> Boolean, setCheckedConfirmed: (Boolean) -> Unit) {
 
         // '질병 없음' 항목 클릭 이벤트
-        item0.setOnCheckedChangeListener { checkBox, isChecked ->
-            if (isChecked) {                                // 클릭o -> 다른 항목 전부 비활성화 및 체크 해제 (+ 다음 버튼 활성화)
-                for (i in 1 until checkBoxList.size) {
-                    checkBoxList[i].isChecked = false
-                    checkBoxList[i].isEnabled = false
-                }
-                setCheckedConfirmed(true)
+        item0.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {                                // 클릭o -> 다른 항목 전부 체크 해제 (+ 다음 버튼 활성화)
+                checkBoxList.drop(1).forEach { it.isChecked = false }
+                item0.isChecked = true
             }
-            else {                                          // 클릭x -> 다른 항목 전부 활성화 (+ 다음 버튼 비활성화)
-                for (i in 1 until checkBoxList.size)
-                    checkBoxList[i].isEnabled = true
-                setCheckedConfirmed(false)
-            }
+            updateCheckState()
         }
 
-        for (box in checkBoxList.filter { it != item0 }) {  // 첫 항목 제외 클릭 시, 다음 버튼 활성화
-            box.setOnCheckedChangeListener { checkBox, isChecked ->
-                if (box.isChecked)  setCheckedConfirmed(true)
-                else                setCheckedConfirmed(false)
-
+        checkBoxList.drop(1).forEach { box ->
+            box.setOnCheckedChangeListener { _, _ ->
+                // 다른 질병 체크 시, item0이 체크되어 있으면 해제
+                if (item0.isChecked)    item0.isChecked = false
+                updateCheckState()
             }
-            if (is_Checked_Confirmed)
-                break
         }
+    }
+
+    // 체크 상태 업데이트 함수
+    private fun updateCheckState() {
+        is_Checked_Confirmed = checkBoxList.any { it.isChecked }
     }
 
     // '다음' 버튼 활성화 함수
