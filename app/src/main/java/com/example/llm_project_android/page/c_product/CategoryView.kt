@@ -23,6 +23,7 @@ import com.example.llm_project_android.adapter.InsuranceAdapter
 import com.example.llm_project_android.data.sample.Products_Insurance
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
+import com.example.llm_project_android.page.e_chat.ChatView
 
 class CategoryView : AppCompatActivity() {
 
@@ -80,28 +81,14 @@ class CategoryView : AppCompatActivity() {
 
         data = getPassedExtras("category", String::class.java)["category"] as? String? ?: ""
 
-        // 보험 상품 노출
-        showing_Insurances()
-
-        // 카테고리 초기화
-        init_Category(data)
-
-        // 상품 카테고리 버튼 클릭 이벤트
-        select_Product_Category()
-
-        // 회사 카테고리 버튼 클릭 이벤트
-        filtering_Company()
-
-        // 상품 정렬 이벤트
-        sorting_Insurances({ type -> selectedSortType = type})
-
-        // 아이템 클릭 이벤트
-        click_Items()
-
-        //
-
-        // 뒤로가기 이벤트 (to MainViewActivity)
-        clickBackButton()
+        showing_Insurances()        // 보험 상품 노출
+        init_Category(data)         // 카테고리 초기화
+        select_Product_Category()   // 상품 카테고리 버튼 클릭 이벤트
+        filtering_Company()         // 회사 카테고리 버튼 클릭 이벤트
+        sorting_Insurances({ type -> selectedSortType = type})  // 상품 정렬 이벤트
+        click_Items()               // 아이템 클릭 이벤트
+        goTo_Chat_View()            // 채팅 뷰 이동
+        clickBackButton()           // 뒤로가기 이벤트 (to MainViewActivity)
     }
 
     // 상품 띄우기
@@ -236,6 +223,13 @@ class CategoryView : AppCompatActivity() {
             selectedCompanies.toList(),
             selectedSortType
         )
+    }
+
+    // 채팅 페이지 전환
+    private fun goTo_Chat_View() {
+        btn_chat.setOnClickListener{
+            navigateTo(ChatView::class.java, "source" to "CategoryView")
+        }
     }
 
     // 뒤로가기 이벤트 정의 함수

@@ -13,12 +13,10 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.R
-import com.example.llm_project_android.data.sample.Products_Insurance
-import com.example.llm_project_android.db.user.MyDatabase
 import com.example.llm_project_android.db.wishList.WishedManager
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
-import com.example.llm_project_android.page.d_menu.WishListViewActivity
+import com.example.llm_project_android.page.d_menu.WishViewActivity
 import kotlinx.coroutines.launch
 
 class ProductDetailActivity : AppCompatActivity() {
@@ -159,7 +157,7 @@ class ProductDetailActivity : AppCompatActivity() {
                     CategoryView::class.java,
                     "category" to data["category"],
                     reverseAnimation = true)
-                "WishListView" -> navigateTo(WishListViewActivity::class.java)
+                "WishListView" -> navigateTo(WishViewActivity::class.java)
             }
         }
 
@@ -171,7 +169,7 @@ class ProductDetailActivity : AppCompatActivity() {
                     CategoryView::class.java,
                     "category" to data["category"],
                     reverseAnimation = true)
-                "WishListView" -> navigateTo(WishListViewActivity::class.java)
+                "WishListView" -> navigateTo(WishViewActivity::class.java)
             }
         }
     }
