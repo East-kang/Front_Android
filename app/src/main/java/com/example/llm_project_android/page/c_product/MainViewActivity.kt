@@ -34,10 +34,14 @@ import com.example.llm_project_android.data.model.Product
 import com.example.llm_project_android.data.sample.Products_Insurance
 import com.example.llm_project_android.databinding.CPageMainViewBinding
 import com.example.llm_project_android.db.user.MyDatabase
+import com.example.llm_project_android.db.wishList.WishedManager
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.handleTouchOutsideEditText
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.functions.registerExitDialogOnBackPressed
+import com.example.llm_project_android.functions.resetUserTable
+import com.example.llm_project_android.functions.showConfirmDialog
+import com.example.llm_project_android.page.a_intro.InitActivity
 import com.example.llm_project_android.page.d_menu.ProfileView
 import com.example.llm_project_android.page.d_menu.SubscribedViewActivity
 import com.example.llm_project_android.page.d_menu.WishViewActivity
@@ -59,6 +63,7 @@ class MainViewActivity : AppCompatActivity() {
 
     private lateinit var btn_menu_white: ImageButton
     private lateinit var name_field: TextView
+    private lateinit var logout_field: TextView
 
     private lateinit var search_area: ConstraintLayout
     private lateinit var btn_back: ImageButton
@@ -72,7 +77,8 @@ class MainViewActivity : AppCompatActivity() {
     private lateinit var btn_chat: FrameLayout
     private var source: String? = null
 
-    private lateinit var recentAdapter: InsuranceAdapter        // 최근 조회 어뎁터
+    lateinit var wishedManager: WishedManager               // 찜 목록 매니저
+    private lateinit var recentAdapter: InsuranceAdapter    // 최근 조회 어뎁터
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,8 +110,9 @@ class MainViewActivity : AppCompatActivity() {
         btn_chat = findViewById(R.id.chatButton)
 
         val headerView = menuView.getHeaderView(0)
-        btn_menu_white = headerView.findViewById<ImageButton>(R.id.menu_icon_white)
-        name_field = headerView.findViewById<TextView>(R.id.nameView)
+        btn_menu_white = headerView.findViewById<ImageButton>(R.id.menu_icon_white) // 흰색 메뉴 버튼
+        name_field = headerView.findViewById<TextView>(R.id.nameView)   // "***님" 필드
+        logout_field = headerView.findViewById<TextView>(R.id.logOut)   // 로그아웃 텍스트
 
         menus = listOf(                         // 메뉴 버튼 리스트 (0: 열기 버튼 / 1: 닫힘 버튼
             findViewById(R.id.menu_icon_black), // 메뉴 열기 버튼 (menus[0])
@@ -119,22 +126,23 @@ class MainViewActivity : AppCompatActivity() {
             findViewById(R.id.category4),       // categories[4] (유아)
             findViewById(R.id.category5)        // categories[5] (기타)
         )
-        val bannerList = listOf(                    // 배너 아이템 리스트
-            R.drawable.image_birth_icon,            // 배너 아이템 0 (bannerList[0])
-            R.drawable.image_sample,                // 배너 아이템 1 (bannerList[1])
-            R.drawable.image_name_icon              // 배너 아이템 2 (bannerList[2])
+        val bannerList = listOf(                // 배너 아이템 리스트
+            R.drawable.image_birth_icon,        // 배너 아이템 0 (bannerList[0])
+            R.drawable.image_sample,            // 배너 아이템 1 (bannerList[1])
+            R.drawable.image_name_icon          // 배너 아이템 2 (bannerList[2])
         )
 
         recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
 
-        recentAdapter = InsuranceAdapter(ArrayList(arrayListOf()))        // 전역 adapter 초기화
+        wishedManager = WishedManager(this)                     // 찜 목록 메니저 초기화
+        recentAdapter = InsuranceAdapter(ArrayList(arrayListOf()))     // 전역 adapter 초기화
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = recentAdapter
 
         init()                      // 초기 레이아웃 구성
 
         setupViewPager(bannerList)
-        startAutoScroll(bannerList) // 배너 슬라이딩 기능
+        startAutoScroll() // 배너 슬라이딩 기능
 
         menu_Control()              // 사이드 메뉴 클릭 이벤트
         search_Insurance()          // 상품 검색
@@ -143,6 +151,7 @@ class MainViewActivity : AppCompatActivity() {
         recent_Items()              // 최근 조회 상품 목록 보여주기
         click_Menu_item()           // 메뉴 아이템 클릭 이벤트
         goTo_Chat_View()            // 채팅 뷰 이동
+        click_logout()              // 로그아웃 클릭 이벤트
 
         registerExitDialogOnBackPressed()   // 기기 내장 뒤로가기 버튼 클릭 이벤트
     }
@@ -158,13 +167,12 @@ class MainViewActivity : AppCompatActivity() {
             val dao = MyDatabase.getDatabase(this@MainViewActivity).getMyDao()
             val user = dao.getLoggedInUser()
 
-            name_field.setText(user?.name+"님")
+            name_field.text = user?.name+"님"
         }
     }
 
     // 배너 양 옆 이미지 노출 함수
     private fun setupViewPager(bannerList: List<Int>) {
-
         val adapter  = ViewPageAdapter(bannerList)
         binding.bannerViewPager.adapter = adapter
 
@@ -197,13 +205,12 @@ class MainViewActivity : AppCompatActivity() {
     }
 
     // 배너 이미지 슬라이딩 함수
-    private fun startAutoScroll(bannerList: List<Int>) {
+    private fun startAutoScroll() {
         sliderRunnable = object : Runnable {
             override fun run() {
                 val currentItem = binding.bannerViewPager.currentItem
                 val nextItem = currentItem + 1
                 binding.bannerViewPager.setCurrentItem(nextItem, true)
-
                 sliderHandler.postDelayed(this, 3000) // 3초마다 슬라이드
             }
         }
@@ -224,10 +231,7 @@ class MainViewActivity : AppCompatActivity() {
     private fun click_Category() {
         for (i in 0 until categories.size) {
             categories[i].setOnClickListener {
-                navigateTo(
-                    CategoryView::class.java,
-                    "category" to categories[i].text.toString().trim()
-                )
+                navigateTo(CategoryView::class.java, "category" to categories[i].text.toString().trim())
             }
         }
     }
@@ -259,27 +263,24 @@ class MainViewActivity : AppCompatActivity() {
 
     // 메뉴 기능
     private fun menu_Control() {
-
         if (source == null)                                 // 이전 화면이 메뉴를 통한 화면이 아닐 경우
             drawerLayout.closeDrawer(GravityCompat.END)
         else                                                // 이전 화면이 메뉴를 통한 화면일 경우
             drawerLayout.openDrawer(GravityCompat.END)
 
-        // 메뉴 열기
-        menus[0].setOnClickListener {
+        menus[0].setOnClickListener {       // 메뉴 열기
             if (!drawerLayout.isDrawerOpen(GravityCompat.END))
                 drawerLayout.openDrawer(GravityCompat.END)
         }
 
-        // 메뉴 닫기
-        menus[1].setOnClickListener {
+        menus[1].setOnClickListener {       // 메뉴 닫기
             if (drawerLayout.isDrawerOpen(GravityCompat.END))
                 drawerLayout.closeDrawer(GravityCompat.END)
         }
     }
 
     // 검색 기능
-    fun search_Insurance() {
+    private fun search_Insurance() {
         // 보험 데이터 → Product 변환
         val insuranceProducts = Products_Insurance.productList.map { Product(it.name) }
 
@@ -331,7 +332,7 @@ class MainViewActivity : AppCompatActivity() {
     }
     
     // 검색 버튼 클릭 이벤트
-    fun click_searchButton() {
+    private fun click_searchButton() {
         btn_search.setOnClickListener {
             topBar.visibility = View.GONE
             scrollView.visibility = View.GONE
@@ -341,17 +342,15 @@ class MainViewActivity : AppCompatActivity() {
     }
 
     // 뒤로가기 버튼 클릭 이벤트
-    fun click_backButton() {
+    private fun click_backButton() {
         btn_back.setOnClickListener {
             init()  // UI 반영
             search_box.setQuery("", false)  // SearchView 내용 초기화
-
         }
     }
 
     // 메뉴 아이템 클릭 이벤트
-    fun click_Menu_item() {
-
+    private fun click_Menu_item() {
         menuView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.profile -> {           // '내 프로필' 버튼 클릭 이벤트
@@ -372,12 +371,26 @@ class MainViewActivity : AppCompatActivity() {
     }
 
     // 채팅 페이지 전환
-    fun goTo_Chat_View() {
+    private fun goTo_Chat_View() {
         btn_chat.setOnClickListener{
-            navigateTo(
-                ChatView::class.java,
-                "source" to "MainView"
-            )
+            navigateTo(ChatView::class.java, "source" to "MainView")
+        }
+    }
+
+    // 로그아웃 클릭 이벤트
+    private fun click_logout() {
+        logout_field.setOnClickListener {
+            showConfirmDialog(this, "로그아웃", "정말 로그아웃 하시겠습니까?") { result ->
+                if (result) {
+                    lifecycleScope.launch {
+                        resetUserTable(this@MainViewActivity)   // 사용자 정보 테이블 초기화
+                        wishedManager.clearAllWishes()                 // 찜 목록 초기화
+                        // 가입 상품 목록 초기화
+                    }
+                    navigateTo(InitActivity::class.java, reverseAnimation = true)
+                }
+            }
+
         }
     }
 
