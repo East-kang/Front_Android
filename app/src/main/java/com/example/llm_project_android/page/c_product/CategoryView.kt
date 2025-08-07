@@ -16,14 +16,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.llm_project_android.R
 import com.example.llm_project_android.adapter.InsuranceAdapter
 import com.example.llm_project_android.data.sample.Products_Insurance
+import com.example.llm_project_android.db.user.MyDatabase
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.page.e_chat.ChatView
+import kotlinx.coroutines.launch
 
 class CategoryView : AppCompatActivity() {
 
@@ -34,8 +37,8 @@ class CategoryView : AppCompatActivity() {
     private lateinit var filter: Spinner
     private lateinit var itemView: RecyclerView
     private lateinit var btn_chat: FrameLayout
-    private var category_num: Int = 0  // 현재 선택된 상품 카테고리 인덱스
-    private var selectedSortType: String = ""
+    private var category_num: Int = 0               // 현재 선택된 상품 카테고리 인덱스
+    private var selectedSortType: String = ""       // 정렬 타입
     private var data: String = ""
 
     private lateinit var adapter: InsuranceAdapter
@@ -91,11 +94,27 @@ class CategoryView : AppCompatActivity() {
         clickBackButton()           // 뒤로가기 이벤트 (to MainViewActivity)
     }
 
+    private fun init() {
+
+
+    }
+
+
     // 상품 띄우기
     private fun showing_Insurances() {
         itemView.layoutManager = LinearLayoutManager(this)
         adapter = InsuranceAdapter(Products_Insurance.productList)
         itemView.adapter = adapter
+
+        // 가입 여부 태그 띄우기 여부 로직
+        lifecycleScope.launch {
+            val dao = MyDatabase.getDatabase(this@CategoryView).getMyDao()
+            val user = dao.getLoggedInUser()
+
+            user?.let {
+                adapter.setEnrolls(it.subscriptions)
+            }
+        }
     }
 
     // 상품 카테고리 초기화 함수
@@ -202,8 +221,7 @@ class CategoryView : AppCompatActivity() {
     // 상품 정렬 함수 (상품 정렬 기능 추가해야함)
     private fun sorting_Insurances(onSortedSelected: (String) -> Unit) {
         val filterList = resources.getStringArray(R.array.list_filter)
-        val spinnerAdapter =
-            ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, filterList)
+        val spinnerAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, filterList)
         filter.adapter = spinnerAdapter
 
         filter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

@@ -6,7 +6,7 @@
     android:layout_height="210dp"
     android:background="@drawable/design_insurance_item"
     android:layout_marginHorizontal="5dp"
-    android:paddingVertical="16dp"
+    android:paddingBottom="16dp"
     android:paddingHorizontal="17dp"
     android:layout_marginTop="20dp"
     android:elevation="10dp"
@@ -16,6 +16,7 @@
         android:id="@+id/companyLine"
         android:layout_width="match_parent"
         android:layout_height="29dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" >
@@ -54,15 +55,29 @@
             android:background="@drawable/design_category_tag"
             app:layout_constraintStart_toEndOf="@id/company_name"
             app:layout_constraintBottom_toBottomOf="parent" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <TextView
+        android:id="@+id/recommendation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AI 추천"
+        android:textColor="@android:color/white"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginEnd="5dp"
+        android:paddingBottom="7dp"
+        android:background="@drawable/vector_image_ic_bookmark"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/companyLine" >
 
@@ -80,20 +95,21 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView
-            android:id="@+id/recommendation"
+            android:id="@+id/enroll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="8dp"
-            android:text="AI 추천!"
-            android:textSize="9sp"
-            android:textColor="#5480F0"
-            android:textStyle="bold"
             android:gravity="center"
-            android:background="@drawable/design_recommendation_tag"
-            android:layout_marginEnd="3dp"
-            app:layout_constraintEnd_toStartOf="@id/right_arrow"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:text="가입 완료"
+            android:textSize="7.5sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_marginStart="6dp"
+            android:layout_marginBottom="3dp"
+            android:paddingHorizontal="7dp"
+            android:visibility="visible"
+            android:background="@drawable/design_enroll_tag"
+            app:layout_constraintStart_toEndOf="@id/insurance_name"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <ImageView
             android:id="@+id/right_arrow"

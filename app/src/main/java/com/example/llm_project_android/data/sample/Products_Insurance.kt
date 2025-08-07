@@ -40,7 +40,7 @@ import com.example.llm_project_android.data.model.Insurance
             name = "삼성생명 연금보험",
             description = "은퇴 후 안정적인 노후 생활을 위한 연금을 제공합니다.",
             payment = 15,
-            category = "연금",
+            category = "저축•연금",
             recommendation = true
         ),
 
@@ -69,7 +69,7 @@ import com.example.llm_project_android.data.model.Insurance
             name = "현대해상 실손의료비보험",
             description = "입원·외래·약제비까지 실제 발생한 병원비를 보장합니다.",
             payment = 4,
-            category = "실손",
+            category = "기타",
             recommendation = false
         ),
         Insurance(
@@ -78,7 +78,7 @@ import com.example.llm_project_android.data.model.Insurance
             name = "현대해상 운전자보험",
             description = "교통사고 시 형사·벌금·치료비까지 폭넓게 보장합니다.",
             payment = 2,
-            category = "운전자",
+            category = "기타",
             recommendation = false
         ),
 
@@ -107,7 +107,7 @@ import com.example.llm_project_android.data.model.Insurance
             name = "KB 실손의료비보험",
             description = "실제 지출한 병원비를 보장하는 기본 실손 보험입니다.",
             payment = 3,
-            category = "실손",
+            category = "기타",
             recommendation = false
         ),
         Insurance(
@@ -116,7 +116,7 @@ import com.example.llm_project_android.data.model.Insurance
             name = "KB 운전자안심보험",
             description = "교통사고 처리 지원 및 변호사 비용까지 보장합니다.",
             payment = 2,
-            category = "운전자",
+            category = "기타",
             recommendation = false
         )
     )

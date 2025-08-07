@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.R
+import com.example.llm_project_android.db.user.MyDatabase
 import com.example.llm_project_android.db.wishList.WishedManager
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
@@ -30,6 +31,7 @@ class ProductDetailActivity : AppCompatActivity() {
     private lateinit var category: TextView
     private lateinit var bookmark: TextView
     private lateinit var insurance_name: TextView
+    private lateinit var enroll: TextView
 
     private lateinit var data: Map<String, Any?>
 
@@ -66,6 +68,7 @@ class ProductDetailActivity : AppCompatActivity() {
         category = findViewById<TextView>(R.id.category)
         bookmark = findViewById<TextView>(R.id.bookmark)
         insurance_name = findViewById<TextView>(R.id.insurance_name)
+        enroll = findViewById<TextView>(R.id.enroll)
 
 
         // 이전 화면에서 받아온 데이터
@@ -79,15 +82,10 @@ class ProductDetailActivity : AppCompatActivity() {
                 "recommendation" to Boolean::class.java
             )
         )
-        
-        // 초기 진입 반영 반영
-        init()
 
-        // 찜 버튼 클릭 이벤트
-        click_WishButton()
-        
-        // 뒤로가기 이벤트
-        clickBackButton()
+        init()              // 초기 진입 반영 반영
+        click_WishButton()  // 찜 버튼 클릭 이벤트
+        clickBackButton()   // 뒤로가기 이벤트
     }
 
     // 초기 진입 반영
@@ -108,8 +106,17 @@ class ProductDetailActivity : AppCompatActivity() {
 
         // 찜 여부
         lifecycleScope.launch {
+            // 찜 여부
             data_isWished = wishedManager.isWished(data_name)     // 아이템 값 저장
             updateWishButtonUI() // UI 반영
+
+            // 가입 여부
+            val dao = MyDatabase.getDatabase(this@ProductDetailActivity).getMyDao()
+            val user = dao.getLoggedInUser()
+
+            user?.let {
+                enroll.visibility = if (data_name in it.subscriptions) View.VISIBLE else View.GONE
+            }
         }
     }
 

@@ -49,7 +49,9 @@ class InitActivity : AppCompatActivity() {
                     phoneNumber = "010-2222-1111",
                     gender = "남성",
                     isMarried = true,
-                    job = "오리"
+                    job = "오리",
+                    subscriptions = listOf("삼성생명 건강보험", "현대해상 운전자보험", "KB 실손의료비보험"
+                    )
                 )
             }
             // navigateTo(LoginActivity::class.java)
