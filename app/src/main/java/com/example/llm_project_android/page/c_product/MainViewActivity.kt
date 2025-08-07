@@ -257,7 +257,7 @@ class MainViewActivity : AppCompatActivity() {
 
     // 최근 조회 목록 보여주기 함수
     private fun recent_Items() {
-        val recentItems = RecentViewedManager.getRecentItems()
+        val recentItems = RecentViewedManager.getRecentItems(3)
         recentAdapter.updateList(recentItems)       // 리스트 갱신
     }
 

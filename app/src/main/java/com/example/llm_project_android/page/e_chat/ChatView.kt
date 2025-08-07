@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -15,7 +16,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.llm_project_android.R
 import com.example.llm_project_android.adapter.ChatAdapter
 import com.example.llm_project_android.data.model.Chat
+import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
+import com.example.llm_project_android.page.c_product.CategoryView
+import com.example.llm_project_android.page.c_product.MainViewActivity
 import com.example.llm_project_android.page.c_product.ProductDetailActivity
 
 class ChatView : AppCompatActivity() {
@@ -33,6 +37,8 @@ class ChatView : AppCompatActivity() {
     private var productName: String = ""
     private var recommendation: Boolean = false
 
+    var source: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -49,14 +55,13 @@ class ChatView : AppCompatActivity() {
         btn_send = findViewById(R.id.send_button)
         btn_back = findViewById(R.id.backButton)
 
-        // 초기 설정 (어뎁터, 전송 버튼 초기화)
-        init()
+        source = getPassedExtras("source", String::class.java)["source"] as? String ?: ""
 
-        // 메시지 전송 버튼 활성화 (텍스트 입력 시, 활성화)
-        active_send_button()
 
-        // 전송 버튼 클릭 이벤트
-        click_send_button()
+        init()                  // 초기 설정 (어뎁터, 전송 버튼 초기화)
+        active_send_button()    // 메시지 전송 버튼 활성화 (텍스트 입력 시, 활성화)
+        click_send_button()     // 전송 버튼 클릭 이벤트
+        clickBackButton()       // 뒤로가기 버튼 클릭 이벤트
     }
 
     private fun AI_initMessage() {
@@ -145,4 +150,35 @@ class ChatView : AppCompatActivity() {
         recyclerView.scrollToPosition(messages.lastIndex)
     }
 
+
+    // 뒤로가기 이벤트 정의 함수
+    private fun AppCompatActivity.clickBackButton() {
+        // 뒤로가기 버튼 클릭
+        btn_back.setOnClickListener {
+            when (source) {
+                "MainView" -> {
+                    finish()
+                    navigateTo(MainViewActivity::class.java, reverseAnimation = true)
+                }
+                "CategoryView" -> {
+                    finish()
+                    navigateTo(CategoryView::class.java, reverseAnimation = true)
+                }
+            }
+        }
+
+        // 기기 내장 뒤로가기 버튼 클릭
+        onBackPressedDispatcher.addCallback(this) {
+            when (source) {
+                "MainView" -> {
+                    finish()
+                    navigateTo(MainViewActivity::class.java, reverseAnimation = true)
+                }
+                "CategoryView" -> {
+                    finish()
+                    navigateTo(CategoryView::class.java, reverseAnimation = true)
+                }
+            }
+        }
+    }
 }

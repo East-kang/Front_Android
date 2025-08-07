@@ -43,11 +43,12 @@ object RecentViewedManager{
         sharedPreferences.edit().putString(KEY_RECENT, json).apply()
     }
 
-    fun getRecentItems(): List<Insurance> {
+    fun getRecentItems(limit: Int = 3): List<Insurance> {
         val json = sharedPreferences.getString(KEY_RECENT, null)
         return if (json != null) {
             val type = object : TypeToken<List<Insurance>>() {}.type
-            gson.fromJson(json, type)
+            val fullList: List<Insurance> = gson.fromJson(json, type)
+            fullList.take(limit)  // 원하는 개수만 반환
         } else {
             emptyList()
         }
