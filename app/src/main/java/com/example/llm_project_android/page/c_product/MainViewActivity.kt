@@ -45,7 +45,7 @@ import com.example.llm_project_android.functions.resetUserTable
 import com.example.llm_project_android.functions.showConfirmDialog
 import com.example.llm_project_android.page.a_intro.InitActivity
 import com.example.llm_project_android.page.d_menu.ProfileView
-import com.example.llm_project_android.page.d_menu.SubscribedViewActivity
+import com.example.llm_project_android.page.d_menu.EnrolledViewActivity
 import com.example.llm_project_android.page.d_menu.WishViewActivity
 import com.example.llm_project_android.page.e_chat.ChatView
 import com.google.android.material.navigation.NavigationView
@@ -372,7 +372,7 @@ class MainViewActivity : AppCompatActivity() {
                     true
                 }
                 R.id.joined_insurance -> {  // '가입한 내 보험' 버튼 클릭 이벤트
-                    navigateTo(SubscribedViewActivity::class.java, "source" to "MainViewActivity")
+                    navigateTo(EnrolledViewActivity::class.java, "source" to "MainViewActivity")
                     true
                 }
                 else -> false

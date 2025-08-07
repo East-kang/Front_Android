@@ -17,6 +17,7 @@ import com.example.llm_project_android.db.user.MyDatabase
 import com.example.llm_project_android.db.wishList.WishedManager
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
+import com.example.llm_project_android.page.d_menu.EnrolledViewActivity
 import com.example.llm_project_android.page.d_menu.WishViewActivity
 import kotlinx.coroutines.launch
 
@@ -165,6 +166,7 @@ class ProductDetailActivity : AppCompatActivity() {
                     "category" to data["category"],
                     reverseAnimation = true)
                 "WishListView" -> navigateTo(WishViewActivity::class.java)
+                "EnrolledView" -> navigateTo(EnrolledViewActivity::class.java)
             }
         }
 
@@ -177,6 +179,7 @@ class ProductDetailActivity : AppCompatActivity() {
                     "category" to data["category"],
                     reverseAnimation = true)
                 "WishListView" -> navigateTo(WishViewActivity::class.java)
+                "EnrolledView" -> navigateTo(EnrolledViewActivity::class.java)
             }
         }
     }

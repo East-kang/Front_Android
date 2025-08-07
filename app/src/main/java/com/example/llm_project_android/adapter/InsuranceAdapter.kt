@@ -130,6 +130,7 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
         // 'AI 추천' 문구 표시
         holder.AI_recommendation.visibility = if (item.recommendation) View.VISIBLE else View.GONE
 
+        // 가입 여부 태그 표시
         holder.enrolled.visibility = if (enrolledIds.contains(item.name)) View.VISIBLE else View.GONE
     }
 
