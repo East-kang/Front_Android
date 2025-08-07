@@ -11,7 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LLM_Project_Android">
         <activity
-            android:name=".page.d_menu.WishListViewActivity"
+            android:name=".page.d_menu.SubscribedViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".page.d_menu.WishViewActivity"
             android:exported="false" />
         <activity
             android:name=".page.d_menu.ProfileView"

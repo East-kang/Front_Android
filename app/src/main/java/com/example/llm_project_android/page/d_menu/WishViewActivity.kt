@@ -16,15 +16,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.llm_project_android.R
 import com.example.llm_project_android.adapter.InsuranceAdapter
 import com.example.llm_project_android.data.sample.Products_Insurance
-import com.example.llm_project_android.db.wishList.WishList
-import com.example.llm_project_android.db.wishList.WishedDatabase
 import com.example.llm_project_android.db.wishList.WishedManager
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.page.c_product.MainViewActivity
 import com.example.llm_project_android.page.c_product.ProductDetailActivity
 import kotlinx.coroutines.launch
 
-class WishListViewActivity : AppCompatActivity() {
+class WishViewActivity : AppCompatActivity() {
 
     private lateinit var btn_back: ImageButton
     private lateinit var guideText: TextView
@@ -36,7 +34,7 @@ class WishListViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.d_page_wish_list_view)
+        setContentView(R.layout.d_page_wish_view)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -71,7 +69,7 @@ class WishListViewActivity : AppCompatActivity() {
     // 찜 목록 불러 오기
     private fun get_WishList() {
         lifecycleScope.launch {
-            val manager = WishedManager(this@WishListViewActivity)
+            val manager = WishedManager(this@WishViewActivity)
             val wishList = manager.getAllWishes()
 
             // 뷰 상태 갱신
