@@ -79,6 +79,40 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView
+            android:id="@+id/subscription_yes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="가입 완료"
+            android:textSize="7.5sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_marginStart="6dp"
+            android:layout_marginBottom="3dp"
+            android:paddingHorizontal="7dp"
+            android:visibility="visible"
+            android:background="@drawable/design_subscription_yes_tag"
+            app:layout_constraintStart_toEndOf="@id/insurance_name"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/subscription_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="가입 미완료"
+            android:textSize="7.5sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_marginStart="6dp"
+            android:layout_marginBottom="3dp"
+            android:paddingHorizontal="7dp"
+            android:visibility="visible"
+            android:background="@drawable/design_subscription_no_tag"
+            app:layout_constraintStart_toEndOf="@id/insurance_name"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
             android:id="@+id/recommendation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
