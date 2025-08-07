@@ -35,6 +35,7 @@ import com.example.llm_project_android.functions.saveUserInfo
 import com.example.llm_project_android.functions.showConfirmDialog
 import com.example.llm_project_android.functions.showErrorDialog
 import com.example.llm_project_android.page.c_product.MainViewActivity
+import com.google.android.material.chip.ChipGroup
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executor
 
@@ -73,12 +74,11 @@ class ProfileView : AppCompatActivity() {
     private lateinit var radio_married: RadioButton
 
     private lateinit var job_spinner: Spinner
-
+    private lateinit var diseases_Tag: ChipGroup
 
     private var edit_state: Boolean = false         // 편집 여부 상태 변수 (true: 편집 중, false: 편집x)
 
-    private var isPasswordValid: Boolean =
-        true     // 비밀번호 정규식 조건 만족 유효성 (true: 정규식 만족, false: 정규식 불만족)
+    private var isPasswordValid: Boolean = true     // 비밀번호 정규식 조건 만족 유효성 (true: 정규식 만족, false: 정규식 불만족)
     private var isEmailValid: Boolean = true        // 이메일 정규식 조건 만족 유효성
     private var isBirthValid: Boolean = true        // 생년월일 정규식 조건 만족 유효성
     private var isPhoneValid: Boolean = true        // 이메일 정규식 조건 만족 유효성
@@ -111,6 +111,7 @@ class ProfileView : AppCompatActivity() {
     private var gender: String = "";
     private var married: Boolean = false
     private var job: String = ""
+    private var diseases: List<String> = emptyList()
 
     private var new_job: String = ""                // 변경할 직업 값
 
@@ -159,6 +160,8 @@ class ProfileView : AppCompatActivity() {
 
         job_spinner = findViewById(R.id.job_spinner)    // 직업 선택 박스 (Spinner)
 
+        diseases_Tag = findViewById(R.id.tagChipGroup)  // 질병 목록 태그 그룹 (ChipGroup)
+
         job_list = resources.getStringArray(R.array.jobs)
         adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, job_list)
         job_spinner.adapter = adapter
@@ -195,6 +198,7 @@ class ProfileView : AppCompatActivity() {
                 gender = it.gender
                 married = it.isMarried
                 job = it.job
+                diseases = it.diseases
 
                 // 데이터 로드 후 UI 반영
                 init_Profile()          // 초기 프로필 상태 불러오기
@@ -213,7 +217,8 @@ class ProfileView : AppCompatActivity() {
                 phoneNumber = phone.replace("-", ""),
                 gender = gender,
                 isMarried = married,
-                job = job
+                job = job,
+                diseases = diseases
             )
         }
     }
@@ -243,12 +248,13 @@ class ProfileView : AppCompatActivity() {
 
         user_job.setText(job)
 
+
+
         toViewMode()    // 읽기 뷰 모드로 뷰 설정
     }
 
     // 읽기 전용 상태 뷰 구성 함수
     private fun toViewMode() {
-
         btn_back.visibility = View.VISIBLE      // '상단 바' 상태 변경
         btn_cancel.visibility = View.GONE
         btn_edit.text = "편집"
@@ -273,6 +279,7 @@ class ProfileView : AppCompatActivity() {
         job_spinner.visibility = View.GONE
         job_etc.visibility = View.GONE
         job_rule.visibility = View.GONE
+        diseases_Tag.visibility = View.VISIBLE
 
         user_birth.setBackgroundColor("#FFFFFF".toColorInt())
         user_phone.setBackgroundColor("#FFFFFF".toColorInt())
@@ -282,7 +289,6 @@ class ProfileView : AppCompatActivity() {
 
     // 편집 전용 상태 뷰 구성 함수
     private fun toEditMode() {
-
         btn_back.visibility = View.GONE         // '상단 바' 상태 변경
         btn_cancel.visibility = View.VISIBLE
         btn_edit.text = "완료"
@@ -308,6 +314,7 @@ class ProfileView : AppCompatActivity() {
         group_married.visibility = View.VISIBLE
         job_spinner.visibility = View.VISIBLE
         job_rule.visibility = View.GONE
+        diseases_Tag.visibility = View.GONE
 
         if (job !in job_list) {
             job_spinner.setSelection(job_list.lastIndex)   // '기타'로 설정
@@ -932,6 +939,7 @@ class ProfileView : AppCompatActivity() {
             }
         }
     }
+
 
     // 키보드 숨기기 이벤트 (editText 이외의 영역을 눌렀을 경우, 스크롤 제외)
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
