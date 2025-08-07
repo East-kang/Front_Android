@@ -82,15 +82,10 @@ class ProductDetailActivity : AppCompatActivity() {
                 "recommendation" to Boolean::class.java
             )
         )
-        
-        // 초기 진입 반영 반영
-        init()
 
-        // 찜 버튼 클릭 이벤트
-        click_WishButton()
-        
-        // 뒤로가기 이벤트
-        clickBackButton()
+        init()              // 초기 진입 반영 반영
+        click_WishButton()  // 찜 버튼 클릭 이벤트
+        clickBackButton()   // 뒤로가기 이벤트
     }
 
     // 초기 진입 반영
