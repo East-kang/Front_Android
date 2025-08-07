@@ -9,8 +9,10 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Spinner
@@ -74,7 +76,20 @@ class ProfileView : AppCompatActivity() {
     private lateinit var radio_married: RadioButton
 
     private lateinit var job_spinner: Spinner
-    private lateinit var diseases_Tag: ChipGroup
+    
+    private lateinit var diseases_Tag: ChipGroup    // 질병 목록 태그
+    private lateinit var diseases_Field: LinearLayout   // 질병 체크 필트
+    private lateinit var item0: CheckBox
+    private lateinit var item1: CheckBox
+    private lateinit var item2: CheckBox
+    private lateinit var item3: CheckBox
+    private lateinit var item4: CheckBox
+    private lateinit var item5: CheckBox
+    private lateinit var item6: CheckBox
+    private lateinit var item7: CheckBox
+    private lateinit var item8: CheckBox
+    private lateinit var item9: CheckBox
+    private lateinit var checkBoxList: List<CheckBox>
 
     private var edit_state: Boolean = false         // 편집 여부 상태 변수 (true: 편집 중, false: 편집x)
 
@@ -161,6 +176,12 @@ class ProfileView : AppCompatActivity() {
         job_spinner = findViewById(R.id.job_spinner)    // 직업 선택 박스 (Spinner)
 
         diseases_Tag = findViewById(R.id.tagChipGroup)  // 질병 목록 태그 그룹 (ChipGroup)
+        diseases_Field = findViewById(R.id.disease_Field)   // 질병 목록 체크
+
+        checkBoxList = listOf(
+            item0, item1, item2, item3, item4,
+            item5, item6, item7, item8, item9
+        )
 
         job_list = resources.getStringArray(R.array.jobs)
         adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, job_list)
@@ -249,7 +270,6 @@ class ProfileView : AppCompatActivity() {
         user_job.setText(job)
 
 
-
         toViewMode()    // 읽기 뷰 모드로 뷰 설정
     }
 
@@ -280,11 +300,10 @@ class ProfileView : AppCompatActivity() {
         job_etc.visibility = View.GONE
         job_rule.visibility = View.GONE
         diseases_Tag.visibility = View.VISIBLE
+        diseases_Field.visibility = View.GONE
 
         user_birth.setBackgroundColor("#FFFFFF".toColorInt())
         user_phone.setBackgroundColor("#FFFFFF".toColorInt())
-
-        // 건강상태
     }
 
     // 편집 전용 상태 뷰 구성 함수
@@ -315,6 +334,7 @@ class ProfileView : AppCompatActivity() {
         job_spinner.visibility = View.VISIBLE
         job_rule.visibility = View.GONE
         diseases_Tag.visibility = View.GONE
+        diseases_Field.visibility = View.VISIBLE
 
         if (job !in job_list) {
             job_spinner.setSelection(job_list.lastIndex)   // '기타'로 설정
@@ -324,8 +344,6 @@ class ProfileView : AppCompatActivity() {
 
         user_birth.setBackgroundResource(R.drawable.design_gray_solid)
         user_phone.setBackgroundResource(R.drawable.design_gray_solid)
-
-        // '건강 상태' 상태 초기화
     }
 
     // 프로필 뷰 변경 사항 반영 함수
