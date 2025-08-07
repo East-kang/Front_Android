@@ -119,8 +119,7 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
         holder.P_payment.text = styledText  // 납입금 문구 저장
 
         // 'AI 추천' 문구 표시
-        holder.AI_recommendation.visibility =
-            if (item.recommendation) View.VISIBLE else View.GONE
+        holder.AI_recommendation.visibility = if (item.recommendation) View.VISIBLE else View.GONE
     }
 
     // RecyclerView에 몇 가지의 아이템이 떠야되는지 알려주는 메서드, 반환한 숫자만큼 onBindViewHoler() 함수가 호출되어 항목 만듦.
