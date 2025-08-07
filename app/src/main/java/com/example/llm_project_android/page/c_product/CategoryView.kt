@@ -94,12 +94,6 @@ class CategoryView : AppCompatActivity() {
         clickBackButton()           // 뒤로가기 이벤트 (to MainViewActivity)
     }
 
-    private fun init() {
-
-
-    }
-
-
     // 상품 띄우기
     private fun showing_Insurances() {
         itemView.layoutManager = LinearLayoutManager(this)

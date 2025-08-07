@@ -33,7 +33,9 @@ import com.example.llm_project_android.adapter.ViewPageAdapter
 import com.example.llm_project_android.data.model.Product
 import com.example.llm_project_android.data.sample.Products_Insurance
 import com.example.llm_project_android.databinding.CPageMainViewBinding
+import com.example.llm_project_android.db.user.MyDAO
 import com.example.llm_project_android.db.user.MyDatabase
+import com.example.llm_project_android.db.user.User
 import com.example.llm_project_android.db.wishList.WishedManager
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.handleTouchOutsideEditText
@@ -76,6 +78,9 @@ class MainViewActivity : AppCompatActivity() {
 
     private lateinit var btn_chat: FrameLayout
     private var source: String? = null
+
+    private lateinit var dao: MyDAO
+    private var user: User? = null
 
     lateinit var wishedManager: WishedManager               // 찜 목록 매니저
     private lateinit var recentAdapter: InsuranceAdapter    // 최근 조회 어뎁터
@@ -139,6 +144,8 @@ class MainViewActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = recentAdapter
 
+        dao = MyDatabase.getDatabase(this@MainViewActivity).getMyDao()
+
         init()                      // 초기 레이아웃 구성
 
         setupViewPager(bannerList)
@@ -164,9 +171,7 @@ class MainViewActivity : AppCompatActivity() {
         search_area.visibility = View.GONE
 
         lifecycleScope.launch {
-            val dao = MyDatabase.getDatabase(this@MainViewActivity).getMyDao()
-            val user = dao.getLoggedInUser()
-
+            user = dao.getLoggedInUser()
             name_field.text = user?.name+"님"
         }
     }
@@ -259,6 +264,11 @@ class MainViewActivity : AppCompatActivity() {
     private fun recent_Items() {
         val recentItems = RecentViewedManager.getRecentItems(3)
         recentAdapter.updateList(recentItems)       // 리스트 갱신
+
+        lifecycleScope.launch {
+            user = dao.getLoggedInUser()
+            user?.let { recentAdapter.setEnrolls(it.subscriptions) }
+        }
     }
 
     // 메뉴 기능
