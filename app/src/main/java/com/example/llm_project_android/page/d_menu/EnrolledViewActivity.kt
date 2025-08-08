@@ -2,6 +2,7 @@ package com.example.llm_project_android.page.d_menu
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -27,6 +28,8 @@ import kotlinx.coroutines.launch
 class EnrolledViewActivity : AppCompatActivity() {
 
     private lateinit var btn_back: ImageButton              // 뒤로 가기 버튼
+    private lateinit var btn_cancle: Button                 // 취소 버튼
+    private lateinit var btn_edit: Button                   // 편집,완료 버튼
     private lateinit var guideText: TextView                // "아이템 없음" 텍스트 뷰
     private lateinit var linearLayout: LinearLayout
     private lateinit var recyclerView: RecyclerView         // 아이템 추가 뷰
@@ -34,6 +37,8 @@ class EnrolledViewActivity : AppCompatActivity() {
     private lateinit var dao: MyDAO
     private var user: User ?= null
     private lateinit var adapter: InsuranceAdapter
+    
+    private var edit_state: Boolean = false                 // 편집 여부 변수 (true: 편집 모드, false: 읽기 모드)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +51,8 @@ class EnrolledViewActivity : AppCompatActivity() {
         }
 
         btn_back = findViewById(R.id.backButton)
+        btn_cancle = findViewById(R.id.cancelButton)
+        btn_edit = findViewById(R.id.editButton)
         guideText = findViewById(R.id.guide_text)
         linearLayout = findViewById(R.id.linearLayout)
         recyclerView = findViewById(R.id.item_group)

@@ -494,18 +494,32 @@ class ProfileView : AppCompatActivity() {
 
         // 기기 내장 뒤로가기 버튼 클릭
         onBackPressedDispatcher.addCallback(this) {
-            finish()
-            navigateTo(
-                MainViewActivity::class.java,
-                "source" to "ProfileView",
-                reverseAnimation = true
-            )
+            if (edit_state) {
+                // 변경 사항 존재
+                if (isPasswordChanged || isEmailChanged || isBirthChanged || isPhoneChanged || isGenderChanged || isMarriedChanged || isJobChanged || isJobEtcChanged) {
+                    showConfirmDialog(this@ProfileView, "확인", "변경을 취소하시겠습니까?") { result ->
+                        if (result) {
+                            edit_state = false
+                            init_Profile()            // 읽기 뷰 모드로 뷰 변환
+                        }
+                    }
+                } else {    // 변경 사항 미존재
+                    edit_state = false
+                    init_Profile()
+                }
+            } else {
+                finish()
+                navigateTo(
+                    MainViewActivity::class.java,
+                    "source" to "ProfileView",
+                    reverseAnimation = true
+                )
+            }
         }
     }
 
     // 취소 버튼 클릭 이벤트
     private fun click_CancelButton() {
-
         // 편집 취소할건지 msgBox 물어보기
         btn_cancel.setOnClickListener {
             // 변경 사항 존재
@@ -520,7 +534,6 @@ class ProfileView : AppCompatActivity() {
                 edit_state = false
                 init_Profile()
             }
-
         }
     }
 
