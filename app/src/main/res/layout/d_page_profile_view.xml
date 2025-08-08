@@ -900,24 +900,19 @@
                         android:paddingVertical="12dp"
                         android:background="@drawable/design_categories_button" >
 
-                        <com.google.android.material.chip.ChipGroup
-                            android:id="@+id/tagChipGroup"
+                        <com.google.android.flexbox.FlexboxLayout
+                            android:id="@+id/disease_Field"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="30dp"
-                            android:orientation="vertical"
-                            app:chipSpacingVertical="0dp"
-                            android:visibility="gone"
-                            app:singleSelection="false"
-                            android:descendantFocusability="afterDescendants"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
-                            android:clickable="true"
+                            android:orientation="horizontal"
+                            app:flexWrap="wrap"
+                            app:justifyContent="flex_start"
+                            app:alignItems="flex_start"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <LinearLayout
-                            android:id="@+id/disease_Field"
+                            android:id="@+id/disease_check_Field"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"

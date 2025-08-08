@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.util.Log
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.widget.AdapterView
@@ -37,7 +38,7 @@ import com.example.llm_project_android.functions.saveUserInfo
 import com.example.llm_project_android.functions.showConfirmDialog
 import com.example.llm_project_android.functions.showErrorDialog
 import com.example.llm_project_android.page.c_product.MainViewActivity
-import com.google.android.material.chip.ChipGroup
+import com.google.android.flexbox.FlexboxLayout
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executor
 
@@ -76,9 +77,9 @@ class ProfileView : AppCompatActivity() {
     private lateinit var radio_married: RadioButton
 
     private lateinit var job_spinner: Spinner
-    
-    private lateinit var diseases_Tag: ChipGroup    // 질병 목록 태그
-    private lateinit var diseases_Field: LinearLayout   // 질병 체크 필트
+
+    private lateinit var disease_Field: FlexboxLayout        // 질병 상태 필드
+    private lateinit var disease_check_Field: LinearLayout   // 질병 체크 필드
     private lateinit var item0: CheckBox
     private lateinit var item1: CheckBox
     private lateinit var item2: CheckBox
@@ -99,6 +100,7 @@ class ProfileView : AppCompatActivity() {
     private var isPhoneValid: Boolean = true        // 이메일 정규식 조건 만족 유효성
     private var isJobValid: Boolean = true          // 기타 직업명 정규식 조건 만족 유효성
     private var isJobEtcValid: Boolean = true       // 기타 직업명 정규식 조건 만족 유효성
+    private var isDiseaseValid: Boolean = true      // 질병 체크 박스 체크 유효성
 
     private var isPasswordChanged: Boolean = false  // 비밀번호 변경 여부
     private var isEmailChanged: Boolean = false     // 이메일 변경 여부
@@ -107,11 +109,14 @@ class ProfileView : AppCompatActivity() {
     private var isGenderChanged: Boolean = false    // 성별 변경 여부
     private var isMarriedChanged: Boolean = false   // 결혼 여부 변경 여부
     private var isJobChanged: Boolean = false       // 직업 변경 여부
-    private var isJobEtcChanged: Boolean = false    // 직업 변경 여부
+    private var isJobEtcChanged: Boolean = false    // 기타 직업명 변경 여부
+    private var isDiseaseChanged: Boolean = false   // 질병 체크 변경 여부
     private var isJobRule: Boolean = false
 
     private lateinit var job_list: Array<String>
     private lateinit var adapter: ArrayAdapter<String>
+
+    private var update_List: MutableList<String> = mutableListOf()
 
     private lateinit var executor: Executor
     private lateinit var biometricPrompt: BiometricPrompt
@@ -134,6 +139,7 @@ class ProfileView : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContentView(R.layout.d_page_profile_view)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -175,8 +181,19 @@ class ProfileView : AppCompatActivity() {
 
         job_spinner = findViewById(R.id.job_spinner)    // 직업 선택 박스 (Spinner)
 
-        diseases_Tag = findViewById(R.id.tagChipGroup)  // 질병 목록 태그 그룹 (ChipGroup)
-        diseases_Field = findViewById(R.id.disease_Field)   // 질병 목록 체크
+        disease_Field = findViewById(R.id.disease_Field)               // 질병 확인 필드
+        disease_check_Field = findViewById(R.id.disease_check_Field)   // 질병 목록 체크
+
+        item0 = findViewById<CheckBox>(R.id.disease0)       // 질병 없음 체크 박스
+        item1 = findViewById<CheckBox>(R.id.disease1)       // 암 체크 박스
+        item2 = findViewById<CheckBox>(R.id.disease2)       // 심혈관계 질환 체크 박스
+        item3 = findViewById<CheckBox>(R.id.disease3)       // 뇌혈관 질환 체크 박스
+        item4 = findViewById<CheckBox>(R.id.disease4)       // 당뇨병 체크 박스
+        item5 = findViewById<CheckBox>(R.id.disease5)       // 간질환 체크 박스
+        item6 = findViewById<CheckBox>(R.id.disease6)       // 폐질환 체크 박스
+        item7 = findViewById<CheckBox>(R.id.disease7)       // 근골격계/척추질환 체크 박스
+        item8 = findViewById<CheckBox>(R.id.disease8)       // 정신질환 체크 박스
+        item9 = findViewById<CheckBox>(R.id.disease9)       // 기타 만성질환 체크 박스
 
         checkBoxList = listOf(
             item0, item1, item2, item3, item4,
@@ -187,23 +204,24 @@ class ProfileView : AppCompatActivity() {
         adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, job_list)
         job_spinner.adapter = adapter
 
-        loadData()              // 프로필 값 불러오기
+        loadData()              // 프로필 값 불러 오기
 
-        click_BackButton()      // 뒤로가기 이벤트
+        click_BackButton()      // 뒤로 가기 이벤트
         click_EditButton()      // 편집/완료 버튼 클릭 이벤트
         click_CancelButton()    // 취소 버튼 클릭 이벤트
 
-        edit_password()         // 비밀번호 변경 이벤트
+        edit_password()         // 비밀 번호 변경 이벤트
         edit_email()            // 이메일 변경 이벤트
-        edit_birth()            // 생년월일 변경 이벤트
-        edit_phone()            // 전화번호 변경 이벤트
+        edit_birth()            // 생년 월일 변경 이벤트
+        edit_phone()            // 전화 번호 변경 이벤트
         edit_gender()           // 성별 체크 이벤트
         edit_married()          // 결혼 여부 체크 이벤트
         edit_job()              // 직업 선택 이벤트
+        items_check()           // item 체크 이벤트
 
     }
 
-    // 내부 DB 데이터 불러오기
+    // 내부 DB 데이터 불러 오기
     fun loadData() {
         lifecycleScope.launch {
             val dao = MyDatabase.getDatabase(this@ProfileView).getMyDao()
@@ -227,7 +245,7 @@ class ProfileView : AppCompatActivity() {
         }
     }
 
-    // 내부 DB로 데이터 저장하기
+    // 내부 DB로 데이터 저장 하기
     fun storeData() {
         lifecycleScope.launch {
             saveUserInfo(
@@ -269,7 +287,6 @@ class ProfileView : AppCompatActivity() {
 
         user_job.setText(job)
 
-
         toViewMode()    // 읽기 뷰 모드로 뷰 설정
     }
 
@@ -299,8 +316,10 @@ class ProfileView : AppCompatActivity() {
         job_spinner.visibility = View.GONE
         job_etc.visibility = View.GONE
         job_rule.visibility = View.GONE
-        diseases_Tag.visibility = View.VISIBLE
-        diseases_Field.visibility = View.GONE
+        disease_Field.visibility = View.VISIBLE
+        disease_check_Field.visibility = View.GONE
+
+        add_tag(diseases)
 
         user_birth.setBackgroundColor("#FFFFFF".toColorInt())
         user_phone.setBackgroundColor("#FFFFFF".toColorInt())
@@ -333,8 +352,8 @@ class ProfileView : AppCompatActivity() {
         group_married.visibility = View.VISIBLE
         job_spinner.visibility = View.VISIBLE
         job_rule.visibility = View.GONE
-        diseases_Tag.visibility = View.GONE
-        diseases_Field.visibility = View.VISIBLE
+        disease_Field.visibility = View.GONE
+        disease_check_Field.visibility = View.VISIBLE
 
         if (job !in job_list) {
             job_spinner.setSelection(job_list.lastIndex)   // '기타'로 설정
@@ -342,13 +361,14 @@ class ProfileView : AppCompatActivity() {
             job_etc.visibility = View.VISIBLE
         } else job_etc.visibility = View.GONE
 
+        check_Box() // 질병 박스 체크 이벤트
+
         user_birth.setBackgroundResource(R.drawable.design_gray_solid)
         user_phone.setBackgroundResource(R.drawable.design_gray_solid)
     }
 
     // 프로필 뷰 변경 사항 반영 함수
     private fun changes_Profile() {
-
         if (isPasswordChanged) {                                // 비밀변호 변경 시: 비밀번호 데이터 변경
             pw = user_pw.text.toString()
             user_pw.setText("")
@@ -394,49 +414,37 @@ class ProfileView : AppCompatActivity() {
             user_job.setText(job)
         }
 
+        if (isDiseaseChanged) {                                 // 질병 종류 변경 시: 질병 데이터 변경
+            diseases = mutableListOf()
+            diseases = update_List
+            update_List = mutableListOf()
+        }
+
         // 유효성 초기화
         isPasswordValid = true; isEmailValid = true; isBirthValid = true
-        isPhoneValid = true; isJobValid = true; isJobEtcValid = true
+        isPhoneValid = true; isJobValid = true; isJobEtcValid = true; isDiseaseValid = true
 
         // 변경 상태 초기화
-        isPasswordChanged = false; isEmailChanged = false; isBirthChanged = false; isPhoneChanged =
-            false
-        isGenderChanged = false; isMarriedChanged = false; isJobChanged = false; isJobEtcChanged =
-            false
-
+        isPasswordChanged = false;  isEmailChanged = false;     isBirthChanged = false; isPhoneChanged = false
+        isGenderChanged = false;    isMarriedChanged = false;   isJobChanged = false;   isJobEtcChanged = false
+        isDiseaseChanged = false
     }
 
     // 편집,완료 버튼 클릭 이벤트
     private fun click_EditButton() {
         btn_edit.setOnClickListener {
-
             if (edit_state) {       // 편집 버튼 클릭 이벤트 (편집->읽기)
+                confirmed_CheckBox()    // 질병 체크 박스 확인
+
                 when {
-                    !isPasswordValid -> showErrorDialog(
-                        this,
-                        "유효하지 않은 비밀번호 형식입니다."
-                    )    // 비밀번호 형식 오류
-                    !isEmailValid -> showErrorDialog(
-                        this,
-                        "유효하지 않은 이메일 형식입니다."
-                    )         // 이메일 형식 오류
-                    !isBirthValid -> showErrorDialog(
-                        this,
-                        "유효하지 않은 생년월일 형식입니다."
-                    )       // 생년월일 형식 오류
-                    !isPhoneValid -> showErrorDialog(
-                        this,
-                        "유효하지 않은 전화번호 형식입니다."
-                    )       // 전화번호 형식 오류
-                    !isJobValid -> showErrorDialog(
-                        this,
-                        "직업이 선택되지 않았습니다."
-                    )               // 직업 선택 오류
-                    !isJobEtcValid -> showErrorDialog(
-                        this,
-                        "유효하지 않은 직업명 형식입니다."
-                    )        // 직업명 형식 오류
-                    isPasswordChanged -> {
+                    !isPasswordValid -> showErrorDialog(this, "유효하지 않은 비밀번호 형식입니다.")    // 비밀번호 형식 오류
+                    !isEmailValid -> showErrorDialog(this, "유효하지 않은 이메일 형식입니다.")         // 이메일 형식 오류
+                    !isBirthValid -> showErrorDialog(this, "유효하지 않은 생년월일 형식입니다.")       // 생년월일 형식 오류
+                    !isPhoneValid -> showErrorDialog(this, "유효하지 않은 전화번호 형식입니다.")       // 전화번호 형식 오류
+                    !isJobValid -> showErrorDialog(this, "직업이 선택되지 않았습니다.")               // 직업 선택 오류
+                    !isJobEtcValid -> showErrorDialog(this, "유효하지 않은 직업명 형식입니다.")        // 직업명 형식 오류
+                    !isDiseaseValid -> showErrorDialog(this, "선택된 질병이 없습니다.")               // 질병 체크 오류
+                    isPasswordChanged -> {                                                                       // 비밀 번호 변경 시
                         fingerPrint(
                             onSuccess = {
                                 edit_state = false      // 상태: 편집 완료
@@ -444,22 +452,18 @@ class ProfileView : AppCompatActivity() {
                                 changes_Profile()       // 변경 데이터 적용
                                 storeData()             // 변경 데이터 내부 DB에 저장
                             },
-                            onFailure = {
-
-                            },
-                            onCancel = {
-
-                            }
+                            onFailure = {},
+                            onCancel = {}
                         )
-                    }                                                                                            // 비밀번호 변경 시
-                    isEmailChanged || isBirthChanged || isPhoneChanged                                           // 데이터 변경 시
-                            || isGenderChanged || isMarriedChanged || isJobChanged || isJobEtcChanged
+                    }
+                    isEmailChanged || isBirthChanged || isPhoneChanged || isGenderChanged                        // 데이터 변경 시
+                            || isMarriedChanged || isJobChanged || isJobEtcChanged || isDiseaseChanged
                         -> showConfirmDialog(this, "확인", "변경 사항을 저장하시겠습니까?") { result ->
                         if (result) {               // "예" 버튼 클릭 시
                             edit_state = false      // 상태: 편집 완료
-                            toViewMode()            // 읽기 뷰 모드로 뷰 변환
                             changes_Profile()       // 변경 데이터 적용
                             storeData()             // 변경 데이터 내부 DB에 저장
+                            toViewMode()            // 읽기 뷰 모드로 뷰 변환
                         }
                     }
 
@@ -476,7 +480,7 @@ class ProfileView : AppCompatActivity() {
         }
     }
 
-    // 뒤로가기 이벤트 정의 함수
+    // 뒤로 가기 이벤트 정의 함수
     private fun click_BackButton() {
         // 뒤로가기 버튼 클릭
         btn_back.setOnClickListener {
@@ -520,7 +524,7 @@ class ProfileView : AppCompatActivity() {
         }
     }
 
-    // 비밀번호 입력 이벤트
+    // 비밀 번호 입력 이벤트
     private fun edit_password() {
         val pattern = Regex("^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{8,16}$")    // 영문, 숫자 (8-16자리)
 
@@ -528,7 +532,7 @@ class ProfileView : AppCompatActivity() {
         user_pw.addTextChangedListener(
             createFlexibleTextWatcher(
                 targetTextView = pw_rule,
-                updateText = { input ->
+                updateText = {
                     when {
                         user_pw.text.toString() == pw -> "기존 입력과 동일합니다"                  // 기존과 동일
                         user_pw.text.toString().isBlank() -> "8~16자의 영문, 숫자를 사용하세요"     // 공란
@@ -536,7 +540,7 @@ class ProfileView : AppCompatActivity() {
                         else -> "8~16자의 영문, 숫자를 사용하세요"                                  // 정규식 불만족
                     }
                 },
-                updateTextColor = { input ->
+                updateTextColor = {
                     when {
                         user_pw.text.toString()
                             .isBlank() || user_pw.text.toString() == pw -> "#1F70CC".toColorInt()    // 공란 or 기존과 동일 (파란색)
@@ -544,29 +548,23 @@ class ProfileView : AppCompatActivity() {
                         else -> "#FF0000".toColorInt()                                          // 정규식 불만족 (빨간색)
                     }
                 },
-                validateInput = { input -> pattern.matches(user_pw.text.toString()) },
-                onValidStateChanged = { isValid ->
+                validateInput = { pattern.matches(user_pw.text.toString()) },
+                onValidStateChanged = {
                     when {
                         user_pw.text.toString()
                             .isBlank() || user_pw.text.toString() == pw -> { // 공란 or 기존과 동일 (= Skip)
-                            isPasswordValid =
-                                true                                              // skip 가능
-                            isPasswordChanged =
-                                false                                           // 변경 사항 미존재
+                            isPasswordValid = true                                              // skip 가능
+                            isPasswordChanged = false                                           // 변경 사항 미존재
                         }
 
                         pattern.matches(user_pw.text.toString()) -> {                           // 정규식 만족 (= 본인인증 수행)
-                            isPasswordValid =
-                                true                                              // skip 가능
-                            isPasswordChanged =
-                                true                                            // 변경 사항 존재
+                            isPasswordValid = true                                              // skip 가능
+                            isPasswordChanged = true                                            // 변경 사항 존재
                         }
 
                         else -> {                                                               // 정규식 만족 x
-                            isPasswordValid =
-                                false                                             // skip 불가능
-                            isPasswordChanged =
-                                true                                            // 변경 사항 존재
+                            isPasswordValid = false                                             // skip 불가능
+                            isPasswordChanged = true                                            // 변경 사항 존재
                         }
                     }
                 }
@@ -595,7 +593,7 @@ class ProfileView : AppCompatActivity() {
         user_email.addTextChangedListener(
             createFlexibleTextWatcher(
                 targetTextView = email_rule,
-                updateText = { input ->
+                updateText = {
                     when {
                         user_email.text.toString() == email -> "기존 입력과 동일합니다"             // 기존과 동일
                         user_email.text.toString().isBlank() -> "이메일을 형식에 맞게 입력해주세요"   // 공란
@@ -603,7 +601,7 @@ class ProfileView : AppCompatActivity() {
                         else -> "사용 불가능한 형식입니다"                                          // 정규식 불만족
                     }
                 },
-                updateTextColor = { input ->
+                updateTextColor = {
                     when {
                         user_email.text.toString()
                             .isBlank() || user_email.text.toString() == email -> "#1F70CC".toColorInt()   // 공란 or 기존과 동일 (파란색)
@@ -611,29 +609,23 @@ class ProfileView : AppCompatActivity() {
                         else -> "#FF0000".toColorInt()                                          // 정규식 불만족 (빨간색)
                     }
                 },
-                validateInput = { input -> pattern.matches(user_email.text.toString()) },
-                onValidStateChanged = { isValid ->
+                validateInput = { pattern.matches(user_email.text.toString()) },
+                onValidStateChanged = {
                     when {
                         user_email.text.toString()
                             .isBlank() || user_email.text.toString() == email -> {    // 공란 or 기존과 동일 (= Skip)
-                            isEmailValid =
-                                true                                                 // skip 가능
-                            isEmailChanged =
-                                false                                              // 변경 사항 미존재
+                            isEmailValid = true                                                 // skip 가능
+                            isEmailChanged = false                                              // 변경 사항 미존재
                         }
 
                         pattern.matches(user_email.text.toString()) -> {                        // 정규식 만족
-                            isEmailValid =
-                                true                                                 // skip 가능
-                            isEmailChanged =
-                                true                                               // 변경 사항 존재
+                            isEmailValid = true                                                 // skip 가능
+                            isEmailChanged = true                                               // 변경 사항 존재
                         }
 
                         else -> {                                                               // 정규식 만족 x
-                            isEmailValid =
-                                false                                                // skip 불가능
-                            isEmailChanged =
-                                true                                               // 변경 사항 존재
+                            isEmailValid = false                                                // skip 불가능
+                            isEmailChanged = true                                               // 변경 사항 존재
                         }
                     }
                 }
@@ -653,7 +645,7 @@ class ProfileView : AppCompatActivity() {
         }
     }
 
-    // 생년월일 입력 이벤트
+    // 생년 월일 입력 이벤트
     private fun edit_birth() {
         val pattern =
             Regex("^(19[0-9]{2}|20[0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])$")    // 생년월일 정규식 (YYYYMMDD)
@@ -662,7 +654,7 @@ class ProfileView : AppCompatActivity() {
         user_birth.addTextChangedListener(
             createFlexibleTextWatcher(
                 targetTextView = birth_rule,
-                updateText = { input ->
+                updateText = {
                     when {
                         user_birth.text.toString() == birth.toString() -> "기존 입력과 동일합니다"  // 기존과 동일
                         user_birth.text.toString().isBlank() -> "생년월일을 형식에 맞게 입력해주세요" // 공란
@@ -670,7 +662,7 @@ class ProfileView : AppCompatActivity() {
                         else -> "사용 불가능합니다"                                                // 정규식 불만족
                     }
                 },
-                updateTextColor = { input ->
+                updateTextColor = {
                     when {
                         user_birth.text.toString()
                             .isBlank() || user_birth.text.toString() == birth.toString() -> "#1F70CC".toColorInt()   // 공란 or 기존과 동일 (파란색)
@@ -678,29 +670,22 @@ class ProfileView : AppCompatActivity() {
                         else -> "#FF0000".toColorInt()                                          // 정규식 불만족 (빨간색)
                     }
                 },
-                validateInput = { input -> pattern.matches(user_birth.text.toString()) },
-                onValidStateChanged = { isValid ->
+                validateInput = { pattern.matches(user_birth.text.toString()) },
+                onValidStateChanged = {
                     when {
-                        user_birth.text.toString()
-                            .isBlank() || user_birth.text.toString() == birth.toString() -> {    // 공란 or 기존과 동일 (= Skip)
-                            isBirthValid =
-                                true                                                 // skip 가능
-                            isBirthChanged =
-                                false                                              // 변경 사항 미존재
+                        user_birth.text.toString().isBlank() || user_birth.text.toString() == birth.toString() -> {    // 공란 or 기존과 동일 (= Skip)
+                            isBirthValid = true                                                 // skip 가능
+                            isBirthChanged = false                                              // 변경 사항 미존재
                         }
 
                         pattern.matches(user_birth.text.toString()) -> {                        // 정규식 만족
-                            isBirthValid =
-                                true                                                 // skip 가능
-                            isBirthChanged =
-                                true                                               // 변경 사항 존재
+                            isBirthValid = true                                                 // skip 가능
+                            isBirthChanged = true                                               // 변경 사항 존재
                         }
 
                         else -> {                                                               // 정규식 만족 x
-                            isBirthValid =
-                                false                                                // skip 불가능
-                            isBirthChanged =
-                                true                                               // 변경 사항 존재
+                            isBirthValid = false                                                // skip 불가능
+                            isBirthChanged = true                                               // 변경 사항 존재
                         }
                     }
                 }
@@ -720,7 +705,7 @@ class ProfileView : AppCompatActivity() {
         }
     }
 
-    // 전화번호 입력 이벤트
+    // 전화 번호 입력 이벤트
     private fun edit_phone() {
         val pattern = Regex("^(010-[0-9]{4}-[0-9]{4})$")    // 전화번호 정규식 (010-xxxx-xxxx)
 
@@ -730,7 +715,7 @@ class ProfileView : AppCompatActivity() {
         user_phone.addTextChangedListener(
             createFlexibleTextWatcher(
                 targetTextView = phone_rule,
-                updateText = { input ->
+                updateText = {
                     when {
                         user_phone.text.toString() == phone -> "기존 입력과 동일합니다"             // 기존과 동일
                         user_phone.text.toString().isBlank() -> "전화번호를 형식에 맞게 입력해주세요" // 공란
@@ -738,7 +723,7 @@ class ProfileView : AppCompatActivity() {
                         else -> "사용 불가능합니다"                                                // 정규식 불만족
                     }
                 },
-                updateTextColor = { input ->
+                updateTextColor = {
                     when {
                         user_phone.text.toString()
                             .isBlank() || user_phone.text.toString() == phone -> "#1F70CC".toColorInt()   // 공란 or 기존과 동일 (파란색)
@@ -746,29 +731,23 @@ class ProfileView : AppCompatActivity() {
                         else -> "#FF0000".toColorInt()                                          // 정규식 불만족 (빨간색)
                     }
                 },
-                validateInput = { input -> pattern.matches(user_phone.text.toString()) },
-                onValidStateChanged = { isValid ->
+                validateInput = { pattern.matches(user_phone.text.toString()) },
+                onValidStateChanged = {
                     when {
                         user_phone.text.toString()
                             .isBlank() || user_phone.text.toString() == phone -> {    // 공란 or 기존과 동일 (= Skip)
-                            isPhoneValid =
-                                true                                                 // skip 가능
-                            isPhoneChanged =
-                                false                                              // 변경 사항 미존재
+                            isPhoneValid = true                                                 // skip 가능
+                            isPhoneChanged = false                                              // 변경 사항 미존재
                         }
 
                         pattern.matches(user_phone.text.toString()) -> {                        // 정규식 만족
-                            isPhoneValid =
-                                true                                                 // skip 가능
-                            isPhoneChanged =
-                                true                                               // 변경 사항 존재
+                            isPhoneValid = true                                                 // skip 가능
+                            isPhoneChanged = true                                               // 변경 사항 존재
                         }
 
                         else -> {                                                               // 정규식 만족 x
-                            isPhoneValid =
-                                false                                                // skip 불가능
-                            isPhoneChanged =
-                                true                                               // 변경 사항 존재
+                            isPhoneValid = false                                                // skip 불가능
+                            isPhoneChanged = true                                               // 변경 사항 존재
                         }
                     }
                 }
@@ -958,6 +937,63 @@ class ProfileView : AppCompatActivity() {
         }
     }
 
+    // 질병 아이템 태그 추가
+    private fun add_tag(diseaseList: List<String>) {
+        val inflater = layoutInflater
+        disease_Field.removeAllViews()  // 질병 상태 필드 초기화
+
+        for (disease in diseaseList) {
+            val tagView = inflater.inflate(R.layout.z_design_disease_text_view, disease_Field, false)
+            val textView = tagView.findViewById<TextView>(R.id.disease_tag)
+            textView.text = disease
+            disease_Field.addView(tagView)
+        }
+    }
+
+    // 질병 체크 박스 체크 이벤트
+    private fun check_Box() {
+        // 초기 체크 상태 표현
+        for (box in checkBoxList)
+            box.isChecked = if (box.text.toString() in diseases) true else false
+    }
+
+    // item 체크
+    private fun items_check() {
+        // '질병 없음' 항목 클릭 이벤트
+        item0.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {                                // 클릭o -> 다른 항목 전부 체크 해제
+                checkBoxList.drop(1).forEach { it.isChecked = false }
+                item0.isChecked = true
+            }
+        }
+
+        checkBoxList.drop(1).forEach { box ->
+            box.setOnCheckedChangeListener { _, _ ->
+                // 다른 질병 체크 시, item0이 체크되어 있으면 해제
+                if (item0.isChecked) {
+                    item0.isChecked = false
+                }
+            }
+        }
+    }
+
+    // 체크 박스 체크 확인
+    private fun confirmed_CheckBox() {
+        // 질병 리스트 업데이트
+        for (box in checkBoxList)
+            if (box.isChecked) update_List.add(box.text.toString())
+
+        if (update_List.isEmpty()) {                            // 체크한 박스가 없을 경우
+            isDiseaseValid = false
+            isDiseaseChanged = true
+        } else if (update_List.toSet() == diseases.toSet()) {
+            isDiseaseValid = true
+            isDiseaseChanged = false
+        } else {
+            isDiseaseValid = true
+            isDiseaseChanged = true
+        }
+    }
 
     // 키보드 숨기기 이벤트 (editText 이외의 영역을 눌렀을 경우, 스크롤 제외)
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
