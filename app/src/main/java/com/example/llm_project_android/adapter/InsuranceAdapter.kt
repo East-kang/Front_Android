@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.core.graphics.alpha
 import androidx.recyclerview.widget.RecyclerView
 import com.example.llm_project_android.databinding.ZDesignShapeInsuranceBinding
 import androidx.core.graphics.toColorInt
@@ -25,9 +26,10 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
 
     private val originalList: List<Insurance> = productList.toList()                    // 원본 데이터 보관용 상품 리스트
     private val insuranceList: MutableList<Insurance> = productList.toMutableList()     // 화면에 표시될 상품 리스트
-    var itemClick : ItemClick? = null                 // 클릭 이벤트 변수
-    private var aiRecommendKey: String = "AI 추천"    // AI 추천 여부
+    var itemClick : ItemClick? = null                   // 클릭 이벤트 변수
+    private var aiRecommendKey: String = "AI 추천"       // AI 추천 여부
     private var enrolledIds = mutableSetOf<String>()    // 가입 상품 리스트
+    private var isDeleted: Boolean = false
 
     fun applyFilters(
         filter1: String?,           // 카테고리
@@ -72,10 +74,16 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
     }
 
     // 가입 여부 받아오기
-    fun setEnrolls(ids: List<String>) {
+    fun setEnrolls(ids: List<String>, state: Boolean = false) {
         enrolledIds.clear()
         enrolledIds.addAll(ids)
+        isDeleted = state
         notifyDataSetChanged()
+    }
+
+    // 삭제 버튼 생성
+    fun setDeletes(state: Boolean) {
+
     }
 
     // viewHolder 객체 생성, 반환된 뷰 홀더 객체는 자동으로 onBindViewHolder() 함수의 매개변수로 전달
@@ -132,6 +140,29 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
 
         // 가입 여부 태그 표시
         holder.enrolled.visibility = if (enrolledIds.contains(item.name)) View.VISIBLE else View.GONE
+
+        if (isDeleted) {
+            holder.item.apply {
+                alpha = 0.7f                // 아이템 투명화 o
+                isEnabled = false           // 클릭 불가능
+            }
+            holder.deleteButton.apply {
+                visibility = View.VISIBLE   // 시각화 o
+                alpha = 1.0f                // 투명화 x
+                isEnabled = true            // 클릭 가능
+                bringToFront()              // 가장 앞으로 배치
+            }
+        } else {
+            holder.item.apply {
+                alpha = 1.0f                // 아이템 투명화 x
+                isEnabled = true            // 클릭 가능
+            }
+            holder.deleteButton.apply {
+                visibility = View.GONE      // 시각화 x
+                alpha = 1.0f                // 투명화 x
+                isEnabled = false           // 클릭 불가능
+            }
+        }
     }
 
     // RecyclerView에 몇 가지의 아이템이 떠야되는지 알려주는 메서드, 반환한 숫자만큼 onBindViewHoler() 함수가 호출되어 항목 만듦.
@@ -143,14 +174,16 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
     @RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
     inner class Holder(val binding: ZDesignShapeInsuranceBinding) : RecyclerView.ViewHolder(binding.root) {
         // 데이터 바인딩
-        val C_icon = binding.companyIcon
-        val C_name = binding.companyName
-        val P_name = binding.insuranceName
-        val P_description = binding.insuranceDescription
-        val P_payment = binding.insurancePayment
-        val P_category = binding.category
-        var AI_recommendation = binding.recommendation
-        var enrolled = binding.enroll
+        val C_icon = binding.companyIcon                    // 기업 아이콘
+        val C_name = binding.companyName                    // 기업명
+        val P_name = binding.insuranceName                  // 상품명
+        val P_description = binding.insuranceDescription    // 상품 설명
+        val P_payment = binding.insurancePayment            // 월 납입금
+        val P_category = binding.category                   // 상품 카테고리
+        var AI_recommendation = binding.recommendation      // AI 추천 여부
+        var enrolled = binding.enroll                       // 상품 가입 여부
+        var item = binding.insuranceDesign                  // 전체 아이템 뷰
+        var deleteButton = binding.deleteButton             // 삭제 버튼
 
         init {
             binding.root.setOnClickListener {
