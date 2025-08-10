@@ -44,97 +44,95 @@ import java.util.concurrent.Executor
 
 class ProfileView : AppCompatActivity() {
 
-    private lateinit var btn_back: ImageButton
-    private lateinit var btn_edit: Button
-    private lateinit var btn_cancel: Button
+    private lateinit var btn_back: ImageButton      // 뒤로 가기 버튼
+    private lateinit var btn_edit: Button           // 편집,완료 버튼
+    private lateinit var btn_cancel: Button         // 취소 버튼
 
-    private lateinit var user_id: TextView;
-    private lateinit var user_name: TextView
-    private lateinit var user_gender: TextView;
-    private lateinit var user_married: TextView
-    private lateinit var user_job: TextView;
-    private lateinit var pw_rule: TextView
-    private lateinit var email_rule: TextView;
-    private lateinit var birth_rule: TextView
-    private lateinit var phone_rule: TextView;
-    private lateinit var job_rule: TextView
+    private lateinit var user_id: TextView          // 유저 아이디 필드
+    private lateinit var user_name: TextView        // 유저 이름 필드
+    private lateinit var user_gender: TextView      // 유저 성별 필드
+    private lateinit var user_married: TextView     // 유저 결혼 여부 필드
+    private lateinit var user_job: TextView         // 유저 직업 필드
+    private lateinit var pw_rule: TextView          // 비밀 번호 입력 안내 문구 필드
+    private lateinit var email_rule: TextView       // 이메일 입력 안내 문구 필드
+    private lateinit var birth_rule: TextView       // 생년 월일 입력 안내 문구 필드
+    private lateinit var phone_rule: TextView       // 전화 번호 입력 안내 문구 필드
+    private lateinit var job_rule: TextView         // 직업명 입력 안내 문구 필드
 
-    private lateinit var pw_field: ConstraintLayout
-    private lateinit var line: View
+    private lateinit var pw_field: ConstraintLayout // 비밀 번호 레이아웃
+    private lateinit var line: View                 // 비밀 번호 분리선
 
-    private lateinit var user_pw: EditText;
-    private lateinit var user_email: EditText
-    private lateinit var user_birth: EditText;
-    private lateinit var user_phone: EditText
-    private lateinit var job_etc: EditText
+    private lateinit var user_pw: EditText          // 사용자 비밀 번호 필드
+    private lateinit var user_email: EditText       // 사용자 이메일 필드
+    private lateinit var user_birth: EditText       // 사용자 생년 월일 필드
+    private lateinit var user_phone: EditText       // 사용자 전화 번호 필드
+    private lateinit var job_etc: EditText          // 사용자 기타 직업명 필드
 
-    private lateinit var group_gender: RadioGroup;
-    private lateinit var group_married: RadioGroup
+    private lateinit var group_gender: RadioGroup   // 성별 라디오 그룹
+    private lateinit var group_married: RadioGroup  // 결혼 여부 라디오 그룹
 
-    private lateinit var radio_male: RadioButton;
-    private lateinit var radio_female: RadioButton
-    private lateinit var radio_single: RadioButton;
-    private lateinit var radio_married: RadioButton
+    private lateinit var radio_male: RadioButton    // 성별(남자) 버튼
+    private lateinit var radio_female: RadioButton  // 성별(여자) 버튼
+    private lateinit var radio_single: RadioButton  // 결혼 여부(미혼) 버튼
+    private lateinit var radio_married: RadioButton // 결혼 여부(기혼) 버튼
 
-    private lateinit var job_spinner: Spinner
+    private lateinit var job_spinner: Spinner       // 직업 토글
 
-    private lateinit var disease_Field: FlexboxLayout        // 질병 상태 필드
-    private lateinit var disease_check_Field: LinearLayout   // 질병 체크 필드
-    private lateinit var item0: CheckBox
-    private lateinit var item1: CheckBox
-    private lateinit var item2: CheckBox
-    private lateinit var item3: CheckBox
-    private lateinit var item4: CheckBox
-    private lateinit var item5: CheckBox
-    private lateinit var item6: CheckBox
-    private lateinit var item7: CheckBox
-    private lateinit var item8: CheckBox
-    private lateinit var item9: CheckBox
-    private lateinit var checkBoxList: List<CheckBox>
+    private lateinit var disease_Field: FlexboxLayout       // 질병 상태 필드
+    private lateinit var disease_check_Field: LinearLayout  // 질병 체크 필드
+    private lateinit var item0: CheckBox                    // 질병 없음 체크 박스
+    private lateinit var item1: CheckBox                    // 암 체크 박스
+    private lateinit var item2: CheckBox                    // 심혈관계 질환 체크 박스
+    private lateinit var item3: CheckBox                    // 뇌혈관 질환 체크 박스
+    private lateinit var item4: CheckBox                    // 당뇨병 체크 박스
+    private lateinit var item5: CheckBox                    // 간질환 체크 박스
+    private lateinit var item6: CheckBox                    // 폐질환 체크 박스
+    private lateinit var item7: CheckBox                    // 근골격계/척추질환 체크 박스
+    private lateinit var item8: CheckBox                    // 정신질환 체크 박스
+    private lateinit var item9: CheckBox                    // 기타 만성질환 체크 박스
+    private lateinit var checkBoxList: List<CheckBox>       // 체크 박스 모음 리스트
 
-    private var edit_state: Boolean = false         // 편집 여부 상태 변수 (true: 편집 중, false: 편집x)
+    private var edit_state: Boolean = false                 // 편집 여부 상태 변수 (true: 편집 중, false: 편집x)
 
-    private var isPasswordValid: Boolean = true     // 비밀번호 정규식 조건 만족 유효성 (true: 정규식 만족, false: 정규식 불만족)
-    private var isEmailValid: Boolean = true        // 이메일 정규식 조건 만족 유효성
-    private var isBirthValid: Boolean = true        // 생년월일 정규식 조건 만족 유효성
-    private var isPhoneValid: Boolean = true        // 이메일 정규식 조건 만족 유효성
-    private var isJobValid: Boolean = true          // 기타 직업명 정규식 조건 만족 유효성
-    private var isJobEtcValid: Boolean = true       // 기타 직업명 정규식 조건 만족 유효성
-    private var isDiseaseValid: Boolean = true      // 질병 체크 박스 체크 유효성
+    private var isPasswordValid: Boolean = true             // 비밀 번호 정규식 조건 만족 유효성 (true: 정규식 만족, false: 정규식 불만족)
+    private var isEmailValid: Boolean = true                // 이메일 정규식 조건 만족 유효성
+    private var isBirthValid: Boolean = true                // 생년 월일 정규식 조건 만족 유효성
+    private var isPhoneValid: Boolean = true                // 이메일 정규식 조건 만족 유효성
+    private var isJobValid: Boolean = true                  // 기타 직업명 정규식 조건 만족 유효성
+    private var isJobEtcValid: Boolean = true               // 기타 직업명 정규식 조건 만족 유효성
+    private var isDiseaseValid: Boolean = true              // 질병 체크 박스 체크 유효성
 
-    private var isPasswordChanged: Boolean = false  // 비밀번호 변경 여부
-    private var isEmailChanged: Boolean = false     // 이메일 변경 여부
-    private var isBirthChanged: Boolean = false     // 생년월일 변경 여부
-    private var isPhoneChanged: Boolean = false     // 전화번호 변경 여부
-    private var isGenderChanged: Boolean = false    // 성별 변경 여부
-    private var isMarriedChanged: Boolean = false   // 결혼 여부 변경 여부
-    private var isJobChanged: Boolean = false       // 직업 변경 여부
-    private var isJobEtcChanged: Boolean = false    // 기타 직업명 변경 여부
-    private var isDiseaseChanged: Boolean = false   // 질병 체크 변경 여부
-    private var isJobRule: Boolean = false
+    private var isPasswordChanged: Boolean = false          // 비밀 번호 변경 여부
+    private var isEmailChanged: Boolean = false             // 이메일 변경 여부
+    private var isBirthChanged: Boolean = false             // 생년 월일 변경 여부
+    private var isPhoneChanged: Boolean = false             // 전화 번호 변경 여부
+    private var isGenderChanged: Boolean = false            // 성별 변경 여부
+    private var isMarriedChanged: Boolean = false           // 결혼 여부 변경 여부
+    private var isJobChanged: Boolean = false               // 직업 변경 여부
+    private var isJobEtcChanged: Boolean = false            // 기타 직업명 변경 여부
+    private var isDiseaseChanged: Boolean = false           // 질병 체크 변경 여부
+    private var isJobRule: Boolean = false                  // 초기 안내 문구 표현을 위한 상태 변수(true: 실시간 검증, false: 기본 안내 문구)
 
-    private lateinit var job_list: Array<String>
-    private lateinit var adapter: ArrayAdapter<String>
+    private lateinit var job_list: Array<String>            // 직업 리스트
+    private lateinit var adapter: ArrayAdapter<String>      // 직업 어뎁터
 
-    private var update_List: MutableList<String> = mutableListOf()
+    private var update_List: MutableList<String> = mutableListOf()  // 변경 리스트
 
-    private lateinit var executor: Executor
-    private lateinit var biometricPrompt: BiometricPrompt
-    private lateinit var promptInfo: BiometricPrompt.PromptInfo
+    private lateinit var executor: Executor                 // 실행
+    private lateinit var biometricPrompt: BiometricPrompt   // 생체 신호 프롬프트
+    private lateinit var promptInfo: BiometricPrompt.PromptInfo // 프롬프트 정보
 
-    private var id: String = "";
-    private var pw: String = ""
-    private var email: String = "";
-    private var name: String = ""
-    private var birth: Int = 0;
-    private var phone: String = ""
-    private var gender: String = "";
-    private var married: Boolean = false
-    private var job: String = ""
-    private var diseases: List<String> = emptyList()
-
-    private var new_job: String = ""                // 변경할 직업 값
-
+    private var id: String = ""                         // 아이디 저장 변수
+    private var pw: String = ""                         // 비밀 번호 저장 변수
+    private var email: String = ""                      // 이메일 저장 변수
+    private var name: String = ""                       // 이름 저장 변수
+    private var birth: Int = 0                          // 생년 월일 저장 변수
+    private var phone: String = ""                      // 전화 번호 저장 변수
+    private var gender: String = ""                     // 성별 저장 변수
+    private var married: Boolean = false                // 결혼 여부 저장 변수
+    private var job: String = ""                        // 직업 저장 변수
+    private var diseases: List<String> = emptyList()    // 질병 리스트  저장 변수
+    private var new_job: String = ""                    // 변경할 직업 값
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -147,53 +145,53 @@ class ProfileView : AppCompatActivity() {
             insets
         }
 
-        btn_back = findViewById(R.id.backButton)        // 뒤로가기 버튼 (ImageButton)
-        btn_edit = findViewById(R.id.editButton)        // 편집(완료) 버튼 (Button)
-        btn_cancel = findViewById(R.id.cancelButton)    // 편집 취소 버튼 (Button)
+        btn_back = findViewById(R.id.backButton)
+        btn_edit = findViewById(R.id.editButton)
+        btn_cancel = findViewById(R.id.cancelButton)
 
-        user_id = findViewById(R.id.user_id)            // 유저 아이디 (TextView)
-        user_name = findViewById(R.id.user_name)        // 유저 이름 (TextView)
-        user_gender = findViewById(R.id.user_gender)    // 유저 성별 (TextView)
-        user_married = findViewById(R.id.user_married)  // 유저 결혼 여부 (TextView)
-        user_job = findViewById(R.id.user_job)          // 유저 직업 (TextView)
-        pw_rule = findViewById(R.id.user_pw_rule)       // 비밀번호 안내 문구 (TextView)
-        email_rule = findViewById(R.id.user_email_rule) // 이메일 안내 문구 (TextView)
-        birth_rule = findViewById(R.id.user_birth_rule) // 생년월일 안내 문구 (TextView)
-        phone_rule = findViewById(R.id.user_phone_rule) // 전화번호 안내 문구(TextView)
-        job_rule = findViewById(R.id.user_job_rule)     // 직업 안내 문구(TextView)
+        user_id = findViewById(R.id.user_id)
+        user_name = findViewById(R.id.user_name)
+        user_gender = findViewById(R.id.user_gender)
+        user_married = findViewById(R.id.user_married)
+        user_job = findViewById(R.id.user_job)
+        pw_rule = findViewById(R.id.user_pw_rule)
+        email_rule = findViewById(R.id.user_email_rule)
+        birth_rule = findViewById(R.id.user_birth_rule)
+        phone_rule = findViewById(R.id.user_phone_rule)
+        job_rule = findViewById(R.id.user_job_rule)
 
-        pw_field = findViewById(R.id.pw_Field)          // 비밀번호 레이아웃 (ConstraintLayout)
-        line = findViewById(R.id.line1_2)               // 비밀번호 분리선 (View)
+        pw_field = findViewById(R.id.pw_Field)
+        line = findViewById(R.id.line1_2)
 
-        user_pw = findViewById(R.id.user_pw)            // 비밀번호 편집 (EditText)
-        user_email = findViewById(R.id.user_email)      // 이메일 편집 (EditText)
-        user_birth = findViewById(R.id.user_birth)      // 생년월일 편집 (EditText)
-        user_phone = findViewById(R.id.user_phone)      // 전화번호 편집 (EditText)
-        job_etc = findViewById(R.id.job_etc)            // 기타 직업 입력란 (EditText)
+        user_pw = findViewById(R.id.user_pw)
+        user_email = findViewById(R.id.user_email)
+        user_birth = findViewById(R.id.user_birth)
+        user_phone = findViewById(R.id.user_phone)
+        job_etc = findViewById(R.id.job_etc)
 
-        group_gender = findViewById(R.id.gender_Group)  // 성별 그룹 (RadioGroup)
-        group_married = findViewById(R.id.married_Group)// 결혼 여부 그룹 (RadioGroup)
+        group_gender = findViewById(R.id.gender_Group)
+        group_married = findViewById(R.id.married_Group)
 
-        radio_male = findViewById(R.id.radioMale)       // 남성 체크 박스 (RadioButton)
-        radio_female = findViewById(R.id.radioFemale)   // 여성 체크 박스 (RadioButton)
-        radio_single = findViewById(R.id.radioSingle)   // 미혼 체크 박스 (RadioGroup)
-        radio_married = findViewById(R.id.radioMarried) // 기혼 체크 박스 (RadioGroup)
+        radio_male = findViewById(R.id.radioMale)
+        radio_female = findViewById(R.id.radioFemale)
+        radio_single = findViewById(R.id.radioSingle)
+        radio_married = findViewById(R.id.radioMarried)
 
-        job_spinner = findViewById(R.id.job_spinner)    // 직업 선택 박스 (Spinner)
+        job_spinner = findViewById(R.id.job_spinner)
 
-        disease_Field = findViewById(R.id.disease_Field)               // 질병 확인 필드
-        disease_check_Field = findViewById(R.id.disease_check_Field)   // 질병 목록 체크
+        disease_Field = findViewById(R.id.disease_Field)
+        disease_check_Field = findViewById(R.id.disease_check_Field)
 
-        item0 = findViewById<CheckBox>(R.id.disease0)       // 질병 없음 체크 박스
-        item1 = findViewById<CheckBox>(R.id.disease1)       // 암 체크 박스
-        item2 = findViewById<CheckBox>(R.id.disease2)       // 심혈관계 질환 체크 박스
-        item3 = findViewById<CheckBox>(R.id.disease3)       // 뇌혈관 질환 체크 박스
-        item4 = findViewById<CheckBox>(R.id.disease4)       // 당뇨병 체크 박스
-        item5 = findViewById<CheckBox>(R.id.disease5)       // 간질환 체크 박스
-        item6 = findViewById<CheckBox>(R.id.disease6)       // 폐질환 체크 박스
-        item7 = findViewById<CheckBox>(R.id.disease7)       // 근골격계/척추질환 체크 박스
-        item8 = findViewById<CheckBox>(R.id.disease8)       // 정신질환 체크 박스
-        item9 = findViewById<CheckBox>(R.id.disease9)       // 기타 만성질환 체크 박스
+        item0 = findViewById(R.id.disease0)
+        item1 = findViewById(R.id.disease1)
+        item2 = findViewById(R.id.disease2)
+        item3 = findViewById(R.id.disease3)
+        item4 = findViewById(R.id.disease4)
+        item5 = findViewById(R.id.disease5)
+        item6 = findViewById(R.id.disease6)
+        item7 = findViewById(R.id.disease7)
+        item8 = findViewById(R.id.disease8)
+        item9 = findViewById(R.id.disease9)
 
         checkBoxList = listOf(
             item0, item1, item2, item3, item4,
@@ -207,18 +205,18 @@ class ProfileView : AppCompatActivity() {
         loadData()              // 프로필 값 불러 오기
         click_Buttons()         // 버튼 클릭 이벤트
 
-        edit_password()         // 비밀 번호 변경 이벤트
-        edit_email()            // 이메일 변경 이벤트
-        edit_birth()            // 생년 월일 변경 이벤트
-        edit_phone()            // 전화 번호 변경 이벤트
-        edit_gender()           // 성별 체크 이벤트
-        edit_married()          // 결혼 여부 체크 이벤트
-        edit_job()              // 직업 선택 이벤트
-        items_check()           // item 체크 이벤트
+        edit_Password()         // 비밀 번호 변경 이벤트
+        edit_Email()            // 이메일 변경 이벤트
+        edit_Birth()            // 생년 월일 변경 이벤트
+        edit_Phone()            // 전화 번호 변경 이벤트
+        edit_Gender()           // 성별 체크 이벤트
+        edit_Married()          // 결혼 여부 체크 이벤트
+        edit_Job()              // 직업 선택 이벤트
+        items_Check()           // item 체크 이벤트
 
     }
 
-    // 내부 DB 데이터 불러 오기
+    /* 내부 DB 데이터 불러 오기 */
     fun loadData() {
         lifecycleScope.launch {
             val dao = MyDatabase.getDatabase(this@ProfileView).getMyDao()
@@ -242,7 +240,7 @@ class ProfileView : AppCompatActivity() {
         }
     }
 
-    // 내부 DB로 데이터 저장 하기
+    /* 내부 DB로 데이터 저장 하기 */
     fun storeData() {
         lifecycleScope.launch {
             saveUserInfo(
@@ -259,7 +257,7 @@ class ProfileView : AppCompatActivity() {
         }
     }
 
-    // 초기 프로필 데이터 적용 함수
+    /* 초기 프로필 데이터 적용 함수 */
     private fun init_Profile() {
         user_id.setText(id)
         user_pw.setText("")
@@ -287,7 +285,7 @@ class ProfileView : AppCompatActivity() {
         view_Mode(edit_state)   // 읽기 뷰 모드로 뷰 설정
     }
 
-    // 읽기 전용 상태 뷰 구성 함수
+    /* 읽기 전용 상태 뷰 구성 함수 */
     private fun view_Mode(isEdit: Boolean) {
         /* 편집 모드 뷰 */
         if (isEdit) {
@@ -360,14 +358,14 @@ class ProfileView : AppCompatActivity() {
             disease_Field.visibility = View.VISIBLE
             disease_check_Field.visibility = View.GONE
 
-            add_tag(diseases)
+            add_Tag(diseases)
 
             user_birth.setBackgroundColor("#FFFFFF".toColorInt())
             user_phone.setBackgroundColor("#FFFFFF".toColorInt())
         }
     }
     
-    // 프로필 뷰 변경 사항 반영 함수
+    /* 프로필 뷰 변경 사항 반영 함수 */
     private fun changes_Profile() {
         if (isPasswordChanged) {                                // 비밀변호 변경 시: 비밀번호 데이터 변경
             pw = user_pw.text.toString()
@@ -430,7 +428,7 @@ class ProfileView : AppCompatActivity() {
         isDiseaseChanged = false
     }
 
-    // 버튼 클릭 이벤트
+    /* 버튼 클릭 이벤트 */
     private fun click_Buttons() {
         /* 편집,완료 버튼 클릭 이벤트 */
         btn_edit.setOnClickListener {
@@ -491,7 +489,7 @@ class ProfileView : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this) { click_Back() }
     }
     
-    // 뒤로 가기 클릭 이벤트
+    /* 뒤로 가기 클릭 이벤트 */
     private fun click_Back() {
         if (edit_state) {
             // 변경 사항 존재
@@ -506,7 +504,7 @@ class ProfileView : AppCompatActivity() {
         }
     }
 
-    // 취소 버튼 클릭 이벤트
+    /* 취소 버튼 클릭 이벤트 */
     private fun click_Cancel() {
         // 변경 사항 존재
         if (isPasswordChanged || isEmailChanged || isBirthChanged || isPhoneChanged || isGenderChanged || isMarriedChanged || isJobChanged || isJobEtcChanged) {
@@ -522,8 +520,8 @@ class ProfileView : AppCompatActivity() {
         }
     }
 
-    // 비밀 번호 입력 이벤트
-    private fun edit_password() {
+    /* 비밀 번호 입력 이벤트 */
+    private fun edit_Password() {
         val pattern = Regex("^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{8,16}$")    // 영문, 숫자 (8-16자리)
 
         // 비밀번호 입력란 실시간 감지 이벤트
@@ -582,8 +580,8 @@ class ProfileView : AppCompatActivity() {
         }
     }
 
-    // 이메일 입력 이벤트
-    private fun edit_email() {
+    /* 이메일 입력 이벤트 */
+    private fun edit_Email() {
         val pattern =
             Regex("^[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,}\$")               // '계정@도메인.최상위도메인'
 
@@ -643,8 +641,8 @@ class ProfileView : AppCompatActivity() {
         }
     }
 
-    // 생년 월일 입력 이벤트
-    private fun edit_birth() {
+    /* 생년 월일 입력 이벤트 */
+    private fun edit_Birth() {
         val pattern =
             Regex("^(19[0-9]{2}|20[0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])$")    // 생년월일 정규식 (YYYYMMDD)
 
@@ -703,8 +701,8 @@ class ProfileView : AppCompatActivity() {
         }
     }
 
-    // 전화 번호 입력 이벤트
-    private fun edit_phone() {
+    /* 전화 번호 입력 이벤트 */
+    private fun edit_Phone() {
         val pattern = Regex("^(010-[0-9]{4}-[0-9]{4})$")    // 전화번호 정규식 (010-xxxx-xxxx)
 
         user_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
@@ -765,8 +763,8 @@ class ProfileView : AppCompatActivity() {
         }
     }
 
-    // 성별 체크 이벤트
-    private fun edit_gender() {
+    /* 성별 체크 이벤트 */
+    private fun edit_Gender() {
         if (gender.trim() == "남성") radio_male.isChecked = true else radio_female.isChecked = true
 
         group_gender.setOnCheckedChangeListener { _, checkedID ->
@@ -782,8 +780,8 @@ class ProfileView : AppCompatActivity() {
         }
     }
 
-    // 결혼 여부 체크 이벤트
-    private fun edit_married() {
+    /* 결혼 여부 체크 이벤트 */
+    private fun edit_Married() {
         if (married) radio_married.isChecked = true else radio_single.isChecked = true
 
         group_married.setOnCheckedChangeListener { _, checkedID ->
@@ -799,8 +797,8 @@ class ProfileView : AppCompatActivity() {
         }
     }
 
-    // 직업 선택 이벤트
-    private fun edit_job() {
+    /* 직업 선택 이벤트 */
+    private fun edit_Job() {
         val pattern = Regex("^[\\s가-힣]{2,20}$")             // 직업명 정규식 (한글 2-20자)
 
         val initialIndex = if (job in job_list) job_list.indexOf(job) else job_list.lastIndex
@@ -817,6 +815,7 @@ class ProfileView : AppCompatActivity() {
             }
         }
 
+        // 아이템 선택 이벤트
         job_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -863,6 +862,7 @@ class ProfileView : AppCompatActivity() {
             }
         }
 
+        // 기타 직업명 입력란 실시간 반영
         if (!isJobRule) {
             job_etc.addTextChangedListener(
                 createFlexibleTextWatcher(
@@ -935,8 +935,8 @@ class ProfileView : AppCompatActivity() {
         }
     }
 
-    // 질병 아이템 태그 추가
-    private fun add_tag(diseaseList: List<String>) {
+    /* 질병 아이템 태그 추가 */
+    private fun add_Tag(diseaseList: List<String>) {
         val inflater = layoutInflater
         disease_Field.removeAllViews()  // 질병 상태 필드 초기화
 
@@ -948,15 +948,15 @@ class ProfileView : AppCompatActivity() {
         }
     }
 
-    // 질병 체크 박스 체크 이벤트
+    /* 질병 체크 박스 체크 이벤트 */
     private fun check_Box() {
         // 초기 체크 상태 표현
         for (box in checkBoxList)
             box.isChecked = if (box.text.toString() in diseases) true else false
     }
 
-    // item 체크
-    private fun items_check() {
+    /* item 체크 */
+    private fun items_Check() {
         // '질병 없음' 항목 클릭 이벤트
         item0.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {                                // 클릭o -> 다른 항목 전부 체크 해제
@@ -975,7 +975,7 @@ class ProfileView : AppCompatActivity() {
         }
     }
 
-    // 체크 박스 체크 확인
+    /* 체크 박스 체크 확인 */
     private fun confirmed_CheckBox() {
         // 질병 리스트 업데이트
         for (box in checkBoxList)
@@ -993,13 +993,13 @@ class ProfileView : AppCompatActivity() {
         }
     }
 
-    // 키보드 숨기기 이벤트 (editText 이외의 영역을 눌렀을 경우, 스크롤 제외)
+    /* 키보드 숨기기 이벤트 (editText 이외의 영역을 눌렀을 경우, 스크롤 제외) */
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         handleTouchOutsideEditText(this, ev)
         return super.dispatchTouchEvent(ev)
     }
 
-    // 지문인식 기능
+    /* 지문 인식 기능 */
     private fun fingerPrint(onSuccess: () -> Unit, onFailure: () -> Unit, onCancel: () -> Unit) {
         executor = ContextCompat.getMainExecutor(this@ProfileView)
         biometricPrompt = BiometricPrompt(

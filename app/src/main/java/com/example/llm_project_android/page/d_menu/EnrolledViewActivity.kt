@@ -14,11 +14,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.llm_project_android.R
 import com.example.llm_project_android.adapter.InsuranceAdapter
+import com.example.llm_project_android.adapter.ProductContentAdapter
 import com.example.llm_project_android.data.model.Insurance
+import com.example.llm_project_android.data.model.Product
 import com.example.llm_project_android.data.sample.Products_Insurance
 import com.example.llm_project_android.db.user.MyDAO
 import com.example.llm_project_android.db.user.MyDatabase
@@ -47,7 +50,7 @@ class EnrolledViewActivity : AppCompatActivity() {
     private var enrolledList: Set<String> = emptySet()          // 가입 상품 문자열 리스트
     private var allProduct: List<Insurance> = emptyList()       // 전체 보험 상품 리스트
     private var enrolledProducts: List<Insurance> = emptyList() // 가입 여부 필터링 된 상품 리스트
-    private var itemAnimatorBackup: RecyclerView.ItemAnimator? = null
+    private var itemAnimatorBackup: RecyclerView.ItemAnimator? = null   // 투명화 유지를 위한 변수
 
     private var edit_state: Boolean = false                 // 편집 여부 변수 (true: 편집 모드, false: 읽기 모드)
 
@@ -79,6 +82,7 @@ class EnrolledViewActivity : AppCompatActivity() {
         enrolled_Items()    // 가입 상품 띄우기
         click_Items()       // 아이템 클릭 이벤트
         click_Buttons()     // 버튼 클릭 이벤트
+        search_Insurance()  // 상품 검색 이벤트
     }
 
     /* 가입 상품 목록 보여 주기 함수 */
@@ -197,8 +201,7 @@ class EnrolledViewActivity : AppCompatActivity() {
 
     /* 편집 취소 이벤트 */
     private fun cancel_Edit() {
-        // 변경 사항 여부
-        if (adapter.compare_List()) {   // 변경 됨
+        if (adapter.compare_List()) {   // 내용 변경 됨
             showConfirmDialog(this, "취소", "변경을 취소하시겠습니까?") { result ->
                 if (result) {   // 변경 시키지 않기
                     edit_state = !edit_state
@@ -208,7 +211,7 @@ class EnrolledViewActivity : AppCompatActivity() {
                     itemAnimatorBackup = null
                 }
             }
-        } else {    // 변경 안됨
+        } else {    // 내용 변경 안됨
             edit_state = !edit_state
             set_View_Mode(edit_state)   // 뷰 구성 모드 전환
             adapter.cancelDeleteMode()  // 아이템 삭제 취소
@@ -219,8 +222,7 @@ class EnrolledViewActivity : AppCompatActivity() {
 
     /* 뒤로가기 버튼 이벤트 */
     private fun function_back() {
-        if (edit_state)
-            cancel_Edit()
+        if (edit_state) cancel_Edit()
         else {
             finish()
             navigateTo(
@@ -240,6 +242,47 @@ class EnrolledViewActivity : AppCompatActivity() {
         } else {
             guideText.visibility = View.GONE
             linearLayout.visibility = View.VISIBLE
+        }
+    }
+
+    // 상품 검색 이벤트
+    private fun search_Insurance() {
+        // 보험 데이터 -> Product 변환
+        val insuranceProducts = Products_Insurance.productList.map { Product(it.name) }
+
+        // 어뎁터 초기화
+        val searchAdapter = ProductContentAdapter(insuranceProducts)
+        searchList.layoutManager = LinearLayoutManager(this)
+        searchList.adapter = searchAdapter
+        searchList.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
+
+        // 검색어 입력 리스너
+        search_box.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchAdapter.filter.filter(query)  // 검색 실행
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                // 입력 시 필터링
+                searchAdapter.filter.filter(newText)
+                return true
+            }
+        })
+
+        // 초기 데이터 표시 (검색어 없을 때에는 전체 리스트 대신 emptyList)
+        searchAdapter.filter.filter("")
+        search_box.clearFocus() // 클릭 시 검색창 포커스 해제
+
+        // 아이템 클릭 이벤트
+        searchAdapter.setOnItemClickListener { product ->
+            val selectedInsurance = Products_Insurance.productList.find() { it.name.trim() == product.title.trim() }
+
+            if (selectedInsurance != null) {
+                adapter.addItem(selectedInsurance)
+            }
+
+            search_box.setQuery("", false)
         }
     }
 

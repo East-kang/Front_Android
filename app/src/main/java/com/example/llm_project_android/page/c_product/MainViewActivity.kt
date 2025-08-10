@@ -326,7 +326,6 @@ class MainViewActivity : AppCompatActivity() {
             val selectedInsurance = Products_Insurance.productList.find { it.name.trim() == product.title.trim() }
 
             if (selectedInsurance != null) {
-                Log.d("","navigateTo")
                 navigateTo(
                     ProductDetailActivity::class.java,
                     "source" to "MainViewActivity",
@@ -336,8 +335,7 @@ class MainViewActivity : AppCompatActivity() {
                     "insurance_name" to selectedInsurance.name,
                     "recommendation" to selectedInsurance.recommendation
                 )
-            } else
-                Log.d("", "null")
+            }
         }
     }
     

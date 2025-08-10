@@ -84,7 +84,6 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
     }
 
 
-
     // viewHolder 객체 생성, 반환된 뷰 홀더 객체는 자동으로 onBindViewHolder() 함수의 매개변수로 전달
     @RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
     override fun onCreateViewHolder(
@@ -287,6 +286,18 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
         list1.clear()
         list1.addAll(newData)
         if (!showingWork) refreshDisplay()
+    }
+
+    // 상품 리스트에 추가
+    fun addItem(newItem: Insurance) {
+        val target = if (showingWork) list2 else list1
+
+        // 중복 방지
+        if (target.any { it.name == newItem.name }) return
+        val insertPos = target.size // 삽입 위치
+        target.add(newItem)
+        insuranceList.add(0, newItem)
+        refreshDisplay()
     }
 
     // 리스트 비교 (true: 변경o / false: 변경x)
