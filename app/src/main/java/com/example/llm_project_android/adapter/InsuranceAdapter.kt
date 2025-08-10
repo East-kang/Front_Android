@@ -26,10 +26,13 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
 
     private val originalList: List<Insurance> = productList.toList()                    // 원본 데이터 보관용 상품 리스트
     private val insuranceList: MutableList<Insurance> = productList.toMutableList()     // 화면에 표시될 상품 리스트
+    private val list1: MutableList<Insurance> = productList.toMutableList()             // 임시 저장 리스트 1
+    private val list2: MutableList<Insurance> = mutableListOf<Insurance>()              // 임시 저장 리스트 2
     var itemClick : ItemClick? = null                   // 클릭 이벤트 변수
     private var aiRecommendKey: String = "AI 추천"       // AI 추천 여부
     private var enrolledIds = mutableSetOf<String>()    // 가입 상품 리스트
-    private var isDeleted: Boolean = false
+    private var showingWork: Boolean = false            // 보여줄 리스트 (false: list1 / true: list2)
+    private var deleteMode: Boolean = false             // 삭제 모드
 
     fun applyFilters(
         filter1: String?,           // 카테고리
@@ -74,17 +77,13 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
     }
 
     // 가입 여부 받아오기
-    fun setEnrolls(ids: List<String>, state: Boolean = false) {
+    fun setEnrolls(ids: List<String>) {
         enrolledIds.clear()
         enrolledIds.addAll(ids)
-        isDeleted = state
         notifyDataSetChanged()
     }
 
-    // 삭제 버튼 생성
-    fun setDeletes(state: Boolean) {
 
-    }
 
     // viewHolder 객체 생성, 반환된 뷰 홀더 객체는 자동으로 onBindViewHolder() 함수의 매개변수로 전달
     @RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
@@ -140,8 +139,9 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
 
         // 가입 여부 태그 표시
         holder.enrolled.visibility = if (enrolledIds.contains(item.name)) View.VISIBLE else View.GONE
-
-        if (isDeleted) {
+        
+        // 아이템 투명화 설정
+        if (deleteMode) {
             holder.item.apply {
                 alpha = 0.7f                // 아이템 투명화 o
                 isEnabled = false           // 클릭 불가능
@@ -162,6 +162,20 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
                 alpha = 1.0f                // 투명화 x
                 isEnabled = false           // 클릭 불가능
             }
+        }
+
+        holder.itemView.setOnClickListener {
+            // 평소 클릭 동작만
+            if (!deleteMode) {
+                val pos = holder.bindingAdapterPosition
+                if (pos != RecyclerView.NO_POSITION) itemClick?.onClick(it, pos)
+            }
+        }
+
+        holder.deleteButton.setOnClickListener {
+            val pos = holder.bindingAdapterPosition
+            if (pos != RecyclerView.NO_POSITION)
+                removeAtWorking(pos)
         }
     }
 
@@ -207,5 +221,76 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
     // 선택한 아이템 반환
     fun getItem(position: Int): Insurance {
         return insuranceList[position]
+    }
+
+
+    // 현재 표시 중인 리스트 헬퍼
+    private fun cur() = if (showingWork) list2 else list1
+
+    // 화면에 보일 리스트를 동기화하여 즉시 반영
+    @SuppressLint("NotifyDataSetChanged")
+    private fun refreshDisplay() {
+        insuranceList.clear()
+        insuranceList.addAll(if (showingWork) list2 else list1)
+        notifyDataSetChanged()
+    }
+
+    // 아이템 삭제 모드 진입: list2에 원래 리스트 복사하고 list2 보여주기
+    fun enterDeleteMode(original: List<Insurance>) {
+        list1.clear();  list2.clear();
+        list1.addAll(original)
+        list2.addAll(list1)
+
+        showingWork = true
+        deleteMode = true
+        refreshDisplay()
+    }
+
+    // 삭제 취소: list1 다시 보여 주기 (list2 초기화)
+    fun cancelDeleteMode() {
+        list2.clear()
+        showingWork = false
+        deleteMode = false
+        refreshDisplay()
+    }
+
+    // 삭제 완료: list2를 list1으로 덮어 쓰고 list1을 보여줌
+    fun confirmDeleteMode(
+        onConfirmed: ((removed: List<Insurance>, kept: List<Insurance>) -> Unit)? = null
+    ) {
+        val removed = list1.filter { it !in list2 } // 이번에 삭제된 아이템들 (DB에서 지워야 할 것)
+        val kept = list2.toList()                   // 삭제 후 남은 아이템들 (DB에 유지할 것)
+
+        list1.clear()
+        list1.addAll(list2)
+
+        showingWork = false
+        deleteMode = false
+        refreshDisplay()
+
+        onConfirmed?.invoke(removed, kept)  // DB 동기화에 사용
+    }
+
+    // 작업본 (list2)에서 삭제 (시각적으로 즉시 제거)
+    fun removeAtWorking(position: Int) {
+        if (!deleteMode || !showingWork) return
+        if (position in 0 until list2.size) {
+            list2.removeAt(position)
+            insuranceList.removeAt(position)
+            notifyItemRemoved(position)
+            notifyItemRangeChanged(position, insuranceList.size - position)
+        }
+    }
+
+    // 외부에서 확정 본의 교체/필터 결과 반영할 때
+    fun replaceCommitted(newData: List<Insurance>) {
+        list1.clear()
+        list1.addAll(newData)
+        if (!showingWork) refreshDisplay()
+    }
+
+    // 리스트 비교 (true: 변경o / false: 변경x)
+    fun compare_List(): Boolean {
+        return !(list1.toSet() == list2.toSet())
     }
 }

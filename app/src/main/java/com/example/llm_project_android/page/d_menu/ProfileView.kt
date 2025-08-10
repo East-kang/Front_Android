@@ -205,10 +205,7 @@ class ProfileView : AppCompatActivity() {
         job_spinner.adapter = adapter
 
         loadData()              // 프로필 값 불러 오기
-
-        click_BackButton()      // 뒤로 가기 이벤트
-        click_EditButton()      // 편집/완료 버튼 클릭 이벤트
-        click_CancelButton()    // 취소 버튼 클릭 이벤트
+        click_Buttons()         // 버튼 클릭 이벤트
 
         edit_password()         // 비밀 번호 변경 이벤트
         edit_email()            // 이메일 변경 이벤트
@@ -287,86 +284,89 @@ class ProfileView : AppCompatActivity() {
 
         user_job.setText(job)
 
-        toViewMode()    // 읽기 뷰 모드로 뷰 설정
+        view_Mode(edit_state)   // 읽기 뷰 모드로 뷰 설정
     }
 
     // 읽기 전용 상태 뷰 구성 함수
-    private fun toViewMode() {
-        btn_back.visibility = View.VISIBLE      // '상단 바' 상태 변경
-        btn_cancel.visibility = View.GONE
-        btn_edit.text = "편집"
+    private fun view_Mode(isEdit: Boolean) {
+        /* 편집 모드 뷰 */
+        if (isEdit) {
+            btn_back.visibility = View.GONE         // '상단 바' 상태 변경
+            btn_cancel.visibility = View.VISIBLE
+            btn_edit.text = "완료"
 
-        user_email.isEnabled = false            // '로그인 정보' 상태 초기화
-        pw_field.visibility = View.GONE
-        email_rule.visibility = View.GONE
-        line.visibility = View.GONE
+            user_email.isEnabled = true             // '로그인 정보' 상태 초기화
+            pw_field.visibility = View.VISIBLE
+            pw_rule.visibility = View.GONE
 
-        user_email.setBackgroundColor("#FFFFFF".toColorInt())
+            email_rule.visibility = View.GONE
+            line.visibility = View.VISIBLE
 
-        user_birth.isEnabled = false            // '사용자 정보' 상태 초기화
-        user_phone.isEnabled = false
-        job_etc.isEnabled = false
-        birth_rule.visibility = View.GONE
-        phone_rule.visibility = View.GONE
-        user_gender.visibility = View.VISIBLE
-        user_married.visibility = View.VISIBLE
-        user_job.visibility = View.VISIBLE
-        group_gender.visibility = View.GONE
-        group_married.visibility = View.GONE
-        job_spinner.visibility = View.GONE
-        job_etc.visibility = View.GONE
-        job_rule.visibility = View.GONE
-        disease_Field.visibility = View.VISIBLE
-        disease_check_Field.visibility = View.GONE
+            user_email.setBackgroundResource(R.drawable.design_gray_solid)
 
-        add_tag(diseases)
+            user_birth.isEnabled = true            // '사용자 정보' 상태 초기화
+            user_phone.isEnabled = true
+            job_etc.isEnabled = true
+            birth_rule.visibility = View.GONE
+            phone_rule.visibility = View.GONE
+            user_gender.visibility = View.GONE
+            user_married.visibility = View.GONE
+            user_job.visibility = View.GONE
+            group_gender.visibility = View.VISIBLE
+            group_married.visibility = View.VISIBLE
+            job_spinner.visibility = View.VISIBLE
+            job_rule.visibility = View.GONE
+            disease_Field.visibility = View.GONE
+            disease_check_Field.visibility = View.VISIBLE
 
-        user_birth.setBackgroundColor("#FFFFFF".toColorInt())
-        user_phone.setBackgroundColor("#FFFFFF".toColorInt())
+            if (job !in job_list) {
+                job_spinner.setSelection(job_list.lastIndex)   // '기타'로 설정
+                job_etc.setText(job)
+                job_etc.visibility = View.VISIBLE
+            } else job_etc.visibility = View.GONE
+
+            check_Box() // 질병 박스 체크 이벤트
+
+            user_birth.setBackgroundResource(R.drawable.design_gray_solid)
+            user_phone.setBackgroundResource(R.drawable.design_gray_solid)
+        }
+
+        /* 읽기 모드 뷰 */
+        else {
+            btn_back.visibility = View.VISIBLE      // '상단 바' 상태 변경
+            btn_cancel.visibility = View.GONE
+            btn_edit.text = "편집"
+
+            user_email.isEnabled = false            // '로그인 정보' 상태 초기화
+            pw_field.visibility = View.GONE
+            email_rule.visibility = View.GONE
+            line.visibility = View.GONE
+
+            user_email.setBackgroundColor("#FFFFFF".toColorInt())
+
+            user_birth.isEnabled = false            // '사용자 정보' 상태 초기화
+            user_phone.isEnabled = false
+            job_etc.isEnabled = false
+            birth_rule.visibility = View.GONE
+            phone_rule.visibility = View.GONE
+            user_gender.visibility = View.VISIBLE
+            user_married.visibility = View.VISIBLE
+            user_job.visibility = View.VISIBLE
+            group_gender.visibility = View.GONE
+            group_married.visibility = View.GONE
+            job_spinner.visibility = View.GONE
+            job_etc.visibility = View.GONE
+            job_rule.visibility = View.GONE
+            disease_Field.visibility = View.VISIBLE
+            disease_check_Field.visibility = View.GONE
+
+            add_tag(diseases)
+
+            user_birth.setBackgroundColor("#FFFFFF".toColorInt())
+            user_phone.setBackgroundColor("#FFFFFF".toColorInt())
+        }
     }
-
-    // 편집 전용 상태 뷰 구성 함수
-    private fun toEditMode() {
-        btn_back.visibility = View.GONE         // '상단 바' 상태 변경
-        btn_cancel.visibility = View.VISIBLE
-        btn_edit.text = "완료"
-
-        user_email.isEnabled = true             // '로그인 정보' 상태 초기화
-        pw_field.visibility = View.VISIBLE
-        pw_rule.visibility = View.GONE
-
-        email_rule.visibility = View.GONE
-        line.visibility = View.VISIBLE
-
-        user_email.setBackgroundResource(R.drawable.design_gray_solid)
-
-        user_birth.isEnabled = true            // '사용자 정보' 상태 초기화
-        user_phone.isEnabled = true
-        job_etc.isEnabled = true
-        birth_rule.visibility = View.GONE
-        phone_rule.visibility = View.GONE
-        user_gender.visibility = View.GONE
-        user_married.visibility = View.GONE
-        user_job.visibility = View.GONE
-        group_gender.visibility = View.VISIBLE
-        group_married.visibility = View.VISIBLE
-        job_spinner.visibility = View.VISIBLE
-        job_rule.visibility = View.GONE
-        disease_Field.visibility = View.GONE
-        disease_check_Field.visibility = View.VISIBLE
-
-        if (job !in job_list) {
-            job_spinner.setSelection(job_list.lastIndex)   // '기타'로 설정
-            job_etc.setText(job)
-            job_etc.visibility = View.VISIBLE
-        } else job_etc.visibility = View.GONE
-
-        check_Box() // 질병 박스 체크 이벤트
-
-        user_birth.setBackgroundResource(R.drawable.design_gray_solid)
-        user_phone.setBackgroundResource(R.drawable.design_gray_solid)
-    }
-
+    
     // 프로필 뷰 변경 사항 반영 함수
     private fun changes_Profile() {
         if (isPasswordChanged) {                                // 비밀변호 변경 시: 비밀번호 데이터 변경
@@ -430,10 +430,16 @@ class ProfileView : AppCompatActivity() {
         isDiseaseChanged = false
     }
 
-    // 편집,완료 버튼 클릭 이벤트
-    private fun click_EditButton() {
+    // 버튼 클릭 이벤트
+    private fun click_Buttons() {
+        /* 편집,완료 버튼 클릭 이벤트 */
         btn_edit.setOnClickListener {
-            if (edit_state) {       // 편집 버튼 클릭 이벤트 (편집->읽기)
+            edit_state = !edit_state
+            
+            if (edit_state) {       // 완료 버튼 클릭 이벤트 (읽기->편집)
+                edit_state = true       // 상태: 편집 중
+                view_Mode(edit_state)   // 편집 뷰 모드로 전환
+            } else {                // 편집 버튼 클릭 이벤트 (편집->읽기)
                 confirmed_CheckBox()    // 질병 체크 박스 확인
 
                 when {
@@ -448,7 +454,7 @@ class ProfileView : AppCompatActivity() {
                         fingerPrint(
                             onSuccess = {
                                 edit_state = false      // 상태: 편집 완료
-                                toViewMode()            // 읽기 뷰 모드로 뷰 변환
+                                view_Mode(edit_state)   // 읽기 뷰 모드로 뷰 변환
                                 changes_Profile()       // 변경 데이터 적용
                                 storeData()             // 변경 데이터 내부 DB에 저장
                             },
@@ -463,27 +469,34 @@ class ProfileView : AppCompatActivity() {
                             edit_state = false      // 상태: 편집 완료
                             changes_Profile()       // 변경 데이터 적용
                             storeData()             // 변경 데이터 내부 DB에 저장
-                            toViewMode()            // 읽기 뷰 모드로 뷰 변환
+                            view_Mode(edit_state)   // 읽기 뷰 모드로 뷰 변환
                         }
                     }
-
                     else -> {               // 변경 데이터 없음
                         edit_state = false
-                        toViewMode()
+                        view_Mode(edit_state)
                     }
                 }
-            } else {                // 완료 버튼 클릭 이벤트 (읽기->편집)
-                edit_state = true       // 상태: 편집 중
-                toEditMode()            // 편집 뷰 모드로 뷰 변환
             }
             isJobRule = false
         }
-    }
 
-    // 뒤로 가기 이벤트 정의 함수
-    private fun click_BackButton() {
-        // 뒤로가기 버튼 클릭
-        btn_back.setOnClickListener {
+        /* 취소 버튼 클릭 */
+        btn_cancel.setOnClickListener { click_Cancel() }
+        
+        /* 뒤로 가기 버튼 클릭 */
+        btn_back.setOnClickListener { click_Back() }
+
+        /* 기기 내장 뒤로 가기 버튼 클릭 */
+        onBackPressedDispatcher.addCallback(this) { click_Back() }
+    }
+    
+    // 뒤로 가기 클릭 이벤트
+    private fun click_Back() {
+        if (edit_state) {
+            // 변경 사항 존재
+            click_Cancel()
+        } else {
             finish()
             navigateTo(
                 MainViewActivity::class.java,
@@ -491,49 +504,21 @@ class ProfileView : AppCompatActivity() {
                 reverseAnimation = true
             )
         }
-
-        // 기기 내장 뒤로가기 버튼 클릭
-        onBackPressedDispatcher.addCallback(this) {
-            if (edit_state) {
-                // 변경 사항 존재
-                if (isPasswordChanged || isEmailChanged || isBirthChanged || isPhoneChanged || isGenderChanged || isMarriedChanged || isJobChanged || isJobEtcChanged) {
-                    showConfirmDialog(this@ProfileView, "확인", "변경을 취소하시겠습니까?") { result ->
-                        if (result) {
-                            edit_state = false
-                            init_Profile()            // 읽기 뷰 모드로 뷰 변환
-                        }
-                    }
-                } else {    // 변경 사항 미존재
-                    edit_state = false
-                    init_Profile()
-                }
-            } else {
-                finish()
-                navigateTo(
-                    MainViewActivity::class.java,
-                    "source" to "ProfileView",
-                    reverseAnimation = true
-                )
-            }
-        }
     }
 
     // 취소 버튼 클릭 이벤트
-    private fun click_CancelButton() {
-        // 편집 취소할건지 msgBox 물어보기
-        btn_cancel.setOnClickListener {
-            // 변경 사항 존재
-            if (isPasswordChanged || isEmailChanged || isBirthChanged || isPhoneChanged || isGenderChanged || isMarriedChanged || isJobChanged || isJobEtcChanged) {
-                showConfirmDialog(this, "확인", "변경을 취소하시겠습니까?") { result ->
-                    if (result) {
-                        edit_state = false
-                        init_Profile()            // 읽기 뷰 모드로 뷰 변환
-                    }
+    private fun click_Cancel() {
+        // 변경 사항 존재
+        if (isPasswordChanged || isEmailChanged || isBirthChanged || isPhoneChanged || isGenderChanged || isMarriedChanged || isJobChanged || isJobEtcChanged) {
+            showConfirmDialog(this, "취소", "변경을 취소하시겠습니까?") { result ->
+                if (result) {
+                    edit_state = false
+                    init_Profile()            // 읽기 뷰 모드로 뷰 변환
                 }
-            } else {    // 변경 사항 미존재
-                edit_state = false
-                init_Profile()
             }
+        } else {    // 변경 사항 미존재
+            edit_state = false
+            init_Profile()
         }
     }
 
