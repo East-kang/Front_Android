@@ -52,6 +52,8 @@ class EnrolledViewActivity : AppCompatActivity() {
     private var enrolledProducts: List<Insurance> = emptyList() // 가입 여부 필터링 된 상품 리스트
     private var itemAnimatorBackup: RecyclerView.ItemAnimator? = null   // 투명화 유지를 위한 변수
 
+    private lateinit var searchAdapter: ProductContentAdapter
+
     private var edit_state: Boolean = false                 // 편집 여부 변수 (true: 편집 모드, false: 읽기 모드)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -158,10 +160,13 @@ class EnrolledViewActivity : AppCompatActivity() {
         /* 편집, 완료 버튼 클릭 이벤트 */
         btn_edit.setOnClickListener {
             if (!edit_state) {   // 읽기 모드 -> 편집 모드
-                update_state_view()         // 편집 및 뷰 구성 모드 변경
-                adapter.enterDeleteMode(enrolledProducts)   // 아이템 삭제 모드 진입
+                update_state_view()                                     // 편집 및 뷰 구성 모드 변경
+                adapter.enterDeleteMode(enrolledProducts)               // 아이템 삭제 모드 진입
                 itemAnimatorBackup = recyclerView.itemAnimator
-                recyclerView.itemAnimator = null    // alpha 값 건드리지 않기
+                recyclerView.itemAnimator = null                        // alpha 값 건드리지 않기
+                searchAdapter.setExcludedTitles(adapter.currentNames()) // 편집 시작: 현재 화면(작업본) 기준으로 제외
+                adapter.onWorkingListChanged = { names ->               // 추가/삭제될 때마다 검색 제외 즉시 갱신
+                    searchAdapter.setExcludedTitles(names) }
             } else {            // 편집 모드 -> 읽기 모드
                 if (adapter.compare_List()) {
                     showConfirmDialog(this, "확인", "변경 사항을 저장하시겠습니까?", { result ->
@@ -184,6 +189,9 @@ class EnrolledViewActivity : AppCompatActivity() {
                                     adapter.setEnrolls(enrolledList.toList())   // 가입 여부 태그 업데이트
                                     adapter.replaceCommitted(enrolledProducts)  // 확정본 리스트 덮어 씌우기
                                     update_View(enrolledProducts.isEmpty())
+
+                                    searchAdapter.setExcludedTitles(enrolledList)   // 편집 종료: 확정본으로 제외 기준 복귀
+                                    adapter.onWorkingListChanged = null
 
                                     recyclerView.itemAnimator = itemAnimatorBackup  // 복구
                                     itemAnimatorBackup = null
@@ -223,6 +231,9 @@ class EnrolledViewActivity : AppCompatActivity() {
                     adapter.cancelDeleteMode()  // 아이템 삭제 취소
                     recyclerView.itemAnimator = itemAnimatorBackup
                     itemAnimatorBackup = null
+
+                    searchAdapter.setExcludedTitles(enrolledList)   // 편집 취소: 검색 확정본으로 복귀
+                    adapter.onWorkingListChanged = null
                 }
             }
         } else {    // 내용 변경 안됨
@@ -230,6 +241,9 @@ class EnrolledViewActivity : AppCompatActivity() {
             adapter.cancelDeleteMode()  // 아이템 삭제 취소
             recyclerView.itemAnimator = itemAnimatorBackup
             itemAnimatorBackup = null
+
+            searchAdapter.setExcludedTitles(enrolledList)   // 변경 없음으로 종료해도 확정본으로 복귀
+            adapter.onWorkingListChanged = null
         }
     }
 
@@ -246,7 +260,7 @@ class EnrolledViewActivity : AppCompatActivity() {
         }
     }
 
-    // 가입 상품 목록 존재 여부에 따른 뷰 구성
+    /* 가입 상품 목록 존재 여부에 따른 뷰 구성 */
     private fun update_View(isEmpty: Boolean) {
         // 최근 상품 조회 목록 존재에 따른 뷰 구성
         if (isEmpty) {
@@ -258,17 +272,19 @@ class EnrolledViewActivity : AppCompatActivity() {
         }
     }
 
-    // 상품 검색 이벤트
+    /* 상품 검색 이벤트 */
     private fun search_Insurance() {
         // 보험 데이터 -> Product 변환
         val insuranceProducts = Products_Insurance.productList.map { Product(it.name) }
 
         // 어뎁터 초기화
-        val searchAdapter = ProductContentAdapter(insuranceProducts)
+        searchAdapter = ProductContentAdapter(insuranceProducts)
         searchList.layoutManager = LinearLayoutManager(this)
         searchList.adapter = searchAdapter
         searchList.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
-
+        
+        searchAdapter.setExcludedTitles(enrolledList)   // 가입 목록 검색 제외
+        
         // 검색어 입력 리스너
         search_box.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -291,15 +307,13 @@ class EnrolledViewActivity : AppCompatActivity() {
         searchAdapter.setOnItemClickListener { product ->
             val selectedInsurance = Products_Insurance.productList.find() { it.name.trim() == product.title.trim() }
 
-            if (selectedInsurance != null) {
-                adapter.addItem(selectedInsurance)
-            }
-
+            if (selectedInsurance != null)
+                adapter.addItem(selectedInsurance)      // 가입 리스트에 추가
             search_box.setQuery("", false)
         }
     }
 
-    // 키보드 숨기기 이벤트 (editText 이외의 영역을 눌렀을 경우, 스크롤 제외)
+    /* 키보드 숨기기 이벤트 (editText 이외의 영역을 눌렀을 경우, 스크롤 제외) */
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         handleTouchOutsideEditText(this, ev)
         return super.dispatchTouchEvent(ev)

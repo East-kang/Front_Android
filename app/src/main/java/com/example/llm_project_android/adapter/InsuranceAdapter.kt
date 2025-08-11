@@ -276,12 +276,21 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
     // 작업본 (list2)에서 삭제 (시각적으로 즉시 제거)
     fun removeAtWorking(position: Int) {
         if (!deleteMode || !showingWork) return
-        if (position in 0 until list2.size) {
-            list2.removeAt(position)
-            insuranceList.removeAt(position)
-            notifyItemRemoved(position)
-            notifyItemRangeChanged(position, insuranceList.size - position)
-        }
+
+        // 화면에 보이는(정렬된) 아이템을 기준으로 실제 list2에서 찾아 제거
+        val visibleItem = insuranceList.getOrNull(position) ?: return
+        val idxInList2 = list2.indexOfFirst { it.name == visibleItem.name } // name 기준 매칭
+
+        if (idxInList2 >= 0)
+            list2.removeAt(idxInList2)
+
+        // 화면 리스트에서도 제거 + 애니메이션 통지
+        insuranceList.removeAt(position)
+        notifyItemRemoved(position)
+        notifyItemRangeChanged(position, insuranceList.size - position)
+
+        // 검색 제외 세트 갱신
+        onWorkingListChanged?.invoke(currentNames())
     }
 
     // 외부에서 확정 본의 교체/필터 결과 반영할 때
@@ -297,14 +306,21 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
 
         // 중복 방지
         if (target.any { it.name == newItem.name }) return
-        val insertPos = target.size // 삽입 위치
         target.add(newItem)
-        insuranceList.add(0, newItem)
         refreshDisplay()
+        onWorkingListChanged?.invoke(currentNames())
     }
+
+    // 현재 표시(작업/확정) 리스트의 상품명 집합
+    fun currentNames(): Set<String> = (if (showingWork) list2 else list1).map { it.name }.toSet()
+
+    // 작업본 변경시 알림 콜백(추가/삭제 후 호출)
+    var onWorkingListChanged: ((Set<String>) -> Unit)? = null
 
     // 리스트 비교 (true: 변경o / false: 변경x)
     fun compare_List(): Boolean {
-        return !(list1.toSet() == list2.toSet())
+        val s1 = list1.map { it.name }.toSet()
+        val s2 = list2.map { it.name }.toSet()
+        return s1 != s2
     }
 }
