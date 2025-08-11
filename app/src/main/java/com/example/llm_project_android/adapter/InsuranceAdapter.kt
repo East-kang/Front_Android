@@ -224,13 +224,16 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
 
 
     // 현재 표시 중인 리스트 헬퍼
-    private fun cur() = if (showingWork) list2 else list1
+    private fun cur(): List<Insurance> {
+      return if (showingWork) list2.sortedBy { it.name }
+             else list1.sortedBy { it.name }
+    }
 
     // 화면에 보일 리스트를 동기화하여 즉시 반영
     @SuppressLint("NotifyDataSetChanged")
     private fun refreshDisplay() {
         insuranceList.clear()
-        insuranceList.addAll(if (showingWork) list2 else list1)
+        insuranceList.addAll(cur())
         notifyDataSetChanged()
     }
 
