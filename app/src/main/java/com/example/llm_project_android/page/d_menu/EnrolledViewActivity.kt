@@ -95,9 +95,9 @@ class EnrolledViewActivity : AppCompatActivity() {
                 allProduct = Products_Insurance.productList
 
                 // 가입 상품 필터링
-                enrolledProducts = allProduct.filter { product ->
-                    enrolledList.contains(product.name)
-                }
+                enrolledProducts = allProduct
+                    .filter { product -> enrolledList.contains(product.name) }
+                    .sortedBy { it.name }
 
                 adapter.setEnrolls(it.subscriptions)
                 adapter.updateList(enrolledProducts)
@@ -146,40 +146,55 @@ class EnrolledViewActivity : AppCompatActivity() {
             searchList.visibility = View.GONE
         }
     }
+
+    /* 편집 및 뷰 구성 모드 변경 */
+    private fun update_state_view() {
+        edit_state = !edit_state    // 편집 여부 변경
+        set_View_Mode(edit_state)   // 뷰 구성 모드 전환
+    }
     
     /* 편집 버튼 클릭 이벤트 */
     private fun click_Buttons() {
         /* 편집, 완료 버튼 클릭 이벤트 */
         btn_edit.setOnClickListener {
-            edit_state = !edit_state    // 편집 여부 변경
-            set_View_Mode(edit_state)   // 뷰 구성 모드 전환
-
-            if (edit_state) {   // 읽기 모드 -> 편집 모드
-                set_View_Mode(true)     // 뷰 구성 모드 전환
+            if (!edit_state) {   // 읽기 모드 -> 편집 모드
+                update_state_view()         // 편집 및 뷰 구성 모드 변경
                 adapter.enterDeleteMode(enrolledProducts)   // 아이템 삭제 모드 진입
                 itemAnimatorBackup = recyclerView.itemAnimator
                 recyclerView.itemAnimator = null    // alpha 값 건드리지 않기
             } else {            // 편집 모드 -> 읽기 모드
-                adapter.confirmDeleteMode{ removed, kept -> // 아이템 삭제 완료
-                    val keptList = kept.map { it.name }.toSet()
+                if (adapter.compare_List()) {
+                    showConfirmDialog(this, "확인", "변경 사항을 저장하시겠습니까?", { result ->
+                        if (result) {
+                            update_state_view()         // 편집 및 뷰 구성 모드 변경
 
-                    lifecycleScope.launch {
-                        val tmp = dao.getLoggedInUser() ?: return@launch
-                        val updated = tmp.copy(subscriptions = keptList.toList())
+                            adapter.confirmDeleteMode{ removed, kept -> // 아이템 삭제 완료
+                                val keptList = kept.map { it.name }.toSet()
 
-                        // 1. 내부 DB에서 삭제
-                        dao.updateUser(updated)
+                                lifecycleScope.launch {
+                                    val tmp = dao.getLoggedInUser() ?: return@launch
+                                    val updated = tmp.copy(subscriptions = keptList.toList())
 
-                        // 2. 메모리,뷰 업데이트
-                        enrolledList = keptList
-                        enrolledProducts = kept
-                        adapter.setEnrolls(enrolledList.toList())   // 가입 여부 태그 업데이트
-                        adapter.replaceCommitted(enrolledProducts)  // 확정본 리스트 덮어 씌우기
-                        update_View(enrolledProducts.isEmpty())
+                                    // 1. 내부 DB에서 삭제
+                                    dao.updateUser(updated)
 
-                        recyclerView.itemAnimator = itemAnimatorBackup  // 복구
-                        itemAnimatorBackup = null
-                    }
+                                    // 2. 메모리,뷰 업데이트
+                                    enrolledList = keptList
+                                    enrolledProducts = kept
+                                    adapter.setEnrolls(enrolledList.toList())   // 가입 여부 태그 업데이트
+                                    adapter.replaceCommitted(enrolledProducts)  // 확정본 리스트 덮어 씌우기
+                                    update_View(enrolledProducts.isEmpty())
+
+                                    recyclerView.itemAnimator = itemAnimatorBackup  // 복구
+                                    itemAnimatorBackup = null
+                                }
+                            }
+                        }
+                    })
+                }
+                else {
+                    update_state_view()         // 편집 및 뷰 구성 모드 변경
+                    adapter.cancelDeleteMode()  // 편집 모드 취소
                 }
             }
 
@@ -204,16 +219,14 @@ class EnrolledViewActivity : AppCompatActivity() {
         if (adapter.compare_List()) {   // 내용 변경 됨
             showConfirmDialog(this, "취소", "변경을 취소하시겠습니까?") { result ->
                 if (result) {   // 변경 시키지 않기
-                    edit_state = !edit_state
-                    set_View_Mode(edit_state)   // 뷰 구성 모드 전환
+                    update_state_view()         // 편집 및 뷰 구성 모드 변경
                     adapter.cancelDeleteMode()  // 아이템 삭제 취소
                     recyclerView.itemAnimator = itemAnimatorBackup
                     itemAnimatorBackup = null
                 }
             }
         } else {    // 내용 변경 안됨
-            edit_state = !edit_state
-            set_View_Mode(edit_state)   // 뷰 구성 모드 전환
+            update_state_view()         // 편집 및 뷰 구성 모드 변경
             adapter.cancelDeleteMode()  // 아이템 삭제 취소
             recyclerView.itemAnimator = itemAnimatorBackup
             itemAnimatorBackup = null

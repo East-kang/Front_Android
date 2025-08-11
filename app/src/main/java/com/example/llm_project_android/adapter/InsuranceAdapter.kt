@@ -66,7 +66,7 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
     @SuppressLint("NotifyDataSetChanged")
     fun updateList(newList: List<Insurance>) {
         insuranceList.clear()
-        insuranceList.addAll(newList)
+        insuranceList.addAll(newList.sortedBy { it.name })
         notifyDataSetChanged()
     }
 
