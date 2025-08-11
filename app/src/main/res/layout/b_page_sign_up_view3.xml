@@ -146,7 +146,7 @@
                     android:id="@+id/disease8"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:text="정신질활 (우울증, 불안장애 등)"
+                    android:text="정신질환 (우울증, 불안장애 등)"
                     android:textSize="15dp"
                     android:checked="false" />
 

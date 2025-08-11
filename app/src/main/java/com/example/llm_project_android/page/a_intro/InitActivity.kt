@@ -50,6 +50,7 @@ class InitActivity : AppCompatActivity() {
                     gender = "남성",
                     isMarried = true,
                     job = "오리",
+                    diseases = listOf("암 (위암, 폐암, 유방암 등)", "뇌혈관 질환 (뇌졸증, 뇌출혈 등)", "근골격계/척추질환 (디스크, 관절염 등)"),
                     subscriptions = listOf("삼성생명 건강보험", "현대해상 운전자보험", "KB 실손의료비보험"
                     )
                 )
