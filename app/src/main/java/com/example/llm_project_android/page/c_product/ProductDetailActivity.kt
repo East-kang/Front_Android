@@ -13,8 +13,10 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.R
+import com.example.llm_project_android.data.sample.Products_Insurance
 import com.example.llm_project_android.db.user.MyDatabase
 import com.example.llm_project_android.db.wishList.WishedManager
+import com.example.llm_project_android.functions.RecentViewedManager
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.page.d_menu.EnrolledViewActivity
@@ -84,6 +86,8 @@ class ProductDetailActivity : AppCompatActivity() {
             )
         )
 
+        RecentViewedManager.init(this)  // 최근 조회 기능 초기화 (SharedPreferences 사용 준비)
+
         init()              // 초기 진입 반영 반영
         click_WishButton()  // 찜 버튼 클릭 이벤트
         clickBackButton()   // 뒤로가기 이벤트
@@ -118,6 +122,11 @@ class ProductDetailActivity : AppCompatActivity() {
             user?.let {
                 enroll.visibility = if (data_name in it.subscriptions) View.VISIBLE else View.GONE
             }
+        }
+
+        val insurance = Products_Insurance.productList.find { it.name == data_name }
+        insurance?.let {
+            RecentViewedManager.addItem(it)
         }
     }
 

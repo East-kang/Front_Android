@@ -23,6 +23,7 @@ import com.example.llm_project_android.R
 import com.example.llm_project_android.adapter.InsuranceAdapter
 import com.example.llm_project_android.data.sample.Products_Insurance
 import com.example.llm_project_android.db.user.MyDatabase
+import com.example.llm_project_android.functions.RecentViewedManager
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.page.e_chat.ChatView
@@ -83,6 +84,7 @@ class CategoryView : AppCompatActivity() {
         btn_chat = findViewById<FrameLayout>(R.id.chatButton)   // 채팅 버튼
 
         data = getPassedExtras("category", String::class.java)["category"] as? String? ?: ""
+
 
         showing_Insurances()        // 보험 상품 노출
         init_Category(data)         // 카테고리 초기화

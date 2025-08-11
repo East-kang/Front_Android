@@ -2,13 +2,12 @@ package com.example.llm_project_android.functions
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.example.llm_project_android.data.model.Insurance
 import java.util.LinkedList
 
+// MainViewActivity.kt  : 최근 조회 목록
 object RecentViewedManager{
     private const val PREF_NAME = "recent_pref"
     private const val KEY_RECENT = "recent_items"
@@ -23,7 +22,6 @@ object RecentViewedManager{
     }
 
     // 최근 조회 목록 추가
-    @RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
     fun addItem(item: Insurance) {
         val current = getRecentItems().toMutableList()
 

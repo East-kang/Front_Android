@@ -1,11 +1,12 @@
 package com.example.llm_project_android.page.c_product
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageButton
@@ -27,7 +28,7 @@ import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import com.example.llm_project_android.R
 import com.example.llm_project_android.functions.RecentViewedManager
-import com.example.llm_project_android.adapter.InsuranceAdapter
+import com.example.llm_project_android.adapter.RecentInsuranceAdapter
 import com.example.llm_project_android.adapter.ProductContentAdapter
 import com.example.llm_project_android.adapter.ViewPageAdapter
 import com.example.llm_project_android.data.model.Product
@@ -82,8 +83,8 @@ class MainViewActivity : AppCompatActivity() {
     private lateinit var dao: MyDAO
     private var user: User? = null
 
-    lateinit var wishedManager: WishedManager               // 찜 목록 매니저
-    private lateinit var recentAdapter: InsuranceAdapter    // 최근 조회 어뎁터
+    lateinit var wishedManager: WishedManager   // 찜 목록 매니저
+    private lateinit var recentAdapter: RecentInsuranceAdapter    // 최근 조회 어뎁터
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -139,8 +140,8 @@ class MainViewActivity : AppCompatActivity() {
 
         recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
 
-        wishedManager = WishedManager(this)                     // 찜 목록 메니저 초기화
-        recentAdapter = InsuranceAdapter(ArrayList(arrayListOf()))     // 전역 adapter 초기화
+        wishedManager = WishedManager(this)      // 찜 목록 메니저 초기화
+        recentAdapter = RecentInsuranceAdapter()        // 전역 adapter 초기화
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = recentAdapter
 
@@ -243,10 +244,9 @@ class MainViewActivity : AppCompatActivity() {
 
     // 최근 조회 상품 클릭 이벤트
     private fun click_Items() {
-        recentAdapter.itemClick = object : InsuranceAdapter.ItemClick {
+        recentAdapter.itemClick = object : RecentInsuranceAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
                 val selectedItem = recentAdapter.getItem(position)
-
                 navigateTo(
                     ProductDetailActivity::class.java,
                     "source" to "MainViewActivity",
@@ -263,7 +263,7 @@ class MainViewActivity : AppCompatActivity() {
     // 최근 조회 목록 보여주기 함수
     private fun recent_Items() {
         val recentItems = RecentViewedManager.getRecentItems(3)
-        recentAdapter.updateList(recentItems)       // 리스트 갱신
+        recentAdapter.updateListKeepOrder(recentItems)   // 순서 유지해서 표시
 
         lifecycleScope.launch {
             user = dao.getLoggedInUser()
@@ -271,7 +271,7 @@ class MainViewActivity : AppCompatActivity() {
         }
     }
 
-    // 메뉴 기능
+    /* 메뉴 기능 */
     private fun menu_Control() {
         if (source == null)                                 // 이전 화면이 메뉴를 통한 화면이 아닐 경우
             drawerLayout.closeDrawer(GravityCompat.END)
@@ -289,7 +289,7 @@ class MainViewActivity : AppCompatActivity() {
         }
     }
 
-    // 검색 기능
+    /* 검색 기능 */
     private fun search_Insurance() {
         // 보험 데이터 → Product 변환
         val insuranceProducts = Products_Insurance.productList.map { Product(it.name) }
@@ -300,8 +300,7 @@ class MainViewActivity : AppCompatActivity() {
         search_list.adapter = searchAdapter
         search_list.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
 
-        click_searchButton()    // 검색 버튼 클릭
-        click_backButton()      // 뒤로가기 버튼 클릭
+        click_Search_Buttons()    // 검색, 뒤로 가기 버튼 클릭
 
         // 검색어 입력 리스너
         search_box.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -338,23 +337,28 @@ class MainViewActivity : AppCompatActivity() {
             }
         }
     }
-    
-    // 검색 버튼 클릭 이벤트
-    private fun click_searchButton() {
+
+    /* 버튼 클릭 이벤트 */
+    private fun click_Search_Buttons() {
+        /* 검색 버튼 클릭 이벤트 */
         btn_search.setOnClickListener {
             topBar.visibility = View.GONE
             scrollView.visibility = View.GONE
             btn_chat.visibility = View.GONE
             search_area.visibility = View.VISIBLE   // UI 반영
-        }
-    }
+            search_box.isIconified = false  // 검색창 확장
+            search_box.requestFocus()       // 포커스 요청
 
-    // 뒤로가기 버튼 클릭 이벤트
-    private fun click_backButton() {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(search_box.findFocus(), InputMethodManager.SHOW_IMPLICIT) // 키보드 표시
+        }
+
+        /* 뒤로가기 버튼 클릭 이벤트 */
         btn_back.setOnClickListener {
             init()  // UI 반영
             search_box.setQuery("", false)  // SearchView 내용 초기화
         }
+
     }
 
     // 메뉴 아이템 클릭 이벤트
