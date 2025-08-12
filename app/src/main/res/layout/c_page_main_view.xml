@@ -284,6 +284,20 @@
                         android:descendantFocusability="blocksDescendants"
                         android:clickable="true" />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/emptyList"
+                    android:layout_width="match_parent"
+                    android:layout_height="210dp"
+                    android:paddingBottom="80dp"
+                    android:text="최근 조회한 상품이 없습니다"
+                    android:textSize="18sp"
+                    android:gravity="center|center_vertical"
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@drawable/design_insurance_item"
+                    app:layout_constraintTop_toBottomOf="@id/title1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 

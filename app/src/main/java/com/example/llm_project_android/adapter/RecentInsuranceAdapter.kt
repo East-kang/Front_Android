@@ -25,6 +25,7 @@ class RecentInsuranceAdapter :
     var itemClick: ItemClick? = null
 
 
+
     fun updateListKeepOrder(newList: List<Insurance>) {
         items.clear()
         items.addAll(newList)
@@ -104,5 +105,9 @@ class RecentInsuranceAdapter :
 
     interface ItemClick {
         fun onClick(view: View, position: Int)
+    }
+
+    fun clearItems() {
+        items.clear()
     }
 }

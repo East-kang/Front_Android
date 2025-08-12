@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -54,37 +55,40 @@ import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 class MainViewActivity : AppCompatActivity() {
-    private lateinit var binding: CPageMainViewBinding
-    private val sliderHandler = Handler(Looper.getMainLooper())
-    private lateinit var sliderRunnable: Runnable
+    private lateinit var binding: CPageMainViewBinding          // 페이지 바인딩
+    private val sliderHandler = Handler(Looper.getMainLooper()) // 배너 핸들러
+    private lateinit var sliderRunnable: Runnable               // 배너 실행
+    private lateinit var bannerList: List<Int>                  // 배너 아이템 리스트
 
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var topBar: ConstraintLayout
-    private lateinit var btn_search: ImageButton
-    private lateinit var menuView: NavigationView
-    private lateinit var menus: List<ImageButton>
+    private lateinit var drawerLayout: DrawerLayout             // 루트 Drawer 레이아웃 (네비게이션 메뉴용)
+    private lateinit var topBar: ConstraintLayout               // 상단 바 영역
+    private lateinit var btn_search: ImageButton                // 검색 버튼
+    private lateinit var menuView: NavigationView               // 사이드 메뉴
+    private lateinit var menus: List<ImageButton>               // 메뉴 버튼 리스트 (0: 열기 버튼 / 1: 닫힘 버튼
 
-    private lateinit var btn_menu_white: ImageButton
-    private lateinit var name_field: TextView
-    private lateinit var logout_field: TextView
+    private lateinit var btn_menu_white: ImageButton            // 흰색 메뉴 버튼
+    private lateinit var name_field: TextView                   // "***님" 필드
+    private lateinit var logout_field: TextView                 // 로그아웃 텍스트
 
-    private lateinit var search_area: ConstraintLayout
-    private lateinit var btn_back: ImageButton
-    private lateinit var search_box: SearchView
-    private lateinit var search_list: RecyclerView
+    private lateinit var search_area: ConstraintLayout          // 검색 영역
+    private lateinit var btn_back: ImageButton                  // 검색 취소 버튼
+    private lateinit var search_box: SearchView                 // 검색창
+    private lateinit var search_list: RecyclerView              // 검색 목록
 
-    private lateinit var scrollView: NestedScrollView
-    private lateinit var categories: List<Button>
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var scrollView: NestedScrollView           // 스크롤 뷰
+    private lateinit var categories: List<Button>               // 상품 카테고리 버튼 리스트
+    private lateinit var insurance_linearLayout: LinearLayout   // 최근 조회 상품 목록 부모
+    private lateinit var recyclerView: RecyclerView             // 최근 조회 상품 목록
+    private lateinit var emptyList: TextView                    // 조회 상품 없음 안내문구
 
-    private lateinit var btn_chat: FrameLayout
-    private var source: String? = null
+    private lateinit var btn_chat: FrameLayout                  // 채팅 아이콘
+    private var source: String? = null                          // 이전 화면 소스
 
-    private lateinit var dao: MyDAO
-    private var user: User? = null
+    private lateinit var dao: MyDAO                             // 내부 DB
+    private var user: User? = null                              // 유저 테이블
 
-    lateinit var wishedManager: WishedManager   // 찜 목록 매니저
-    private lateinit var recentAdapter: RecentInsuranceAdapter    // 최근 조회 어뎁터
+    lateinit var wishedManager: WishedManager                   // 찜 목록 매니저
+    private lateinit var recentAdapter: RecentInsuranceAdapter  // 최근 조회 어뎁터
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,28 +107,31 @@ class MainViewActivity : AppCompatActivity() {
 
         source = getPassedExtras("source", String::class.java)["source"] as? String
 
-        drawerLayout = findViewById<DrawerLayout>(R.id.drawerLayout)    // 루트 Drawer 레이아웃 (네비게이션 메뉴용)
-        topBar = findViewById<ConstraintLayout>(R.id.topBar)            // 상단 바 영역
-        btn_search = findViewById<ImageButton>(R.id.search_icon)        // 검색 버튼
-        menuView = findViewById<NavigationView>(R.id.navigationView)    // 사이드 메뉴
-        search_area = findViewById<ConstraintLayout>(R.id.search_area)  // 검색 영역
-        btn_back = findViewById<ImageButton>(R.id.backButton)           // 검색 취소 버튼
-        search_box = findViewById<SearchView>(R.id.search_box)          // 검색창
-        search_list = findViewById<RecyclerView>(R.id.search_list)      // 검색 목록
-        scrollView = findViewById<NestedScrollView>(R.id.scrollView)    // 스크롤 뷰
-        recyclerView = findViewById<RecyclerView>(R.id.item_group)      // 최근 조회 상품 목록
+        drawerLayout = findViewById(R.id.drawerLayout)
+        topBar = findViewById(R.id.topBar)
+        btn_search = findViewById(R.id.search_icon)
+        menuView = findViewById(R.id.navigationView)
+        search_area = findViewById(R.id.search_area)
+        btn_back = findViewById(R.id.backButton)
+        search_box = findViewById(R.id.search_box)
+        search_list = findViewById(R.id.search_list)
+        scrollView = findViewById(R.id.scrollView)
+        insurance_linearLayout = findViewById(R.id.insurance_linearLayout)
+        recyclerView = findViewById(R.id.item_group)
+        emptyList = findViewById(R.id.emptyList)
+
         btn_chat = findViewById(R.id.chatButton)
 
         val headerView = menuView.getHeaderView(0)
-        btn_menu_white = headerView.findViewById<ImageButton>(R.id.menu_icon_white) // 흰색 메뉴 버튼
-        name_field = headerView.findViewById<TextView>(R.id.nameView)   // "***님" 필드
-        logout_field = headerView.findViewById<TextView>(R.id.logOut)   // 로그아웃 텍스트
+        btn_menu_white = headerView.findViewById(R.id.menu_icon_white)
+        name_field = headerView.findViewById(R.id.nameView)
+        logout_field = headerView.findViewById(R.id.logOut)
 
-        menus = listOf(                         // 메뉴 버튼 리스트 (0: 열기 버튼 / 1: 닫힘 버튼
+        menus = listOf(
             findViewById(R.id.menu_icon_black), // 메뉴 열기 버튼 (menus[0])
             btn_menu_white                      // 메뉴 닫기 버튼 (menus[1])
         )
-        categories= listOf(                     // 상품 카테고리 버튼 리스트
+        categories= listOf(
             findViewById(R.id.category0),       // categories[0] (암)
             findViewById(R.id.category1),       // categories[1] (건강)
             findViewById(R.id.category2),       // categories[2] (사망)
@@ -132,7 +139,7 @@ class MainViewActivity : AppCompatActivity() {
             findViewById(R.id.category4),       // categories[4] (유아)
             findViewById(R.id.category5)        // categories[5] (기타)
         )
-        val bannerList = listOf(                // 배너 아이템 리스트
+        bannerList = listOf(
             R.drawable.image_birth_icon,        // 배너 아이템 0 (bannerList[0])
             R.drawable.image_sample,            // 배너 아이템 1 (bannerList[1])
             R.drawable.image_name_icon          // 배너 아이템 2 (bannerList[2])
@@ -174,6 +181,14 @@ class MainViewActivity : AppCompatActivity() {
         lifecycleScope.launch {
             user = dao.getLoggedInUser()
             name_field.text = user?.name+"님"
+        }
+
+        if (RecentViewedManager.isEmpty()) {
+            emptyList.visibility = View.VISIBLE
+            insurance_linearLayout.visibility = View.GONE
+        } else {
+            emptyList.visibility = View.GONE
+            insurance_linearLayout.visibility = View.VISIBLE
         }
     }
 
@@ -397,6 +412,8 @@ class MainViewActivity : AppCompatActivity() {
                     lifecycleScope.launch {
                         resetUserTable(this@MainViewActivity)    // 사용자 정보 테이블 초기화
                         wishedManager.clearAllWishes()                  // 찜 목록 초기화
+                        recentAdapter.clearItems()
+                        RecentViewedManager.clear()
                                 // 가입 상품 목록 초기화
 
                     }

@@ -14,7 +14,6 @@ object RecentViewedManager{
 
     private lateinit var sharedPreferences: SharedPreferences
     private val gson = Gson()
-    private val recentList: LinkedList<Insurance> = LinkedList()
 
     // 앱에서 반드시 초기화 필요 (Application 또는 Activity에서 1번만)
     fun init(context: Context) {
@@ -39,6 +38,15 @@ object RecentViewedManager{
         // 저장
         val json = gson.toJson(current)
         sharedPreferences.edit().putString(KEY_RECENT, json).apply()
+    }
+
+    fun isEmpty(): Boolean {
+        val json = sharedPreferences.getString(KEY_RECENT, null)
+        if (json.isNullOrEmpty()) return true
+
+        val type = object : TypeToken<List<Insurance>>() {}.type
+        val list: List<Insurance> = gson.fromJson(json, type)
+        return list.isEmpty()
     }
 
     fun getRecentItems(limit: Int = 3): List<Insurance> {
