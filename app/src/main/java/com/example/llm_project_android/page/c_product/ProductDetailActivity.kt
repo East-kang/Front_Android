@@ -93,7 +93,7 @@ class ProductDetailActivity : AppCompatActivity() {
         clickBackButton()   // 뒤로가기 이벤트
     }
 
-    // 초기 진입 반영
+    /* 초기 진입 반영 */
     fun init() {
         source = data["source"] as String
         data_icon = data["company_icon"] as Int
@@ -124,13 +124,12 @@ class ProductDetailActivity : AppCompatActivity() {
             }
         }
 
+        // 최근 목록에 저장
         val insurance = Products_Insurance.productList.find { it.name == data_name }
-        insurance?.let {
-            RecentViewedManager.addItem(it)
-        }
+        insurance?.let { RecentViewedManager.addItem(it) }
     }
 
-    // 찜 버튼 UI 업데이트
+    /* 찜 버튼 UI 업데이트 */
     private fun updateWishButtonUI() {
         if (data_isWished)
             btn_wish.setImageResource(R.drawable.vector_image_ic_wish_on)
@@ -138,7 +137,7 @@ class ProductDetailActivity : AppCompatActivity() {
             btn_wish.setImageResource(R.drawable.vector_image_ic_wish_off)
     }
 
-    // 찜 목록 버튼 클릭 이벤트 정의 함수
+    /* 찜 목록 버튼 클릭 이벤트 정의 함수 */
     fun click_WishButton() {
         btn_wish.setOnClickListener {
             lifecycleScope.launch {
@@ -155,16 +154,17 @@ class ProductDetailActivity : AppCompatActivity() {
         }
     }
 
-    // 비교하기 버튼 클릭 이벤트 정의 함수
+    /* 비교하기 버튼 클릭 이벤트 정의 함수 */
     fun click_ComapareButton() {
 
     }
 
+    /* 상품 pdf 파일 열기 버튼 클릭 이벤트 정의 함수 */
     fun click_DetailsButton() {
 
     }
 
-    // 뒤로가기 이벤트 정의 함수
+    /* 뒤로가기 이벤트 정의 함수 */
     fun AppCompatActivity.clickBackButton() {
         // 뒤로가기 버튼 클릭
         btn_back.setOnClickListener {

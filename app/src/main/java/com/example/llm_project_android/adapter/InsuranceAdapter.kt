@@ -324,4 +324,9 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
         val s2 = list2.map { it.name }.toSet()
         return s1 != s2
     }
+
+    // 가입 내역 초기화
+    fun clearEnrolled() {
+        list1.clear()
+    }
 }

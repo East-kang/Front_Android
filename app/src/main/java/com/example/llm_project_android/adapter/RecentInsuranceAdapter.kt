@@ -18,13 +18,13 @@ import com.example.llm_project_android.databinding.ZDesignShapeInsuranceBinding
 import com.example.llm_project_android.functions.RecentViewedManager
 
 class RecentInsuranceAdapter :
-    RecyclerView.Adapter<RecentInsuranceAdapter.Holder>()  {
+    RecyclerView.Adapter<RecentInsuranceAdapter.Holder>() {
 
     private val items = mutableListOf<Insurance>()          // 표시할 목록 (순서 유지)
     private val enrolledIds = mutableSetOf<String>()        // 가입한 상품명
     var itemClick: ItemClick? = null
 
-    // 외부에서: "최근 목록" 그대로 넣어주세요 (정렬 금지)
+
     fun updateListKeepOrder(newList: List<Insurance>) {
         items.clear()
         items.addAll(newList)

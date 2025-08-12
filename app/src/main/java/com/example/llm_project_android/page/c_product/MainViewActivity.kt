@@ -150,7 +150,7 @@ class MainViewActivity : AppCompatActivity() {
         init()                      // 초기 레이아웃 구성
 
         setupViewPager(bannerList)
-        startAutoScroll() // 배너 슬라이딩 기능
+        startAutoScroll()           // 배너 슬라이딩 기능
 
         menu_Control()              // 사이드 메뉴 클릭 이벤트
         search_Insurance()          // 상품 검색
@@ -395,9 +395,10 @@ class MainViewActivity : AppCompatActivity() {
             showConfirmDialog(this, "로그아웃", "정말 로그아웃 하시겠습니까?") { result ->
                 if (result) {
                     lifecycleScope.launch {
-                        resetUserTable(this@MainViewActivity)   // 사용자 정보 테이블 초기화
-                        wishedManager.clearAllWishes()                 // 찜 목록 초기화
-                        // 가입 상품 목록 초기화
+                        resetUserTable(this@MainViewActivity)    // 사용자 정보 테이블 초기화
+                        wishedManager.clearAllWishes()                  // 찜 목록 초기화
+                                // 가입 상품 목록 초기화
+
                     }
                     navigateTo(InitActivity::class.java, reverseAnimation = true)
                 }
