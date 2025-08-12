@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.example.llm_project_android.data.model.Insurance
-import java.util.LinkedList
 
 // MainViewActivity.kt  : 최근 조회 목록
 object RecentViewedManager{
