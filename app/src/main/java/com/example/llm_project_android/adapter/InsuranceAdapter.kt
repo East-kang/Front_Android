@@ -12,16 +12,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.core.graphics.alpha
 import androidx.recyclerview.widget.RecyclerView
 import com.example.llm_project_android.databinding.ZDesignShapeInsuranceBinding
 import androidx.core.graphics.toColorInt
-import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.functions.RecentViewedManager
 import com.example.llm_project_android.data.model.Insurance
 
-// MainViewActivity.kt  : 최근 조회 목록
 // CategoryView.kt      : 상품 목록
+// EnrolledViewActivity.kt: 기존 가입 상품 목록
 class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter<InsuranceAdapter.Holder>() {
 
     private val originalList: List<Insurance> = productList.toList()                    // 원본 데이터 보관용 상품 리스트
@@ -74,13 +72,6 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
     fun setAIRecommendKey(key: String) {
         aiRecommendKey = key
         notifyDataSetChanged()  // 조건이 바뀌었으니 다시 그리게 함
-    }
-
-    // 가입 여부 받아오기
-    fun setEnrolls(ids: List<String>) {
-        enrolledIds.clear()
-        enrolledIds.addAll(ids)
-        notifyDataSetChanged()
     }
 
 
@@ -167,7 +158,10 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
             // 평소 클릭 동작만
             if (!deleteMode) {
                 val pos = holder.bindingAdapterPosition
-                if (pos != RecyclerView.NO_POSITION) itemClick?.onClick(it, pos)
+                if (pos != RecyclerView.NO_POSITION) {
+                    itemClick?.onClick(it, pos)                     // 상세로 이동
+                    RecentViewedManager.addItem(insuranceList[pos]) // 최근 본 목록 저장
+                }
             }
         }
 
@@ -222,6 +216,13 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
         return insuranceList[position]
     }
 
+
+    // 가입 여부 받아오기
+    fun setEnrolls(ids: List<String>) {
+        enrolledIds.clear()
+        enrolledIds.addAll(ids)
+        notifyDataSetChanged()
+    }
 
     // 현재 표시 중인 리스트 헬퍼
     private fun cur(): List<Insurance> {
@@ -322,5 +323,10 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
         val s1 = list1.map { it.name }.toSet()
         val s2 = list2.map { it.name }.toSet()
         return s1 != s2
+    }
+
+    // 가입 내역 초기화
+    fun clearEnrolled() {
+        list1.clear()
     }
 }
