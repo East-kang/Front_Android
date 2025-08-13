@@ -70,7 +70,4 @@ dependencies {
 
     //FlexboxLayout
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
-
-    // PDF Viewer
-    implementation("io.github.afreakyelf:Pdf-Viewer:2.3.7")
 }

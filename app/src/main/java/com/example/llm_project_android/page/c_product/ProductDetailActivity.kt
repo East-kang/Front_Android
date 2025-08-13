@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
@@ -22,9 +21,8 @@ import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.page.d_menu.EnrolledViewActivity
 import com.example.llm_project_android.page.d_menu.WishViewActivity
-import com.rajat.pdfviewer.PdfViewerActivity
-import com.rajat.pdfviewer.util.saveTo
 import kotlinx.coroutines.launch
+import java.io.File
 
 class ProductDetailActivity : AppCompatActivity() {
 
@@ -38,8 +36,6 @@ class ProductDetailActivity : AppCompatActivity() {
     private lateinit var bookmark: TextView             // 추천 북마크
     private lateinit var insurance_name: TextView       // 상품명
     private lateinit var enroll: TextView               // 가입 여부
-    private lateinit var pdfLayout: ConstraintLayout    // pdf 레이아웃
-    private lateinit var btn_close: ImageButton         // pdf 닫기 버튼
 
     private lateinit var data: Map<String, Any?>        // 상품 데이터 맵
 
@@ -77,8 +73,6 @@ class ProductDetailActivity : AppCompatActivity() {
         bookmark = findViewById(R.id.bookmark)
         insurance_name = findViewById(R.id.insurance_name)
         enroll = findViewById(R.id.enroll)
-        pdfLayout = findViewById(R.id.pdfLayout)
-        btn_close = findViewById(R.id.closeButton)
 
         // 이전 화면에서 받아온 데이터
         data = getPassedExtras(
@@ -114,7 +108,6 @@ class ProductDetailActivity : AppCompatActivity() {
         category.text = data_category
         insurance_name.text = data_name
         bookmark.visibility = if (data_recommendation) View.VISIBLE else View.GONE
-        pdfLayout.visibility = View.GONE
 
         // 찜 여부
         lifecycleScope.launch {
@@ -149,7 +142,6 @@ class ProductDetailActivity : AppCompatActivity() {
         click_WishButton()      // 찜 버튼 클릭 이벤트
         click_CompareButton()   // 비교하기 버튼 클릭 이벤트
         click_PdfButton()       // pdf 버튼 클릭 이벤트
-        click_CloseButton()     // pdf 닫기 버튼 클릭 이벤튼
         clickBackButton()       // 뒤로가기 버튼 클릭 이벤트
     }
 
@@ -177,21 +169,7 @@ class ProductDetailActivity : AppCompatActivity() {
 
     /* 상품 pdf 파일 열기 버튼 클릭 이벤트 정의 함수 */
     fun click_PdfButton() {
-        pdfLayout.visibility = View.VISIBLE
-        PdfViewerActivity.launchPdfFromPath(
-            context = this,
-            path = "sample.pdf",
-            pdfTitle = "약관 보기",
-            saveTo = saveTo.ASK_EVERYTIME,
-            fromAssets = true
-        )
-    }
-
-    /* pdf 닫기 버튼 클릭 이벤트 정의 함수 */
-    fun click_CloseButton() {
-        btn_close.setOnClickListener {
-            pdfLayout.visibility = View.GONE
-        }
+        btn_pdf.setOnClickListener { navigateTo(PdfView::class.java, "pdf" to "sample") }
     }
 
     /* 뒤로가기 이벤트 정의 함수 */
