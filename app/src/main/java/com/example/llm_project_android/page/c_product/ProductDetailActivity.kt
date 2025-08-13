@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
@@ -21,32 +22,36 @@ import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.page.d_menu.EnrolledViewActivity
 import com.example.llm_project_android.page.d_menu.WishViewActivity
+import com.rajat.pdfviewer.PdfViewerActivity
+import com.rajat.pdfviewer.util.saveTo
 import kotlinx.coroutines.launch
 
 class ProductDetailActivity : AppCompatActivity() {
 
-    private lateinit var btn_back: ImageButton
-    private lateinit var btn_wish: ImageButton
-    private lateinit var btn_compare: Button
-    private lateinit var btn_details: Button
-    private lateinit var icon: ImageView
-    private lateinit var company_name: TextView
-    private lateinit var category: TextView
-    private lateinit var bookmark: TextView
-    private lateinit var insurance_name: TextView
-    private lateinit var enroll: TextView
+    private lateinit var btn_back: ImageButton          // 뒤로 가기 버튼
+    private lateinit var btn_wish: ImageButton          // 찜 버튼
+    private lateinit var btn_compare: Button            // 비교 버튼
+    private lateinit var btn_pdf: Button                // pdf 버튼
+    private lateinit var icon: ImageView                // 기업 아이콘
+    private lateinit var company_name: TextView         // 기업명
+    private lateinit var category: TextView             // 상품 카테고리
+    private lateinit var bookmark: TextView             // 추천 북마크
+    private lateinit var insurance_name: TextView       // 상품명
+    private lateinit var enroll: TextView               // 가입 여부
+    private lateinit var pdfLayout: ConstraintLayout    // pdf 레이아웃
+    private lateinit var btn_close: ImageButton         // pdf 닫기 버튼
 
-    private lateinit var data: Map<String, Any?>
+    private lateinit var data: Map<String, Any?>        // 상품 데이터 맵
 
-    private var source: String = ""
-    private var data_icon: Int = 0
-    private var data_company: String = ""
-    private var data_category:String = ""
-    private var data_name: String = ""
-    private var data_recommendation: Boolean = false
-    private var data_isWished: Boolean = false
+    private var source: String = ""                     // 이전 화면 소스
+    private var data_icon: Int = 0                      // 기업 아이콘 소스
+    private var data_company: String = ""               // 기업명 변수
+    private var data_category:String = ""               // 상품 카테고리 변수
+    private var data_name: String = ""                  // 상품명 변수
+    private var data_recommendation: Boolean = false    // AI 추천 여부 변수
+    private var data_isWished: Boolean = false          // 찜 여부 변수
 
-    lateinit var wishedManager: WishedManager
+    lateinit var wishedManager: WishedManager           // 찜 관리 매니저
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,17 +67,18 @@ class ProductDetailActivity : AppCompatActivity() {
         // 초기화
         wishedManager = WishedManager(this)
 
-        btn_back = findViewById<ImageButton>(R.id.backButton)
-        btn_wish = findViewById<ImageButton>(R.id.wishList_button)
-        btn_compare = findViewById<Button>(R.id.compare_button)
-        btn_details = findViewById<Button>(R.id.details_button)
-        icon = findViewById<ImageView>(R.id.company_icon)
-        company_name = findViewById<TextView>(R.id.company_name)
-        category = findViewById<TextView>(R.id.category)
-        bookmark = findViewById<TextView>(R.id.bookmark)
-        insurance_name = findViewById<TextView>(R.id.insurance_name)
-        enroll = findViewById<TextView>(R.id.enroll)
-
+        btn_back = findViewById(R.id.backButton)
+        btn_wish = findViewById(R.id.wishList_button)
+        btn_compare = findViewById(R.id.compare_button)
+        btn_pdf = findViewById(R.id.pdf_button)
+        icon = findViewById(R.id.company_icon)
+        company_name = findViewById(R.id.company_name)
+        category = findViewById(R.id.category)
+        bookmark = findViewById(R.id.bookmark)
+        insurance_name = findViewById(R.id.insurance_name)
+        enroll = findViewById(R.id.enroll)
+        pdfLayout = findViewById(R.id.pdfLayout)
+        btn_close = findViewById(R.id.closeButton)
 
         // 이전 화면에서 받아온 데이터
         data = getPassedExtras(
@@ -89,8 +95,8 @@ class ProductDetailActivity : AppCompatActivity() {
         RecentViewedManager.init(this)  // 최근 조회 기능 초기화 (SharedPreferences 사용 준비)
 
         init()              // 초기 진입 반영 반영
-        click_WishButton()  // 찜 버튼 클릭 이벤트
-        clickBackButton()   // 뒤로가기 이벤트
+        click_Buttons()     // 버튼 클릭 이벤트
+
     }
 
     /* 초기 진입 반영 */
@@ -108,6 +114,7 @@ class ProductDetailActivity : AppCompatActivity() {
         category.text = data_category
         insurance_name.text = data_name
         bookmark.visibility = if (data_recommendation) View.VISIBLE else View.GONE
+        pdfLayout.visibility = View.GONE
 
         // 찜 여부
         lifecycleScope.launch {
@@ -137,6 +144,15 @@ class ProductDetailActivity : AppCompatActivity() {
             btn_wish.setImageResource(R.drawable.vector_image_ic_wish_off)
     }
 
+    /* 버튼 클릭 이벤트 모음 */
+    private fun click_Buttons() {
+        click_WishButton()      // 찜 버튼 클릭 이벤트
+        click_CompareButton()   // 비교하기 버튼 클릭 이벤트
+        click_PdfButton()       // pdf 버튼 클릭 이벤트
+        click_CloseButton()     // pdf 닫기 버튼 클릭 이벤튼
+        clickBackButton()       // 뒤로가기 버튼 클릭 이벤트
+    }
+
     /* 찜 목록 버튼 클릭 이벤트 정의 함수 */
     fun click_WishButton() {
         btn_wish.setOnClickListener {
@@ -155,13 +171,27 @@ class ProductDetailActivity : AppCompatActivity() {
     }
 
     /* 비교하기 버튼 클릭 이벤트 정의 함수 */
-    fun click_ComapareButton() {
+    fun click_CompareButton() {
 
     }
 
     /* 상품 pdf 파일 열기 버튼 클릭 이벤트 정의 함수 */
-    fun click_DetailsButton() {
+    fun click_PdfButton() {
+        pdfLayout.visibility = View.VISIBLE
+        PdfViewerActivity.launchPdfFromPath(
+            context = this,
+            path = "sample.pdf",
+            pdfTitle = "약관 보기",
+            saveTo = saveTo.ASK_EVERYTIME,
+            fromAssets = true
+        )
+    }
 
+    /* pdf 닫기 버튼 클릭 이벤트 정의 함수 */
+    fun click_CloseButton() {
+        btn_close.setOnClickListener {
+            pdfLayout.visibility = View.GONE
+        }
     }
 
     /* 뒤로가기 이벤트 정의 함수 */
