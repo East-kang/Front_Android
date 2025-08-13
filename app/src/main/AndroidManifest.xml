@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LLM_Project_Android">
         <activity
+            android:name=".page.c_product.CompareViewActivity"
+            android:exported="false" />
+        <activity
             android:name=".page.c_product.PdfView"
             android:exported="false" />
 
