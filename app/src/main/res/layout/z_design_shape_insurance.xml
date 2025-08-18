@@ -33,10 +33,11 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="4dp"
+            android:gravity="center"
             android:text="기업명"
             android:textColor="#666666"
             android:textSize="15sp"
-            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/company_icon"
             app:layout_constraintTop_toTopOf="parent" />
 
