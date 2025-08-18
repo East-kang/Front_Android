@@ -312,5 +312,4 @@
             android:scaleType="centerCrop"
             android:src="@drawable/image_chat_icon" />
     </FrameLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

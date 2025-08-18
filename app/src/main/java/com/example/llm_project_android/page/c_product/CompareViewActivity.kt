@@ -6,6 +6,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -13,6 +14,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.llm_project_android.R
 import com.example.llm_project_android.functions.getPassedExtras
+import com.example.llm_project_android.functions.navigateTo
+import com.example.llm_project_android.page.d_menu.EnrolledViewActivity
+import com.example.llm_project_android.page.d_menu.WishViewActivity
 
 class CompareViewActivity : AppCompatActivity() {
 
@@ -39,7 +43,7 @@ class CompareViewActivity : AppCompatActivity() {
     private lateinit var item1_value: List<TextView>    // 비교 상품 소개 값 리스트
     private lateinit var ai_View: TextView              // AI 분석 결과
 
-    private var source: String = ""                     // 이전 화면 소스
+    private lateinit var data: Map<String, Any?>        // 이전 화면 소스
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,8 +88,15 @@ class CompareViewActivity : AppCompatActivity() {
 
         ai_View = findViewById(R.id.ai_View)
 
-        val extras = getPassedExtras("source", String::class.java)  // 이전 화면에서 받아온 데이터
-        source = extras["source"] as? String ?: ""
+        data = getPassedExtras(
+            listOf(
+                "source" to String::class.java,
+                "icon" to Int::class.java,
+                "company" to String::class.java,
+                "category" to String::class.java,
+                "name" to String::class.java
+            )
+        )
 
         setupView()
         click_Buttons()
@@ -93,13 +104,18 @@ class CompareViewActivity : AppCompatActivity() {
 
     /* 뷰 구성 */
     private fun setupView() {
-        if (source == "ProductDetailView") {        // 아이템 선택 전
+        if (data["source"] == "ProductDetailView") {        // 아이템 선택 전
             init_View.visibility = View.VISIBLE
             item_View.visibility = View.GONE
             field.visibility = View.GONE
 
+            icon0.setBackgroundResource(data["icon"] as Int)
+            company0.text = data["company"] as String
+            category0.text = data["category"] as String
+            bookmark1.visibility = View.GONE
+            name0.text = data["name"] as String             // 기존 아이템 뷰 구성
         }
-        else if (source == "ItemSelectView") {      // 아이템 선택 후
+        else if (data["source"] == "ItemSelectView") {      // 아이템 선택 후
             init_View.visibility = View.GONE
             item_View.visibility = View.VISIBLE
             field.visibility = View.VISIBLE
@@ -122,5 +138,21 @@ class CompareViewActivity : AppCompatActivity() {
     /* 버튼 클릭 이벤트 */
     private fun click_Buttons() {
 
+        /* 뒤로 가기 버튼 클릭 이벤트 */
+        btn_back.setOnClickListener {
+            finish()
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+        }
+
+        /* 기기 내장 뒤로가기 버튼 클릭 */
+        onBackPressedDispatcher.addCallback(this) {
+            finish()
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+        }
+
+        /* 상품 선택 클릭 이벤트 */
+        init_View.setOnClickListener {
+            navigateTo(CompareListViewActivity::class.java)
+        }
     }
 }

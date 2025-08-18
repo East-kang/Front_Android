@@ -22,7 +22,6 @@ import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.page.d_menu.EnrolledViewActivity
 import com.example.llm_project_android.page.d_menu.WishViewActivity
 import kotlinx.coroutines.launch
-import java.io.File
 
 class ProductDetailActivity : AppCompatActivity() {
 
@@ -164,7 +163,16 @@ class ProductDetailActivity : AppCompatActivity() {
 
     /* 비교하기 버튼 클릭 이벤트 정의 함수 */
     fun click_CompareButton() {
-        navigateTo(CompareViewActivity::class.java, "source" to "ProductDetailView")
+        btn_compare.setOnClickListener {
+            navigateTo(
+                CompareViewActivity::class.java,
+                "source" to "ProductDetailView",
+                "icon" to data_icon,
+                "company" to data_company,
+                "category" to data_category,
+                "name" to data_name)
+        }
+
     }
 
     /* 상품 pdf 파일 열기 버튼 클릭 이벤트 정의 함수 */
@@ -172,7 +180,7 @@ class ProductDetailActivity : AppCompatActivity() {
         btn_pdf.setOnClickListener { navigateTo(PdfView::class.java, "pdf" to "sample") }
     }
 
-    /* 뒤로가기 이벤트 정의 함수 */
+    /* 뒤로 가기 이벤트 정의 함수 */
     fun AppCompatActivity.clickBackButton() {
         // 뒤로가기 버튼 클릭
         btn_back.setOnClickListener {
@@ -187,7 +195,7 @@ class ProductDetailActivity : AppCompatActivity() {
             }
         }
 
-        // 기기 내장 뒤로가기 버튼 클릭
+        // 기기 내장 뒤로 가기 버튼 클릭
         onBackPressedDispatcher.addCallback(this) {
             when (source) {
                 "MainViewActivity" -> navigateTo(MainViewActivity::class.java, reverseAnimation = true)

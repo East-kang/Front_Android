@@ -112,21 +112,13 @@ class WishViewActivity : AppCompatActivity() {
         // 뒤로가기 버튼 클릭
         btn_back.setOnClickListener {
             finish()
-            navigateTo(
-                MainViewActivity::class.java,
-                "source" to "WishListView",
-                reverseAnimation = true
-            )
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
 
         // 기기 내장 뒤로가기 버튼 클릭
         onBackPressedDispatcher.addCallback(this) {
             finish()
-            navigateTo(
-                MainViewActivity::class.java,
-                "source" to "WishListView",
-                reverseAnimation = true
-            )
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
     }
 }

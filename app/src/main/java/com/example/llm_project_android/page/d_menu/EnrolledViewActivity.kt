@@ -252,11 +252,7 @@ class EnrolledViewActivity : AppCompatActivity() {
         if (edit_state) cancel_Edit()
         else {
             finish()
-            navigateTo(
-                MainViewActivity::class.java,
-                "source" to "SubscribedView",
-                reverseAnimation = true
-            )
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
     }
 
