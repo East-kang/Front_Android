@@ -95,8 +95,8 @@
                 android:layout_width="23dp"
                 android:layout_height="23dp"
                 android:background="@drawable/image_logo_samsung"
-                app:layout_constraintBottom_toTopOf="@id/item0"
-                app:layout_constraintStart_toStartOf="@id/item0" />
+                app:layout_constraintBottom_toTopOf="@id/name0"
+                app:layout_constraintStart_toStartOf="@id/name0" />
 
             <TextView
                 android:id="@+id/company0"
@@ -106,7 +106,7 @@
                 android:text="기업명"
                 android:textColor="#666666"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toTopOf="@id/item0"
+                app:layout_constraintBottom_toTopOf="@id/name0"
                 app:layout_constraintStart_toEndOf="@id/icon0"
                 app:layout_constraintTop_toTopOf="@id/icon0" />
 
@@ -142,7 +142,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/item0"
+                android:id="@+id/name0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="fill"
@@ -217,8 +217,8 @@
                     android:layout_width="23dp"
                     android:layout_height="23dp"
                     android:background="@drawable/image_logo_samsung"
-                    app:layout_constraintBottom_toTopOf="@id/item1"
-                    app:layout_constraintStart_toStartOf="@id/item1" />
+                    app:layout_constraintBottom_toTopOf="@id/name1"
+                    app:layout_constraintStart_toStartOf="@id/name1" />
 
                 <TextView
                     android:id="@+id/company1"
@@ -228,7 +228,7 @@
                     android:text="기업명"
                     android:textColor="#666666"
                     android:textSize="12sp"
-                    app:layout_constraintBottom_toTopOf="@id/item1"
+                    app:layout_constraintBottom_toTopOf="@id/name1"
                     app:layout_constraintStart_toEndOf="@id/icon1"
                     app:layout_constraintTop_toTopOf="@id/icon1" />
 
@@ -263,7 +263,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/item1"
+                    android:id="@+id/name1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill"

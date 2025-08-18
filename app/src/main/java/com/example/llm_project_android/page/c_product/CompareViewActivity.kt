@@ -1,6 +1,7 @@
 package com.example.llm_project_android.page.c_product
 
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -11,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.llm_project_android.R
+import com.example.llm_project_android.functions.getPassedExtras
 
 class CompareViewActivity : AppCompatActivity() {
 
@@ -33,8 +35,11 @@ class CompareViewActivity : AppCompatActivity() {
     private lateinit var name1: TextView                // 비교 상품 이름
     
     private lateinit var field: LinearLayout            // 결과 뷰
-    private lateinit var value_List: List<String>       // 상품 소개 값 리스트
+    private lateinit var item0_value: List<TextView>    // 기존 상품 소개 값 리스트
+    private lateinit var item1_value: List<TextView>    // 비교 상품 소개 값 리스트
+    private lateinit var ai_View: TextView              // AI 분석 결과
 
+    private var source: String = ""                     // 이전 화면 소스
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,10 +50,77 @@ class CompareViewActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        btn_back = findViewById(R.id.backButton)
+
+        item_Layout0 = findViewById(R.id.itemLayout0)
+        icon0 = findViewById(R.id.icon0)
+        company0 = findViewById(R.id.company0)
+        category0 = findViewById(R.id.category0)
+        bookmark0 = findViewById(R.id.bookmark0)
+        name0 = findViewById(R.id.name0)
+
+        item_Layout1 = findViewById(R.id.itemLayout1)
+        init_View = findViewById(R.id.init_View)
+        item_View = findViewById(R.id.item_View)
+        icon1 = findViewById(R.id.icon1)
+        company1 = findViewById(R.id.company1)
+        category1 = findViewById(R.id.category1)
+        bookmark1 = findViewById(R.id.bookmark1)
+        name1 = findViewById(R.id.name1)
+
+        field = findViewById(R.id.field)
+        item0_value = listOf(
+            findViewById(R.id.value00), findViewById(R.id.value10),
+            findViewById(R.id.value20), findViewById(R.id.value30),
+            findViewById(R.id.value40), findViewById(R.id.value50)
+        )
+        
+        item1_value = listOf(
+            findViewById(R.id.value01), findViewById(R.id.value11),
+            findViewById(R.id.value21), findViewById(R.id.value31),
+            findViewById(R.id.value41), findViewById(R.id.value51)
+        )
+
+        ai_View = findViewById(R.id.ai_View)
+
+        val extras = getPassedExtras("source", String::class.java)  // 이전 화면에서 받아온 데이터
+        source = extras["source"] as? String ?: ""
+
+        setupView()
+        click_Buttons()
     }
 
-    /* 초기 뷰 구성 */
-    private fun init() {
+    /* 뷰 구성 */
+    private fun setupView() {
+        if (source == "ProductDetailView") {        // 아이템 선택 전
+            init_View.visibility = View.VISIBLE
+            item_View.visibility = View.GONE
+            field.visibility = View.GONE
+
+        }
+        else if (source == "ItemSelectView") {      // 아이템 선택 후
+            init_View.visibility = View.GONE
+            item_View.visibility = View.VISIBLE
+            field.visibility = View.VISIBLE
+
+            input_values()
+            design_values()
+        }
+    }
+
+    /* 아이템 정보 반영 */
+    private fun input_values() {
+
+    }
+
+    /* 아이템 추천 디자인 반영 */
+    private fun design_values() {
+
+    }
+
+    /* 버튼 클릭 이벤트 */
+    private fun click_Buttons() {
 
     }
 }

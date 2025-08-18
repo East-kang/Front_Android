@@ -164,7 +164,7 @@ class ProductDetailActivity : AppCompatActivity() {
 
     /* 비교하기 버튼 클릭 이벤트 정의 함수 */
     fun click_CompareButton() {
-
+        navigateTo(CompareViewActivity::class.java, "source" to "ProductDetailView")
     }
 
     /* 상품 pdf 파일 열기 버튼 클릭 이벤트 정의 함수 */
