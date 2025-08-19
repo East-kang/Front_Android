@@ -1,4 +1,4 @@
-package com.example.llm_project_android.page.c_product
+package com.example.llm_project_android.page.e_detail
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -7,15 +7,19 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.llm_project_android.R
 
+
 class CompareListViewActivity : AppCompatActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.c_page_compare_list_view)
+        setContentView(R.layout.e_page_compare_list_view)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
     }
+
 }

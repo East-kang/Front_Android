@@ -1,9 +1,8 @@
-package com.example.llm_project_android.page.e_chat
+package com.example.llm_project_android.page.f_chat
 
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import androidx.activity.addCallback
@@ -42,7 +41,7 @@ class ChatView : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.e_page_chat_view)
+        setContentView(R.layout.f_page_chat_view)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)

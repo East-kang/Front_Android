@@ -1,4 +1,4 @@
-package com.example.llm_project_android.page.c_product
+package com.example.llm_project_android.page.e_detail
 
 import android.os.Bundle
 import android.view.View
@@ -15,8 +15,6 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.llm_project_android.R
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
-import com.example.llm_project_android.page.d_menu.EnrolledViewActivity
-import com.example.llm_project_android.page.d_menu.WishViewActivity
 
 class CompareViewActivity : AppCompatActivity() {
 
@@ -48,7 +46,7 @@ class CompareViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.c_page_compare_view)
+        setContentView(R.layout.e_page_compare_view)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -102,6 +100,7 @@ class CompareViewActivity : AppCompatActivity() {
         click_Buttons()
     }
 
+
     /* 뷰 구성 */
     private fun setupView() {
         if (data["source"] == "ProductDetailView") {        // 아이템 선택 전
@@ -152,7 +151,7 @@ class CompareViewActivity : AppCompatActivity() {
 
         /* 상품 선택 클릭 이벤트 */
         init_View.setOnClickListener {
-            navigateTo(CompareListViewActivity::class.java)
+            navigateTo(LottieView::class.java)
         }
     }
 }

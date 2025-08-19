@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".page.c_product.CompareListViewActivity">
+    tools:context=".page.e_detail.CompareListViewActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/title"

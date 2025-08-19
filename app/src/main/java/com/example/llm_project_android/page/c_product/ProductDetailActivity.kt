@@ -21,6 +21,8 @@ import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.page.d_menu.EnrolledViewActivity
 import com.example.llm_project_android.page.d_menu.WishViewActivity
+import com.example.llm_project_android.page.e_detail.CompareViewActivity
+import com.example.llm_project_android.page.e_detail.PdfView
 import kotlinx.coroutines.launch
 
 class ProductDetailActivity : AppCompatActivity() {

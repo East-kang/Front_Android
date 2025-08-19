@@ -49,7 +49,7 @@ import com.example.llm_project_android.page.a_intro.InitActivity
 import com.example.llm_project_android.page.d_menu.ProfileView
 import com.example.llm_project_android.page.d_menu.EnrolledViewActivity
 import com.example.llm_project_android.page.d_menu.WishViewActivity
-import com.example.llm_project_android.page.e_chat.ChatView
+import com.example.llm_project_android.page.f_chat.ChatView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.launch
 import kotlin.math.abs
