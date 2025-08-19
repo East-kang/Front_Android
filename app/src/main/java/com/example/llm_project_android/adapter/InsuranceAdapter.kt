@@ -26,12 +26,22 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
     private val insuranceList: MutableList<Insurance> = productList.toMutableList()     // 화면에 표시될 상품 리스트
     private val list1: MutableList<Insurance> = productList.toMutableList()             // 임시 저장 리스트 1
     private val list2: MutableList<Insurance> = mutableListOf<Insurance>()              // 임시 저장 리스트 2
+    private var excludedInsurane: MutableSet<String> = mutableSetOf()                   // 제외 상품
     var itemClick : ItemClick? = null                   // 클릭 이벤트 변수
     private var aiRecommendKey: String = "AI 추천"       // AI 추천 여부
     private var enrolledIds = mutableSetOf<String>()    // 가입 상품 리스트
     private var showingWork: Boolean = false            // 보여줄 리스트 (false: list1 / true: list2)
     private var deleteMode: Boolean = false             // 삭제 모드
 
+    // 마지막 필터 상태 기억 (재적용용)
+    private var lastF1: String? = null
+    private var lastF2: List<String>? = null
+    private var lastF3: String? = null
+
+
+    ///////////////////////* 상품 목록 보여 주기 함수 모음 *///////////////////////
+
+    // 상품 필터링
     fun applyFilters(
         filter1: String?,           // 카테고리
         filter2: List<String>?,     // 회사
@@ -57,6 +67,10 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
             else -> filtered
         }
 
+        if (excludedInsurane.isNotEmpty()) {
+            filtered = filtered.filter { it.name !in excludedInsurane }
+        }
+
         updateList(filtered)    // 리스트 업데이트
     }
 
@@ -66,12 +80,6 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
         insuranceList.clear()
         insuranceList.addAll(newList.sortedBy { it.name })
         notifyDataSetChanged()
-    }
-
-    // 'AI 추천' 여부 받아오기
-    fun setAIRecommendKey(key: String) {
-        aiRecommendKey = key
-        notifyDataSetChanged()  // 조건이 바뀌었으니 다시 그리게 함
     }
 
 
@@ -216,6 +224,28 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
         return insuranceList[position]
     }
 
+    fun setExcludedNames(names: Set<String>) {
+        excludedInsurane.clear()
+        excludedInsurane.addAll(names)
+        // 마지막 필터 조건으로 재적용
+        applyFilters(lastF1, lastF2, lastF3)
+    }
+
+    fun addExcludedName(name: String) {
+        if (excludedInsurane.add(name)) {
+            applyFilters(lastF1, lastF2, lastF3)
+        }
+    }
+
+    fun clearExcludedNames() {
+        if (excludedInsurane.isNotEmpty()) {
+            excludedInsurane.clear()
+            applyFilters(lastF1, lastF2, lastF3)
+        }
+    }
+
+
+    ///////////////////////* 상품 가입 관련 함수 모음 *///////////////////////
 
     // 가입 여부 받아오기
     fun setEnrolls(ids: List<String>) {
@@ -328,5 +358,14 @@ class InsuranceAdapter(productList: ArrayList<Insurance>) : RecyclerView.Adapter
     // 가입 내역 초기화
     fun clearEnrolled() {
         list1.clear()
+    }
+
+
+    ///////////////////////* AI 관련 함수 모음 *///////////////////////
+
+    // 'AI 추천' 여부 받아오기
+    fun setAIRecommendKey(key: String) {
+        aiRecommendKey = key
+        notifyDataSetChanged()  // 조건이 바뀌었으니 다시 그리게 함
     }
 }

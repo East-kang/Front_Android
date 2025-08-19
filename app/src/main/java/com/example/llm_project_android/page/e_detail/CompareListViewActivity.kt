@@ -36,7 +36,7 @@ class CompareListViewActivity : AppCompatActivity() {
     private lateinit var filter: Spinner            // 정렬 스피너
     private lateinit var recyclerView: RecyclerView // 상품 목록
 
-    private var category: String = ""               // 필터할 카테고리명
+    private lateinit var data: Map<String, Any?>    // 필터할 카테고리명
 
     private lateinit var adapter: InsuranceAdapter
     private val selectedCategory: MutableList<String> = mutableListOf()
@@ -64,7 +64,12 @@ class CompareListViewActivity : AppCompatActivity() {
         filter = findViewById(R.id.list_filter)
         recyclerView = findViewById(R.id.item_group)
 
-        category = getPassedExtras("category", String::class.java)["category"] as String
+        data = getPassedExtras(
+            listOf(
+                "category" to String::class.java,
+                "item" to String::class.java
+            )
+        )
 
         init()              // 초기 뷰 구성
         filtering_Company() // 회사 카테고리 버튼 클릭 이벤트
@@ -74,10 +79,10 @@ class CompareListViewActivity : AppCompatActivity() {
 
     /* 초기 뷰 구성 */
     private fun init() {
-        title.text = category
+        title.text = data["category"] as String
         showing_Insurances()
         selectedCategory.clear()
-        selectedCategory.add(category)
+        selectedCategory.add(data["category"] as String)
 
     }
 
@@ -97,8 +102,12 @@ class CompareListViewActivity : AppCompatActivity() {
             }
         }
 
+        // 기존 상품을 목록에서 제외
+        val excludeName = data["item"] as String
+        excludeName.let { adapter.addExcludedName(it) }
+
         selectedCategory.clear()
-        selectedCategory.add(category)
+        selectedCategory.add(data["category"] as String)
         item_Filter()
     }
 
