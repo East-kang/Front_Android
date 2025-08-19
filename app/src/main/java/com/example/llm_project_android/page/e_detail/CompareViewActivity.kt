@@ -2,6 +2,7 @@ package com.example.llm_project_android.page.e_detail
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -24,7 +25,7 @@ class CompareViewActivity : AppCompatActivity() {
     private lateinit var icon0: ImageView               // 기존 상품 기업 아이콘
     private lateinit var company0: TextView             // 기존 상품 기업명
     private lateinit var category0: TextView            // 기존 상품 카테고리
-    private lateinit var bookmark0: TextView            // 기존 상품 추천 북마크
+    private lateinit var recommendation0: ImageView     // 기존 상품 추천 북마크
     private lateinit var name0: TextView                // 기존 상품 이름
 
     private lateinit var item_Layout1: ConstraintLayout // 비교 상품 뷰
@@ -33,8 +34,9 @@ class CompareViewActivity : AppCompatActivity() {
     private lateinit var icon1: ImageView               // 비교 상품 기업 아이콘
     private lateinit var company1: TextView             // 비교 상품 기업명
     private lateinit var category1: TextView            // 비교 상품 카테고리
-    private lateinit var bookmark1: TextView            // 비교 상품 추천 북마크
+    private lateinit var recommendation1: ImageView     // 비교 상품 추천 북마크
     private lateinit var name1: TextView                // 비교 상품 이름
+    private lateinit var btn_change: Button             // 비교 상품 변경 버튼
     
     private lateinit var field: LinearLayout            // 결과 뷰
     private lateinit var item0_value: List<TextView>    // 기존 상품 소개 값 리스트
@@ -59,7 +61,7 @@ class CompareViewActivity : AppCompatActivity() {
         icon0 = findViewById(R.id.icon0)
         company0 = findViewById(R.id.company0)
         category0 = findViewById(R.id.category0)
-        bookmark0 = findViewById(R.id.bookmark0)
+        recommendation0 = findViewById(R.id.recommendation0)
         name0 = findViewById(R.id.name0)
 
         item_Layout1 = findViewById(R.id.itemLayout1)
@@ -68,8 +70,9 @@ class CompareViewActivity : AppCompatActivity() {
         icon1 = findViewById(R.id.icon1)
         company1 = findViewById(R.id.company1)
         category1 = findViewById(R.id.category1)
-        bookmark1 = findViewById(R.id.bookmark1)
+        recommendation1 = findViewById(R.id.recommendation1)
         name1 = findViewById(R.id.name1)
+        btn_change = findViewById(R.id.changeButton)
 
         field = findViewById(R.id.field)
         item0_value = listOf(
@@ -111,7 +114,7 @@ class CompareViewActivity : AppCompatActivity() {
             icon0.setBackgroundResource(data["icon"] as Int)
             company0.text = data["company"] as String
             category0.text = data["category"] as String
-            bookmark1.visibility = View.GONE
+            recommendation1.visibility = View.GONE
             name0.text = data["name"] as String             // 기존 아이템 뷰 구성
         }
         else if (data["source"] == "ItemSelectView") {      // 아이템 선택 후
@@ -151,7 +154,16 @@ class CompareViewActivity : AppCompatActivity() {
 
         /* 상품 선택 클릭 이벤트 */
         init_View.setOnClickListener {
-            navigateTo(LottieView::class.java)
+            navigateTo(CompareListViewActivity::class.java,
+                "category" to category0.text.toString(),
+                "item" to name0.text.toString())
+        }
+        
+        /* 비교 상품 변경 버튼 클릭 이벤트 */
+        btn_change.setOnClickListener {
+            navigateTo(CompareListViewActivity::class.java,
+                "category" to category0.text.toString(),
+                "item" to name0.text.toString())
         }
     }
 }

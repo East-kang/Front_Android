@@ -12,7 +12,6 @@ import androidx.core.view.WindowInsetsCompat
 import com.airbnb.lottie.LottieAnimationView
 import com.example.llm_project_android.R
 import com.example.llm_project_android.functions.navigateTo
-import com.example.llm_project_android.page.a_intro.InitActivity
 
 class LottieView : AppCompatActivity() {
     private lateinit var animationView: LottieAnimationView     // 애니메이션 진행 뷰
@@ -52,7 +51,7 @@ class LottieView : AppCompatActivity() {
             addListener(object: AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {  // 애니메이션 종료 후
                     if (!isFinishing) {
-                        navigateTo(InitActivity::class.java)
+                        navigateTo(CompareViewActivity::class.java)
                         finish()
                     }
                 }

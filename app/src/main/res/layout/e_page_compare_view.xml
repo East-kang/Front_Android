@@ -64,9 +64,9 @@
         android:text="비교 상품"
         android:textSize="10sp"
         android:textStyle="bold"
-        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
         app:layout_constraintBottom_toTopOf="@id/gridLayout"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/guideline_half" />
 
     <GridLayout
         android:id="@+id/gridLayout"
@@ -94,9 +94,11 @@
                 android:id="@+id/icon0"
                 android:layout_width="23dp"
                 android:layout_height="23dp"
-                android:background="@drawable/image_logo_samsung"
-                app:layout_constraintBottom_toTopOf="@id/name0"
-                app:layout_constraintStart_toStartOf="@id/name0" />
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="12dp"
+                android:background="@drawable/image_logo_hyundai"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/company0"
@@ -106,41 +108,36 @@
                 android:text="기업명"
                 android:textColor="#666666"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toTopOf="@id/name0"
-                app:layout_constraintStart_toEndOf="@id/icon0"
-                app:layout_constraintTop_toTopOf="@id/icon0" />
+                app:layout_constraintTop_toTopOf="@id/icon0"
+                app:layout_constraintBottom_toBottomOf="@+id/icon0"
+                app:layout_constraintStart_toEndOf="@id/icon0" />
 
             <TextView
                 android:id="@+id/category0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:layout_marginBottom="3dp"
+                android:layout_marginBottom="2dp"
                 android:background="@drawable/design_category_tag"
                 android:paddingHorizontal="3dp"
                 android:paddingVertical="1dp"
                 android:text="카테고리"
                 android:textColor="@color/black"
-                android:textSize="6sp"
+                android:textSize="5sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/icon0"
+                app:layout_constraintBottom_toBottomOf="@id/company0"
                 app:layout_constraintStart_toEndOf="@id/company0" />
 
 
-            <TextView
-                android:id="@+id/bookmark0"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginEnd="13dp"
-                android:background="@drawable/vector_image_ic_bookmark"
-                android:gravity="center|top"
-                android:paddingTop="10dp"
-                android:text="AI 추천"
-                android:textColor="@color/white"
-                android:textSize="10sp"
-                android:visibility="gone"
+            <ImageView
+                android:id="@+id/recommendation0"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/vector_ic_recommendation"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@id/icon0"
+                app:layout_constraintBottom_toBottomOf="@id/icon0"/>
 
             <TextView
                 android:id="@+id/name0"
@@ -148,15 +145,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="fill"
                 android:gravity="center"
-                android:text="현대해상 하이카 건강보험"
+                android:text="보험명긴거어어어어어어어"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:layout_marginStart="13dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginTop="5dp"
+                app:layout_constraintStart_toStartOf="@id/icon0"
+                app:layout_constraintTop_toBottomOf="@id/icon0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -171,6 +166,7 @@
                 android:id="@+id/init_View"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:foreground="@null"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -180,6 +176,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:clickable="false"
+                    android:focusable="false"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -190,7 +188,9 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:background="@drawable/vector_image_add_button"
-                        android:layout_gravity="center" />
+                        android:layout_gravity="center"
+                        android:clickable="false"
+                        android:focusable="false" />
 
                     <TextView
                         android:id="@+id/add_text"
@@ -200,7 +200,9 @@
                         android:textColor="#3B82F6"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        android:layout_gravity="center" />
+                        android:layout_gravity="center"
+                        android:clickable="false"
+                        android:focusable="false" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -219,8 +221,10 @@
                     android:layout_width="23dp"
                     android:layout_height="23dp"
                     android:background="@drawable/image_logo_samsung"
-                    app:layout_constraintBottom_toTopOf="@id/name1"
-                    app:layout_constraintStart_toStartOf="@id/name1" />
+                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="12dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/company1"
@@ -230,16 +234,16 @@
                     android:text="기업명"
                     android:textColor="#666666"
                     android:textSize="12sp"
-                    app:layout_constraintBottom_toTopOf="@id/name1"
-                    app:layout_constraintStart_toEndOf="@id/icon1"
-                    app:layout_constraintTop_toTopOf="@id/icon1" />
+                    app:layout_constraintTop_toTopOf="@id/icon1"
+                    app:layout_constraintBottom_toBottomOf="@+id/icon1"
+                    app:layout_constraintStart_toEndOf="@id/icon1" />
 
                 <TextView
                     android:id="@+id/category1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:layout_marginBottom="3dp"
+                    android:layout_marginBottom="2dp"
                     android:background="@drawable/design_category_tag"
                     android:paddingHorizontal="3dp"
                     android:paddingVertical="1dp"
@@ -247,22 +251,18 @@
                     android:textColor="@color/black"
                     android:textSize="6sp"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@id/icon1"
+                    app:layout_constraintBottom_toBottomOf="@id/company1"
                     app:layout_constraintStart_toEndOf="@id/company1" />
 
-                <TextView
-                    android:id="@+id/bookmark1"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="13dp"
-                    android:background="@drawable/vector_image_ic_bookmark"
-                    android:gravity="center|top"
-                    android:paddingTop="10dp"
-                    android:text="AI 추천"
-                    android:textColor="@color/white"
-                    android:textSize="10sp"
+                <ImageView
+                    android:id="@+id/recommendation1"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/vector_ic_recommendation"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@id/icon1"
+                    app:layout_constraintBottom_toBottomOf="@id/icon1"/>
 
                 <TextView
                     android:id="@+id/name1"
@@ -274,12 +274,23 @@
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:layout_marginStart="13dp"
-                    android:layout_marginTop="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintStart_toStartOf="@id/icon1"
+                    app:layout_constraintTop_toBottomOf="@id/icon1" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/changeButton"
+                    android:layout_width="55dp"
+                    android:layout_height="25dp"
+                    android:text="상품 변경"
+                    android:textSize="10sp"
+                    android:textColor="@color/white"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/design_blue_solid"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </GridLayout>

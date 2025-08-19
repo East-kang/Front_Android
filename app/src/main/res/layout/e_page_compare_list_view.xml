@@ -27,6 +27,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/category"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -120,24 +121,5 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="5dp" />
     </LinearLayout>
-
-
-    <FrameLayout
-        android:id="@+id/chatButton"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:background="@drawable/design_circle_stroke"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="6dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/image_chat_icon" />
-    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
