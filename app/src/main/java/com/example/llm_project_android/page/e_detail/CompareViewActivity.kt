@@ -1,5 +1,6 @@
 package com.example.llm_project_android.page.e_detail
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -14,8 +15,12 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.llm_project_android.R
+import com.example.llm_project_android.data.model.Insurance
+import com.example.llm_project_android.data.sample.Products_Insurance
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
+import com.example.llm_project_android.page.c_product.ProductDetailActivity
+import kotlin.math.max
 
 class CompareViewActivity : AppCompatActivity() {
 
@@ -43,7 +48,15 @@ class CompareViewActivity : AppCompatActivity() {
     private lateinit var item1_value: List<TextView>    // 비교 상품 소개 값 리스트
     private lateinit var ai_View: TextView              // AI 분석 결과
 
-    private lateinit var data: Map<String, Any?>        // 이전 화면 소스
+    private var selectedItem0: Insurance? = null        // 기존 상품
+    private var selectedItem1: Insurance? = null        // 비교 상품
+
+    private lateinit var data: Map<String, Any?>        // 기존, 비교? 상품 정보
+    private lateinit var value0: List<TextView>         // 기존 상품 상세 정보
+    private lateinit var value1: List<TextView>         // 비교 상품 상세 정보
+
+    private var count0 = 0  // 기존 상품이 더 좋은 항목 수
+    private var count1 = 0  // 비교 상품이 더 좋은 항목 수
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,94 +89,161 @@ class CompareViewActivity : AppCompatActivity() {
 
         field = findViewById(R.id.field)
         item0_value = listOf(
-            findViewById(R.id.value00), findViewById(R.id.value10),
-            findViewById(R.id.value20), findViewById(R.id.value30),
-            findViewById(R.id.value40), findViewById(R.id.value50)
+            findViewById(R.id.value00), findViewById(R.id.value10), findViewById(R.id.value20), findViewById(R.id.value30),
+            findViewById(R.id.value40), findViewById(R.id.value50), findViewById(R.id.value60), findViewById(R.id.value70)
         )
         
         item1_value = listOf(
-            findViewById(R.id.value01), findViewById(R.id.value11),
-            findViewById(R.id.value21), findViewById(R.id.value31),
-            findViewById(R.id.value41), findViewById(R.id.value51)
+            findViewById(R.id.value01), findViewById(R.id.value11), findViewById(R.id.value21), findViewById(R.id.value31),
+            findViewById(R.id.value41), findViewById(R.id.value51), findViewById(R.id.value61), findViewById(R.id.value71)
+        )
+
+        value0 = listOf(
+            findViewById(R.id.value00), findViewById(R.id.value10), findViewById(R.id.value20), findViewById(R.id.value30),
+            findViewById(R.id.value40), findViewById(R.id.value50), findViewById(R.id.value60), findViewById(R.id.value70)
+        )
+
+        value1 = listOf(
+            findViewById(R.id.value01), findViewById(R.id.value11), findViewById(R.id.value21), findViewById(R.id.value31),
+            findViewById(R.id.value41), findViewById(R.id.value51), findViewById(R.id.value61), findViewById(R.id.value71)
         )
 
         ai_View = findViewById(R.id.ai_View)
 
-        data = getPassedExtras(
+
+
+
+        get_Info()
+        setup_View()
+        click_Buttons()
+    }
+
+    /* 기존, 비교 상품 정보 불러오기 */
+    private fun get_Info() {
+        val base = getPassedExtras(                 // 기존 상품 정보
             listOf(
                 "source" to String::class.java,
-                "icon" to Int::class.java,
-                "company" to String::class.java,
-                "category" to String::class.java,
+                "source1" to String::class.java,
                 "name" to String::class.java
             )
         )
 
-        setupView()
-        click_Buttons()
+        data = if ((base["source1"] as? String) == "LottieView") {
+            val extra = getPassedExtras("name1", String::class.java)["name1"] as? String
+            if (extra != null) base + ("name1" to extra) else base
+        } else {
+            base
+        }
     }
 
-
     /* 뷰 구성 */
-    private fun setupView() {
-        if (data["source"] == "ProductDetailView") {        // 아이템 선택 전
+    private fun setup_View() {
+        if (data["source1"] == "ProductDetailView") {   // 아이템 선택 전
             init_View.visibility = View.VISIBLE
             item_View.visibility = View.GONE
             field.visibility = View.GONE
 
-            icon0.setBackgroundResource(data["icon"] as Int)
-            company0.text = data["company"] as String
-            category0.text = data["category"] as String
-            recommendation1.visibility = View.GONE
-            name0.text = data["name"] as String             // 기존 아이템 뷰 구성
+            input_Values(isSelected = false)
         }
-        else if (data["source"] == "ItemSelectView") {      // 아이템 선택 후
+        else if (data["source1"] == "LottieView") {     // 아이템 선택 후
             init_View.visibility = View.GONE
             item_View.visibility = View.VISIBLE
             field.visibility = View.VISIBLE
 
-            input_values()
-            design_values()
+            input_Values(isSelected = true)
+            design_Values()
         }
     }
 
     /* 아이템 정보 반영 */
-    private fun input_values() {
+    private fun input_Values(isSelected: Boolean) {
+        selectedItem0 = Products_Insurance.productList.find { it.name == data["name"] }
+        selectedItem1 = Products_Insurance.productList.find { it.name == data["name1"] }
 
+        selectedItem0?.let {                                    // 기존 아이템 뷰 구성
+            icon0.setBackgroundResource(it.company_icon)
+            company0.text = it.company_name
+            category0.text = it.category
+        }
+        recommendation0.visibility = View.GONE
+        name0.text = data["name"] as String
+
+        if (isSelected) {
+            selectedItem1?.let {                                 // 비교 아이템 뷰 구성
+                icon1.setBackgroundResource(it.company_icon)
+                company1.text = it.company_name
+                category1.text = it.category
+            }
+            recommendation1.visibility = View.GONE
+            name1.text = data["name1"] as String
+        }
     }
 
     /* 아이템 추천 디자인 반영 */
-    private fun design_values() {
+    private fun design_Values() {
+        var recommendation = ""
+        recommendation = compare_items()
+    }
+
+    /* 상품 비교 */
+    private fun compare_items(): String {
+
+
+        // 텍스트 색상, 스타일 변경 로직 추가 예정
+
+        return if (count0 > count1) data["name"] as String else data["name1"] as String
+    }
+
+    /* 상품 세부 사항 비교 */
+    private fun compare_Details(item0: Any, item1: Any) {
 
     }
+
 
     /* 버튼 클릭 이벤트 */
     private fun click_Buttons() {
 
         /* 뒤로 가기 버튼 클릭 이벤트 */
         btn_back.setOnClickListener {
-            finish()
-            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            navigateTo(
+                ProductDetailActivity::class.java,
+                "source" to data["source"],
+                "name" to data["name"],
+                reverseAnimation = true
+            )
         }
 
         /* 기기 내장 뒤로가기 버튼 클릭 */
         onBackPressedDispatcher.addCallback(this) {
-            finish()
-            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            navigateTo(
+                ProductDetailActivity::class.java,
+                "source" to data["source"],
+                "name" to data["name"],
+                reverseAnimation = true
+            )
         }
 
         /* 상품 선택 클릭 이벤트 */
         init_View.setOnClickListener {
-            navigateTo(CompareListViewActivity::class.java,
-                "category" to category0.text.toString(),
-                "item" to name0.text.toString())
+            selectedItem0?.let { item ->
+                navigateTo(
+                    CompareListViewActivity::class.java,
+                    "source" to data["source"],
+                    "category" to item.category,
+                    "name" to data["name"]
+                )
+            }
         }
-        
         /* 비교 상품 변경 버튼 클릭 이벤트 */
         btn_change.setOnClickListener {
-            navigateTo(CompareListViewActivity::class.java,
-                "category" to category0.text.toString(),
-                "item" to name0.text.toString())
+            selectedItem0?.let { item ->
+                navigateTo(
+                    CompareListViewActivity::class.java,
+                    "source" to data["source"],
+                    "category" to item.category,
+                    "name" to data["name"]
+                )
+            }
         }
     }
 }

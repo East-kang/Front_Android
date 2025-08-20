@@ -85,11 +85,7 @@ class ChatView : AppCompatActivity() {
                 navigateTo(
                     ProductDetailActivity::class.java,
                     "source" to "ChatView",
-                    "company_icon" to companyIcon,
-                    "company_name" to companyName,
-                    "category" to category,
-                    "insurance_name" to productName,
-                    "recommendation" to recommendation
+                    "name" to productName
                 )
             }   // 이를 위해 AI한테 이 항목들을 모두 받아야함.
         )

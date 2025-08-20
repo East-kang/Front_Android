@@ -13,6 +13,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.R
+import com.example.llm_project_android.adapter.InsuranceAdapter
+import com.example.llm_project_android.data.model.Product
 import com.example.llm_project_android.data.sample.Products_Insurance
 import com.example.llm_project_android.db.user.MyDatabase
 import com.example.llm_project_android.db.wishList.WishedManager
@@ -79,11 +81,7 @@ class ProductDetailActivity : AppCompatActivity() {
         data = getPassedExtras(
             listOf(
                 "source" to String::class.java,
-                "company_icon" to Int::class.java,
-                "company_name" to String::class.java,
-                "category" to String::class.java,
-                "insurance_name" to String::class.java,
-                "recommendation" to Boolean::class.java
+                "name" to String::class.java
             )
         )
 
@@ -97,11 +95,15 @@ class ProductDetailActivity : AppCompatActivity() {
     /* 초기 진입 반영 */
     fun init() {
         source = data["source"] as String
-        data_icon = data["company_icon"] as Int
-        data_company = data["company_name"] as String
-        data_category = data["category"] as String
-        data_name = data["insurance_name"] as String
-        data_recommendation = data["recommendation"] as Boolean
+        data_name = data["name"] as String
+        val insurance = Products_Insurance.productList.find { it.name == data_name }
+
+        if (insurance != null) {
+            data_icon = insurance.company_icon
+            data_company = insurance.company_name
+            data_category = insurance.category
+            data_recommendation = insurance.recommendation
+        }
 
         // 아이템 디자인
         icon.setBackgroundResource(data_icon)
@@ -126,7 +128,6 @@ class ProductDetailActivity : AppCompatActivity() {
         }
 
         // 최근 목록에 저장
-        val insurance = Products_Insurance.productList.find { it.name == data_name }
         insurance?.let { RecentViewedManager.addItem(it) }
     }
 
@@ -168,10 +169,8 @@ class ProductDetailActivity : AppCompatActivity() {
         btn_compare.setOnClickListener {
             navigateTo(
                 CompareViewActivity::class.java,
-                "source" to "ProductDetailView",
-                "icon" to data_icon,
-                "company" to data_company,
-                "category" to data_category,
+                "source" to source,
+                "source1" to "ProductDetailView",
                 "name" to data_name)
         }
 
@@ -184,12 +183,11 @@ class ProductDetailActivity : AppCompatActivity() {
 
     /* 뒤로 가기 이벤트 정의 함수 */
     fun AppCompatActivity.clickBackButton() {
-        // 뒤로가기 버튼 클릭
+        /* 뒤로가기 버튼 클릭 */
         btn_back.setOnClickListener {
             when (source) {
                 "MainViewActivity" -> navigateTo(MainViewActivity::class.java, reverseAnimation = true)
-                "CategoryView" -> navigateTo(
-                    CategoryView::class.java,
+                "CategoryView" -> navigateTo(CategoryView::class.java,
                     "category" to data["category"],
                     reverseAnimation = true)
                 "WishListView" -> navigateTo(WishViewActivity::class.java)
@@ -197,7 +195,7 @@ class ProductDetailActivity : AppCompatActivity() {
             }
         }
 
-        // 기기 내장 뒤로 가기 버튼 클릭
+        /* 기기 내장 뒤로 가기 버튼 클릭 */
         onBackPressedDispatcher.addCallback(this) {
             when (source) {
                 "MainViewActivity" -> navigateTo(MainViewActivity::class.java, reverseAnimation = true)

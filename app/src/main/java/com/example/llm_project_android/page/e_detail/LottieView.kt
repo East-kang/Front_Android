@@ -5,17 +5,21 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.animation.LinearInterpolator
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.airbnb.lottie.LottieAnimationView
 import com.example.llm_project_android.R
+import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
 
 class LottieView : AppCompatActivity() {
     private lateinit var animationView: LottieAnimationView     // 애니메이션 진행 뷰
     private var progressAnimator: ValueAnimator ?= null         // 진행률 애니메이터
+
+    private lateinit var data: Map<String, Any?>                // 기존, 비교 상품 정보
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +30,18 @@ class LottieView : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        // 뒤로 가기 버튼 클릭 방지
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() { }
+        })
+        
+        data = getPassedExtras(
+            listOf(
+                "source" to String::class.java,
+                "name" to String::class.java,       // 기존 상품명
+                "name1" to String::class.java       // 비교 상품명
+        ))
 
         animationView = findViewById(R.id.animationView)
 
@@ -39,7 +55,7 @@ class LottieView : AppCompatActivity() {
         }
     }
 
-    /* 애니메이션  */
+    /* 애니메이션 로직 */
     private fun startAnimation() {
         progressAnimator?.cancel()      // 이전 애니메이터 있으면 중단(중복 방지)
         progressAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
@@ -51,7 +67,12 @@ class LottieView : AppCompatActivity() {
             addListener(object: AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {  // 애니메이션 종료 후
                     if (!isFinishing) {
-                        navigateTo(CompareViewActivity::class.java)
+                        navigateTo(CompareViewActivity::class.java,
+                            "source" to data["source"],
+                            "source1" to "LottieView",
+                            "name" to data["name"],             // 기존 상품명
+                            "name1" to data["name1"]            // 비교 상품명
+                        )
                         finish()
                     }
                 }
@@ -64,5 +85,4 @@ class LottieView : AppCompatActivity() {
         progressAnimator?.cancel()
         super.onDestroy()
     }
-    
 }

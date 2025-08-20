@@ -315,287 +315,392 @@
             android:layout_marginTop="7dp"
             android:paddingHorizontal="15dp">
 
-            <TextView
-                android:id="@+id/criteria0"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/details_Field"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="15dp"
-                android:layout_marginTop="7dp"
-                android:text="보장 범위"
-                android:textSize="14sp"
-                android:textColor="#5E5E5E"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent" >
 
-            <View
-                android:id="@+id/line0"
-                android:layout_width="0dp"
-                android:layout_height="1.5dp"
-                android:layout_marginVertical="5dp"
-                android:background="#C9C9C9"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/criteria0" />
+                <TextView
+                    android:id="@+id/criteria0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="15dp"
+                    android:layout_marginTop="7dp"
+                    android:text="월 보험료"
+                    android:textSize="14sp"
+                    android:textColor="#5E5E5E"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/criteria1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="15dp"
-                android:layout_marginTop="7dp"
-                android:text="보장 금액"
-                android:textSize="14sp"
-                android:textColor="#5E5E5E"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/line0" />
+                <View
+                    android:id="@+id/line0"
+                    android:layout_width="0dp"
+                    android:layout_height="1.5dp"
+                    android:layout_marginVertical="5dp"
+                    android:background="#C9C9C9"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/criteria0" />
 
-            <View
-                android:id="@+id/line1"
-                android:layout_width="0dp"
-                android:layout_height="1.5dp"
-                android:layout_marginVertical="5dp"
-                android:background="#C9C9C9"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/criteria1" />
+                <TextView
+                    android:id="@+id/criteria1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="15dp"
+                    android:layout_marginTop="7dp"
+                    android:text="납입 기간"
+                    android:textSize="14sp"
+                    android:textColor="#5E5E5E"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/line0" />
 
-            <TextView
-                android:id="@+id/criteria2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="15dp"
-                android:layout_marginTop="7dp"
-                android:text="월 보험료"
-                android:textSize="14sp"
-                android:textColor="#5E5E5E"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/line1" />
+                <View
+                    android:id="@+id/line1"
+                    android:layout_width="0dp"
+                    android:layout_height="1.5dp"
+                    android:layout_marginVertical="5dp"
+                    android:background="#C9C9C9"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/criteria1" />
 
-            <View
-                android:id="@+id/line2"
-                android:layout_width="0dp"
-                android:layout_height="1.5dp"
-                android:layout_marginVertical="5dp"
-                android:background="#C9C9C9"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/criteria2" />
+                <TextView
+                    android:id="@+id/criteria2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="15dp"
+                    android:layout_marginTop="7dp"
+                    android:text="보장 범위"
+                    android:textSize="14sp"
+                    android:textColor="#5E5E5E"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/line1" />
 
-            <TextView
-                android:id="@+id/criteria3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="15dp"
-                android:layout_marginTop="7dp"
-                android:text="납입 기간"
-                android:textSize="14sp"
-                android:textColor="#5E5E5E"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/line2" />
+                <View
+                    android:id="@+id/line2"
+                    android:layout_width="0dp"
+                    android:layout_height="1.5dp"
+                    android:layout_marginVertical="5dp"
+                    android:background="#C9C9C9"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/criteria2" />
 
-            <View
-                android:id="@+id/line3"
-                android:layout_width="0dp"
-                android:layout_height="1.5dp"
-                android:layout_marginVertical="5dp"
-                android:background="#C9C9C9"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/criteria3" />
+                <TextView
+                    android:id="@+id/criteria3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="15dp"
+                    android:layout_marginTop="7dp"
+                    android:text="최대 보장 금액"
+                    android:textSize="14sp"
+                    android:textColor="#5E5E5E"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/line2" />
 
-            <TextView
-                android:id="@+id/criteria4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="15dp"
-                android:layout_marginTop="7dp"
-                android:text="환급률"
-                android:textSize="14sp"
-                android:textColor="#5E5E5E"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/line3" />
+                <View
+                    android:id="@+id/line3"
+                    android:layout_width="0dp"
+                    android:layout_height="1.5dp"
+                    android:layout_marginVertical="5dp"
+                    android:background="#C9C9C9"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/criteria3" />
 
-            <View
-                android:id="@+id/line4"
-                android:layout_width="0dp"
-                android:layout_height="1.5dp"
-                android:layout_marginVertical="5dp"
-                android:background="#C9C9C9"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/criteria4" />
+                <TextView
+                    android:id="@+id/criteria4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="15dp"
+                    android:layout_marginTop="7dp"
+                    android:text="환급률"
+                    android:textSize="14sp"
+                    android:textColor="#5E5E5E"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/line3" />
 
-            <TextView
-                android:id="@+id/criteria5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="15dp"
-                android:layout_marginTop="7dp"
-                android:text="특약 가능 여부"
-                android:textSize="14sp"
-                android:textColor="#5E5E5E"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/line4" />
+                <View
+                    android:id="@+id/line4"
+                    android:layout_width="0dp"
+                    android:layout_height="1.5dp"
+                    android:layout_marginVertical="5dp"
+                    android:background="#C9C9C9"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/criteria4" />
 
-            <View
-                android:id="@+id/line5"
-                android:layout_width="0dp"
-                android:layout_height="1.5dp"
-                android:layout_marginVertical="5dp"
-                android:background="#C9C9C9"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/criteria5" />
-            
-            <TextView
-                android:id="@+id/value00"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="value"
-                android:textSize="14sp"
-                android:textColor="#5E5E5E"
-                android:layout_marginStart="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/criteria0"
-                app:layout_constraintBottom_toBottomOf="@id/criteria0" />
+                <TextView
+                    android:id="@+id/criteria5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="15dp"
+                    android:layout_marginTop="7dp"
+                    android:text="특약 가능 여부"
+                    android:textSize="14sp"
+                    android:textColor="#5E5E5E"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/line4" />
 
-            <TextView
-                android:id="@+id/value01"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="value"
-                android:textSize="14sp"
-                android:textColor="#5E5E5E"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/criteria0"
-                app:layout_constraintBottom_toBottomOf="@id/criteria0" />
+                <View
+                    android:id="@+id/line5"
+                    android:layout_width="0dp"
+                    android:layout_height="1.5dp"
+                    android:layout_marginVertical="5dp"
+                    android:background="#C9C9C9"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/criteria5" />
 
-            <TextView
-                android:id="@+id/value10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="value"
-                android:textSize="14sp"
-                android:textColor="#5E5E5E"
-                android:layout_marginStart="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/criteria1"
-                app:layout_constraintBottom_toBottomOf="@id/criteria1" />
+                <TextView
+                    android:id="@+id/criteria6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="15dp"
+                    android:layout_marginTop="7dp"
+                    android:text="가입 연령"
+                    android:textSize="14sp"
+                    android:textColor="#5E5E5E"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/line5" />
 
-            <TextView
-                android:id="@+id/value11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="value"
-                android:textSize="14sp"
-                android:textColor="#5E5E5E"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/criteria1"
-                app:layout_constraintBottom_toBottomOf="@id/criteria1" />
+                <View
+                    android:id="@+id/line6"
+                    android:layout_width="0dp"
+                    android:layout_height="1.5dp"
+                    android:layout_marginVertical="5dp"
+                    android:background="#C9C9C9"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/criteria6" />
 
-            <TextView
-                android:id="@+id/value20"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="value"
-                android:textSize="14sp"
-                android:textColor="#5E5E5E"
-                android:layout_marginStart="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/criteria2"
-                app:layout_constraintBottom_toBottomOf="@id/criteria2" />
+                <TextView
+                    android:id="@+id/criteria7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="15dp"
+                    android:layout_marginTop="7dp"
+                    android:text="갱신 여부"
+                    android:textSize="14sp"
+                    android:textColor="#5E5E5E"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/line6" />
 
-            <TextView
-                android:id="@+id/value21"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="value"
-                android:textSize="14sp"
-                android:textColor="#5E5E5E"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/criteria2"
-                app:layout_constraintBottom_toBottomOf="@id/criteria2" />
+                <View
+                    android:id="@+id/line7"
+                    android:layout_width="0dp"
+                    android:layout_height="1.5dp"
+                    android:layout_marginVertical="5dp"
+                    android:background="#C9C9C9"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/criteria7" />
 
-            <TextView
-                android:id="@+id/value30"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="value"
-                android:textSize="14sp"
-                android:textColor="#5E5E5E"
-                android:layout_marginStart="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/criteria3"
-                app:layout_constraintBottom_toBottomOf="@id/criteria3" />
+                <TextView
+                    android:id="@+id/value00"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="value"
+                    android:textSize="14sp"
+                    android:textColor="#5E5E5E"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/criteria0"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria0" />
 
-            <TextView
-                android:id="@+id/value31"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="value"
-                android:textSize="14sp"
-                android:textColor="#5E5E5E"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/criteria3"
-                app:layout_constraintBottom_toBottomOf="@id/criteria3" />
+                <TextView
+                    android:id="@+id/value01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="value"
+                    android:textSize="14sp"
+                    android:textColor="#5E5E5E"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/criteria0"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria0" />
 
-            <TextView
-                android:id="@+id/value40"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="value"
-                android:textSize="14sp"
-                android:textColor="#5E5E5E"
-                android:layout_marginStart="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/criteria4"
-                app:layout_constraintBottom_toBottomOf="@id/criteria4" />
+                <TextView
+                    android:id="@+id/value10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="value"
+                    android:textSize="14sp"
+                    android:textColor="#5E5E5E"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/criteria1"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria1" />
 
-            <TextView
-                android:id="@+id/value41"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="value"
-                android:textSize="14sp"
-                android:textColor="#5E5E5E"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/criteria4"
-                app:layout_constraintBottom_toBottomOf="@id/criteria4" />
+                <TextView
+                    android:id="@+id/value11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="value"
+                    android:textSize="14sp"
+                    android:textColor="#5E5E5E"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/criteria1"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria1" />
 
-            <TextView
-                android:id="@+id/value50"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="value"
-                android:textSize="14sp"
-                android:textColor="#5E5E5E"
-                android:layout_marginStart="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/criteria5"
-                app:layout_constraintBottom_toBottomOf="@id/criteria5" />
+                <TextView
+                    android:id="@+id/value20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="value"
+                    android:textSize="14sp"
+                    android:textColor="#5E5E5E"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/criteria2"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria2" />
 
-            <TextView
-                android:id="@+id/value51"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="value"
-                android:textSize="14sp"
-                android:textColor="#5E5E5E"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/criteria5"
-                app:layout_constraintBottom_toBottomOf="@id/criteria5" />
+                <TextView
+                    android:id="@+id/value21"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="value"
+                    android:textSize="14sp"
+                    android:textColor="#5E5E5E"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/criteria2"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria2" />
+
+                <TextView
+                    android:id="@+id/value30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="value"
+                    android:textSize="14sp"
+                    android:textColor="#5E5E5E"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/criteria3"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria3" />
+
+                <TextView
+                    android:id="@+id/value31"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="value"
+                    android:textSize="14sp"
+                    android:textColor="#5E5E5E"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/criteria3"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria3" />
+
+                <TextView
+                    android:id="@+id/value40"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="value"
+                    android:textSize="14sp"
+                    android:textColor="#5E5E5E"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/criteria4"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria4" />
+
+                <TextView
+                    android:id="@+id/value41"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="value"
+                    android:textSize="14sp"
+                    android:textColor="#5E5E5E"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/criteria4"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria4" />
+
+                <TextView
+                    android:id="@+id/value50"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="value"
+                    android:textSize="14sp"
+                    android:textColor="#5E5E5E"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/criteria5"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria5" />
+
+                <TextView
+                    android:id="@+id/value51"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="value"
+                    android:textSize="14sp"
+                    android:textColor="#5E5E5E"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/criteria5"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria5" />
+
+                <TextView
+                    android:id="@+id/value60"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="value"
+                    android:textSize="14sp"
+                    android:textColor="#5E5E5E"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/criteria6"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria6" />
+
+                <TextView
+                    android:id="@+id/value61"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="value"
+                    android:textSize="14sp"
+                    android:textColor="#5E5E5E"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/criteria6"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria6" />
+
+                <TextView
+                    android:id="@+id/value70"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="value"
+                    android:textSize="14sp"
+                    android:textColor="#5E5E5E"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/criteria7"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria7" />
+
+                <TextView
+                    android:id="@+id/value71"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="value"
+                    android:textSize="14sp"
+                    android:textColor="#5E5E5E"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/criteria7"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria7" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             
             <TextView
@@ -609,7 +714,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginStart="5dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/line5" />
+                app:layout_constraintTop_toBottomOf="@id/details_Field" />
             
             <TextView
                 android:id="@+id/ai_View"

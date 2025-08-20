@@ -117,11 +117,7 @@ class EnrolledViewActivity : AppCompatActivity() {
                 navigateTo(
                     ProductDetailActivity::class.java,
                     "source" to "EnrolledView",
-                    "company_icon" to selectedItem.company_icon,
-                    "company_name" to selectedItem.company_name,
-                    "category" to selectedItem.category,
-                    "insurance_name" to selectedItem.name,
-                    "recommendation" to selectedItem.recommendation
+                    "name" to selectedItem.name
                 )
             }
         }

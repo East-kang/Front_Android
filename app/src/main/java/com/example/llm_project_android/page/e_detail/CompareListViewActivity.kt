@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -36,7 +37,7 @@ class CompareListViewActivity : AppCompatActivity() {
     private lateinit var filter: Spinner            // 정렬 스피너
     private lateinit var recyclerView: RecyclerView // 상품 목록
 
-    private lateinit var data: Map<String, Any?>    // 필터할 카테고리명
+    private lateinit var data: Map<String, Any?>   // 기존 상품 정보
 
     private lateinit var adapter: InsuranceAdapter
     private val selectedCategory: MutableList<String> = mutableListOf()
@@ -66,10 +67,13 @@ class CompareListViewActivity : AppCompatActivity() {
 
         data = getPassedExtras(
             listOf(
+                "source" to String::class.java,
                 "category" to String::class.java,
-                "item" to String::class.java
+                "name" to String::class.java
             )
         )
+
+
 
         init()              // 초기 뷰 구성
         filtering_Company() // 회사 카테고리 버튼 클릭 이벤트
@@ -79,7 +83,8 @@ class CompareListViewActivity : AppCompatActivity() {
 
     /* 초기 뷰 구성 */
     private fun init() {
-        title.text = data["category"] as String
+        val category = data["category"] as? String
+        title.text = category
         showing_Insurances()
         selectedCategory.clear()
         selectedCategory.add(data["category"] as String)
@@ -103,7 +108,7 @@ class CompareListViewActivity : AppCompatActivity() {
         }
 
         // 기존 상품을 목록에서 제외
-        val excludeName = data["item"] as String
+        val excludeName = data["name"] as String
         excludeName.let { adapter.addExcludedName(it) }
 
         selectedCategory.clear()
@@ -171,6 +176,7 @@ class CompareListViewActivity : AppCompatActivity() {
         )
     }
 
+    /* 클릭 이벤트 모음 */
     private fun click_Events() {
         /* 상품 클릭 이벤트 */
         click_Items()
@@ -197,10 +203,9 @@ class CompareListViewActivity : AppCompatActivity() {
 
                 navigateTo(
                     LottieView::class.java,
-                    "icon" to selectedItem.company_icon,
-                    "company" to selectedItem.company_name,
-                    "category" to selectedItem.category,
-                    "name" to selectedItem.name
+                    "source" to data["source"],
+                    "name" to data["name"],                    // 기존 상품명
+                    "name1" to selectedItem.name               // 비교 상품명
                 )
             }
         }
