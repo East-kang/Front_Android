@@ -95,7 +95,7 @@
                 android:layout_width="23dp"
                 android:layout_height="23dp"
                 android:layout_marginTop="12dp"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="10dp"
                 android:background="@drawable/image_logo_hyundai"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -145,7 +145,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="fill"
                 android:gravity="center"
-                android:text="보험명긴거어어어어어어어"
+                android:text="보험명"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -196,7 +196,7 @@
                         android:id="@+id/add_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="보험 선택하기"
+                        android:text="상품을 선택해주세요"
                         android:textColor="#3B82F6"
                         android:textSize="12sp"
                         android:textStyle="bold"
@@ -222,7 +222,7 @@
                     android:layout_height="23dp"
                     android:background="@drawable/image_logo_samsung"
                     android:layout_marginTop="12dp"
-                    android:layout_marginStart="12dp"
+                    android:layout_marginStart="10dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -270,7 +270,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill"
                     android:gravity="center"
-                    android:text="삼성화재 하이카 건강보험"
+                    android:text="상품명"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -312,7 +312,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="11dp"
             android:paddingHorizontal="15dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -328,7 +328,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="15dp"
-                    android:layout_marginTop="7dp"
+                    android:layout_marginTop="11dp"
                     android:text="월 보험료"
                     android:textSize="14sp"
                     android:textColor="#5E5E5E"
@@ -351,7 +351,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="15dp"
-                    android:layout_marginTop="7dp"
+                    android:layout_marginTop="11dp"
                     android:text="납입 기간"
                     android:textSize="14sp"
                     android:textColor="#5E5E5E"
@@ -374,7 +374,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="15dp"
-                    android:layout_marginTop="7dp"
+                    android:layout_marginTop="11dp"
                     android:text="보장 범위"
                     android:textSize="14sp"
                     android:textColor="#5E5E5E"
@@ -397,7 +397,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="15dp"
-                    android:layout_marginTop="7dp"
+                    android:layout_marginTop="11dp"
                     android:text="최대 보장 금액"
                     android:textSize="14sp"
                     android:textColor="#5E5E5E"
@@ -420,7 +420,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="15dp"
-                    android:layout_marginTop="7dp"
+                    android:layout_marginTop="11dp"
                     android:text="환급률"
                     android:textSize="14sp"
                     android:textColor="#5E5E5E"
@@ -443,7 +443,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="15dp"
-                    android:layout_marginTop="7dp"
+                    android:layout_marginTop="11dp"
                     android:text="특약 가능 여부"
                     android:textSize="14sp"
                     android:textColor="#5E5E5E"
@@ -466,7 +466,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="15dp"
-                    android:layout_marginTop="7dp"
+                    android:layout_marginTop="11dp"
                     android:text="가입 연령"
                     android:textSize="14sp"
                     android:textColor="#5E5E5E"
@@ -489,7 +489,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="15dp"
-                    android:layout_marginTop="7dp"
+                    android:layout_marginTop="11dp"
                     android:text="갱신 여부"
                     android:textSize="14sp"
                     android:textColor="#5E5E5E"
@@ -707,11 +707,11 @@
                 android:id="@+id/ai_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="AI 분석 결과"
+                android:text="🤖 AI 분석 결과"
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="25dp"
                 android:layout_marginStart="5dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/details_Field" />
@@ -731,9 +731,5 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ai_title" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
     </LinearLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
