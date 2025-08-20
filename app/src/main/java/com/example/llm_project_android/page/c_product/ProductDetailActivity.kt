@@ -9,11 +9,12 @@ import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.R
+import com.example.llm_project_android.adapter.InsuranceAdapter
+import com.example.llm_project_android.data.model.Product
 import com.example.llm_project_android.data.sample.Products_Insurance
 import com.example.llm_project_android.db.user.MyDatabase
 import com.example.llm_project_android.db.wishList.WishedManager
@@ -22,8 +23,8 @@ import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.page.d_menu.EnrolledViewActivity
 import com.example.llm_project_android.page.d_menu.WishViewActivity
-import com.rajat.pdfviewer.PdfViewerActivity
-import com.rajat.pdfviewer.util.saveTo
+import com.example.llm_project_android.page.e_detail.CompareViewActivity
+import com.example.llm_project_android.page.e_detail.PdfView
 import kotlinx.coroutines.launch
 
 class ProductDetailActivity : AppCompatActivity() {
@@ -38,8 +39,6 @@ class ProductDetailActivity : AppCompatActivity() {
     private lateinit var bookmark: TextView             // 추천 북마크
     private lateinit var insurance_name: TextView       // 상품명
     private lateinit var enroll: TextView               // 가입 여부
-    private lateinit var pdfLayout: ConstraintLayout    // pdf 레이아웃
-    private lateinit var btn_close: ImageButton         // pdf 닫기 버튼
 
     private lateinit var data: Map<String, Any?>        // 상품 데이터 맵
 
@@ -77,18 +76,12 @@ class ProductDetailActivity : AppCompatActivity() {
         bookmark = findViewById(R.id.bookmark)
         insurance_name = findViewById(R.id.insurance_name)
         enroll = findViewById(R.id.enroll)
-        pdfLayout = findViewById(R.id.pdfLayout)
-        btn_close = findViewById(R.id.closeButton)
 
         // 이전 화면에서 받아온 데이터
         data = getPassedExtras(
             listOf(
                 "source" to String::class.java,
-                "company_icon" to Int::class.java,
-                "company_name" to String::class.java,
-                "category" to String::class.java,
-                "insurance_name" to String::class.java,
-                "recommendation" to Boolean::class.java
+                "name" to String::class.java
             )
         )
 
@@ -102,11 +95,15 @@ class ProductDetailActivity : AppCompatActivity() {
     /* 초기 진입 반영 */
     fun init() {
         source = data["source"] as String
-        data_icon = data["company_icon"] as Int
-        data_company = data["company_name"] as String
-        data_category = data["category"] as String
-        data_name = data["insurance_name"] as String
-        data_recommendation = data["recommendation"] as Boolean
+        data_name = data["name"] as String
+        val insurance = Products_Insurance.productList.find { it.name == data_name }
+
+        if (insurance != null) {
+            data_icon = insurance.company_icon
+            data_company = insurance.company_name
+            data_category = insurance.category
+            data_recommendation = insurance.recommendation
+        }
 
         // 아이템 디자인
         icon.setBackgroundResource(data_icon)
@@ -114,7 +111,6 @@ class ProductDetailActivity : AppCompatActivity() {
         category.text = data_category
         insurance_name.text = data_name
         bookmark.visibility = if (data_recommendation) View.VISIBLE else View.GONE
-        pdfLayout.visibility = View.GONE
 
         // 찜 여부
         lifecycleScope.launch {
@@ -132,7 +128,6 @@ class ProductDetailActivity : AppCompatActivity() {
         }
 
         // 최근 목록에 저장
-        val insurance = Products_Insurance.productList.find { it.name == data_name }
         insurance?.let { RecentViewedManager.addItem(it) }
     }
 
@@ -149,7 +144,6 @@ class ProductDetailActivity : AppCompatActivity() {
         click_WishButton()      // 찜 버튼 클릭 이벤트
         click_CompareButton()   // 비교하기 버튼 클릭 이벤트
         click_PdfButton()       // pdf 버튼 클릭 이벤트
-        click_CloseButton()     // pdf 닫기 버튼 클릭 이벤튼
         clickBackButton()       // 뒤로가기 버튼 클릭 이벤트
     }
 
@@ -172,53 +166,40 @@ class ProductDetailActivity : AppCompatActivity() {
 
     /* 비교하기 버튼 클릭 이벤트 정의 함수 */
     fun click_CompareButton() {
+        btn_compare.setOnClickListener {
+            navigateTo(
+                CompareViewActivity::class.java,
+                "source" to source,
+                "source1" to "ProductDetailView",
+                "name" to data_name)
+        }
 
     }
 
     /* 상품 pdf 파일 열기 버튼 클릭 이벤트 정의 함수 */
     fun click_PdfButton() {
-        pdfLayout.visibility = View.VISIBLE
-        PdfViewerActivity.launchPdfFromPath(
-            context = this,
-            path = "sample.pdf",
-            pdfTitle = "약관 보기",
-            saveTo = saveTo.ASK_EVERYTIME,
-            fromAssets = true
-        )
+        btn_pdf.setOnClickListener { navigateTo(PdfView::class.java, "pdf" to "sample") }
     }
 
-    /* pdf 닫기 버튼 클릭 이벤트 정의 함수 */
-    fun click_CloseButton() {
-        btn_close.setOnClickListener {
-            pdfLayout.visibility = View.GONE
-        }
-    }
-
-    /* 뒤로가기 이벤트 정의 함수 */
+    /* 뒤로 가기 이벤트 정의 함수 */
     fun AppCompatActivity.clickBackButton() {
-        // 뒤로가기 버튼 클릭
+        /* 뒤로가기 버튼 클릭 */
         btn_back.setOnClickListener {
             when (source) {
                 "MainViewActivity" -> navigateTo(MainViewActivity::class.java, reverseAnimation = true)
-                "CategoryView" -> navigateTo(
-                    CategoryView::class.java,
-                    "category" to data["category"],
-                    reverseAnimation = true)
-                "WishListView" -> navigateTo(WishViewActivity::class.java)
-                "EnrolledView" -> navigateTo(EnrolledViewActivity::class.java)
+                "CategoryView" -> navigateTo(CategoryView::class.java, "category" to data["category"], reverseAnimation = true)
+                "WishListView" -> navigateTo(WishViewActivity::class.java, "source" to "ProductDetailView", reverseAnimation = true)
+                "EnrolledView" -> navigateTo(EnrolledViewActivity::class.java, "source" to "ProductDetailView", reverseAnimation = true)
             }
         }
 
-        // 기기 내장 뒤로가기 버튼 클릭
+        /* 기기 내장 뒤로 가기 버튼 클릭 */
         onBackPressedDispatcher.addCallback(this) {
             when (source) {
                 "MainViewActivity" -> navigateTo(MainViewActivity::class.java, reverseAnimation = true)
-                "CategoryView" -> navigateTo(
-                    CategoryView::class.java,
-                    "category" to data["category"],
-                    reverseAnimation = true)
-                "WishListView" -> navigateTo(WishViewActivity::class.java)
-                "EnrolledView" -> navigateTo(EnrolledViewActivity::class.java)
+                "CategoryView" -> navigateTo(CategoryView::class.java, "category" to data["category"], reverseAnimation = true)
+                "WishListView" -> navigateTo(WishViewActivity::class.java, "source" to "ProductDetailView", reverseAnimation = true)
+                "EnrolledView" -> navigateTo(EnrolledViewActivity::class.java, "source" to "ProductDetailView", reverseAnimation = true)
             }
         }
     }

@@ -17,6 +17,7 @@ import com.example.llm_project_android.R
 import com.example.llm_project_android.adapter.InsuranceAdapter
 import com.example.llm_project_android.data.sample.Products_Insurance
 import com.example.llm_project_android.db.wishList.WishedManager
+import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.page.c_product.MainViewActivity
 import com.example.llm_project_android.page.c_product.ProductDetailActivity
@@ -30,6 +31,7 @@ class WishViewActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
 
     private lateinit var adapter: InsuranceAdapter
+    private var source = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,11 +52,13 @@ class WishViewActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
+        source = getPassedExtras("source", String::class.java)["source"] as String
+
         get_WishList()      // 화면 최초 진입 시 데이터 불러오기
         click_BackButton()  // 뒤로가기 버튼 클릭 이벤트
     }
 
-    // 초기 화면 (찜 목록 존재 여부에 따른 뷰 구성)
+    /* 초기 화면 (찜 목록 존재 여부에 따른 뷰 구성) */
     private fun updateView(isEmpty: Boolean) {
         // 찜 목록 존재에 따른 뷰 구성
         if (isEmpty) {
@@ -66,7 +70,7 @@ class WishViewActivity : AppCompatActivity() {
         }
     }
 
-    // 찜 목록 불러 오기
+    /* 찜 목록 불러 오기 */
     private fun get_WishList() {
         lifecycleScope.launch {
             val manager = WishedManager(this@WishViewActivity)
@@ -88,7 +92,7 @@ class WishViewActivity : AppCompatActivity() {
         }
     }
 
-    // 아이템 클릭 이벤트
+    /* 아이템 클릭 이벤트 */
     private fun click_Item() {
         adapter.itemClick = object : InsuranceAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
@@ -97,36 +101,30 @@ class WishViewActivity : AppCompatActivity() {
                 navigateTo(
                     ProductDetailActivity::class.java,
                     "source" to "WishListView",
-                    "company_icon" to selectedItem.company_icon,
-                    "company_name" to selectedItem.company_name,
-                    "category" to selectedItem.category,
-                    "insurance_name" to selectedItem.name,
-                    "recommendation" to selectedItem.recommendation
+                    "name" to selectedItem.name
                 )
             }
         }
     }
 
-    // 뒤로가기 버튼 클릭 이벤트
+    /* 뒤로가기 버튼 클릭 이벤트 */
     private fun click_BackButton() {
         // 뒤로가기 버튼 클릭
         btn_back.setOnClickListener {
-            finish()
-            navigateTo(
-                MainViewActivity::class.java,
-                "source" to "WishListView",
-                reverseAnimation = true
-            )
+            if (source == "MainViewActivity") {
+                finish()
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            } else
+                navigateTo(MainViewActivity::class.java, "source" to "WishListView", reverseAnimation = true)
         }
 
         // 기기 내장 뒤로가기 버튼 클릭
         onBackPressedDispatcher.addCallback(this) {
-            finish()
-            navigateTo(
-                MainViewActivity::class.java,
-                "source" to "WishListView",
-                reverseAnimation = true
-            )
+            if (source == "MainViewActivity") {
+                finish()
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            } else
+                navigateTo(MainViewActivity::class.java, "source" to "WishListView", reverseAnimation = true)
         }
     }
 }

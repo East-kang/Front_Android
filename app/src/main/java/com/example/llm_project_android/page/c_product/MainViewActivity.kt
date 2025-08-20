@@ -49,7 +49,7 @@ import com.example.llm_project_android.page.a_intro.InitActivity
 import com.example.llm_project_android.page.d_menu.ProfileView
 import com.example.llm_project_android.page.d_menu.EnrolledViewActivity
 import com.example.llm_project_android.page.d_menu.WishViewActivity
-import com.example.llm_project_android.page.e_chat.ChatView
+import com.example.llm_project_android.page.f_chat.ChatView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -262,15 +262,9 @@ class MainViewActivity : AppCompatActivity() {
         recentAdapter.itemClick = object : RecentInsuranceAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
                 val selectedItem = recentAdapter.getItem(position)
-                navigateTo(
-                    ProductDetailActivity::class.java,
+                navigateTo(ProductDetailActivity::class.java,
                     "source" to "MainViewActivity",
-                    "company_icon" to selectedItem.company_icon,
-                    "company_name" to selectedItem.company_name,
-                    "category" to selectedItem.category,
-                    "insurance_name" to selectedItem.name,
-                    "recommendation" to selectedItem.recommendation
-                )
+                    "name" to selectedItem.name)
             }
         }
     }
@@ -343,11 +337,7 @@ class MainViewActivity : AppCompatActivity() {
                 navigateTo(
                     ProductDetailActivity::class.java,
                     "source" to "MainViewActivity",
-                    "company_icon" to selectedInsurance.company_icon,
-                    "company_name" to selectedInsurance.company_name,
-                    "category" to selectedInsurance.category,
-                    "insurance_name" to selectedInsurance.name,
-                    "recommendation" to selectedInsurance.recommendation
+                    "name" to selectedInsurance.name
                 )
             }
         }

@@ -23,10 +23,9 @@ import com.example.llm_project_android.R
 import com.example.llm_project_android.adapter.InsuranceAdapter
 import com.example.llm_project_android.data.sample.Products_Insurance
 import com.example.llm_project_android.db.user.MyDatabase
-import com.example.llm_project_android.functions.RecentViewedManager
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
-import com.example.llm_project_android.page.e_chat.ChatView
+import com.example.llm_project_android.page.f_chat.ChatView
 import kotlinx.coroutines.launch
 
 class CategoryView : AppCompatActivity() {
@@ -138,11 +137,7 @@ class CategoryView : AppCompatActivity() {
                 navigateTo(
                     ProductDetailActivity::class.java,
                     "source" to "CategoryView",
-                    "company_icon" to selectedItem.company_icon,
-                    "company_name" to selectedItem.company_name,
-                    "category" to selectedItem.category,
-                    "insurance_name" to selectedItem.name,
-                    "recommendation" to selectedItem.recommendation
+                    "name" to selectedItem.name
                 )
             }
         }

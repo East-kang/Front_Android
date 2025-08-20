@@ -1,9 +1,8 @@
-package com.example.llm_project_android.page.e_chat
+package com.example.llm_project_android.page.f_chat
 
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import androidx.activity.addCallback
@@ -42,7 +41,7 @@ class ChatView : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.e_page_chat_view)
+        setContentView(R.layout.f_page_chat_view)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -55,7 +54,7 @@ class ChatView : AppCompatActivity() {
         btn_send = findViewById(R.id.send_button)
         btn_back = findViewById(R.id.backButton)
 
-        source = getPassedExtras("source", String::class.java)["source"] as? String ?: ""
+        source = getPassedExtras("source", String::class.java)["source"] as String
 
 
         init()                  // 초기 설정 (어뎁터, 전송 버튼 초기화)
@@ -86,11 +85,7 @@ class ChatView : AppCompatActivity() {
                 navigateTo(
                     ProductDetailActivity::class.java,
                     "source" to "ChatView",
-                    "company_icon" to companyIcon,
-                    "company_name" to companyName,
-                    "category" to category,
-                    "insurance_name" to productName,
-                    "recommendation" to recommendation
+                    "name" to productName
                 )
             }   // 이를 위해 AI한테 이 항목들을 모두 받아야함.
         )

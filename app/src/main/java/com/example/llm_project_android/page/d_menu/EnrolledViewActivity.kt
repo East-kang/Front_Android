@@ -26,6 +26,7 @@ import com.example.llm_project_android.data.sample.Products_Insurance
 import com.example.llm_project_android.db.user.MyDAO
 import com.example.llm_project_android.db.user.MyDatabase
 import com.example.llm_project_android.db.user.User
+import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.handleTouchOutsideEditText
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.functions.showConfirmDialog
@@ -54,6 +55,7 @@ class EnrolledViewActivity : AppCompatActivity() {
 
     private lateinit var searchAdapter: ProductContentAdapter
 
+    private var source = ""
     private var edit_state: Boolean = false                 // 편집 여부 변수 (true: 편집 모드, false: 읽기 모드)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,6 +81,8 @@ class EnrolledViewActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter = InsuranceAdapter(Products_Insurance.productList)
         recyclerView.adapter = adapter
+
+        source = getPassedExtras("source", String::class.java)["source"] as String
 
         set_View_Mode(edit_state)         // 초기 화면 구성 (읽기 모드)
         enrolled_Items()    // 가입 상품 띄우기
@@ -117,11 +121,7 @@ class EnrolledViewActivity : AppCompatActivity() {
                 navigateTo(
                     ProductDetailActivity::class.java,
                     "source" to "EnrolledView",
-                    "company_icon" to selectedItem.company_icon,
-                    "company_name" to selectedItem.company_name,
-                    "category" to selectedItem.category,
-                    "insurance_name" to selectedItem.name,
-                    "recommendation" to selectedItem.recommendation
+                    "name" to selectedItem.name
                 )
             }
         }
@@ -247,16 +247,15 @@ class EnrolledViewActivity : AppCompatActivity() {
         }
     }
 
-    /* 뒤로가기 버튼 이벤트 */
+    /* 뒤로 가기 버튼 이벤트 */
     private fun function_back() {
         if (edit_state) cancel_Edit()
         else {
-            finish()
-            navigateTo(
-                MainViewActivity::class.java,
-                "source" to "SubscribedView",
-                reverseAnimation = true
-            )
+            if (source == "MainViewActivity") {
+                finish()
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            } else
+                navigateTo(MainViewActivity::class.java, "source" to "EnrolledView", reverseAnimation = true)
         }
     }
 
