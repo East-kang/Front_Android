@@ -44,8 +44,6 @@ class CompareViewActivity : AppCompatActivity() {
     private lateinit var btn_change: Button             // 비교 상품 변경 버튼
     
     private lateinit var field: LinearLayout            // 결과 뷰
-    private lateinit var item0_value: List<TextView>    // 기존 상품 소개 값 리스트
-    private lateinit var item1_value: List<TextView>    // 비교 상품 소개 값 리스트
     private lateinit var ai_View: TextView              // AI 분석 결과
 
     private var selectedItem0: Insurance? = null        // 기존 상품
@@ -88,15 +86,7 @@ class CompareViewActivity : AppCompatActivity() {
         btn_change = findViewById(R.id.changeButton)
 
         field = findViewById(R.id.field)
-        item0_value = listOf(
-            findViewById(R.id.value00), findViewById(R.id.value10), findViewById(R.id.value20), findViewById(R.id.value30),
-            findViewById(R.id.value40), findViewById(R.id.value50), findViewById(R.id.value60), findViewById(R.id.value70)
-        )
-        
-        item1_value = listOf(
-            findViewById(R.id.value01), findViewById(R.id.value11), findViewById(R.id.value21), findViewById(R.id.value31),
-            findViewById(R.id.value41), findViewById(R.id.value51), findViewById(R.id.value61), findViewById(R.id.value71)
-        )
+        ai_View = findViewById(R.id.ai_View)
 
         value0 = listOf(
             findViewById(R.id.value00), findViewById(R.id.value10), findViewById(R.id.value20), findViewById(R.id.value30),
@@ -118,7 +108,7 @@ class CompareViewActivity : AppCompatActivity() {
         click_Buttons()
     }
 
-    /* 기존, 비교 상품 정보 불러오기 */
+    /* 기존, 비교 상품 상단 정보 불러오기 */
     private fun get_Info() {
         val base = getPassedExtras(                 // 기존 상품 정보
             listOf(
@@ -129,11 +119,9 @@ class CompareViewActivity : AppCompatActivity() {
         )
 
         data = if ((base["source1"] as? String) == "LottieView") {
-            val extra = getPassedExtras("name1", String::class.java)["name1"] as? String
+            val extra = getPassedExtras("name1", String::class.java)["name1"] as? String    // 비교 상품 정보
             if (extra != null) base + ("name1" to extra) else base
-        } else {
-            base
-        }
+        } else base
     }
 
     /* 뷰 구성 */
@@ -143,15 +131,15 @@ class CompareViewActivity : AppCompatActivity() {
             item_View.visibility = View.GONE
             field.visibility = View.GONE
 
-            input_Values(isSelected = false)
+            input_Values(isSelected = false)     // 상품 상단 정보 적용
         }
         else if (data["source1"] == "LottieView") {     // 아이템 선택 후
             init_View.visibility = View.GONE
             item_View.visibility = View.VISIBLE
             field.visibility = View.VISIBLE
 
-            input_Values(isSelected = true)
-            design_Values()
+            input_Values(isSelected = true)     // 상품 상단, 세부 정보 적용
+            design_Values()                     // 세부 정보 비교에 따른 텍스트 스타일 변환
         }
     }
 
@@ -160,7 +148,7 @@ class CompareViewActivity : AppCompatActivity() {
         selectedItem0 = Products_Insurance.productList.find { it.name == data["name"] }
         selectedItem1 = Products_Insurance.productList.find { it.name == data["name1"] }
 
-        selectedItem0?.let {                                    // 기존 아이템 뷰 구성
+        selectedItem0?.let {                                    // 기존 상품 상단 뷰 구성
             icon0.setBackgroundResource(it.company_icon)
             company0.text = it.company_name
             category0.text = it.category
@@ -168,11 +156,30 @@ class CompareViewActivity : AppCompatActivity() {
         recommendation0.visibility = View.GONE
         name0.text = data["name"] as String
 
-        if (isSelected) {
-            selectedItem1?.let {                                 // 비교 아이템 뷰 구성
+        if (isSelected) {           // 비교 상품 선택 했을 경우
+            selectedItem0?.let {    // 기존 상품 세부 정보 값 대입
+                value0[0].text = "월 " + it.payment + "만원"   // 월 보험료
+                value0[1].text = "" // 납입 기간
+                value0[2].text = "" // 보장 범위
+                value0[3].text = "만원"   // 최대 보장 금액
+                value0[4].text = ""   // 환급률
+                value0[5].text = ""   // 특약 가능 여부
+                value0[6].text = ""   // 가입 연령
+                value0[7].text = ""   // 갱신 여부
+            }
+            selectedItem1?.let {    // 비교 상품 상단, 세부 정보 값 대입
                 icon1.setBackgroundResource(it.company_icon)
                 company1.text = it.company_name
                 category1.text = it.category
+
+                value1[0].text = "월 " + it.payment + "만원"   // 월 보험료
+                value1[1].text = "" // 납입 기간
+                value1[2].text = "" // 보장 범위
+                value1[3].text = "만원"   // 최대 보장 금액
+                value1[4].text = ""   // 환급률
+                value1[5].text = ""   // 특약 가능 여부
+                value1[6].text = ""   // 가입 연령
+                value1[7].text = ""   // 갱신 여부
             }
             recommendation1.visibility = View.GONE
             name1.text = data["name1"] as String
