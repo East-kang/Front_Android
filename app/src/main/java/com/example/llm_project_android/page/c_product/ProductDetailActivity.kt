@@ -187,11 +187,9 @@ class ProductDetailActivity : AppCompatActivity() {
         btn_back.setOnClickListener {
             when (source) {
                 "MainViewActivity" -> navigateTo(MainViewActivity::class.java, reverseAnimation = true)
-                "CategoryView" -> navigateTo(CategoryView::class.java,
-                    "category" to data["category"],
-                    reverseAnimation = true)
-                "WishListView" -> navigateTo(WishViewActivity::class.java)
-                "EnrolledView" -> navigateTo(EnrolledViewActivity::class.java)
+                "CategoryView" -> navigateTo(CategoryView::class.java, "category" to data["category"], reverseAnimation = true)
+                "WishListView" -> navigateTo(WishViewActivity::class.java, "source" to "ProductDetailView", reverseAnimation = true)
+                "EnrolledView" -> navigateTo(EnrolledViewActivity::class.java, "source" to "ProductDetailView", reverseAnimation = true)
             }
         }
 
@@ -199,12 +197,9 @@ class ProductDetailActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this) {
             when (source) {
                 "MainViewActivity" -> navigateTo(MainViewActivity::class.java, reverseAnimation = true)
-                "CategoryView" -> navigateTo(
-                    CategoryView::class.java,
-                    "category" to data["category"],
-                    reverseAnimation = true)
-                "WishListView" -> navigateTo(WishViewActivity::class.java)
-                "EnrolledView" -> navigateTo(EnrolledViewActivity::class.java)
+                "CategoryView" -> navigateTo(CategoryView::class.java, "category" to data["category"], reverseAnimation = true)
+                "WishListView" -> navigateTo(WishViewActivity::class.java, "source" to "ProductDetailView", reverseAnimation = true)
+                "EnrolledView" -> navigateTo(EnrolledViewActivity::class.java, "source" to "ProductDetailView", reverseAnimation = true)
             }
         }
     }

@@ -54,7 +54,7 @@ class ChatView : AppCompatActivity() {
         btn_send = findViewById(R.id.send_button)
         btn_back = findViewById(R.id.backButton)
 
-        source = getPassedExtras("source", String::class.java)["source"] as? String ?: ""
+        source = getPassedExtras("source", String::class.java)["source"] as String
 
 
         init()                  // 초기 설정 (어뎁터, 전송 버튼 초기화)
