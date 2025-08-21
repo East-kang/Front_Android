@@ -161,28 +161,28 @@ class CompareViewActivity : AppCompatActivity() {
 
         if (isSelected) {           // 비교 상품 선택 했을 경우
             selectedItem0?.let {    // 기존 상품 세부 정보 값 대입
-                value0[0].text = "월 " + it.payment + "만원"   // 월 보험료
-                value0[1].text = "" // 납입 기간
-                value0[2].text = "" // 보장 범위
-                value0[3].text = "만원"   // 최대 보장 금액
-                value0[4].text = ""   // 환급률
-                value0[5].text = ""   // 특약 가능 여부
-                value0[6].text = ""   // 가입 연령
-                value0[7].text = ""   // 갱신 여부
+                value0[0].text = "" // 가입 연령
+                value0[1].text = "" // 월 보험료
+                value0[2].text = "" // 납입 기간
+                value0[3].text = "" // 최대 보장
+                value0[4].text = "" // 환급 비율
+                value0[5].text = "" // 특약 여부
+                value0[6].text = "" // 갱신 여부
+                value0[7].text = "" // 보장 내용
             }
             selectedItem1?.let {    // 비교 상품 상단, 세부 정보 값 대입
                 icon1.setBackgroundResource(it.company_icon)
                 company1.text = it.company_name
                 category1.text = it.category
 
-                value1[0].text = "월 " + it.payment + "만원"   // 월 보험료
-                value1[1].text = "" // 납입 기간
-                value1[2].text = "" // 보장 범위
-                value1[3].text = "만원"   // 최대 보장 금액
-                value1[4].text = ""   // 환급률
-                value1[5].text = ""   // 특약 가능 여부
-                value1[6].text = ""   // 가입 연령
-                value1[7].text = ""   // 갱신 여부
+                value1[0].text = "" // 가입 연령
+                value1[1].text = "" // 월 보험료
+                value1[2].text = "" // 납입 기간
+                value1[3].text = "" // 최대 보장
+                value1[4].text = "" // 환급 비율
+                value1[5].text = "" // 특약 여부
+                value1[6].text = "" // 갱신 여부
+                value1[7].text = "" // 보장 내용
             }
             recommendation1.visibility = View.GONE
             name1.text = data["name1"] as String
