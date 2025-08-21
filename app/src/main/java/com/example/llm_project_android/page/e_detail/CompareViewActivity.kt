@@ -1,6 +1,7 @@
 package com.example.llm_project_android.page.e_detail
 
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -12,6 +13,7 @@ import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.llm_project_android.R
@@ -139,7 +141,6 @@ class CompareViewActivity : AppCompatActivity() {
             field.visibility = View.VISIBLE
 
             input_Values(isSelected = true)     // 상품 상단, 세부 정보 적용
-            design_Values()                     // 세부 정보 비교에 따른 텍스트 스타일 변환
         }
     }
 
@@ -147,6 +148,8 @@ class CompareViewActivity : AppCompatActivity() {
     private fun input_Values(isSelected: Boolean) {
         selectedItem0 = Products_Insurance.productList.find { it.name == data["name"] }
         selectedItem1 = Products_Insurance.productList.find { it.name == data["name1"] }
+        var originalValue: List<Any>
+        var compareValue: List<Any>
 
         selectedItem0?.let {                                    // 기존 상품 상단 뷰 구성
             icon0.setBackgroundResource(it.company_icon)
@@ -187,9 +190,21 @@ class CompareViewActivity : AppCompatActivity() {
     }
 
     /* 아이템 추천 디자인 반영 */
-    private fun design_Values() {
-        var recommendation = ""
-        recommendation = compare_items()
+    private fun design_Values(value0: TextView, value1: TextView, state: Int) {
+        when (state) {
+            0 -> {
+                value0.setTextColor("#4D914C".toColorInt());   value1.setTextColor("#5E5E5E".toColorInt())
+                value0.setTypeface(null, Typeface.BOLD);    value1.setTypeface(null, Typeface.NORMAL);
+            }
+            1 -> {
+                value0.setTextColor("#5E5E5E".toColorInt());   value1.setTextColor("#4D914C".toColorInt())
+                value0.setTypeface(null, Typeface.NORMAL);  value1.setTypeface(null, Typeface.BOLD);
+            }
+            else -> {
+                value0.setTextColor("#4D914C".toColorInt());   value1.setTextColor("#4D914C".toColorInt())
+                value0.setTypeface(null, Typeface.BOLD);    value1.setTypeface(null, Typeface.BOLD);
+            }
+        }
     }
 
     /* 상품 비교 */
