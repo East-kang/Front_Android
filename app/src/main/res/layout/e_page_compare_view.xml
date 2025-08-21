@@ -41,6 +41,20 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <TextView
+        android:id="@+id/guideText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="선택하신 두 상품을 비교했어요"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="17sp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title0" />
+
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_half"
         android:layout_width="wrap_content"
@@ -64,15 +78,15 @@
         android:text="비교 상품"
         android:textSize="10sp"
         android:textStyle="bold"
-        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         app:layout_constraintBottom_toTopOf="@id/gridLayout"
-        app:layout_constraintStart_toEndOf="@id/guideline_half" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <GridLayout
         android:id="@+id/gridLayout"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="28dp"
         android:alignmentMode="alignMargins"
         android:columnCount="2"
         android:rowCount="1"
@@ -80,7 +94,7 @@
         app:layout_constraintDimensionRatio="1:2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title0">
+        app:layout_constraintTop_toBottomOf="@id/guideText">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/itemLayout0"
@@ -329,7 +343,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="15dp"
                     android:layout_marginTop="11dp"
-                    android:text="월 보험료"
+                    android:text="보장 내역"
                     android:textSize="14sp"
                     android:textColor="#5E5E5E"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -352,7 +366,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="15dp"
                     android:layout_marginTop="11dp"
-                    android:text="납입 기간"
+                    android:text="월 보험료"
                     android:textSize="14sp"
                     android:textColor="#5E5E5E"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -375,7 +389,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="15dp"
                     android:layout_marginTop="11dp"
-                    android:text="보장 범위"
+                    android:text="납입 기간"
                     android:textSize="14sp"
                     android:textColor="#5E5E5E"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -467,7 +481,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="15dp"
                     android:layout_marginTop="11dp"
-                    android:text="가입 연령"
+                    android:text="갱신 여부"
                     android:textSize="14sp"
                     android:textColor="#5E5E5E"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -490,7 +504,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="15dp"
                     android:layout_marginTop="11dp"
-                    android:text="갱신 여부"
+                    android:text="보장 내용"
                     android:textSize="14sp"
                     android:textColor="#5E5E5E"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -509,195 +523,243 @@
 
                 <TextView
                     android:id="@+id/value00"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="value"
-                    android:textSize="14sp"
                     android:textColor="#5E5E5E"
+                    android:textSize="14sp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="left"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria0"
+                    app:layout_constraintEnd_toStartOf="@+id/criteria0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/criteria0"
-                    app:layout_constraintBottom_toBottomOf="@id/criteria0" />
+                    app:layout_constraintTop_toTopOf="@id/criteria0" />
 
                 <TextView
                     android:id="@+id/value01"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="value"
-                    android:textSize="14sp"
-                    android:textColor="#5E5E5E"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginStart="10dp"
+                    android:gravity="right"
+                    android:text="value"
+                    android:textColor="#5E5E5E"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria0"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/criteria0"
-                    app:layout_constraintBottom_toBottomOf="@id/criteria0" />
+                    app:layout_constraintStart_toEndOf="@+id/criteria0"
+                    app:layout_constraintTop_toTopOf="@id/criteria0" />
 
                 <TextView
                     android:id="@+id/value10"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="value"
-                    android:textSize="14sp"
-                    android:textColor="#5E5E5E"
                     android:layout_marginStart="8dp"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="left"
+                    android:text="value"
+                    android:textColor="#5E5E5E"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria1"
+                    app:layout_constraintEnd_toStartOf="@+id/criteria1"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/criteria1"
-                    app:layout_constraintBottom_toBottomOf="@id/criteria1" />
+                    app:layout_constraintTop_toTopOf="@id/criteria1" />
 
                 <TextView
                     android:id="@+id/value11"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="value"
-                    android:textSize="14sp"
-                    android:textColor="#5E5E5E"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginStart="10dp"
+                    android:gravity="right"
+                    android:text="value"
+                    android:textColor="#5E5E5E"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria1"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/criteria1"
-                    app:layout_constraintBottom_toBottomOf="@id/criteria1" />
+                    app:layout_constraintStart_toEndOf="@+id/criteria1"
+                    app:layout_constraintTop_toTopOf="@id/criteria1" />
 
                 <TextView
                     android:id="@+id/value20"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="value"
-                    android:textSize="14sp"
-                    android:textColor="#5E5E5E"
                     android:layout_marginStart="8dp"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="left"
+                    android:text="value"
+                    android:textColor="#5E5E5E"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria2"
+                    app:layout_constraintEnd_toStartOf="@+id/criteria2"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/criteria2"
-                    app:layout_constraintBottom_toBottomOf="@id/criteria2" />
+                    app:layout_constraintTop_toTopOf="@id/criteria2" />
 
                 <TextView
                     android:id="@+id/value21"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="value"
-                    android:textSize="14sp"
-                    android:textColor="#5E5E5E"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginStart="10dp"
+                    android:gravity="right"
+                    android:text="value"
+                    android:textColor="#5E5E5E"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria2"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/criteria2"
-                    app:layout_constraintBottom_toBottomOf="@id/criteria2" />
+                    app:layout_constraintStart_toEndOf="@+id/criteria2"
+                    app:layout_constraintTop_toTopOf="@id/criteria2" />
 
                 <TextView
                     android:id="@+id/value30"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="value"
-                    android:textSize="14sp"
-                    android:textColor="#5E5E5E"
                     android:layout_marginStart="8dp"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="left"
+                    android:text="value"
+                    android:textColor="#5E5E5E"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria3"
+                    app:layout_constraintEnd_toStartOf="@+id/criteria3"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/criteria3"
-                    app:layout_constraintBottom_toBottomOf="@id/criteria3" />
+                    app:layout_constraintTop_toTopOf="@id/criteria3" />
 
                 <TextView
                     android:id="@+id/value31"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="value"
-                    android:textSize="14sp"
-                    android:textColor="#5E5E5E"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginStart="10dp"
+                    android:gravity="right"
+                    android:text="value"
+                    android:textColor="#5E5E5E"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria3"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/criteria3"
-                    app:layout_constraintBottom_toBottomOf="@id/criteria3" />
+                    app:layout_constraintStart_toEndOf="@+id/criteria3"
+                    app:layout_constraintTop_toTopOf="@id/criteria3" />
 
                 <TextView
                     android:id="@+id/value40"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="value"
-                    android:textSize="14sp"
-                    android:textColor="#5E5E5E"
                     android:layout_marginStart="8dp"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="left"
+                    android:text="value"
+                    android:textColor="#5E5E5E"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria4"
+                    app:layout_constraintEnd_toStartOf="@+id/criteria4"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/criteria4"
-                    app:layout_constraintBottom_toBottomOf="@id/criteria4" />
+                    app:layout_constraintTop_toTopOf="@id/criteria4" />
 
                 <TextView
                     android:id="@+id/value41"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="value"
-                    android:textSize="14sp"
-                    android:textColor="#5E5E5E"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginStart="10dp"
+                    android:gravity="right"
+                    android:text="value"
+                    android:textColor="#5E5E5E"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria4"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/criteria4"
-                    app:layout_constraintBottom_toBottomOf="@id/criteria4" />
+                    app:layout_constraintStart_toEndOf="@+id/criteria4"
+                    app:layout_constraintTop_toTopOf="@id/criteria4" />
 
                 <TextView
                     android:id="@+id/value50"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="value"
-                    android:textSize="14sp"
-                    android:textColor="#5E5E5E"
                     android:layout_marginStart="8dp"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="left"
+                    android:text="value"
+                    android:textColor="#5E5E5E"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria5"
+                    app:layout_constraintEnd_toStartOf="@+id/criteria5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/criteria5"
-                    app:layout_constraintBottom_toBottomOf="@id/criteria5" />
+                    app:layout_constraintTop_toTopOf="@id/criteria5" />
 
                 <TextView
                     android:id="@+id/value51"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="value"
-                    android:textSize="14sp"
-                    android:textColor="#5E5E5E"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginStart="10dp"
+                    android:gravity="right"
+                    android:text="value"
+                    android:textColor="#5E5E5E"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria5"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/criteria5"
-                    app:layout_constraintBottom_toBottomOf="@id/criteria5" />
+                    app:layout_constraintStart_toEndOf="@+id/criteria5"
+                    app:layout_constraintTop_toTopOf="@id/criteria5" />
 
                 <TextView
                     android:id="@+id/value60"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="value"
-                    android:textSize="14sp"
-                    android:textColor="#5E5E5E"
                     android:layout_marginStart="8dp"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="left"
+                    android:text="value"
+                    android:textColor="#5E5E5E"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria6"
+                    app:layout_constraintEnd_toStartOf="@+id/criteria6"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/criteria6"
-                    app:layout_constraintBottom_toBottomOf="@id/criteria6" />
+                    app:layout_constraintTop_toTopOf="@id/criteria6" />
 
                 <TextView
                     android:id="@+id/value61"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="value"
-                    android:textSize="14sp"
-                    android:textColor="#5E5E5E"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginStart="10dp"
+                    android:gravity="right"
+                    android:text="value"
+                    android:textColor="#5E5E5E"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria6"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/criteria6"
-                    app:layout_constraintBottom_toBottomOf="@id/criteria6" />
+                    app:layout_constraintStart_toEndOf="@+id/criteria6"
+                    app:layout_constraintTop_toTopOf="@id/criteria6" />
 
                 <TextView
                     android:id="@+id/value70"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="value"
-                    android:textSize="14sp"
-                    android:textColor="#5E5E5E"
                     android:layout_marginStart="8dp"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="left"
+                    android:text="value"
+                    android:textColor="#5E5E5E"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria7"
+                    app:layout_constraintEnd_toStartOf="@+id/criteria7"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/criteria7"
-                    app:layout_constraintBottom_toBottomOf="@id/criteria7" />
+                    app:layout_constraintTop_toTopOf="@id/criteria7" />
 
                 <TextView
                     android:id="@+id/value71"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="value"
-                    android:textSize="14sp"
-                    android:textColor="#5E5E5E"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginStart="10dp"
+                    android:gravity="right"
+                    android:text="value"
+                    android:textColor="#5E5E5E"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@id/criteria7"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/criteria7"
-                    app:layout_constraintBottom_toBottomOf="@id/criteria7" />
+                    app:layout_constraintStart_toEndOf="@+id/criteria7"
+                    app:layout_constraintTop_toTopOf="@id/criteria7" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
