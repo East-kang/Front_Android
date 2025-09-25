@@ -1,1 +1,1 @@
-"# Front_Android" 
+# 개인 프로젝트: 보험 상품 추천/비교 앱 (Front)
