@@ -16,13 +16,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.llm_project_android.R
 import com.example.llm_project_android.adapter.InsuranceAdapter
 import com.example.llm_project_android.data.sample.Products_Insurance
+import com.example.llm_project_android.db.user.MyDatabase
 import com.example.llm_project_android.functions.getPassedExtras
 import com.example.llm_project_android.functions.navigateTo
+import com.example.llm_project_android.page.f_chat.ChatView
+import kotlinx.coroutines.launch
 
 class CategoryView : AppCompatActivity() {
 
@@ -80,28 +84,15 @@ class CategoryView : AppCompatActivity() {
 
         data = getPassedExtras("category", String::class.java)["category"] as? String? ?: ""
 
-        // 보험 상품 노출
-        showing_Insurances()
 
-        // 카테고리 초기화
-        init_Category(data)
-
-        // 상품 카테고리 버튼 클릭 이벤트
-        select_Product_Category()
-
-        // 회사 카테고리 버튼 클릭 이벤트
-        filtering_Company()
-
-        // 상품 정렬 이벤트
-        sorting_Insurances({ type -> selectedSortType = type})
-
-        // 아이템 클릭 이벤트
-        click_Items()
-
-        //
-
-        // 뒤로가기 이벤트 (to MainViewActivity)
-        clickBackButton()
+        showing_Insurances()        // 보험 상품 노출
+        init_Category(data)         // 카테고리 초기화
+        select_Product_Category()   // 상품 카테고리 버튼 클릭 이벤트
+        filtering_Company()         // 회사 카테고리 버튼 클릭 이벤트
+        sorting_Insurances({ type -> selectedSortType = type})  // 상품 정렬 이벤트
+        click_Items()               // 아이템 클릭 이벤트
+        goTo_Chat_View()            // 채팅 뷰 이동
+        clickBackButton()           // 뒤로가기 이벤트 (to MainViewActivity)
     }
 
     // 상품 띄우기
@@ -109,6 +100,16 @@ class CategoryView : AppCompatActivity() {
         itemView.layoutManager = LinearLayoutManager(this)
         adapter = InsuranceAdapter(Products_Insurance.productList)
         itemView.adapter = adapter
+
+        // 가입 여부 태그 띄우기 여부 로직
+        lifecycleScope.launch {
+            val dao = MyDatabase.getDatabase(this@CategoryView).getMyDao()
+            val user = dao.getLoggedInUser()
+
+            user?.let {
+                adapter.setEnrolls(it.subscriptions)
+            }
+        }
     }
 
     // 상품 카테고리 초기화 함수
@@ -136,11 +137,7 @@ class CategoryView : AppCompatActivity() {
                 navigateTo(
                     ProductDetailActivity::class.java,
                     "source" to "CategoryView",
-                    "company_icon" to selectedItem.company_icon,
-                    "company_name" to selectedItem.company_name,
-                    "category" to selectedItem.category,
-                    "insurance_name" to selectedItem.name,
-                    "recommendation" to selectedItem.recommendation
+                    "name" to selectedItem.name
                 )
             }
         }
@@ -215,8 +212,7 @@ class CategoryView : AppCompatActivity() {
     // 상품 정렬 함수 (상품 정렬 기능 추가해야함)
     private fun sorting_Insurances(onSortedSelected: (String) -> Unit) {
         val filterList = resources.getStringArray(R.array.list_filter)
-        val spinnerAdapter =
-            ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, filterList)
+        val spinnerAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, filterList)
         filter.adapter = spinnerAdapter
 
         filter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -236,6 +232,13 @@ class CategoryView : AppCompatActivity() {
             selectedCompanies.toList(),
             selectedSortType
         )
+    }
+
+    // 채팅 페이지 전환
+    private fun goTo_Chat_View() {
+        btn_chat.setOnClickListener{
+            navigateTo(ChatView::class.java, "source" to "CategoryView")
+        }
     }
 
     // 뒤로가기 이벤트 정의 함수

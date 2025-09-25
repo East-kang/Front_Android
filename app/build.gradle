@@ -67,4 +67,10 @@ dependencies {
 
     //Bio
     implementation 'androidx.biometric:biometric:1.2.0-alpha04'
+
+    // FlexboxLayout
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+
+    // Lottie
+    implementation 'com.airbnb.android:lottie:6.6.6'
 }

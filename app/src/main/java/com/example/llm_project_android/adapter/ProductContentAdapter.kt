@@ -11,12 +11,16 @@ import com.example.llm_project_android.R
 import com.example.llm_project_android.data.model.Product
 
 // SignUpActivity4.kt   : 검색 상품 필터링
+// MainViewActivity.kt  : 상품 검색 기능
 class ProductContentAdapter (private var productList: List<Product>)
     : RecyclerView.Adapter<ProductContentAdapter.PostViewHolder>(), Filterable {
 
     private var filteredList: List<Product> = emptyList()      // 필터링 결과 리스트 (초기에는 전체 리스트와 동일)
     private var itemClickListener: ((Product) -> Unit)? = null // 외부에서 클릭 이벤트를 설정할 수 있도록 콜백 정의
-    private var emptyResultCallBack: (() -> Unit)? = null   //
+    private var emptyResultCallBack: (() -> Unit)? = null
+
+    private var excludeTitles: Set<String> = emptySet() // 제외할 상품명 모음
+    private var currentQuery: String = ""               // 현재 검색어 저장(제외 목록 변경 시 재필터링용)
 
     // 콜백 외부 설정 함수
     fun setOnItemClickListener(listener: (Product) -> Unit) {
@@ -65,30 +69,37 @@ class ProductContentAdapter (private var productList: List<Product>)
         return object : Filter() {
             override fun performFiltering(query: CharSequence?): FilterResults {
                 val result = FilterResults()
-                val queryStr = query?.toString()?.trim() ?: ""  // 검색어 문자열로 변환
+                val queryStr = query?.toString()?.trim() ?: ""  // 현재 검색어 저장
 
-                // 검색어가 비어있으면 전체 리스트 반환 (공백일 경우)
-                val filtered = if (queryStr.isBlank()){
-                    emptyList()
-                } else {    // 검색어가 포함된 상품 필터링
-                    productList.filter { post ->
-                        post.title.contains(queryStr, ignoreCase = true)
-                    }
+                currentQuery = queryStr
+
+                val base = productList.filter { it.title !in excludeTitles }    // 가입 항목 제외
+
+                // 공백이면 emptyList, 아니면 contains 필터
+                val filtered = if (queryStr.isBlank()) emptyList()
+                               else base.filter { it.title.contains(queryStr, ignoreCase = true) }
+
+                return FilterResults().apply {
+                    values = filtered
+                    count = filtered.size
                 }
-                result.values = filtered
-                return result
             }
 
             // 필터링 결과를 어댑터에 반영하고 새로고침
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                filteredList = results?.values as List<Product>
+                @Suppress("UNCHECKED_CAST")
+                filteredList = results?.values as? List<Product> ?: emptyList()
                 notifyDataSetChanged()
 
                 // 검색 결과 없을 경우 콜백 실행
-                if (filteredList.isEmpty()) {
-                    emptyResultCallBack?.invoke()
-                }
+                if (filteredList.isEmpty()) emptyResultCallBack?.invoke()
             }
         }
+    }
+
+    // 제외 목록 주입 & 재필터
+    fun setExcludedTitles(titles: Set<String>) {
+        excludeTitles = titles
+        filter.filter(currentQuery) // 현재 검색어로 다시 필터링
     }
 }

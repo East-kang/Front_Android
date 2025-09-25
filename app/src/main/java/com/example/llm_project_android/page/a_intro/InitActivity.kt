@@ -10,12 +10,10 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.llm_project_android.R
 import com.example.llm_project_android.db.user.MyDatabase
-import com.example.llm_project_android.db.wishList.WishedManager
 import com.example.llm_project_android.functions.navigateTo
 import com.example.llm_project_android.functions.registerExitDialogOnBackPressed
-import com.example.llm_project_android.functions.resetUserTable
 import com.example.llm_project_android.functions.saveUserInfo
-import com.example.llm_project_android.page.b_signup.SignUpActivity1
+import com.example.llm_project_android.page.b_signup.SignUpActivity3
 import com.example.llm_project_android.page.c_product.MainViewActivity
 import kotlinx.coroutines.launch
 
@@ -24,7 +22,6 @@ class InitActivity : AppCompatActivity() {
     private lateinit var btn_login: Button
     private lateinit var btn_sign_up: Button
     private lateinit var view: ImageView
-    lateinit var wishedManager: WishedManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,14 +37,6 @@ class InitActivity : AppCompatActivity() {
         btn_sign_up = findViewById<Button>(R.id.sign_up_Button)     // 회원가입 버튼 선언
         view = findViewById<ImageView>(R.id.image)
 
-
-        view.setOnClickListener {
-            lifecycleScope.launch {
-                resetUserTable(this@InitActivity)
-                wishedManager.clearAllWishes()
-            }
-        }
-
         // 로그인 버튼 클릭 이벤트
         btn_login.setOnClickListener {
             lifecycleScope.launch {
@@ -60,11 +49,14 @@ class InitActivity : AppCompatActivity() {
                     phoneNumber = "010-2222-1111",
                     gender = "남성",
                     isMarried = true,
-                    job = "오리"
+                    job = "오리",
+                    diseases = listOf("암 (위암, 폐암, 유방암 등)", "뇌혈관 질환 (뇌졸증, 뇌출혈 등)", "근골격계/척추질환 (디스크, 관절염 등)"),
+                    subscriptions = listOf("삼성생명 건강보험", "현대해상 운전자보험", "KB 실손의료비보험"
+                    )
                 )
             }
-            // navigateTo(LoginActivity::class.java)
-            navigateTo(MainViewActivity::class.java)
+             navigateTo(LoginActivity::class.java)
+            //navigateTo(MainViewActivity::class.java)
         }
 
         // 회원가입 버튼 클릭 이벤트
@@ -76,7 +68,7 @@ class InitActivity : AppCompatActivity() {
             }
 
             //화면 전환
-            navigateTo(SignUpActivity1::class.java, "source" to "InitActivity")
+            navigateTo(SignUpActivity3::class.java, "source" to "InitActivity")
         }
 
         // 뒤로가기 버튼 클릭 이벤트

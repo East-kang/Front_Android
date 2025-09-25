@@ -113,6 +113,7 @@
                         android:id="@+id/company_icon"
                         android:layout_width="29dp"
                         android:layout_height="29dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -143,21 +144,49 @@
                         android:background="@drawable/design_category_tag"
                         app:layout_constraintStart_toEndOf="@id/company_name"
                         app:layout_constraintBottom_toBottomOf="parent" />
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
-                    android:id="@+id/insurance_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="상품명"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:gravity="center"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/title_field"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/companyLine"/>
+                    app:layout_constraintTop_toBottomOf="@id/companyLine"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/insurance_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="상품명"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:layout_marginStart="10dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/enroll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="가입 완료"
+                        android:textSize="7.5sp"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginBottom="3dp"
+                        android:paddingHorizontal="7dp"
+                        android:visibility="visible"
+                        android:background="@drawable/design_enroll_tag"
+                        app:layout_constraintStart_toEndOf="@id/insurance_name"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -185,7 +214,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="📌"
+                        android:text="🤖"
                         android:layout_gravity="center_vertical"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -500,7 +529,7 @@
                     android:layout_height="wrap_content"
                     android:text="상품 소개"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_marginTop="10dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -511,7 +540,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="상품 소개 내용"
-                    android:textColor="#707070"
+                    android:textColor="@color/black"
                     android:textSize="14sp"
                     android:layout_marginTop="10dp"
                     app:layout_constraintTop_toBottomOf="@id/product_introduction_title"
@@ -550,7 +579,7 @@
             android:layout_height="match_parent" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/details_button"
+            android:id="@+id/pdf_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
