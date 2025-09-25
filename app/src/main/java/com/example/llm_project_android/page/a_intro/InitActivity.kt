@@ -55,8 +55,8 @@ class InitActivity : AppCompatActivity() {
                     )
                 )
             }
-            // navigateTo(LoginActivity::class.java)
-            navigateTo(MainViewActivity::class.java)
+             navigateTo(LoginActivity::class.java)
+            //navigateTo(MainViewActivity::class.java)
         }
 
         // 회원가입 버튼 클릭 이벤트

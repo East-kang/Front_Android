@@ -208,12 +208,12 @@ class CompareViewActivity : AppCompatActivity() {
     }
 
     /* 상품 비교 */
-    private fun compare_items(): String {
+    private fun compare_items(): Int{
 
 
         // 텍스트 색상, 스타일 변경 로직 추가 예정
 
-        return if (count0 > count1) data["name"] as String else data["name1"] as String
+        return if (count0 > count1) 0 else if(count0 < count1) 1 else 2
     }
 
     /* 상품 세부 사항 비교 */
